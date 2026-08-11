@@ -1,0 +1,712 @@
+<!-- =====================================================
+     HERO / PLAN YOUR TRIP
+====================================================== -->
+
+<section class="hero-section">
+
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+
+    <span class="hero-badge">
+      <i class="fa fa-globe"></i>
+      Welcome to Shah Traveling
+    </span>
+
+    <h1>
+      Plan Your Trip.
+      <span>Live The Journey.</span>
+    </h1>
+
+    <p>
+      Find your destination, calculate your trip,
+      and start your journey in just a few clicks.
+    </p>
+
+    <div class="hero-actions">
+
+      <button
+        class="primary-button"
+        type="button"
+        (click)="scrollToCalculator()">
+
+        <i class="fa fa-paper-plane"></i>
+        Plan My Trip
+
+      </button>
+
+      <button
+        class="outline-button"
+        type="button"
+        (click)="scrollToDestinations()">
+
+        <i class="fa fa-globe"></i>
+        Explore Locations
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- QUICK TRIP SEARCH -->
+
+  <div class="trip-search">
+
+    <div class="search-field">
+
+      <div class="field-icon">
+        <i class="fa fa-map-marker"></i>
+      </div>
+
+      <div class="field-content">
+
+        <small>Destination</small>
+
+        <select [(ngModel)]="selectedDestination">
+
+          <option value="">
+            Where do you want to go?
+          </option>
+
+          <option value="Dubai">
+            Dubai
+          </option>
+
+          <option value="Turkey">
+            Turkey
+          </option>
+
+          <option value="Maldives">
+            Maldives
+          </option>
+
+          <option value="Saudi Arabia">
+            Saudi Arabia
+          </option>
+
+          <option value="Malaysia">
+            Malaysia
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <div class="search-divider"></div>
+
+
+    <div class="search-field">
+
+      <div class="field-icon">
+        <i class="fa fa-calendar"></i>
+      </div>
+
+      <div class="field-content">
+
+        <small>Travel Date</small>
+
+        <input
+          type="date"
+          [(ngModel)]="travelDate">
+
+      </div>
+
+    </div>
+
+
+    <div class="search-divider"></div>
+
+
+    <div class="search-field travelers-field">
+
+      <div class="field-icon">
+        <i class="fa fa-users"></i>
+      </div>
+
+      <div class="field-content">
+
+        <small>Travelers</small>
+
+        <div class="traveler-counter">
+
+          <button
+            type="button"
+            (click)="decreaseTravelers()">
+            −
+          </button>
+
+          <strong>
+            {{ travelers }}
+          </strong>
+
+          <button
+            type="button"
+            (click)="increaseTravelers()">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <button
+      class="search-button"
+      type="button"
+      (click)="calculateTrip()">
+
+      <i class="fa fa-search"></i>
+
+      Calculate
+
+    </button>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     POPULAR LOCATIONS
+====================================================== -->
+
+<section
+  class="locations-section"
+  id="destinations">
+
+  <div class="section-heading">
+
+    <div>
+
+      <span class="section-label">
+        <i class="fa fa-compass"></i>
+        Explore
+      </span>
+
+      <h2>
+        Find Your
+        <span>Perfect Location</span>
+      </h2>
+
+    </div>
+
+    <span class="section-small-text">
+      Popular destinations
+    </span>
+
+  </div>
+
+
+  <div class="location-grid">
+
+
+    <article
+      class="location-card location-dubai"
+  (click)="openImage('/travelingPictures/dubai.jpg')">
+
+      <div class="location-overlay"></div>
+
+      <div class="location-content">
+
+        <span>United Arab Emirates</span>
+
+        <h3>Dubai</h3>
+
+        <div class="location-bottom">
+
+          <strong>From $899</strong>
+
+          <i class="fa fa-arrow-right"></i>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <article
+      class="location-card location-turkey"
+      (click)="openImage('/travelingPictures/Turkey.jpg')">
+
+      <div class="location-overlay"></div>
+
+      <div class="location-content">
+
+        <span>Europe & Asia</span>
+
+        <h3>Turkey</h3>
+
+        <div class="location-bottom">
+
+          <strong>From $999</strong>
+
+          <i class="fa fa-arrow-right"></i>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <article
+      class="location-card location-maldives"
+      (click)="openImage('/travelingPictures/maldives.jpg')">
+
+      <div class="location-overlay"></div>
+
+      <div class="location-content">
+
+        <span>Indian Ocean</span>
+
+        <h3>Maldives</h3>
+
+        <div class="location-bottom">
+
+          <strong>From $1,299</strong>
+
+          <i class="fa fa-arrow-right"></i>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+    <article
+      class="location-card location-saudi"
+      (click)="openImage('/travelingPictures/saudiArabia.jpg')">
+
+      <div class="location-overlay"></div>
+
+      <div class="location-content">
+
+        <span>Middle East</span>
+
+        <h3>Saudi Arabia</h3>
+
+        <div class="location-bottom">
+
+          <strong>From $799</strong>
+
+          <i class="fa fa-arrow-right"></i>
+
+        </div>
+
+      </div>
+
+    </article>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     TRIP CALCULATOR
+====================================================== -->
+
+<section
+  class="calculator-section"
+  id="calculator">
+
+  <div class="calculator-wrapper">
+
+
+    <div class="calculator-intro">
+
+      <span class="section-label light-label">
+        <i class="fa fa-calculator"></i>
+        Smart Trip Planner
+      </span>
+
+      <h2>
+        Calculate Your
+        <span>Trip</span>
+      </h2>
+
+      <p>
+        Select your destination, duration and travelers.
+        Get an estimated trip cost instantly.
+      </p>
+
+      <div class="calculator-features">
+
+        <span>
+          <i class="fa fa-check"></i>
+          Quick estimate
+        </span>
+
+        <span>
+          <i class="fa fa-check"></i>
+          Flexible options
+        </span>
+
+        <span>
+          <i class="fa fa-check"></i>
+          No commitment
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="calculator-card">
+
+      <div class="calculator-top">
+
+        <span>
+          <i class="fa fa-map-marker"></i>
+          Your Trip
+        </span>
+
+        <span class="estimate-label">
+          Estimated Price
+        </span>
+
+      </div>
+
+
+      <div class="calculator-fields">
+
+
+        <div class="calculator-field">
+
+          <label>
+            Destination
+          </label>
+
+          <select [(ngModel)]="selectedDestination">
+
+            <option value="">
+              Select destination
+            </option>
+
+            <option value="Dubai">
+              Dubai
+            </option>
+
+            <option value="Turkey">
+              Turkey
+            </option>
+
+            <option value="Maldives">
+              Maldives
+            </option>
+
+            <option value="Saudi Arabia">
+              Saudi Arabia
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="calculator-field">
+
+          <label>
+            Duration
+          </label>
+
+          <select [(ngModel)]="duration">
+
+            <option [value]="3">
+              3 Days
+            </option>
+
+            <option [value]="5">
+              5 Days
+            </option>
+
+            <option [value]="7">
+              7 Days
+            </option>
+
+            <option [value]="10">
+              10 Days
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="calculator-field">
+
+          <label>
+            Travelers
+          </label>
+
+          <div class="large-counter">
+
+            <button
+              type="button"
+              (click)="decreaseTravelers()">
+              −
+            </button>
+
+            <strong>
+              {{ travelers }}
+            </strong>
+
+            <button
+              type="button"
+              (click)="increaseTravelers()">
+              +
+            </button>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+      <div class="estimate-result">
+
+        <div>
+
+          <small>
+            Estimated trip cost
+          </small>
+
+          <strong>
+            ${{ estimatedPrice | number }}
+          </strong>
+
+        </div>
+
+        <button
+          type="button"
+          (click)="calculateTrip()">
+
+          Calculate
+
+          <i class="fa fa-arrow-right"></i>
+
+        </button>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SERVICES
+====================================================== -->
+
+<section
+  class="services-section"
+  id="services">
+
+  <div class="services-heading">
+
+    <div>
+
+      <span class="section-label">
+        <i class="fa fa-star"></i>
+        Our Services
+      </span>
+
+      <h2>
+        Everything You Need
+        <span>For Your Trip</span>
+      </h2>
+
+    </div>
+
+    <p>
+      Simple travel solutions,
+      all in one place.
+    </p>
+
+  </div>
+
+
+  <div class="services-grid">
+
+
+    <article class="service-card">
+
+      <div class="service-icon">
+        <i class="fa fa-plane"></i>
+      </div>
+
+      <div>
+
+        <h3>Flight Booking</h3>
+
+        <p>
+          Find the right flight for your journey.
+        </p>
+
+      </div>
+
+      <i class="fa fa-arrow-right service-arrow"></i>
+
+    </article>
+
+
+    <article class="service-card">
+
+      <div class="service-icon">
+        <i class="fa fa-hotel"></i>
+      </div>
+
+      <div>
+
+        <h3>Hotel Booking</h3>
+
+        <p>
+          Comfortable stays at great locations.
+        </p>
+
+      </div>
+
+      <i class="fa fa-arrow-right service-arrow"></i>
+
+    </article>
+
+
+    <article class="service-card">
+
+      <div class="service-icon">
+        <i class="fa fa-file-text-o"></i>
+      </div>
+
+      <div>
+
+        <h3>Visa Assistance</h3>
+
+        <p>
+          Guidance throughout your visa process.
+        </p>
+
+      </div>
+
+      <i class="fa fa-arrow-right service-arrow"></i>
+
+    </article>
+
+
+    <article class="service-card">
+
+      <div class="service-icon">
+        <i class="fa fa-suitcase"></i>
+      </div>
+
+      <div>
+
+        <h3>Tour Packages</h3>
+
+        <p>
+          Ready-made trips for unforgettable journeys.
+        </p>
+
+      </div>
+
+      <i class="fa fa-arrow-right service-arrow"></i>
+
+    </article>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FINAL CTA
+====================================================== -->
+
+<section class="final-cta">
+
+  <div>
+
+    <span class="cta-plane">
+      <i class="fa fa-paper-plane"></i>
+    </span>
+
+    <h2>
+      Ready To
+      <span>Travel?</span>
+    </h2>
+
+    <p>
+      Plan your next journey with us.
+    </p>
+
+  </div>
+
+
+  <div class="cta-actions">
+
+    <button
+      class="cta-primary"
+      type="button"
+      (click)="scrollToCalculator()">
+
+      <i class="fa fa-calculator"></i>
+      Calculate My Trip
+
+    </button>
+
+    <a
+      href="https://wa.me/YOUR_NUMBER"
+      target="_blank"
+      class="cta-whatsapp">
+
+      <i class="fa fa-whatsapp"></i>
+      WhatsApp Us
+
+    </a>
+
+  </div>
+
+</section>
+
+
+
+
+
+
+
+<!-- IMAGE LIGHTBOX -->
+
+<div
+  class="image-lightbox"
+  *ngIf="selectedImage"
+  (click)="closeImage()">
+
+  <div class="lightbox-close">
+    <i class="fa fa-times"></i>
+  </div>
+
+  <img
+    [src]="selectedImage"
+    alt="Travel destination"
+    (click)="$event.stopPropagation()">
+
+</div>

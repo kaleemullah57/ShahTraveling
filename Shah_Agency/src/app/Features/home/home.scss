@@ -1,0 +1,1582 @@
+:host {
+  display: block;
+  background: #ffffff;
+  color: #17211c;
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero-section {
+
+  position: relative;
+
+  min-height: 650px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 90px 7% 145px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 25, 18, .86),
+      rgba(4, 25, 18, .48),
+      rgba(4, 25, 18, .18)
+    ),
+    url('/assets/images/hero-travel.jpg')
+    center / cover no-repeat;
+
+}
+
+
+.hero-content {
+
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 650px;
+
+}
+
+
+.hero-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 8px 14px;
+
+  margin-bottom: 20px;
+
+  border: 1px solid rgba(255,255,255,.25);
+
+  border-radius: 30px;
+
+  background: rgba(255,255,255,.10);
+
+  color: #ffffff;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  backdrop-filter: blur(10px);
+
+}
+
+
+.hero-content h1 {
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(44px, 5vw, 68px);
+
+  line-height: 1.04;
+
+  letter-spacing: -2px;
+
+  font-weight: 800;
+
+}
+
+
+.hero-content h1 span {
+
+  display: block;
+
+  color: #ffffff;
+
+}
+
+
+.hero-content p {
+
+  max-width: 540px;
+
+  margin: 22px 0 28px;
+
+  color: rgba(255,255,255,.78);
+
+  font-size: 15px;
+
+  line-height: 1.7;
+
+}
+
+
+.hero-actions {
+
+  display: flex;
+
+  gap: 12px;
+
+}
+
+
+.primary-button,
+.outline-button {
+
+  min-height: 50px;
+
+  padding: 0 21px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: .2s ease;
+
+}
+
+
+.primary-button {
+
+  border: none;
+
+  background: #0F6045;
+
+  color: #ffffff;
+
+}
+
+
+.primary-button:hover {
+
+  background: #0b4c37;
+
+  transform: translateY(-2px);
+
+}
+
+
+.outline-button {
+
+  border: 1px solid rgba(255,255,255,.4);
+
+  background: rgba(255,255,255,.08);
+
+  color: #ffffff;
+
+  backdrop-filter: blur(8px);
+
+}
+
+
+.outline-button:hover {
+
+  background: #ffffff;
+
+  color: #0F6045;
+
+}
+
+
+/* =====================================================
+   TRIP SEARCH
+===================================================== */
+
+.trip-search {
+
+  position: absolute;
+
+  z-index: 5;
+
+  left: 7%;
+
+  right: 7%;
+
+  bottom: -45px;
+
+  min-height: 90px;
+
+  padding: 12px 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  background: #ffffff;
+
+  border-radius: 15px;
+
+  box-shadow: 0 20px 55px rgba(15,40,30,.16);
+
+}
+
+
+.search-field {
+
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 9px 10px;
+
+}
+
+
+.field-icon {
+
+  width: 40px;
+
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #E8F5EF;
+
+  color: #0F6045;
+
+}
+
+
+.field-content {
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+}
+
+
+.field-content small {
+
+  color: #8a958f;
+
+  font-size: 10px;
+
+}
+
+
+.field-content select,
+.field-content input {
+
+  width: 100%;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #17211c;
+
+  font-size: 12px;
+
+  font-weight: 650;
+
+}
+
+
+.search-divider {
+
+  width: 1px;
+
+  height: 40px;
+
+  background: #e5ebe7;
+
+}
+
+
+.traveler-counter {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+}
+
+
+.traveler-counter button {
+
+  width: 23px;
+
+  height: 23px;
+
+  border: 1px solid #dfe7e2;
+
+  border-radius: 6px;
+
+  background: #ffffff;
+
+  color: #0F6045;
+
+  cursor: pointer;
+
+}
+
+
+.traveler-counter strong {
+
+  font-size: 12px;
+
+}
+
+
+.search-button {
+
+  min-height: 52px;
+
+  padding: 0 22px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #0F6045;
+
+  color: #ffffff;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+}
+
+
+/* =====================================================
+   COMMON
+===================================================== */
+
+.section-label {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-bottom: 8px;
+
+  color: #0F6045;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: .7px;
+
+  text-transform: uppercase;
+
+}
+
+
+.section-heading {
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  margin-bottom: 25px;
+
+}
+
+
+.section-heading h2,
+.services-heading h2 {
+
+  margin: 0;
+
+  font-size: clamp(27px, 3vw, 38px);
+
+  line-height: 1.1;
+
+  letter-spacing: -1px;
+
+}
+
+
+.section-heading h2 span,
+.services-heading h2 span {
+
+  color: #0F6045;
+
+}
+
+
+.section-small-text {
+
+  color: #87928c;
+
+  font-size: 11px;
+
+}
+
+
+/* =====================================================
+   LOCATIONS
+===================================================== */
+
+.locations-section {
+
+  padding: 120px 7% 75px;
+
+}
+
+
+.location-grid {
+
+  display: grid;
+
+  grid-template-columns: 1.3fr 1fr 1fr 1fr;
+
+  gap: 15px;
+
+}
+
+
+.location-card {
+
+  position: relative;
+
+  height: 300px;
+
+  overflow: hidden;
+
+  border-radius: 15px;
+
+  cursor: pointer;
+
+  background-position: center;
+
+  background-size: cover;
+
+  transition: .3s ease;
+
+}
+
+
+.location-card:hover {
+
+  transform: translateY(-5px);
+
+}
+
+
+.location-dubai {
+  background-image: url('/travelingPictures/dubai.jpg');
+}
+
+
+.location-turkey {
+
+  background-image: url('/travelingPictures/Turkey.jpg');
+
+}
+
+
+.location-maldives {
+
+  background-image:url('/travelingPictures/maldives.jpg');
+
+}
+
+
+.location-saudi {
+
+  background-image: url('/travelingPictures/saudiArabia.jpg');
+
+}
+
+
+.location-overlay {
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.75),
+      rgba(0,0,0,.05)
+    );
+
+}
+
+
+.location-content {
+
+  position: absolute;
+
+  left: 18px;
+
+  right: 18px;
+
+  bottom: 18px;
+
+  color: #ffffff;
+
+}
+
+
+.location-content span {
+
+  font-size: 9px;
+
+  opacity: .75;
+
+}
+
+
+.location-content h3 {
+
+  margin: 4px 0 10px;
+
+  font-size: 24px;
+
+}
+
+
+.location-bottom {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+}
+
+
+.location-bottom strong {
+
+  font-size: 11px;
+
+}
+
+
+.location-bottom i {
+
+  width: 30px;
+
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,.15);
+
+}
+
+
+/* =====================================================
+   CALCULATOR
+===================================================== */
+
+.calculator-section {
+
+  padding: 75px 7%;
+
+  background: #0F6045;
+
+}
+
+
+.calculator-wrapper {
+
+  max-width: 1150px;
+
+  margin: auto;
+
+  display: grid;
+
+  grid-template-columns: .8fr 1.2fr;
+
+  gap: 60px;
+
+  align-items: center;
+
+}
+
+
+.light-label {
+
+  color: rgba(255,255,255,.7);
+
+}
+
+
+.calculator-intro h2 {
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(32px,4vw,46px);
+
+  line-height: 1.05;
+
+}
+
+
+.calculator-intro h2 span {
+
+  display: block;
+
+  color: #ffffff;
+
+}
+
+
+.calculator-intro p {
+
+  max-width: 400px;
+
+  margin: 18px 0;
+
+  color: rgba(255,255,255,.7);
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+}
+
+
+.calculator-features {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 15px;
+
+}
+
+
+.calculator-features span {
+
+  color: rgba(255,255,255,.85);
+
+  font-size: 10px;
+
+}
+
+
+.calculator-features i {
+
+  margin-right: 5px;
+
+}
+
+
+.calculator-card {
+
+  padding: 25px;
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  box-shadow: 0 20px 50px rgba(0,0,0,.15);
+
+}
+
+
+.calculator-top {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 22px;
+
+}
+
+
+.calculator-top span:first-child {
+
+  color: #17211c;
+
+  font-size: 13px;
+
+  font-weight: 750;
+
+}
+
+
+.estimate-label {
+
+  color: #8a958f;
+
+  font-size: 10px;
+
+}
+
+
+.calculator-fields {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr 1fr;
+
+  gap: 12px;
+
+}
+
+
+.calculator-field {
+
+  padding: 12px;
+
+  border: 1px solid #e3eae5;
+
+  border-radius: 10px;
+
+}
+
+
+.calculator-field label {
+
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #8a958f;
+
+  font-size: 9px;
+
+}
+
+
+.calculator-field select {
+
+  width: 100%;
+
+  border: none;
+
+  outline: none;
+
+  color: #17211c;
+
+  font-size: 12px;
+
+  font-weight: 650;
+
+  background: transparent;
+
+}
+
+
+.large-counter {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+}
+
+
+.large-counter button {
+
+  width: 25px;
+
+  height: 25px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  background: #E8F5EF;
+
+  color: #0F6045;
+
+  cursor: pointer;
+
+}
+
+
+.large-counter strong {
+
+  font-size: 13px;
+
+}
+
+
+.estimate-result {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: 20px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid #edf1ee;
+
+}
+
+
+.estimate-result small {
+
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #8a958f;
+
+  font-size: 9px;
+
+}
+
+
+.estimate-result strong {
+
+  color: #0F6045;
+
+  font-size: 27px;
+
+}
+
+
+.estimate-result button {
+
+  padding: 12px 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #0F6045;
+
+  color: #ffffff;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+}
+
+
+/* =====================================================
+   SERVICES
+===================================================== */
+
+.services-section {
+
+  padding: 75px 7%;
+
+}
+
+
+.services-heading {
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  margin-bottom: 25px;
+
+}
+
+
+.services-heading p {
+
+  max-width: 250px;
+
+  margin: 0;
+
+  color: #7b8780;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+
+}
+
+
+.services-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(4,1fr);
+
+  gap: 13px;
+
+}
+
+
+.service-card {
+
+  min-height: 150px;
+
+  padding: 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  border: 1px solid #e4ebe7;
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  transition: .25s ease;
+
+}
+
+
+.service-card:hover {
+
+  border-color: #0F6045;
+
+  transform: translateY(-4px);
+
+  box-shadow: 0 15px 35px rgba(15,70,48,.08);
+
+}
+
+
+.service-icon {
+
+  width: 42px;
+
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #E8F5EF;
+
+  color: #0F6045;
+
+}
+
+
+.service-card h3 {
+
+  margin: 12px 0 4px;
+
+  font-size: 14px;
+
+}
+
+
+.service-card p {
+
+  margin: 0;
+
+  color: #7b8780;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+
+}
+
+
+.service-arrow {
+
+  align-self: flex-end;
+
+  color: #0F6045;
+
+  font-size: 11px;
+
+}
+
+
+/* =====================================================
+   FINAL CTA
+===================================================== */
+
+.final-cta {
+
+  padding: 55px 7%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  background: #F4F8F5;
+
+}
+
+
+.cta-plane {
+
+  width: 40px;
+
+  height: 40px;
+
+  margin-bottom: 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #E8F5EF;
+
+  color: #0F6045;
+
+}
+
+
+.final-cta h2 {
+
+  margin: 0;
+
+  font-size: 30px;
+
+  line-height: 1.05;
+
+}
+
+
+.final-cta h2 span {
+
+  color: #0F6045;
+
+}
+
+
+.final-cta p {
+
+  margin: 8px 0 0;
+
+  color: #7b8780;
+
+  font-size: 12px;
+
+}
+
+
+.cta-actions {
+
+  display: flex;
+
+  gap: 10px;
+
+}
+
+
+.cta-primary,
+.cta-whatsapp {
+
+  min-height: 46px;
+
+  padding: 0 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  border-radius: 9px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+}
+
+
+.cta-primary {
+
+  border: none;
+
+  background: #0F6045;
+
+  color: #ffffff;
+
+}
+
+
+.cta-whatsapp {
+
+  border: 1px solid #dbe5df;
+
+  background: #ffffff;
+
+  color: #0F6045;
+
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1000px) {
+
+  .location-grid {
+
+    grid-template-columns: repeat(2,1fr);
+
+  }
+
+
+  .calculator-wrapper {
+
+    grid-template-columns: 1fr;
+
+    gap: 30px;
+
+  }
+
+
+  .services-grid {
+
+    grid-template-columns: repeat(2,1fr);
+
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+  .hero-section {
+
+    min-height: 670px;
+
+    padding: 80px 20px 170px;
+
+    align-items: flex-start;
+
+  }
+
+
+  .hero-content h1 {
+
+    font-size: 42px;
+
+  }
+
+
+  .hero-actions {
+
+    flex-direction: column;
+
+    max-width: 280px;
+
+  }
+
+
+  .trip-search {
+
+    left: 20px;
+
+    right: 20px;
+
+    bottom: -200px;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    padding: 10px;
+
+  }
+
+
+  .search-divider {
+
+    width: 100%;
+
+    height: 1px;
+
+  }
+
+
+  .search-button {
+
+    justify-content: center;
+
+  }
+
+
+  .locations-section {
+
+    padding: 260px 20px 60px;
+
+  }
+
+
+  .section-heading {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+  }
+
+
+  .location-grid {
+
+    grid-template-columns: 1fr 1fr;
+
+  }
+
+
+  .location-card {
+
+    height: 240px;
+
+  }
+
+
+  .calculator-section {
+
+    padding: 65px 20px;
+
+  }
+
+
+  .calculator-fields {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .estimate-result {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+  }
+
+
+  .estimate-result button {
+
+    width: 100%;
+
+    justify-content: center;
+
+  }
+
+
+  .services-section {
+
+    padding: 65px 20px;
+
+  }
+
+
+  .services-heading {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+  }
+
+
+  .services-grid {
+
+    grid-template-columns: 1fr 1fr;
+
+  }
+
+
+  .final-cta {
+
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 50px 20px;
+
+  }
+
+
+  .cta-actions {
+
+    width: 100%;
+
+    flex-direction: column;
+
+  }
+
+
+  .cta-primary,
+  .cta-whatsapp {
+
+    justify-content: center;
+
+  }
+
+}
+
+
+@media (max-width: 450px) {
+
+  .location-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+
+  .location-card {
+
+    height: 280px;
+
+  }
+
+
+  .services-grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   FULLSCREEN IMAGE
+===================================================== */
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  background: rgba(0, 0, 0, 0.92);
+
+  animation: lightboxFadeIn 0.25s ease;
+}
+
+.image-lightbox img {
+  width: 85vw;
+  height: 85vh;
+
+  object-fit: cover;
+
+  border-radius: 10px;
+
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.6);
+
+  animation: imageZoomIn 0.3s ease;
+}
+
+.lightbox-close {
+  position: absolute;
+
+  top: 25px;
+  right: 30px;
+
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  color: #ffffff;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+
+  transform: rotate(90deg);
+}
+
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes lightboxFadeIn {
+
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+
+}
+
+@keyframes imageZoomIn {
+
+  from {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+  .image-lightbox {
+    padding: 15px;
+  }
+
+  .image-lightbox img {
+    max-width: 100vw;
+    max-height: 85vh;
+
+    border-radius: 5px;
+  }
+
+  .lightbox-close {
+    top: 15px;
+    right: 15px;
+
+    width: 40px;
+    height: 40px;
+  }
+
+}

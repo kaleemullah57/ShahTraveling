@@ -1,0 +1,37 @@
+<button
+  class="global-button"
+  [ngClass]="[
+    'button-' + variant,
+    'button-' + size,
+    fullWidth ? 'button-full-width' : ''
+  ]"
+  [type]="type"
+  [disabled]="disabled || loading"
+  [routerLink]="routerLink"
+  (click)="onClick($event)"
+>
+
+  <!-- Loading -->
+  <span
+    *ngIf="loading"
+    class="button-spinner">
+  </span>
+
+  <!-- Left Icon -->
+  <i
+    *ngIf="icon && iconPosition === 'left' && !loading"
+    [class]="icon">
+  </i>
+
+  <!-- Label -->
+  <span class="button-label">
+    {{ loading ? 'Please wait...' : label }}
+  </span>
+
+  <!-- Right Icon -->
+  <i
+    *ngIf="icon && iconPosition === 'right' && !loading"
+    [class]="icon">
+  </i>
+
+</button>

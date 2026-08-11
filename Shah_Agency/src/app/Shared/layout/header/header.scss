@@ -1,0 +1,762 @@
+/* =========================================================
+   TRAVEL HEADER
+========================================================= */
+
+.travel-header {
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 1000;
+
+  width: 100%;
+
+  background: #0F6045;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.12);
+
+}
+
+
+/* =========================================================
+   HEADER CONTAINER
+========================================================= */
+
+.header-container {
+
+  width: 100%;
+
+  max-width: 1400px;
+
+  min-height: 78px;
+
+  margin: 0 auto;
+
+  padding: 0 32px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.brand {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  flex-shrink: 0;
+
+  text-decoration: none;
+
+}
+
+
+/* =========================================================
+   BRAND ICON
+========================================================= */
+
+.brand-icon {
+
+  width: 44px;
+
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background:
+    rgba(255, 255, 255, 0.14);
+
+  color: #ffffff;
+
+  font-size: 19px;
+
+  transform: rotate(-8deg);
+
+  box-shadow:
+    0 7px 18px rgba(0, 0, 0, 0.15);
+
+}
+
+
+.brand-icon i {
+
+  transform: rotate(8deg);
+
+}
+
+
+/* =========================================================
+   BRAND TEXT
+========================================================= */
+
+.brand-text {
+
+  display: flex;
+
+  flex-direction: column;
+
+  line-height: 1;
+
+}
+
+
+.brand-name {
+
+  color: #ffffff;
+
+  font-size: 21px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.6px;
+
+}
+
+
+.brand-name span {
+
+  color: #ffffff;
+
+}
+
+
+.brand-text small {
+
+  margin-top: 6px;
+
+  color:
+    rgba(255, 255, 255, 0.70);
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 1.3px;
+
+  text-transform: uppercase;
+
+}
+
+
+/* =========================================================
+   DESKTOP NAVIGATION
+========================================================= */
+
+.desktop-navigation {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 3px;
+
+  margin-left: auto;
+
+}
+
+
+.desktop-navigation a {
+
+  position: relative;
+
+  padding: 10px 13px;
+
+  color:
+    rgba(255, 255, 255, 0.82);
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  transition:
+    color 0.2s ease;
+
+}
+
+
+.desktop-navigation a::after {
+
+  content: '';
+
+  position: absolute;
+
+  left: 13px;
+
+  right: 13px;
+
+  bottom: 3px;
+
+  height: 2px;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  transform: scaleX(0);
+
+  transform-origin: center;
+
+  transition:
+    transform 0.2s ease;
+
+}
+
+
+.desktop-navigation a:hover {
+
+  color: #ffffff;
+
+}
+
+
+.desktop-navigation a:hover::after,
+
+.desktop-navigation a.active::after {
+
+  transform: scaleX(1);
+
+}
+
+
+.desktop-navigation a.active {
+
+  color: #ffffff;
+
+}
+
+
+/* =========================================================
+   HEADER ACTIONS
+========================================================= */
+
+.header-actions {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  flex-shrink: 0;
+
+}
+
+
+/* =========================================================
+   SEARCH BUTTON
+========================================================= */
+
+.search-button {
+
+  width: 40px;
+
+  height: 40px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.25);
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.10);
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+}
+
+
+.search-button:hover {
+
+  color: #0F6045;
+
+  border-color: #ffffff;
+
+  background: #ffffff;
+
+  transform: translateY(-1px);
+
+}
+
+
+/* =========================================================
+   BOOK BUTTON
+========================================================= */
+
+.book-button {
+
+  min-height: 44px;
+
+  padding: 0 19px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #0F6045;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.12);
+
+  transition: all 0.2s ease;
+
+}
+
+
+.book-button:hover {
+
+  background: #E8F5EF;
+
+  color: #0F6045;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 23px rgba(0, 0, 0, 0.18);
+
+}
+
+
+/* =========================================================
+   MOBILE MENU BUTTON
+========================================================= */
+
+.mobile-menu-button {
+
+  display: none;
+
+  width: 42px;
+
+  height: 42px;
+
+  flex-shrink: 0;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.30);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.10);
+
+  color: #ffffff;
+
+  font-size: 18px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+}
+
+
+.mobile-menu-button:hover {
+
+  background: #ffffff;
+
+  color: #0F6045;
+
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+
+.mobile-navigation {
+
+  display: none;
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+
+  .header-container {
+
+    padding: 0 24px;
+
+    gap: 15px;
+
+  }
+
+
+  .desktop-navigation {
+
+    gap: 0;
+
+  }
+
+
+  .desktop-navigation a {
+
+    padding: 10px 9px;
+
+    font-size: 13px;
+
+  }
+
+
+  .book-button {
+
+    padding: 0 15px;
+
+  }
+
+}
+
+
+
+#destinations {
+  scroll-margin-top: 90px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 850px) {
+
+  /* -----------------------------------------
+     Header
+  ----------------------------------------- */
+
+  .header-container {
+
+    min-height: 70px;
+
+    padding: 0 20px;
+
+    gap: 15px;
+
+  }
+
+
+  /* -----------------------------------------
+     Brand
+  ----------------------------------------- */
+
+  .brand {
+
+    min-width: 0;
+
+  }
+
+
+  .brand-text {
+
+    min-width: 0;
+
+  }
+
+
+  .brand-name {
+
+    font-size: 20px;
+
+  }
+
+
+  /* -----------------------------------------
+     Hide Desktop
+  ----------------------------------------- */
+
+  .desktop-navigation,
+
+  .header-actions {
+
+    display: none;
+
+  }
+
+
+  /* -----------------------------------------
+     Show Mobile Button
+  ----------------------------------------- */
+
+  .mobile-menu-button {
+
+    display: flex;
+
+    margin-left: auto;
+
+  }
+
+
+  /* -----------------------------------------
+     Mobile Navigation
+  ----------------------------------------- */
+
+  .mobile-navigation {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    width: 100%;
+
+    max-height: 0;
+
+    overflow: hidden;
+
+    padding: 0 20px;
+
+    box-sizing: border-box;
+
+    background: #0F6045;
+
+    border-top:
+      1px solid transparent;
+
+    transition:
+      max-height 0.3s ease,
+      padding 0.3s ease,
+      border-color 0.3s ease;
+
+  }
+
+
+  /* -----------------------------------------
+     OPEN MENU
+  ----------------------------------------- */
+
+  .mobile-navigation.open {
+
+    max-height: 600px;
+
+    padding:
+      12px 20px 20px;
+
+    border-top-color:
+      rgba(255, 255, 255, 0.12);
+
+  }
+
+
+  /* -----------------------------------------
+     Mobile Links
+  ----------------------------------------- */
+
+  .mobile-navigation a {
+
+    width: 100%;
+
+    min-height: 46px;
+
+    padding: 0 14px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    border-radius: 9px;
+
+    color:
+      rgba(255, 255, 255, 0.85);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+
+  }
+
+
+  .mobile-navigation a:hover,
+
+  .mobile-navigation a.active {
+
+    background:
+      rgba(255, 255, 255, 0.12);
+
+    color: #ffffff;
+
+  }
+
+
+  /* -----------------------------------------
+     Mobile Icons
+  ----------------------------------------- */
+
+  .mobile-navigation a i {
+
+    width: 20px;
+
+    flex-shrink: 0;
+
+    text-align: center;
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+  }
+
+
+  /* -----------------------------------------
+     Mobile Book Button
+  ----------------------------------------- */
+
+  .mobile-navigation .mobile-book-button {
+
+    margin-top: 8px;
+
+    justify-content: center;
+
+    background: #ffffff;
+
+    color: #0F6045;
+
+    box-shadow:
+      0 6px 16px rgba(0, 0, 0, 0.15);
+
+  }
+
+
+  .mobile-navigation .mobile-book-button:hover {
+
+    background: #E8F5EF;
+
+    color: #0F6045;
+
+  }
+
+
+  .mobile-navigation .mobile-book-button i {
+
+    color: #0F6045;
+
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 450px) {
+
+  .header-container {
+
+    min-height: 66px;
+
+    padding: 0 15px;
+
+  }
+
+
+  .brand-icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    font-size: 17px;
+
+  }
+
+
+  .brand-name {
+
+    font-size: 18px;
+
+  }
+
+
+  .brand-text small {
+
+    font-size: 7px;
+
+    letter-spacing: 1px;
+
+  }
+
+
+  .mobile-menu-button {
+
+    width: 40px;
+
+    height: 40px;
+
+  }
+
+}
