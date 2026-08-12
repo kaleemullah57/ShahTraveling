@@ -20,7 +20,10 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-             "outputPath": "dist/Shah_Agency",
+            "outputPath": {
+              "base": "dist/Shah_Agency",
+              "browser": ""
+            },
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -32,15 +35,7 @@
             ],
             "styles": [
               "src/styles.scss"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "security": {
-              "allowedHosts": []
-            },
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {
