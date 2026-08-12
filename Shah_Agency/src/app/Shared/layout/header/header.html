@@ -1,0 +1,150 @@
+<header class="travel-header">
+
+  <div class="header-container">
+
+    <!-- LOGO -->
+    <a routerLink="/" class="brand" (click)="closeMobileMenu()">
+
+      <div class="brand-icon">
+        <i class="fa fa-plane"></i>
+      </div>
+
+      <div class="brand-text">
+        <span class="brand-name">
+          Shah<span>Traveling</span>
+        </span>
+
+        <small>
+          Explore. Experience. Enjoy.
+        </small>
+      </div>
+
+    </a>
+
+
+    <!-- DESKTOP NAVIGATION -->
+    <nav class="desktop-navigation">
+
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Home
+      </a>
+
+      <a routerLink="/destinations"  routerLinkActive="active">
+        Destinations
+      </a>
+
+      <a routerLink="/packages" routerLinkActive="active">
+        Packages
+      </a>
+
+      <a routerLink="/services"  routerLinkActive="active">
+        Services
+      </a>
+
+      <a  routerLink="/about"    routerLinkActive="active">
+        About
+      </a>
+
+      <a routerLink="/contact"  routerLink="/contact" routerLinkActive="active">
+        Contact
+      </a>
+
+    </nav>
+
+
+    <!-- DESKTOP ACTIONS -->
+    <div class="header-actions">
+
+      <button class="search-button" type="button" aria-label="Search">
+
+        <i class="fa fa-search"></i>
+
+      </button>
+
+      <a routerLink="/booking" class="book-button">
+
+        <i class="fa fa-paper-plane"></i>
+
+        <span>Book Now</span>
+
+      </a>
+
+    </div>
+
+
+    <!-- MOBILE TOGGLE -->
+    <button class="mobile-menu-button" type="button" aria-label="Toggle menu" (click)="toggleMobileMenu()">
+
+      <i class="fa" [ngClass]="mobileMenuOpen ? 'fa-times' : 'fa-bars'">
+      </i>
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================================
+       MOBILE NAVIGATION
+  ========================================== -->
+
+  <div class="mobile-navigation" [class.open]="mobileMenuOpen">
+
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileMenu()">
+
+      <i class="fa fa-home"></i>
+      <span>Home</span>
+
+    </a>
+
+
+    <a routerLink="/destinations"  routerLinkActive="active" (click)="closeMobileMenu()">
+
+      <i class="fa fa-globe"></i>
+      <span>Destinations</span>
+
+    </a>
+
+
+    <a routerLink="/packages" routerLinkActive="active" (click)="closeMobileMenu()">
+
+      <i class="fa fa-suitcase"></i>
+      <span>Packages</span>
+
+    </a>
+
+
+    <a routerLink="/services"   routerLinkActive="active" (click)="closeMobileMenu()">
+
+      <i class="fa fa-concierge-bell"></i>
+      <span>Services</span>
+
+    </a>
+
+
+    <a routerLink="/about"  routerLinkActive="active" (click)="closeMobileMenu()">
+
+      <i class="fa fa-info-circle"></i>
+      <span>About</span>
+
+    </a>
+
+
+    <a routerLink="/contact" routerLinkActive="active" (click)="closeMobileMenu()">
+
+      <i class="fa fa-phone"></i>
+      <span>Contact</span>
+
+    </a>
+
+
+    <a routerLink="/booking" class="mobile-book-button" (click)="closeMobileMenu()">
+
+      <i class="fa fa-paper-plane"></i>
+
+      <span>Book Your Trip</span>
+
+    </a>
+
+  </div>
+
+</header>
