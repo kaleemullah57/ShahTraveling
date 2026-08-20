@@ -1,0 +1,293 @@
+<aside
+  class="sidebar"
+  [class.collapsed]="collapsed"
+  [class.mobile-open]="mobileOpen"
+>
+
+  <!-- BRAND -->
+  <div class="sidebar-brand">
+
+    <a
+      routerLink="/SuperAdminDashboard"
+      class="brand-link"
+      (click)="closeOnNavigation()"
+    >
+
+      <div class="brand-icon">
+        <i class="fa fa-plane"></i>
+      </div>
+
+      <div class="brand-info">
+
+        <h2>
+          Shah<span>Traveling</span>
+        </h2>
+
+        <small>
+          Super Admin
+        </small>
+
+      </div>
+
+    </a>
+
+  </div>
+
+
+  <!-- NAVIGATION -->
+  <nav class="sidebar-navigation">
+
+    <div class="navigation-title">
+      MAIN
+    </div>
+
+
+    <!-- DASHBOARD -->
+    <a
+      routerLink="/SuperAdminDashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="navigation-item"
+      title="Dashboard"
+      (click)="closeOnNavigation()"
+    >
+
+      <i class="fa fa-dashboard"></i>
+
+      <span>
+        Dashboard
+      </span>
+
+    </a>
+
+
+    <div class="navigation-title">
+      MANAGEMENT
+    </div>
+
+
+    <!-- BOOKINGS -->
+    <a
+      routerLink="/SuperAdminDashboard/bookings"
+      routerLinkActive="active"
+      class="navigation-item"
+      title="Bookings"
+      (click)="closeOnNavigation()"
+    >
+
+      <i class="fa fa-calendar-check-o"></i>
+
+      <span>
+        Bookings
+      </span>
+
+      <span class="notification-badge">
+        12
+      </span>
+
+    </a>
+
+
+    <!-- CUSTOMERS -->
+    <a
+      routerLink="/SuperAdminDashboard/customers"
+      routerLinkActive="active"
+      class="navigation-item"
+      title="Customers"
+      (click)="closeOnNavigation()"
+    >
+
+      <i class="fa fa-users"></i>
+
+      <span>
+        Customers
+      </span>
+
+    </a>
+
+
+    <!-- DESTINATIONS -->
+    <a
+      routerLink="/SuperAdminDashboard/destinations"
+      routerLinkActive="active"
+      class="navigation-item"
+      title="Destinations"
+      (click)="closeOnNavigation()"
+    >
+
+      <i class="fa fa-globe"></i>
+
+      <span>
+        Destinations
+      </span>
+
+    </a>
+
+
+    <!-- PACKAGES -->
+    <a
+      routerLink="/SuperAdminDashboard/packages"
+      routerLinkActive="active"
+      class="navigation-item"
+      title="Travel Packages"
+      (click)="closeOnNavigation()"
+    >
+
+      <i class="fa fa-suitcase"></i>
+
+      <span>
+        Travel Packages
+      </span>
+
+    </a>
+
+
+    <!-- SERVICES -->
+    <a
+      routerLink="/SuperAdminDashboard/services"
+      routerLinkActive="active"
+      class="navigation-item"
+      title="Services"
+      (click)="closeOnNavigation()"
+    >
+
+      <i class="fa fa-cogs"></i>
+
+      <span>
+        Services
+      </span>
+
+    </a>
+
+
+    <!-- FINANCE -->
+    <div class="navigation-title">
+      FINANCE
+    </div>
+
+
+    <!-- PAYMENTS -->
+    <a
+      routerLink="/SuperAdminDashboard/payments"
+      routerLinkActive="active"
+      class="navigation-item"
+      title="Payments"
+      (click)="closeOnNavigation()"
+    >
+
+      <i class="fa fa-credit-card"></i>
+
+      <span>
+        Payments
+      </span>
+
+    </a>
+
+
+    <!-- REPORTS -->
+    <a
+      routerLink="/SuperAdminDashboard/reports"
+      routerLinkActive="active"
+      class="navigation-item"
+      title="Reports"
+      (click)="closeOnNavigation()"
+    >
+
+      <i class="fa fa-bar-chart"></i>
+
+      <span>
+        Reports
+      </span>
+
+    </a>
+
+
+    <!-- SYSTEM -->
+    <div class="navigation-title">
+      SYSTEM
+    </div>
+
+
+    <!-- USERS -->
+    <a
+      routerLink="/SuperAdminDashboard/users"
+      routerLinkActive="active"
+      class="navigation-item"
+      title="Users"
+      (click)="closeOnNavigation()"
+    >
+
+      <i class="fa fa-user-circle"></i>
+
+      <span>
+        Users
+      </span>
+
+    </a>
+
+
+    <!-- SETTINGS -->
+    <a
+      routerLink="/SuperAdminDashboard/settings"
+      routerLinkActive="active"
+      class="navigation-item"
+      title="Settings"
+      (click)="closeOnNavigation()"
+    >
+
+      <i class="fa fa-cog"></i>
+
+      <span>
+        Settings
+      </span>
+
+    </a>
+
+  </nav>
+
+
+  <!-- FOOTER -->
+  <div class="sidebar-footer">
+
+    <button
+      type="button"
+      class="sidebar-action"
+      title="Help & Support"
+    >
+
+      <i class="fa fa-question-circle"></i>
+
+      <span>
+        Help & Support
+      </span>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="sidebar-action logout"
+      title="Logout"
+      (click)="logout()"
+    >
+
+      <i class="fa fa-sign-out"></i>
+
+      <span>
+        Logout
+      </span>
+
+    </button>
+
+  </div>
+
+</aside>
+
+
+<!-- MOBILE OVERLAY -->
+
+<div
+  class="sidebar-overlay"
+  [class.active]="mobileOpen"
+  (click)="closeMobileSidebar()"
+></div>

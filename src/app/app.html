@@ -1,9 +1,17 @@
-<app-header></app-header>
+@if (!isSuperAdmin) {
+
+  <app-header></app-header>
+
+}
 
 <main>
   <router-outlet></router-outlet>
 </main>
 
-<app-footer></app-footer>
+@if (!isSuperAdmin) {
 
-<app-whatsapp></app-whatsapp>
+  <app-footer></app-footer>
+
+  <app-whatsapp></app-whatsapp>
+
+}

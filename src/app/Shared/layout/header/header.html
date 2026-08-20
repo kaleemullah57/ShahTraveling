@@ -29,7 +29,7 @@
         Home
       </a>
 
-      <a routerLink="/destinations"  routerLinkActive="active">
+      <a routerLink="/destinations" routerLinkActive="active">
         Destinations
       </a>
 
@@ -37,37 +37,57 @@
         Packages
       </a>
 
-      <a routerLink="/services"  routerLinkActive="active">
+      <a routerLink="/services" routerLinkActive="active">
         Services
       </a>
 
-      <a  routerLink="/about"    routerLinkActive="active">
+      <a routerLink="/about" routerLinkActive="active">
         About
       </a>
 
-      <a routerLink="/contact"  routerLink="/contact" routerLinkActive="active">
+      <a routerLink="/contact" routerLink="/contact" routerLinkActive="active">
         Contact
       </a>
 
+      <a routerLink="/login" routerLink="/login" routerLinkActive="active">
+        Login
+      </a>
+
+
+      @if (!isLoggedIn) {
+
+      <app-global-buttons label="Login" variant="primary" size="small" icon="fa fa-sign-in" routerLink="/login" />
+
+      }
+
+
+      <!-- LOGGED IN -->
+      @if (isLoggedIn) {
+
+      <app-button label="Dashboard" variant="primary" size="small" icon="fa fa-dashboard"
+        routerLink="/SuperAdminDashboard" />
+
+      <app-button label="Logout" variant="secondary" size="small" icon="fa fa-sign-out" (click)="logout()" />
+
+      }
     </nav>
 
 
     <!-- DESKTOP ACTIONS -->
     <div class="header-actions">
+      <div class="header-actions">
 
-      <button class="search-button" type="button" aria-label="Search">
+        <button class="search-button" type="button" aria-label="Search">
+          <i class="fa fa-search"></i>
+        </button>
 
-        <i class="fa fa-search"></i>
+        <a routerLink="/booking" class="book-button">
+          <i class="fa fa-paper-plane"></i>
+          <span>Book Now</span>
+        </a>
 
-      </button>
+      </div>
 
-      <a routerLink="/booking" class="book-button">
-
-        <i class="fa fa-paper-plane"></i>
-
-        <span>Book Now</span>
-
-      </a>
 
     </div>
 
@@ -97,7 +117,7 @@
     </a>
 
 
-    <a routerLink="/destinations"  routerLinkActive="active" (click)="closeMobileMenu()">
+    <a routerLink="/destinations" routerLinkActive="active" (click)="closeMobileMenu()">
 
       <i class="fa fa-globe"></i>
       <span>Destinations</span>
@@ -113,7 +133,7 @@
     </a>
 
 
-    <a routerLink="/services"   routerLinkActive="active" (click)="closeMobileMenu()">
+    <a routerLink="/services" routerLinkActive="active" (click)="closeMobileMenu()">
 
       <i class="fa fa-concierge-bell"></i>
       <span>Services</span>
@@ -121,7 +141,7 @@
     </a>
 
 
-    <a routerLink="/about"  routerLinkActive="active" (click)="closeMobileMenu()">
+    <a routerLink="/about" routerLinkActive="active" (click)="closeMobileMenu()">
 
       <i class="fa fa-info-circle"></i>
       <span>About</span>
@@ -135,6 +155,48 @@
       <span>Contact</span>
 
     </a>
+
+    <a routerLink="/login" routerLinkActive="active" (click)="closeMobileMenu()">
+
+      <i class="fa fa-login"></i>
+      <span>Login</span>
+
+    </a>
+
+     @if (!isLoggedIn) {
+
+      <app-global-buttons
+        label="Login"
+        variant="primary"
+        size="small"
+        icon="fa fa-sign-in"
+        routerLink="/login"
+        (click)="closeMobileMenu()"
+      />
+
+    }
+
+
+    @if (isLoggedIn) {
+
+      <app-button
+        label="Dashboard"
+        variant="primary"
+        size="small"
+        icon="fa fa-dashboard"
+        routerLink="/SuperAdminDashboard"
+        (click)="closeMobileMenu()"
+      />
+
+      <app-button
+        label="Logout"
+        variant="secondary"
+        size="small"
+        icon="fa fa-sign-out"
+        (click)="logout()"
+      />
+
+    }
 
 
     <a routerLink="/booking" class="mobile-book-button" (click)="closeMobileMenu()">

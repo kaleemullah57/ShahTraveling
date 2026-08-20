@@ -1,0 +1,917 @@
+/* =========================================================
+   SHAH TRAVELING
+   SUPER ADMIN SIDEBAR
+========================================================= */
+
+:host {
+  display: block;
+}
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+$white: #ffffff;
+$text-dark: #172b3a;
+$text-muted: #7a8a97;
+
+$teal: #0fa7a7;
+$teal-dark: #087f8c;
+
+$border: #e9eef2;
+$hover-bg: #f3f9f9;
+
+$danger: #e05252;
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+  position: relative;
+
+  width: 250px;
+  min-width: 250px;
+
+  height: 100vh;
+  height: 100dvh;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+
+  background: $white;
+
+  border-right: 1px solid $border;
+
+  overflow: hidden;
+
+  z-index: 1500;
+
+  transition:
+    width 0.25s ease,
+    min-width 0.25s ease,
+    transform 0.25s ease;
+}
+
+
+/* =========================================================
+   BRAND
+========================================================= */
+
+.sidebar-brand {
+  width: 100%;
+  min-height: 76px;
+
+  padding: 0 18px;
+
+  display: flex;
+  align-items: center;
+
+  box-sizing: border-box;
+
+  flex-shrink: 0;
+
+  border-bottom: 1px solid $border;
+}
+
+
+.brand-link {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   BRAND ICON
+========================================================= */
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+
+  min-width: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: linear-gradient(
+    135deg,
+    $teal,
+    $teal-dark
+  );
+
+  color: $white;
+
+  font-size: 17px;
+
+  box-shadow:
+    0 5px 15px rgba(15, 167, 167, 0.18);
+}
+
+
+/* =========================================================
+   BRAND INFORMATION
+========================================================= */
+
+.brand-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.brand-info h2 {
+  margin: 0;
+
+  color: $text-dark;
+
+  font-size: 17px;
+  line-height: 1.2;
+
+  font-weight: 700;
+
+  letter-spacing: -0.3px;
+
+  white-space: nowrap;
+}
+
+
+.brand-info h2 span {
+  color: $teal;
+}
+
+
+.brand-info small {
+  color: $text-muted;
+
+  font-size: 11px;
+  line-height: 1.2;
+
+  font-weight: 500;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.sidebar-navigation {
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  padding: 18px 12px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.sidebar-navigation::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar-navigation::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-navigation::-webkit-scrollbar-thumb {
+  background: #dce5e8;
+
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   NAVIGATION TITLE
+========================================================= */
+
+.navigation-title {
+  padding: 12px 10px 8px;
+
+  color: #98a5ad;
+
+  font-size: 11px;
+  line-height: 1.2;
+
+  font-weight: 700;
+
+  letter-spacing: 0.8px;
+}
+
+
+/* =========================================================
+   NAVIGATION ITEM
+========================================================= */
+
+.navigation-item {
+  position: relative;
+
+  width: 100%;
+  min-height: 44px;
+
+  margin-bottom: 4px;
+
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  box-sizing: border-box;
+
+  border-radius: 9px;
+
+  color: #61727d;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  line-height: 1.2;
+
+  font-weight: 500;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+/* =========================================================
+   NAVIGATION ICON
+========================================================= */
+
+.navigation-item i {
+  width: 20px;
+  min-width: 20px;
+
+  text-align: center;
+
+  color: #8998a1;
+
+  font-size: 15px;
+
+  transition:
+    color 0.2s ease;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.navigation-item:hover {
+  background: $hover-bg;
+
+  color: $teal;
+}
+
+
+.navigation-item:hover i {
+  color: $teal;
+}
+
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+.navigation-item.active {
+  background: rgba(15, 167, 167, 0.10);
+
+  color: $teal;
+
+  font-weight: 600;
+}
+
+
+.navigation-item.active i {
+  color: $teal;
+}
+
+
+/* =========================================================
+   ACTIVE LEFT INDICATOR
+========================================================= */
+
+.navigation-item.active::before {
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+
+  width: 3px;
+
+  border-radius: 0 4px 4px 0;
+
+  background: $teal;
+}
+
+
+/* =========================================================
+   NOTIFICATION BADGE
+========================================================= */
+
+.notification-badge {
+  margin-left: auto;
+
+  min-width: 22px;
+  height: 20px;
+
+  padding: 0 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  border-radius: 20px;
+
+  background: #f04f55;
+
+  color: white;
+
+  font-size: 10px;
+
+  line-height: 1;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   SIDEBAR FOOTER
+========================================================= */
+
+.sidebar-footer {
+  flex-shrink: 0;
+
+  padding: 12px;
+
+  border-top: 1px solid $border;
+}
+
+
+/* =========================================================
+   FOOTER BUTTON
+========================================================= */
+
+.sidebar-action {
+  width: 100%;
+  height: 42px;
+
+  margin-bottom: 4px;
+
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  box-sizing: border-box;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #61727d;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  line-height: 1.2;
+
+  font-weight: 500;
+
+  text-align: left;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.sidebar-action i {
+  width: 20px;
+  min-width: 20px;
+
+  text-align: center;
+
+  color: #8998a1;
+
+  font-size: 15px;
+}
+
+
+.sidebar-action:hover {
+  background: $hover-bg;
+
+  color: $teal;
+}
+
+
+.sidebar-action:hover i {
+  color: $teal;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.sidebar-action.logout {
+  color: $danger;
+}
+
+
+.sidebar-action.logout i {
+  color: $danger;
+}
+
+
+.sidebar-action.logout:hover {
+  background: #fff4f4;
+
+  color: #d63d3d;
+}
+
+
+/* =========================================================
+   COLLAPSED DESKTOP
+========================================================= */
+
+.sidebar.collapsed {
+  width: 76px;
+  min-width: 76px;
+}
+
+
+/* =========================================================
+   COLLAPSED BRAND
+========================================================= */
+
+.sidebar.collapsed .sidebar-brand {
+  padding: 0;
+
+  justify-content: center;
+}
+
+
+.sidebar.collapsed .brand-link {
+  width: auto;
+
+  justify-content: center;
+}
+
+
+.sidebar.collapsed .brand-info {
+  display: none;
+}
+
+
+/* =========================================================
+   COLLAPSED NAVIGATION
+========================================================= */
+
+.sidebar.collapsed .sidebar-navigation {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+.sidebar.collapsed .navigation-title {
+  display: none;
+}
+
+
+.sidebar.collapsed .navigation-item {
+  justify-content: center;
+
+  padding: 0;
+
+  gap: 0;
+}
+
+
+.sidebar.collapsed .navigation-item span {
+  display: none;
+}
+
+
+.sidebar.collapsed .navigation-item i {
+  width: auto;
+  min-width: auto;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   COLLAPSED BADGE
+========================================================= */
+
+.sidebar.collapsed .notification-badge {
+  position: absolute;
+
+  top: 4px;
+  right: 5px;
+
+  width: 16px;
+  min-width: 16px;
+  height: 16px;
+
+  padding: 0;
+
+  font-size: 8px;
+}
+
+
+/* =========================================================
+   COLLAPSED FOOTER
+========================================================= */
+
+.sidebar.collapsed .sidebar-footer {
+  padding: 10px;
+}
+
+
+.sidebar.collapsed .sidebar-action {
+  justify-content: center;
+
+  padding: 0;
+
+  gap: 0;
+}
+
+
+.sidebar.collapsed .sidebar-action span {
+  display: none;
+}
+
+
+.sidebar.collapsed .sidebar-action i {
+  width: auto;
+  min-width: auto;
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   MOBILE OVERLAY
+========================================================= */
+
+.sidebar-overlay {
+  display: none;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .sidebar {
+    width: 220px;
+    min-width: 220px;
+  }
+
+
+  .sidebar.collapsed {
+    width: 70px;
+    min-width: 70px;
+  }
+
+
+  .navigation-item {
+    font-size: 12px;
+  }
+
+
+  .brand-info h2 {
+    font-size: 16px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  /*
+    Sidebar becomes an overlay.
+    It no longer takes space from the main layout.
+  */
+
+  .sidebar {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: min(270px, 85vw);
+
+    min-width: 0;
+
+    height: 100vh;
+    height: 100dvh;
+
+    transform: translateX(-100%);
+
+    overflow: hidden;
+
+    z-index: 3000;
+
+    box-shadow:
+      10px 0 35px rgba(0, 0, 0, 0.15);
+
+    transition:
+      transform 0.25s ease;
+  }
+
+
+  /* OPEN */
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+
+  /* Never use desktop collapse on mobile */
+
+  .sidebar.collapsed {
+    width: min(270px, 85vw);
+
+    min-width: 0;
+  }
+
+
+  /* =====================================================
+     MOBILE BRAND
+  ===================================================== */
+
+  .sidebar-brand {
+
+    height: 70px;
+
+    min-height: 70px;
+
+    padding: 0 18px;
+  }
+
+
+  .brand-icon {
+
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
+
+    font-size: 16px;
+  }
+
+
+  .brand-info h2 {
+    font-size: 16px;
+  }
+
+
+  .brand-info small {
+    font-size: 10px;
+  }
+
+
+  /* =====================================================
+     MOBILE NAVIGATION
+  ===================================================== */
+
+  .sidebar-navigation {
+
+    padding: 16px 12px;
+  }
+
+
+  .navigation-title {
+
+    padding: 12px 10px 8px;
+
+    font-size: 10px;
+  }
+
+
+  .navigation-item {
+
+    min-height: 44px;
+
+    font-size: 13px;
+  }
+
+
+  .navigation-item i {
+    font-size: 15px;
+  }
+
+
+  /* =====================================================
+     RESTORE CONTENT ON MOBILE
+  ===================================================== */
+
+  .sidebar.collapsed .brand-info {
+    display: flex;
+  }
+
+
+  .sidebar.collapsed .navigation-title {
+    display: block;
+  }
+
+
+  .sidebar.collapsed .navigation-item {
+    justify-content: flex-start;
+
+    padding: 0 12px;
+
+    gap: 12px;
+  }
+
+
+  .sidebar.collapsed .navigation-item span {
+    display: inline;
+  }
+
+
+  .sidebar.collapsed .navigation-item i {
+
+    width: 20px;
+    min-width: 20px;
+
+    font-size: 15px;
+  }
+
+
+  .sidebar.collapsed .sidebar-action {
+
+    justify-content: flex-start;
+
+    padding: 0 12px;
+
+    gap: 12px;
+  }
+
+
+  .sidebar.collapsed .sidebar-action span {
+    display: inline;
+  }
+
+
+  .sidebar.collapsed .sidebar-action i {
+
+    width: 20px;
+    min-width: 20px;
+  }
+
+
+  /* =====================================================
+     OVERLAY
+  ===================================================== */
+
+  .sidebar-overlay {
+
+    display: block;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(15, 30, 40, 0.38);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 2500;
+
+    transition:
+      opacity 0.25s ease,
+      visibility 0.25s ease;
+  }
+
+
+  .sidebar-overlay.active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 450px) {
+
+  .sidebar {
+    width: min(260px, 88vw);
+  }
+
+
+  .sidebar.collapsed {
+    width: min(260px, 88vw);
+  }
+
+
+  .navigation-item {
+    min-height: 42px;
+
+    font-size: 12.5px;
+  }
+
+
+  .sidebar-footer {
+    padding: 10px;
+  }
+
+
+  .sidebar-action {
+    height: 40px;
+
+    font-size: 12.5px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 350px) {
+
+  .sidebar {
+    width: 245px;
+  }
+
+
+  .sidebar.collapsed {
+    width: 245px;
+  }
+
+
+  .navigation-item {
+    min-height: 40px;
+
+    font-size: 12px;
+  }
+
+}

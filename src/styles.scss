@@ -1,9 +1,407 @@
-*{
-    padding: 0px;
-    margin: 0px;
-    box-sizing: border-box;
+/* =========================================================
+   SHAH TRAVELING
+   GLOBAL DESIGN SYSTEM
+========================================================= */
+
+
+/* =========================================================
+   GLOBAL COLORS
+========================================================= */
+
+:root {
+
+  /* PRIMARY */
+  --color-primary: #0fa7a7;
+  --color-primary-dark: #087f8c;
+  --color-primary-light: #e8f7f7;
+
+  /* TEXT */
+  --color-text: #172b3a;
+  --color-text-secondary: #647681;
+  --color-text-muted: #8a99a3;
+
+  /* BACKGROUND */
+  --color-background: #f6f8fa;
+  --color-surface: #ffffff;
+
+  /* BORDER */
+  --color-border: #e5ecef;
+
+  /* STATUS */
+  --color-success: #22a35a;
+  --color-success-light: #eaf8ef;
+
+  --color-warning: #f59e0b;
+  --color-warning-light: #fff7e6;
+
+  --color-danger: #e05252;
+  --color-danger-light: #fff1f1;
+
+  --color-info: #4f7cac;
+  --color-info-light: #eef4fa;
+
+  /* SHADOW */
+  --shadow-sm:
+    0 2px 8px rgba(23, 43, 58, 0.05);
+
+  --shadow-md:
+    0 8px 25px rgba(23, 43, 58, 0.08);
+
+  --shadow-lg:
+    0 15px 45px rgba(23, 43, 58, 0.12);
+
+  /* RADIUS */
+  --radius-sm: 6px;
+  --radius-md: 9px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* TRANSITION */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.25s ease;
 }
 
-html {
-  scroll-behavior: smooth;
+
+/* =========================================================
+   GLOBAL RESET
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  min-height: 100%;
+
+  background: var(--color-background);
+
+  color: var(--color-text);
+
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
+}
+
+
+body {
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   HEADINGS
+========================================================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+
+  color: var(--color-text);
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+a {
+  color: var(--color-primary);
+
+  text-decoration: none;
+}
+
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+
+/* =========================================================
+   BUTTON BASE
+========================================================= */
+
+button {
+  font-family: inherit;
+}
+
+
+/* =========================================================
+   GLOBAL PRIMARY BUTTON
+========================================================= */
+
+.btn-primary {
+  border: none;
+
+  background: var(--color-primary);
+
+  color: white;
+
+  border-radius: var(--radius-md);
+
+  padding: 10px 18px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background var(--transition-normal),
+    transform var(--transition-fast),
+    box-shadow var(--transition-normal);
+}
+
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+
+  box-shadow:
+    0 5px 15px rgba(15, 167, 167, 0.20);
+
+  transform: translateY(-1px);
+}
+
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+
+/* =========================================================
+   SECONDARY BUTTON
+========================================================= */
+
+.btn-secondary {
+  border: 1px solid var(--color-border);
+
+  background: var(--color-surface);
+
+  color: var(--color-text-secondary);
+
+  border-radius: var(--radius-md);
+
+  padding: 10px 18px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.btn-secondary:hover {
+  border-color: var(--color-primary);
+
+  color: var(--color-primary);
+
+  background: var(--color-primary-light);
+}
+
+
+/* =========================================================
+   DANGER BUTTON
+========================================================= */
+
+.btn-danger {
+  border: none;
+
+  background: var(--color-danger);
+
+  color: white;
+
+  border-radius: var(--radius-md);
+
+  padding: 10px 18px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.btn-danger:hover {
+  background: #d63d3d;
+}
+
+
+/* =========================================================
+   GLOBAL INPUT
+========================================================= */
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+
+input,
+select,
+textarea {
+  border: 1px solid var(--color-border);
+
+  background: var(--color-surface);
+
+  color: var(--color-text);
+
+  border-radius: var(--radius-md);
+
+  outline: none;
+
+  transition:
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal);
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary);
+
+  box-shadow:
+    0 0 0 3px rgba(15, 167, 167, 0.08);
+}
+
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+
+/* =========================================================
+   GLOBAL CARD
+========================================================= */
+
+.card {
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+}
+
+
+/* =========================================================
+   GLOBAL TABLE
+========================================================= */
+
+table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  background: var(--color-surface);
+}
+
+
+th {
+  background: #f8fafb;
+
+  color: var(--color-text-secondary);
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  text-align: left;
+
+  border-bottom: 1px solid var(--color-border);
+}
+
+
+td {
+  color: var(--color-text-secondary);
+
+  font-size: 13px;
+
+  border-bottom: 1px solid var(--color-border);
+}
+
+
+tr:hover td {
+  background: var(--color-primary-light);
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-success {
+  color: var(--color-success);
+
+  background: var(--color-success-light);
+}
+
+
+.status-warning {
+  color: var(--color-warning);
+
+  background: var(--color-warning-light);
+}
+
+
+.status-danger {
+  color: var(--color-danger);
+
+  background: var(--color-danger-light);
+}
+
+
+.status-info {
+  color: var(--color-info);
+
+  background: var(--color-info-light);
+}
+
+
+/* =========================================================
+   GLOBAL SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: #cbd7dc;
+
+  border-radius: 10px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
 }

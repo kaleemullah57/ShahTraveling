@@ -1,0 +1,104 @@
+<div class="login-brand">
+  <div class="brand-icon">✈</div>
+
+  <h2>Welcome Back</h2>
+
+  <p>Sign in to continue your journey</p>
+</div>
+
+
+
+
+<div class="login-container">
+
+  <div class="login-card">
+
+    <h2>Login</h2>
+
+    <p>Sign in to your account</p>
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+    >
+
+      <!-- Email -->
+
+      <div class="form-group">
+
+        <label for="email">
+          Email
+        </label>
+
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+        />
+
+        @if (
+          loginForm.controls.email.touched &&
+          loginForm.controls.email.invalid
+        ) {
+          <small>
+            Please enter a valid email.
+          </small>
+        }
+
+      </div>
+
+
+      <!-- Password -->
+
+      <div class="form-group">
+
+        <label for="password">
+          Password
+        </label>
+
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password"
+        />
+
+        @if (
+          loginForm.controls.password.touched &&
+          loginForm.controls.password.invalid
+        ) {
+          <small>
+            Password is required.
+          </small>
+        }
+
+      </div>
+
+
+      <!-- Login -->
+
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid || loading"
+      >
+
+        @if (loading) {
+          Logging in...
+        } @else {
+          Login
+        }
+
+      </button>
+
+    </form>
+
+  </div>
+
+</div>

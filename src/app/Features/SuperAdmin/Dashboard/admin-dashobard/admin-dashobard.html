@@ -1,0 +1,741 @@
+<div class="admin-layout">
+
+  <!-- =====================================================
+       SIDEBAR
+  ====================================================== -->
+
+  <app-sidebar
+    [mobileOpen]="mobileSidebarOpen"
+    (mobileClose)="closeMobileSidebar()"
+  ></app-sidebar>
+
+
+  <!-- =====================================================
+       MAIN APPLICATION AREA
+  ====================================================== -->
+
+  <main class="dashboard-content">
+
+
+    <!-- ===================================================
+         TOPBAR
+    ==================================================== -->
+
+    <app-topbar
+      (menuToggle)="toggleMobileSidebar()"
+    ></app-topbar>
+
+
+
+    <!-- ===================================================
+         DASHBOARD BODY
+    ==================================================== -->
+
+    <div class="dashboard-body">
+
+
+      <!-- =================================================
+           WELCOME HERO
+      ================================================== -->
+
+      <section class="dashboard-welcome">
+
+        <div class="welcome-content">
+
+          <span class="welcome-label">
+            <i class="fa fa-star"></i>
+            SUPER ADMIN PANEL
+          </span>
+
+
+          <h1>
+            Welcome back,
+            <span>Kaleem</span>
+          </h1>
+
+
+          <p>
+            Manage your travel business, bookings, customers
+            and destinations from one elegant workspace.
+          </p>
+
+
+          <div class="welcome-actions">
+
+            <button
+              type="button"
+              class="primary-action"
+            >
+              <i class="fa fa-plus"></i>
+              Create New Package
+            </button>
+
+
+            <button
+              type="button"
+              class="secondary-action"
+            >
+              <i class="fa fa-bar-chart"></i>
+              View Reports
+            </button>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             DECORATIVE VISUAL
+        ================================================== -->
+
+        <div class="welcome-visual">
+
+          <div class="visual-glow"></div>
+
+
+          <div class="orbit orbit-one"></div>
+
+          <div class="orbit orbit-two"></div>
+
+
+          <div class="plane-circle">
+
+            <i class="fa fa-plane"></i>
+
+          </div>
+
+
+          <div class="floating-card card-one">
+
+            <i class="fa fa-globe"></i>
+
+            <div>
+
+              <strong>24</strong>
+
+              <span>
+                Destinations
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="floating-card card-two">
+
+            <i class="fa fa-suitcase"></i>
+
+            <div>
+
+              <strong>128</strong>
+
+              <span>
+                Packages
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           STATISTICS
+      ================================================== -->
+
+      <section class="stats-grid">
+
+
+        <!-- BOOKINGS -->
+
+        <article class="stat-card">
+
+          <div class="stat-top">
+
+            <div class="stat-icon booking">
+              <i class="fa fa-calendar-check-o"></i>
+            </div>
+
+            <span class="stat-growth positive">
+              <i class="fa fa-arrow-up"></i>
+              12.5%
+            </span>
+
+          </div>
+
+
+          <div class="stat-info">
+
+            <span>
+              Total Bookings
+            </span>
+
+            <strong>
+              1,284
+            </strong>
+
+            <small>
+              Compared with last month
+            </small>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- REVENUE -->
+
+        <article class="stat-card">
+
+          <div class="stat-top">
+
+            <div class="stat-icon revenue">
+              <i class="fa fa-money"></i>
+            </div>
+
+            <span class="stat-growth positive">
+              <i class="fa fa-arrow-up"></i>
+              8.4%
+            </span>
+
+          </div>
+
+
+          <div class="stat-info">
+
+            <span>
+              Total Revenue
+            </span>
+
+            <strong>
+              $84,620
+            </strong>
+
+            <small>
+              Revenue this month
+            </small>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- CUSTOMERS -->
+
+        <article class="stat-card">
+
+          <div class="stat-top">
+
+            <div class="stat-icon customers">
+              <i class="fa fa-users"></i>
+            </div>
+
+            <span class="stat-growth positive">
+              <i class="fa fa-arrow-up"></i>
+              6.8%
+            </span>
+
+          </div>
+
+
+          <div class="stat-info">
+
+            <span>
+              Total Customers
+            </span>
+
+            <strong>
+              3,642
+            </strong>
+
+            <small>
+              Registered customers
+            </small>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- PACKAGES -->
+
+        <article class="stat-card">
+
+          <div class="stat-top">
+
+            <div class="stat-icon packages">
+              <i class="fa fa-suitcase"></i>
+            </div>
+
+            <span class="stat-growth positive">
+              <i class="fa fa-arrow-up"></i>
+              4.2%
+            </span>
+
+          </div>
+
+
+          <div class="stat-info">
+
+            <span>
+              Active Packages
+            </span>
+
+            <strong>
+              128
+            </strong>
+
+            <small>
+              Currently available
+            </small>
+
+          </div>
+
+        </article>
+
+      </section>
+
+
+
+      <!-- =================================================
+           LOWER DASHBOARD
+      ================================================== -->
+
+      <section class="dashboard-columns">
+
+
+        <!-- ===============================================
+             REVENUE OVERVIEW
+        ================================================ -->
+
+        <article class="dashboard-panel revenue-panel">
+
+          <div class="panel-header">
+
+            <div>
+
+              <span class="panel-eyebrow">
+                PERFORMANCE
+              </span>
+
+              <h2>
+                Revenue Overview
+              </h2>
+
+              <p>
+                Your business performance for this year
+              </p>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="period-button"
+            >
+              This Year
+              <i class="fa fa-chevron-down"></i>
+            </button>
+
+          </div>
+
+
+
+          <div class="chart-area">
+
+            <div class="chart-values">
+
+              <span>$100k</span>
+              <span>$75k</span>
+              <span>$50k</span>
+              <span>$25k</span>
+              <span>$0</span>
+
+            </div>
+
+
+            <div class="chart">
+
+              <div class="chart-grid"></div>
+
+
+              <div class="chart-line">
+
+                <span class="point p1"></span>
+                <span class="point p2"></span>
+                <span class="point p3"></span>
+                <span class="point p4"></span>
+                <span class="point p5"></span>
+                <span class="point p6"></span>
+                <span class="point p7"></span>
+                <span class="point p8"></span>
+                <span class="point p9"></span>
+                <span class="point p10"></span>
+                <span class="point p11"></span>
+                <span class="point p12"></span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="chart-months">
+
+            <span>Jan</span>
+            <span>Feb</span>
+            <span>Mar</span>
+            <span>Apr</span>
+            <span>May</span>
+            <span>Jun</span>
+            <span>Jul</span>
+            <span>Aug</span>
+            <span>Sep</span>
+            <span>Oct</span>
+            <span>Nov</span>
+            <span>Dec</span>
+
+          </div>
+
+        </article>
+
+
+
+        <!-- ===============================================
+             RECENT BOOKINGS
+        ================================================ -->
+
+        <article class="dashboard-panel bookings-panel">
+
+          <div class="panel-header">
+
+            <div>
+
+              <span class="panel-eyebrow">
+                BOOKINGS
+              </span>
+
+              <h2>
+                Recent Bookings
+              </h2>
+
+              <p>
+                Latest customer reservations
+              </p>
+
+            </div>
+
+
+            <a
+              routerLink="/SuperAdminDashboard/bookings"
+              class="view-all"
+            >
+              View All
+              <i class="fa fa-arrow-right"></i>
+            </a>
+
+          </div>
+
+
+
+          <div class="booking-list">
+
+
+            <!-- BOOKING 1 -->
+
+            <div class="booking-row">
+
+              <div class="booking-avatar">
+                AK
+              </div>
+
+              <div class="booking-details">
+
+                <strong>
+                  Ahmed Khan
+                </strong>
+
+                <span>
+                  Dubai Luxury Escape
+                </span>
+
+              </div>
+
+              <div class="booking-price">
+
+                <strong>
+                  $2,450
+                </strong>
+
+                <span class="status confirmed">
+                  Confirmed
+                </span>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- BOOKING 2 -->
+
+            <div class="booking-row">
+
+              <div class="booking-avatar avatar-two">
+                SA
+              </div>
+
+              <div class="booking-details">
+
+                <strong>
+                  Sarah Ahmed
+                </strong>
+
+                <span>
+                  Maldives Paradise
+                </span>
+
+              </div>
+
+              <div class="booking-price">
+
+                <strong>
+                  $3,180
+                </strong>
+
+                <span class="status pending">
+                  Pending
+                </span>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- BOOKING 3 -->
+
+            <div class="booking-row">
+
+              <div class="booking-avatar avatar-three">
+                UM
+              </div>
+
+              <div class="booking-details">
+
+                <strong>
+                  Usman Malik
+                </strong>
+
+                <span>
+                  Istanbul Heritage Tour
+                </span>
+
+              </div>
+
+              <div class="booking-price">
+
+                <strong>
+                  $1,920
+                </strong>
+
+                <span class="status confirmed">
+                  Confirmed
+                </span>
+
+              </div>
+
+            </div>
+
+
+
+            <!-- BOOKING 4 -->
+
+            <div class="booking-row">
+
+              <div class="booking-avatar avatar-four">
+                HF
+              </div>
+
+              <div class="booking-details">
+
+                <strong>
+                  Hamza Farooq
+                </strong>
+
+                <span>
+                  Swiss Alps Experience
+                </span>
+
+              </div>
+
+              <div class="booking-price">
+
+                <strong>
+                  $4,280
+                </strong>
+
+                <span class="status completed">
+                  Completed
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      </section>
+
+
+
+      <!-- =================================================
+           QUICK ACCESS
+      ================================================== -->
+
+      <section class="quick-section">
+
+        <div class="quick-heading">
+
+          <span class="panel-eyebrow">
+            QUICK ACCESS
+          </span>
+
+          <h2>
+            Manage Your Business
+          </h2>
+
+        </div>
+
+
+
+        <div class="quick-grid">
+
+
+          <a
+            routerLink="/SuperAdminDashboard/bookings"
+            class="quick-card"
+          >
+
+            <div class="quick-icon booking">
+              <i class="fa fa-calendar"></i>
+            </div>
+
+            <div class="quick-content">
+
+              <strong>
+                Bookings
+              </strong>
+
+              <span>
+                Manage reservations
+              </span>
+
+            </div>
+
+            <i class="fa fa-arrow-right quick-arrow"></i>
+
+          </a>
+
+
+
+          <a
+            routerLink="/SuperAdminDashboard/customers"
+            class="quick-card"
+          >
+
+            <div class="quick-icon customer">
+              <i class="fa fa-users"></i>
+            </div>
+
+            <div class="quick-content">
+
+              <strong>
+                Customers
+              </strong>
+
+              <span>
+                Manage customers
+              </span>
+
+            </div>
+
+            <i class="fa fa-arrow-right quick-arrow"></i>
+
+          </a>
+
+
+
+          <a
+            routerLink="/SuperAdminDashboard/packages"
+            class="quick-card"
+          >
+
+            <div class="quick-icon package">
+              <i class="fa fa-suitcase"></i>
+            </div>
+
+            <div class="quick-content">
+
+              <strong>
+                Packages
+              </strong>
+
+              <span>
+                Manage travel packages
+              </span>
+
+            </div>
+
+            <i class="fa fa-arrow-right quick-arrow"></i>
+
+          </a>
+
+
+
+          <a
+            routerLink="/SuperAdminDashboard/destinations"
+            class="quick-card"
+          >
+
+            <div class="quick-icon destination">
+              <i class="fa fa-globe"></i>
+            </div>
+
+            <div class="quick-content">
+
+              <strong>
+                Destinations
+              </strong>
+
+              <span>
+                Manage destinations
+              </span>
+
+            </div>
+
+            <i class="fa fa-arrow-right quick-arrow"></i>
+
+          </a>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</div>

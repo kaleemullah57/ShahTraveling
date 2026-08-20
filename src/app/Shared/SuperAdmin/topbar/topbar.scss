@@ -1,0 +1,1259 @@
+/* =========================================================
+   SHAH TRAVELING
+   SUPER ADMIN TOPBAR
+========================================================= */
+
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+$white: #ffffff;
+$text-dark: #172b3a;
+$text-muted: #7a8a97;
+$teal: #0fa7a7;
+$teal-dark: #087f8c;
+$border: #e9eef2;
+$background: #ffffff;
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.admin-topbar {
+  position: sticky;
+  top: 0;
+
+  width: 100%;
+  max-width: 100%;
+
+  min-height: 78px;
+
+  padding: 0 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+
+  background: $background;
+
+  border-bottom: 1px solid $border;
+
+  box-sizing: border-box;
+
+  z-index: 900;
+
+  overflow: visible;
+}
+
+
+/* =========================================================
+   LEFT SIDE
+========================================================= */
+
+.topbar-left {
+  flex: 1 1 auto;
+
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   MENU BUTTON
+========================================================= */
+
+.menu-button {
+  flex: 0 0 auto;
+
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid $border;
+  border-radius: 10px;
+
+  background: $white;
+  color: $text-dark;
+
+  cursor: pointer;
+
+  font-size: 15px;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.menu-button:hover {
+  background: #f4fafa;
+  border-color: rgba(15, 167, 167, 0.25);
+  color: $teal;
+
+  transform: translateY(-1px);
+}
+
+.menu-button:active {
+  transform: scale(0.94);
+}
+
+
+/* =========================================================
+   PAGE HEADING
+========================================================= */
+
+.page-heading {
+  min-width: 0;
+
+  overflow: hidden;
+}
+
+.page-heading h1 {
+  margin: 0;
+
+  color: $text-dark;
+
+  font-size: 19px;
+  font-weight: 750;
+
+  letter-spacing: -0.3px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-heading span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: $text-muted;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.topbar-right {
+  flex: 0 1 auto;
+
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  overflow: visible;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.topbar-search {
+  flex: 0 1 250px;
+
+  width: 250px;
+  max-width: 250px;
+
+  min-width: 0;
+
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 0 11px;
+
+  box-sizing: border-box;
+
+  background: #f7f9fa;
+
+  border: 1px solid transparent;
+
+  border-radius: 9px;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.topbar-search:focus-within {
+  background: $white;
+
+  border-color: rgba(15, 167, 167, 0.3);
+
+  box-shadow:
+    0 0 0 3px rgba(15, 167, 167, 0.06);
+}
+
+.topbar-search > i {
+  flex: 0 0 auto;
+
+  color: #9aa8b2;
+
+  font-size: 12px;
+}
+
+.topbar-search input {
+  width: 100%;
+  min-width: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: $text-dark;
+
+  font-family: inherit;
+
+  font-size: 11px;
+}
+
+.topbar-search input::placeholder {
+  color: #9aa8b2;
+}
+
+.search-shortcut {
+  flex: 0 0 auto;
+
+  padding: 3px 6px;
+
+  border: 1px solid #e1e7eb;
+
+  border-radius: 5px;
+
+  background: white;
+
+  color: #9aa8b2;
+
+  font-size: 8px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   DROPDOWN CONTAINER
+========================================================= */
+
+.topbar-dropdown {
+  position: relative;
+
+  flex: 0 0 auto;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   ICON BUTTON
+========================================================= */
+
+.icon-button {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+
+  min-width: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 10px;
+
+  background: transparent;
+
+  color: #687985;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.icon-button:hover {
+  background: #f4fafa;
+  color: $teal;
+}
+
+.icon-button > i {
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   NOTIFICATION BADGE
+========================================================= */
+
+.notification-dot {
+  position: absolute;
+
+  top: 4px;
+  right: 3px;
+
+  min-width: 16px;
+  height: 16px;
+
+  padding: 0 4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  border-radius: 20px;
+
+  background: #f04f55;
+
+  border: 2px solid white;
+
+  color: white;
+
+  font-size: 7px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.topbar-divider {
+  flex: 0 0 auto;
+
+  width: 1px;
+  height: 30px;
+
+  margin: 0 3px;
+
+  background: $border;
+}
+
+
+/* =========================================================
+   PROFILE BUTTON
+========================================================= */
+
+.profile-button {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 4px 6px;
+
+  border: none;
+
+  background: transparent;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition:
+    background 0.2s ease;
+
+  max-width: 210px;
+}
+
+.profile-button:hover {
+  background: #f7f9fa;
+}
+
+
+/* =========================================================
+   PROFILE AVATAR
+========================================================= */
+
+.profile-avatar {
+  position: relative;
+
+  width: 40px;
+  height: 40px;
+
+  min-width: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      $teal,
+      $teal-dark
+    );
+
+  color: white;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.online-status {
+  position: absolute;
+
+  right: -1px;
+  bottom: -1px;
+
+  width: 10px;
+  height: 10px;
+
+  border: 2px solid white;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+}
+
+
+/* =========================================================
+   PROFILE INFO
+========================================================= */
+
+.profile-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.profile-info strong {
+  color: $text-dark;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-info small {
+  color: $text-muted;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+.profile-arrow {
+  flex: 0 0 auto;
+
+  margin-left: 4px;
+
+  color: #9aa8b2;
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   DROPDOWN
+========================================================= */
+
+.dropdown-panel {
+  position: absolute;
+
+  top: calc(100% + 12px);
+  right: 0;
+
+  background: white;
+
+  border: 1px solid $border;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 15px 45px rgba(20, 45, 60, 0.14);
+
+  overflow: hidden;
+
+  animation: dropdownOpen 0.18s ease;
+
+  z-index: 2000;
+}
+
+@keyframes dropdownOpen {
+
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================================
+   NOTIFICATION PANEL
+========================================================= */
+
+.notification-panel {
+  width: 360px;
+
+  max-width: calc(100vw - 30px);
+}
+
+.dropdown-header {
+  padding: 17px 18px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  border-bottom: 1px solid $border;
+}
+
+.dropdown-header h3 {
+  margin: 0;
+
+  color: $text-dark;
+
+  font-size: 13px;
+}
+
+.dropdown-header span {
+  display: block;
+
+  margin-top: 4px;
+
+  color: $text-muted;
+
+  font-size: 9px;
+}
+
+.dropdown-header button {
+  flex: 0 0 auto;
+
+  border: none;
+
+  background: transparent;
+
+  color: $teal;
+
+  cursor: pointer;
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   NOTIFICATION ITEM
+========================================================= */
+
+.notification-item {
+  display: flex;
+
+  gap: 12px;
+
+  padding: 14px 18px;
+
+  border-bottom: 1px solid #f1f4f6;
+
+  transition:
+    background 0.2s ease;
+}
+
+.notification-item:hover {
+  background: #fafcfc;
+}
+
+.notification-icon {
+  width: 34px;
+  height: 34px;
+
+  min-width: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+}
+
+.notification-icon.booking {
+  background: #e9f8f8;
+  color: $teal;
+}
+
+.notification-icon.payment {
+  background: #edf8ef;
+  color: #22a35a;
+}
+
+.notification-icon.user {
+  background: #f0edff;
+  color: #755bd6;
+}
+
+.notification-content {
+  min-width: 0;
+}
+
+.notification-content strong {
+  display: block;
+
+  color: $text-dark;
+
+  font-size: 10px;
+}
+
+.notification-content p {
+  margin: 3px 0;
+
+  color: $text-muted;
+
+  font-size: 9px;
+
+  line-height: 1.4;
+}
+
+.notification-content small {
+  color: #a0adb5;
+
+  font-size: 8px;
+}
+
+
+/* =========================================================
+   NOTIFICATION FOOTER
+========================================================= */
+
+.notification-footer {
+  padding: 13px;
+
+  text-align: center;
+}
+
+.notification-footer a {
+  color: $teal;
+
+  text-decoration: none;
+
+  font-size: 10px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   PROFILE PANEL
+========================================================= */
+
+.profile-panel {
+  width: 270px;
+
+  max-width: calc(100vw - 20px);
+
+  padding: 8px;
+
+  box-sizing: border-box;
+}
+
+.profile-dropdown-header {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 12px 10px;
+
+  min-width: 0;
+}
+
+.large-avatar {
+  width: 40px;
+  height: 40px;
+
+  min-width: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      $teal,
+      $teal-dark
+    );
+
+  color: white;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.profile-dropdown-header strong {
+  display: block;
+
+  color: $text-dark;
+
+  font-size: 11px;
+}
+
+.profile-dropdown-header span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: $text-muted;
+
+  font-size: 8px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   DROPDOWN DIVIDER
+========================================================= */
+
+.dropdown-divider {
+  height: 1px;
+
+  margin: 5px 0;
+
+  background: $border;
+}
+
+
+/* =========================================================
+   PROFILE LINKS
+========================================================= */
+
+.profile-panel a {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  height: 38px;
+
+  padding: 0 10px;
+
+  border-radius: 8px;
+
+  color: #647681;
+
+  text-decoration: none;
+
+  font-size: 10px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.profile-panel a i {
+  width: 18px;
+
+  color: #93a0a8;
+
+  text-align: center;
+}
+
+.profile-panel a:hover {
+  background: #f5f9f9;
+
+  color: $teal;
+}
+
+.profile-panel a:hover i {
+  color: $teal;
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-button {
+  width: 100%;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 10px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #e05252;
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  text-align: left;
+}
+
+.logout-button:hover {
+  background: #fff4f4;
+}
+
+
+/* =========================================================
+   1200px - LARGE LAPTOP
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .admin-topbar {
+    padding: 0 24px;
+  }
+
+  .topbar-search {
+    width: 210px;
+    max-width: 210px;
+  }
+
+}
+
+
+/* =========================================================
+   1050px - SMALL LAPTOP
+========================================================= */
+
+@media (max-width: 1050px) {
+
+  .admin-topbar {
+    padding: 0 20px;
+    gap: 10px;
+  }
+
+  .topbar-left {
+    gap: 12px;
+  }
+
+  .topbar-search {
+    width: 180px;
+    max-width: 180px;
+  }
+
+  .search-shortcut {
+    display: none;
+  }
+
+  .page-heading span {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   900px - TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .admin-topbar {
+    min-height: 70px;
+
+    padding: 0 16px;
+
+    gap: 8px;
+  }
+
+  .topbar-left {
+    gap: 10px;
+  }
+
+  .topbar-search {
+    display: none;
+  }
+
+  .profile-info {
+    display: none;
+  }
+
+  .profile-arrow {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   700px - MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .admin-topbar {
+
+    position: sticky;
+
+    top: 0;
+
+    width: 100%;
+    max-width: 100%;
+
+    min-height: 64px;
+    height: 64px;
+
+    padding: 0 12px;
+
+    gap: 6px;
+
+    overflow: visible;
+  }
+
+
+  /* LEFT */
+
+  .topbar-left {
+
+    flex: 1 1 auto;
+
+    min-width: 0;
+
+    gap: 8px;
+
+    overflow: hidden;
+  }
+
+
+  /* MENU */
+
+  .menu-button {
+
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
+
+    border-radius: 9px;
+
+    font-size: 15px;
+  }
+
+
+  /* TITLE */
+
+  .page-heading {
+
+    flex: 1 1 auto;
+
+    min-width: 0;
+
+    overflow: hidden;
+  }
+
+  .page-heading h1 {
+
+    font-size: 15px;
+
+    line-height: 1.2;
+  }
+
+  .page-heading span {
+    display: none;
+  }
+
+
+  /* RIGHT */
+
+  .topbar-right {
+
+    flex: 0 0 auto;
+
+    min-width: auto;
+
+    gap: 1px;
+  }
+
+
+  /* NOTIFICATION */
+
+  .icon-button {
+
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+  }
+
+
+  /* DIVIDER */
+
+  .topbar-divider {
+
+    height: 24px;
+
+    margin: 0 2px;
+  }
+
+
+  /* PROFILE */
+
+  .profile-button {
+
+    padding: 2px;
+
+    gap: 0;
+  }
+
+  .profile-info {
+    display: none;
+  }
+
+  .profile-arrow {
+    display: none;
+  }
+
+  .profile-avatar {
+
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    border-radius: 10px;
+  }
+
+
+  /* NOTIFICATION DROPDOWN */
+
+  .notification-panel {
+
+    position: fixed;
+
+    top: 64px;
+
+    left: 8px;
+    right: 8px;
+
+    width: auto;
+
+    max-width: none;
+
+    max-height: calc(100vh - 74px);
+
+    overflow-y: auto;
+  }
+
+
+  /* PROFILE DROPDOWN */
+
+  .profile-panel {
+
+    position: fixed;
+
+    top: 64px;
+
+    right: 8px;
+
+    width: 270px;
+
+    max-width: calc(100vw - 16px);
+  }
+
+}
+
+
+/* =========================================================
+   500px - SMALL MOBILE
+========================================================= */
+
+@media (max-width: 500px) {
+
+  .admin-topbar {
+
+    height: 60px;
+    min-height: 60px;
+
+    padding: 0 9px;
+  }
+
+  .topbar-left {
+    gap: 6px;
+  }
+
+  .menu-button {
+
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    border-radius: 8px;
+  }
+
+  .page-heading h1 {
+    font-size: 14px;
+  }
+
+  .icon-button {
+
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+  }
+
+  .profile-avatar {
+
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+
+    border-radius: 9px;
+  }
+
+  .notification-panel {
+
+    top: 60px;
+
+    left: 6px;
+    right: 6px;
+  }
+
+  .profile-panel {
+
+    top: 60px;
+
+    right: 6px;
+
+    max-width: calc(100vw - 12px);
+  }
+
+}
+
+
+/* =========================================================
+   380px - VERY SMALL PHONE
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .admin-topbar {
+
+    padding: 0 7px;
+  }
+
+  .page-heading h1 {
+    font-size: 13px;
+  }
+
+  .menu-button {
+
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+  }
+
+  .icon-button {
+
+    width: 34px;
+    height: 34px;
+
+    min-width: 34px;
+  }
+
+  .profile-avatar {
+
+    width: 34px;
+    height: 34px;
+
+    min-width: 34px;
+  }
+
+}
+
+
+/* =========================================================
+   320px - EXTREMELY SMALL PHONE
+========================================================= */
+
+@media (max-width: 320px) {
+
+  .page-heading {
+    display: none;
+  }
+
+  .topbar-left {
+    flex: 0 0 auto;
+  }
+
+  .topbar-right {
+    margin-left: auto;
+  }
+
+  .topbar-divider {
+    display: none;
+  }
+
+}

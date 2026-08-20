@@ -1,0 +1,358 @@
+<header class="admin-topbar">
+
+  <div class="topbar-left">
+
+    <!-- SIDEBAR TOGGLE -->
+
+    <button
+      type="button"
+      class="menu-button"
+      (click)="toggleMenu()"
+      aria-label="Toggle sidebar"
+    >
+
+      <i class="fa fa-bars"></i>
+
+    </button>
+
+
+    <!-- PAGE TITLE -->
+
+    <div class="page-heading">
+
+      <h1>
+        Dashboard
+      </h1>
+
+      <span>
+        Manage your travel business
+      </span>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =========================================
+       RIGHT SIDE
+  ========================================== -->
+
+  <div class="topbar-right">
+
+
+    <!-- SEARCH -->
+
+    <div class="topbar-search">
+
+      <i class="fa fa-search"></i>
+
+      <input
+        type="text"
+        placeholder="Search anything..."
+      />
+
+      <span class="search-shortcut">
+        Ctrl K
+      </span>
+
+    </div>
+
+
+
+    <!-- NOTIFICATIONS -->
+
+    <div class="topbar-dropdown">
+
+
+      <button
+        type="button"
+        class="icon-button"
+        (click)="toggleNotifications()"
+        aria-label="Notifications"
+      >
+
+        <i class="fa fa-bell"></i>
+
+        <span class="notification-dot">
+          4
+        </span>
+
+      </button>
+
+
+      @if (notificationOpen) {
+
+        <div class="dropdown-panel notification-panel">
+
+
+          <div class="dropdown-header">
+
+            <div>
+
+              <h3>
+                Notifications
+              </h3>
+
+              <span>
+                You have 4 new notifications
+              </span>
+
+            </div>
+
+            <button type="button">
+              Mark all read
+            </button>
+
+          </div>
+
+
+          <!-- Notification -->
+
+          <div class="notification-item">
+
+            <div class="notification-icon booking">
+
+              <i class="fa fa-ticket"></i>
+
+            </div>
+
+            <div class="notification-content">
+
+              <strong>
+                New booking received
+              </strong>
+
+              <p>
+                Ahmed Khan booked a Dubai package.
+              </p>
+
+              <small>
+                5 minutes ago
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <!-- Notification -->
+
+          <div class="notification-item">
+
+            <div class="notification-icon payment">
+
+              <i class="fa fa-credit-card"></i>
+
+            </div>
+
+            <div class="notification-content">
+
+              <strong>
+                Payment received
+              </strong>
+
+              <p>
+                Payment of $1,250 was received.
+              </p>
+
+              <small>
+                32 minutes ago
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <!-- Notification -->
+
+          <div class="notification-item">
+
+            <div class="notification-icon user">
+
+              <i class="fa fa-user"></i>
+
+            </div>
+
+            <div class="notification-content">
+
+              <strong>
+                New customer registered
+              </strong>
+
+              <p>
+                A new customer joined your agency.
+              </p>
+
+              <small>
+                1 hour ago
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div class="notification-footer">
+
+            <a routerLink="/notifications">
+              View all notifications
+            </a>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+
+
+    <!-- DIVIDER -->
+
+    <div class="topbar-divider"></div>
+
+
+
+    <!-- ADMIN PROFILE -->
+
+    <div class="topbar-dropdown">
+
+
+      <button
+        type="button"
+        class="profile-button"
+        (click)="toggleProfile()"
+      >
+
+        <div class="profile-avatar">
+
+          <span>
+            KA
+          </span>
+
+          <span class="online-status"></span>
+
+        </div>
+
+
+        <div class="profile-info">
+
+          <strong>
+            Super Admin
+          </strong>
+
+          <small>
+            Administrator
+          </small>
+
+        </div>
+
+
+        <i class="fa fa-chevron-down profile-arrow"></i>
+
+      </button>
+
+
+
+      <!-- PROFILE DROPDOWN -->
+
+      @if (profileOpen) {
+
+        <div class="dropdown-panel profile-panel">
+
+
+          <div class="profile-dropdown-header">
+
+            <div class="large-avatar">
+              KA
+            </div>
+
+            <div>
+
+              <strong>
+                Super Admin
+              </strong>
+
+              <span>
+                admin@shahtraveling.com
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="dropdown-divider"></div>
+
+
+          <a
+            routerLink="/profile"
+            (click)="profileOpen = false"
+          >
+
+            <i class="fa fa-user"></i>
+
+            <span>
+              My Profile
+            </span>
+
+          </a>
+
+
+          <a
+            routerLink="/settings"
+            (click)="profileOpen = false"
+          >
+
+            <i class="fa fa-cog"></i>
+
+            <span>
+              Account Settings
+            </span>
+
+          </a>
+
+
+          <a
+            routerLink="/notifications"
+            (click)="profileOpen = false"
+          >
+
+            <i class="fa fa-bell"></i>
+
+            <span>
+              Notifications
+            </span>
+
+          </a>
+
+
+          <div class="dropdown-divider"></div>
+
+
+          <button
+            type="button"
+            class="logout-button"
+            (click)="logout()"
+          >
+
+            <i class="fa fa-sign-out"></i>
+
+            <span>
+              Logout
+            </span>
+
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</header>

@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Button } from "../../components/button/button";
 
 @Component({
   selector: 'app-header',
   standalone:true,
-  imports: [CommonModule,RouterLink,RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, Button],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
 export class Header {
 
+ private router = inject(Router);
 
   mobileMenuOpen = false;
 
@@ -20,5 +22,21 @@ export class Header {
 
   closeMobileMenu(): void {
     this.mobileMenuOpen = false;
+  }
+
+  get isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
+  
+  logout(): void {
+
+    localStorage.removeItem('token');
+
+    // If you store user information
+    localStorage.removeItem('user');
+
+    this.closeMobileMenu();
+
+    this.router.navigate(['/']);
   }
 }
