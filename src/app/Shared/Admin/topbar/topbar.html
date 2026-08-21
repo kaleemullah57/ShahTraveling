@@ -1,0 +1,381 @@
+<header class="admin-topbar">
+
+  <!-- =====================================================
+       LEFT SECTION
+  ====================================================== -->
+
+  <div class="topbar-left">
+
+    <!-- SIDEBAR TOGGLE -->
+    <button
+      type="button"
+      class="sidebar-toggle"
+      (click)="toggleMenu()"
+      aria-label="Toggle Sidebar">
+
+      <span></span>
+      <span></span>
+      <span></span>
+
+    </button>
+
+
+    <!-- BRAND -->
+    <div class="topbar-brand">
+
+      <div class="brand-icon">
+        <i class="fa-solid fa-plane-departure"></i>
+      </div>
+
+      <div class="brand-text">
+
+        <h2>Shah Travel</h2>
+
+        <span>ADMINISTRATION</span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       CENTER SEARCH
+  ====================================================== -->
+
+  <div class="topbar-center">
+
+    <div class="search-box">
+
+      <i class="fa-solid fa-magnifying-glass"></i>
+
+      <input
+        type="text"
+        placeholder="Search users, bookings, destinations..." />
+
+      <span class="search-key">
+        Ctrl K
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       RIGHT SECTION
+  ====================================================== -->
+
+  <div class="topbar-right">
+
+    <!-- ===================================================
+         NOTIFICATION
+    ==================================================== -->
+
+    <div class="notification-wrapper">
+
+      <button
+        type="button"
+        class="icon-btn notification-btn"
+        (click)="toggleNotifications()"
+        aria-label="Notifications">
+
+        <i class="fa-regular fa-bell"></i>
+
+        <span class="notification-dot">
+          4
+        </span>
+
+      </button>
+
+
+      <!-- NOTIFICATION DROPDOWN -->
+
+      @if (notificationOpen) {
+
+        <div class="notification-dropdown">
+
+          <div class="notification-header">
+
+            <div>
+              <h3>Notifications</h3>
+
+              <span>
+                You have 4 new notifications
+              </span>
+            </div>
+
+            <button type="button">
+              Mark all read
+            </button>
+
+          </div>
+
+
+          <!-- NOTIFICATION 1 -->
+
+          <div class="notification-item">
+
+            <div class="notification-icon booking">
+              <i class="fa-solid fa-ticket"></i>
+            </div>
+
+            <div class="notification-content">
+
+              <strong>
+                New booking received
+              </strong>
+
+              <p>
+                Ahmed Khan booked a Dubai package.
+              </p>
+
+              <small>
+                5 minutes ago
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <!-- NOTIFICATION 2 -->
+
+          <div class="notification-item">
+
+            <div class="notification-icon payment">
+              <i class="fa-solid fa-credit-card"></i>
+            </div>
+
+            <div class="notification-content">
+
+              <strong>
+                Payment received
+              </strong>
+
+              <p>
+                Payment of $1,250 was received.
+              </p>
+
+              <small>
+                32 minutes ago
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <!-- NOTIFICATION 3 -->
+
+          <div class="notification-item">
+
+            <div class="notification-icon user">
+              <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div class="notification-content">
+
+              <strong>
+                New customer registered
+              </strong>
+
+              <p>
+                A new customer joined your agency.
+              </p>
+
+              <small>
+                1 hour ago
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <!-- FOOTER -->
+
+          <div class="notification-footer">
+
+            <a routerLink="/notifications">
+              View all notifications
+            </a>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- ===================================================
+         DIVIDER
+    ==================================================== -->
+
+    <span class="topbar-divider"></span>
+
+
+    <!-- ===================================================
+         PROFILE
+    ==================================================== -->
+
+    <div class="profile-wrapper">
+
+      <button
+        type="button"
+        class="admin-profile"
+        (click)="toggleProfile()"
+        aria-label="Open profile menu">
+
+        <!-- AVATAR -->
+
+        <div class="profile-avatar">
+
+          <span>AD</span>
+
+          <span class="online-indicator"></span>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="profile-details">
+
+          <strong>
+            Admin
+          </strong>
+
+          <span>
+            Administrator
+          </span>
+
+        </div>
+
+
+        <!-- ARROW -->
+
+        <i
+          class="fa-solid fa-chevron-down profile-arrow"
+          [class.rotate]="profileOpen">
+        </i>
+
+      </button>
+
+
+      <!-- =================================================
+           PROFILE DROPDOWN
+      ================================================== -->
+
+      @if (profileOpen) {
+
+        <div class="profile-dropdown">
+
+          <!-- HEADER -->
+
+          <div class="dropdown-header">
+
+            <div class="dropdown-avatar">
+              AD
+            </div>
+
+            <div class="dropdown-user-info">
+
+              <strong>
+                Admin
+              </strong>
+
+              <span>
+                Administrator
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="dropdown-line"></div>
+
+
+          <!-- PROFILE -->
+
+          <button type="button">
+
+            <i class="fa-solid fa-user"></i>
+
+            <span>
+              My Profile
+            </span>
+
+          </button>
+
+
+          <!-- SETTINGS -->
+
+          <button type="button">
+
+            <i class="fa-solid fa-gear"></i>
+
+            <span>
+              Account Settings
+            </span>
+
+          </button>
+
+
+          <!-- NOTIFICATIONS -->
+
+          <button type="button">
+
+            <i class="fa-solid fa-bell"></i>
+
+            <span>
+              Notifications
+            </span>
+
+          </button>
+
+
+          <!-- HELP -->
+
+          <button type="button">
+
+            <i class="fa-solid fa-circle-question"></i>
+
+            <span>
+              Help &amp; Support
+            </span>
+
+          </button>
+
+
+          <div class="dropdown-line"></div>
+
+
+          <!-- LOGOUT -->
+
+          <button
+            type="button"
+            class="logout-btn"
+            (click)="logout()">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <span>
+              Sign Out
+            </span>
+
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</header>

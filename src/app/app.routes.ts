@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+
 import { Routes } from '@angular/router';
 import { About } from './Features/about/about';
 import { authGuard } from './Core/Guards/auth-guard';
@@ -49,6 +49,20 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./Features/SuperAdmin/Dashboard/admin-dashobard/admin-dashobard')
         .then(m => m.AdminDashobard)
+  },
+
+
+
+
+
+
+// Admin routes
+  {
+    path: 'AdminDashboard',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./Features/Admin/admin-dashboard/admin-dashboard')
+        .then(m => m.AdminDashboard)
   }
 //   {
 //   path: 'SuperAdminDashboard',

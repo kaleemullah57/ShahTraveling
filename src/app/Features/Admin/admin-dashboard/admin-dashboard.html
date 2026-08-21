@@ -1,0 +1,575 @@
+<div class="admin-layout">
+
+  <!-- =====================================================
+       TOPBAR
+  ====================================================== -->
+
+  <app-topbar
+    (menuToggle)="toggleSidebar()">
+  </app-topbar>
+
+
+  <!-- =====================================================
+       SIDEBAR
+  ====================================================== -->
+
+  <app-sidebar
+    [isOpen]="sidebarOpen"
+    (closeMenu)="closeSidebar()">
+  </app-sidebar>
+
+
+  <!-- =====================================================
+       MOBILE OVERLAY
+  ====================================================== -->
+
+  <div
+    class="sidebar-overlay"
+    [class.show]="sidebarOpen"
+    (click)="closeSidebar()">
+  </div>
+
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+
+  <main
+    class="admin-main"
+    [class.sidebar-closed]="!sidebarOpen">
+
+    <div class="admin-dashboard">
+
+
+      <!-- =================================================
+           DASHBOARD HEADER
+      ================================================= -->
+
+      <section class="dashboard-header">
+
+        <div class="welcome-content">
+
+          <div class="welcome-label">
+            <span></span>
+            ADMINISTRATION
+          </div>
+
+          <h1>
+            Welcome back,
+            <strong>Admin</strong>
+            <span class="wave">👋</span>
+          </h1>
+
+          <p>
+            Manage your travel agency, destinations, users
+            and bookings from one powerful dashboard.
+          </p>
+
+        </div>
+
+
+        <div class="header-actions">
+
+          <button class="outline-btn">
+            <i class="fa-solid fa-download"></i>
+            Export Report
+          </button>
+
+          <button class="primary-btn">
+            <i class="fa-solid fa-plus"></i>
+            Add New
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           STATISTICS
+      ================================================== -->
+
+      <section class="stats-grid">
+
+        <div
+          class="stat-card"
+          *ngFor="let stat of stats">
+
+          <div class="stat-top">
+
+            <div class="stat-icon">
+              <i [class]="stat.icon"></i>
+            </div>
+
+            <span class="stat-change">
+              <i class="fa-solid fa-arrow-trend-up"></i>
+              {{ stat.change }}
+            </span>
+
+          </div>
+
+          <div class="stat-info">
+
+            <span class="stat-title">
+              {{ stat.title }}
+            </span>
+
+            <h2>
+              {{ stat.value }}
+            </h2>
+
+          </div>
+
+          <div class="stat-footer">
+            Compared to last month
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           MAIN DASHBOARD
+      ================================================== -->
+
+      <section class="dashboard-grid">
+
+
+        <!-- BOOKING OVERVIEW -->
+
+        <div class="dashboard-card overview-card">
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-label">
+                PERFORMANCE
+              </span>
+
+              <h3>
+                Booking Overview
+              </h3>
+
+            </div>
+
+
+            <button class="period-btn">
+
+              This Year
+
+              <i class="fa-solid fa-chevron-down"></i>
+
+            </button>
+
+          </div>
+
+
+          <div class="chart-container">
+
+            <div class="chart-y-axis">
+
+              <span>400</span>
+              <span>300</span>
+              <span>200</span>
+              <span>100</span>
+              <span>0</span>
+
+            </div>
+
+
+            <div class="chart-area">
+
+              <div class="chart-grid-line line-1"></div>
+              <div class="chart-grid-line line-2"></div>
+              <div class="chart-grid-line line-3"></div>
+              <div class="chart-grid-line line-4"></div>
+              <div class="chart-grid-line line-5"></div>
+
+
+              <svg
+                class="booking-chart"
+                viewBox="0 0 700 260"
+                preserveAspectRatio="none">
+
+                <defs>
+
+                  <linearGradient
+                    id="chartFill"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1">
+
+                    <stop
+                      offset="0%"
+                      stop-color="#14b8a6"
+                      stop-opacity=".25">
+                    </stop>
+
+                    <stop
+                      offset="100%"
+                      stop-color="#14b8a6"
+                      stop-opacity="0">
+                    </stop>
+
+                  </linearGradient>
+
+                </defs>
+
+
+                <path
+                  class="chart-fill"
+                  d="
+                    M0,205
+                    C45,190 65,180 100,188
+                    C135,196 155,150 200,160
+                    C240,170 250,125 300,140
+                    C340,155 355,105 400,120
+                    C445,135 460,90 500,102
+                    C540,114 560,65 600,80
+                    C635,94 660,50 700,58
+                    L700,260
+                    L0,260
+                    Z
+                  ">
+                </path>
+
+
+                <path
+                  class="chart-line"
+                  d="
+                    M0,205
+                    C45,190 65,180 100,188
+                    C135,196 155,150 200,160
+                    C240,170 250,125 300,140
+                    C340,155 355,105 400,120
+                    C445,135 460,90 500,102
+                    C540,114 560,65 600,80
+                    C635,94 660,50 700,58
+                  ">
+                </path>
+
+              </svg>
+
+
+              <div class="chart-months">
+
+                <span>Jan</span>
+                <span>Feb</span>
+                <span>Mar</span>
+                <span>Apr</span>
+                <span>May</span>
+                <span>Jun</span>
+                <span>Jul</span>
+                <span>Aug</span>
+                <span>Sep</span>
+                <span>Oct</span>
+                <span>Nov</span>
+                <span>Dec</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="dashboard-card quick-actions-card">
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-label">
+                SHORTCUTS
+              </span>
+
+              <h3>
+                Quick Actions
+              </h3>
+
+            </div>
+
+          </div>
+
+
+          <div class="quick-actions">
+
+
+            <button class="quick-action">
+
+              <span class="quick-icon teal">
+                <i class="fa-solid fa-plus"></i>
+              </span>
+
+              <span class="quick-text">
+
+                <strong>
+                  Add Destination
+                </strong>
+
+                <small>
+                  Create a new destination
+                </small>
+
+              </span>
+
+              <i class="fa-solid fa-chevron-right"></i>
+
+            </button>
+
+
+            <button class="quick-action">
+
+              <span class="quick-icon blue">
+                <i class="fa-solid fa-pen"></i>
+              </span>
+
+              <span class="quick-text">
+
+                <strong>
+                  Create Post
+                </strong>
+
+                <small>
+                  Publish travel content
+                </small>
+
+              </span>
+
+              <i class="fa-solid fa-chevron-right"></i>
+
+            </button>
+
+
+            <button class="quick-action">
+
+              <span class="quick-icon purple">
+                <i class="fa-solid fa-user-plus"></i>
+              </span>
+
+              <span class="quick-text">
+
+                <strong>
+                  Add User
+                </strong>
+
+                <small>
+                  Create admin or staff
+                </small>
+
+              </span>
+
+              <i class="fa-solid fa-chevron-right"></i>
+
+            </button>
+
+
+            <button class="quick-action">
+
+              <span class="quick-icon orange">
+                <i class="fa-solid fa-chart-line"></i>
+              </span>
+
+              <span class="quick-text">
+
+                <strong>
+                  View Reports
+                </strong>
+
+                <small>
+                  Analyze your business
+                </small>
+
+              </span>
+
+              <i class="fa-solid fa-chevron-right"></i>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           BOTTOM SECTION
+      ================================================== -->
+
+      <section class="bottom-grid">
+
+
+        <!-- RECENT ACTIVITY -->
+
+        <div class="dashboard-card activity-card">
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-label">
+                ACTIVITY
+              </span>
+
+              <h3>
+                Recent Activity
+              </h3>
+
+            </div>
+
+
+            <button class="view-all-btn">
+
+              View All
+
+              <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+          </div>
+
+
+          <div class="activity-list">
+
+            <div
+              class="activity-item"
+              *ngFor="let activity of recentActivities">
+
+              <div class="activity-icon">
+                <i [class]="activity.icon"></i>
+              </div>
+
+              <div class="activity-content">
+
+                <strong>
+                  {{ activity.title }}
+                </strong>
+
+                <span>
+                  {{ activity.description }}
+                </span>
+
+              </div>
+
+              <time>
+                {{ activity.time }}
+              </time>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- SYSTEM STATUS -->
+
+        <div class="dashboard-card status-card">
+
+          <div class="card-header">
+
+            <div>
+
+              <span class="card-label">
+                SYSTEM
+              </span>
+
+              <h3>
+                System Status
+              </h3>
+
+            </div>
+
+
+            <span class="status-online">
+
+              <span></span>
+
+              Operational
+
+            </span>
+
+          </div>
+
+
+          <div class="system-status">
+
+
+            <div class="system-row">
+
+              <div>
+                <i class="fa-solid fa-server"></i>
+                <span>Server</span>
+              </div>
+
+              <strong>99.9%</strong>
+
+            </div>
+
+
+            <div class="progress">
+              <span style="width: 99%"></span>
+            </div>
+
+
+            <div class="system-row">
+
+              <div>
+                <i class="fa-solid fa-database"></i>
+                <span>Database</span>
+              </div>
+
+              <strong>98.7%</strong>
+
+            </div>
+
+
+            <div class="progress">
+              <span style="width: 98%"></span>
+            </div>
+
+
+            <div class="system-row">
+
+              <div>
+                <i class="fa-solid fa-cloud"></i>
+                <span>API Services</span>
+              </div>
+
+              <strong>99.5%</strong>
+
+            </div>
+
+
+            <div class="progress">
+              <span style="width: 99.5%"></span>
+            </div>
+
+
+            <div class="last-updated">
+
+              <i class="fa-regular fa-clock"></i>
+
+              Last checked a few seconds ago
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+</div>

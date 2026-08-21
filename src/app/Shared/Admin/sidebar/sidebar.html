@@ -1,0 +1,293 @@
+<aside
+  class="admin-sidebar"
+  [class.collapsed]="!isOpen">
+
+
+  <!-- =========================================
+       SIDEBAR TOP
+  ========================================== -->
+
+  <div class="sidebar-top">
+
+    <div class="sidebar-section-title">
+      MAIN MENU
+    </div>
+
+
+    <!-- Mobile Close -->
+    <button
+      class="mobile-close"
+      type="button"
+      (click)="closeSidebar()"
+      aria-label="Close Sidebar">
+
+      <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================================
+       MENU
+  ========================================== -->
+
+  <nav class="sidebar-menu">
+
+
+    <!-- Dashboard -->
+
+    <a
+      routerLink="/admin/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="menu-item"
+      (click)="onMenuClick()">
+
+      <span class="menu-icon">
+        <i class="fa-solid fa-grid-2"></i>
+      </span>
+
+      <span class="menu-text">
+        Dashboard
+      </span>
+
+    </a>
+
+
+    <!-- Users -->
+
+    <a
+      routerLink="/admin/users"
+      routerLinkActive="active"
+      class="menu-item"
+      (click)="onMenuClick()">
+
+      <span class="menu-icon">
+        <i class="fa-solid fa-users"></i>
+      </span>
+
+      <span class="menu-text">
+        Users
+      </span>
+
+    </a>
+
+
+    <!-- =====================================
+         TRAVEL MANAGEMENT
+    ====================================== -->
+
+    <div class="menu-section">
+      TRAVEL MANAGEMENT
+    </div>
+
+
+    <!-- Destinations -->
+
+    <a
+      routerLink="/admin/destinations"
+      routerLinkActive="active"
+      class="menu-item"
+      (click)="onMenuClick()">
+
+      <span class="menu-icon">
+        <i class="fa-solid fa-location-dot"></i>
+      </span>
+
+      <span class="menu-text">
+        Destinations
+      </span>
+
+    </a>
+
+
+    <!-- Travel Posts -->
+
+    <a
+      routerLink="/admin/posts"
+      routerLinkActive="active"
+      class="menu-item"
+      (click)="onMenuClick()">
+
+      <span class="menu-icon">
+        <i class="fa-solid fa-newspaper"></i>
+      </span>
+
+      <span class="menu-text">
+        Travel Posts
+      </span>
+
+    </a>
+
+
+    <!-- Categories -->
+
+    <a
+      routerLink="/admin/categories"
+      routerLinkActive="active"
+      class="menu-item"
+      (click)="onMenuClick()">
+
+      <span class="menu-icon">
+        <i class="fa-solid fa-layer-group"></i>
+      </span>
+
+      <span class="menu-text">
+        Categories
+      </span>
+
+    </a>
+
+
+    <!-- Bookings -->
+
+    <a
+      routerLink="/admin/bookings"
+      routerLinkActive="active"
+      class="menu-item"
+      (click)="onMenuClick()">
+
+      <span class="menu-icon">
+        <i class="fa-solid fa-calendar-check"></i>
+      </span>
+
+      <span class="menu-text">
+
+        <span>
+          Bookings
+        </span>
+
+        <span class="menu-badge">
+          12
+        </span>
+
+      </span>
+
+    </a>
+
+
+    <!-- =====================================
+         CONTENT
+    ====================================== -->
+
+    <div class="menu-section">
+      CONTENT
+    </div>
+
+
+    <!-- Media -->
+
+    <a
+      routerLink="/admin/media"
+      routerLinkActive="active"
+      class="menu-item"
+      (click)="onMenuClick()">
+
+      <span class="menu-icon">
+        <i class="fa-solid fa-images"></i>
+      </span>
+
+      <span class="menu-text">
+        Media Library
+      </span>
+
+    </a>
+
+
+    <!-- Reviews -->
+
+    <a
+      routerLink="/admin/reviews"
+      routerLinkActive="active"
+      class="menu-item"
+      (click)="onMenuClick()">
+
+      <span class="menu-icon">
+        <i class="fa-solid fa-star"></i>
+      </span>
+
+      <span class="menu-text">
+        Reviews
+      </span>
+
+    </a>
+
+
+    <!-- =====================================
+         SYSTEM
+    ====================================== -->
+
+    <div class="menu-section">
+      SYSTEM
+    </div>
+
+
+    <!-- Settings -->
+
+    <a
+      routerLink="/admin/settings"
+      routerLinkActive="active"
+      class="menu-item"
+      (click)="onMenuClick()">
+
+      <span class="menu-icon">
+        <i class="fa-solid fa-gear"></i>
+      </span>
+
+      <span class="menu-text">
+        Settings
+      </span>
+
+    </a>
+
+  </nav>
+
+
+  <!-- =========================================
+       SIDEBAR BOTTOM
+  ========================================== -->
+
+  <div class="sidebar-bottom">
+
+
+    <!-- Support -->
+
+    <div class="support-card">
+
+      <div class="support-icon">
+        <i class="fa-solid fa-headset"></i>
+      </div>
+
+      <div class="support-content">
+
+        <strong>
+          Need Help?
+        </strong>
+
+        <span>
+          Contact support
+        </span>
+
+      </div>
+
+      <i class="fa-solid fa-chevron-right support-arrow"></i>
+
+    </div>
+
+
+    <!-- Desktop Collapse -->
+
+    <div class="collapse-container">
+
+      <span class="collapse-line"></span>
+
+      <span>
+        Sidebar
+      </span>
+
+    </div>
+
+  </div>
+
+</aside>
