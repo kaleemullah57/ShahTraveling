@@ -1,0 +1,52 @@
+<div class="notification-container">
+
+  @for (
+    notification of notificationService.notifications();
+    track notification.id
+  ) {
+
+    <div
+      class="notification"
+      [class.success]="notification.type === 'success'"
+      [class.error]="notification.type === 'error'"
+      [class.warning]="notification.type === 'warning'"
+      [class.info]="notification.type === 'info'"
+    >
+
+      <div class="notification-icon">
+
+        @if (notification.type === 'success') {
+          ✓
+        }
+
+        @if (notification.type === 'error') {
+          !
+        }
+
+        @if (notification.type === 'warning') {
+          ⚠
+        }
+
+        @if (notification.type === 'info') {
+          i
+        }
+
+      </div>
+
+      <div class="notification-message">
+        {{ notification.message }}
+      </div>
+
+      <button
+        type="button"
+        class="notification-close"
+        (click)="remove(notification.id)"
+      >
+        ×
+      </button>
+
+    </div>
+
+  }
+
+</div>

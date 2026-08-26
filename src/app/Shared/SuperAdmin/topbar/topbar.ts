@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
+import { AuthService } from '../../../Core/Services/auth.service/auth.service';
 @Component({
   selector: 'app-topbar',
   standalone: true,
@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
 })
 export class Topbar {
 
+   private readonly authService = inject(AuthService);
   @Output()
   menuToggle = new EventEmitter<void>();
 
@@ -52,5 +53,23 @@ export class Topbar {
 
     window.location.href = '/';
 
+  }
+
+
+
+
+
+  
+  userName = '';
+
+  ngOnInit(): void {
+
+    this.userName =
+      this.authService.getUserName();
+
+    console.log(
+      'Logged in user:',
+      this.authService.getCurrentUser()
+    );
   }
 }

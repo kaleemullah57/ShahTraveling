@@ -36,27 +36,36 @@ export const routes: Routes = [
         .then(m => m.Contact)
   },
 
- {
-  path: 'login',
-  loadComponent: () =>
-    import('./Features/Auth/login/login')
-      .then(m => m.Login)
-},
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./Features/Auth/login/login')
+        .then(m => m.Login)
+  },
 
   {
     path: 'SuperAdminDashboard',
     canActivate: [authGuard],
     loadComponent: () =>
       import('./Features/SuperAdmin/Dashboard/admin-dashobard/admin-dashobard')
-        .then(m => m.AdminDashobard)
-  },
+        .then(m => m.AdminDashobard),
+
+    children: [
+      {
+        path: 'branches',
+        loadComponent: () =>
+          import('./Features/SuperAdmin/Dashboard/Branches/branches/branches')
+            .then(m => m.Branches)
+      }
+    ]
+    },
 
 
 
 
 
 
-// Admin routes
+  // Admin routes
   {
     path: 'AdminDashboard',
     canActivate: [authGuard],
@@ -64,10 +73,10 @@ export const routes: Routes = [
       import('./Features/Admin/admin-dashboard/admin-dashboard')
         .then(m => m.AdminDashboard)
   }
-//   {
-//   path: 'SuperAdminDashboard',
-//   loadComponent: () =>
-//     import('./Features/SuperAdmin/Dashboard/admin-dashobard/admin-dashobard')
-//       .then(m => m.AdminDashobard)
-// }
+  //   {
+  //   path: 'SuperAdminDashboard',
+  //   loadComponent: () =>
+  //     import('./Features/SuperAdmin/Dashboard/admin-dashobard/admin-dashobard')
+  //       .then(m => m.AdminDashobard)
+  // }
 ];

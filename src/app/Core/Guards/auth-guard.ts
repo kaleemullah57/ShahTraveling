@@ -22,11 +22,7 @@ export const authGuard: CanActivateFn = () => {
 
   const token = authService.getToken();
 
-  console.log('AUTH GUARD TOKEN:', token);
-  console.log('IS LOGGED IN:', authService.isLoggedIn());
-
   if (authService.isLoggedIn()) {
-    console.log('AUTH GUARD: ALLOWED');
     return true;
   }
 

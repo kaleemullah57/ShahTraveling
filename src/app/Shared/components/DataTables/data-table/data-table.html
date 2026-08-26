@@ -1,0 +1,486 @@
+<div class="data-table-wrapper">
+
+  <!-- =====================================================
+       TOOLBAR
+  ====================================================== -->
+
+  <div class="table-toolbar">
+
+    <div class="table-title">
+
+      <h2>
+        Data
+      </h2>
+
+      <span>
+        {{ totalRecords }} records
+      </span>
+
+    </div>
+
+
+    @if (showSearch) {
+
+      <div class="table-search">
+
+        <i class="fa fa-search"></i>
+
+        <input
+          type="text"
+          [(ngModel)]="searchValue"
+          [placeholder]="searchPlaceholder"
+          (keyup.enter)="onSearch()"
+        />
+
+        @if (searchValue) {
+
+          <button
+            type="button"
+            class="clear-search"
+            (click)="clearSearch()"
+          >
+            <i class="fa fa-times"></i>
+          </button>
+
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- =====================================================
+       TABLE
+  ====================================================== -->
+
+  <div class="table-responsive">
+
+    <table class="global-table">
+
+      <!-- =================================================
+           HEADER
+      ================================================== -->
+
+      <thead>
+
+        <tr>
+
+          <th class="serial-column">
+            #
+          </th>
+
+
+          @for (
+            column of columns;
+            track column.key
+          ) {
+
+            <th>
+              {{ column.label }}
+            </th>
+
+          }
+
+
+          @if (showActions) {
+
+            <th class="actions-column">
+              Actions
+            </th>
+
+          }
+
+        </tr>
+
+      </thead>
+
+
+      <!-- =================================================
+           BODY
+      ================================================== -->
+
+      <tbody>
+
+        <!-- ===============================================
+             LOADING
+        ================================================ -->
+
+        @if (loading) {
+
+          <tr>
+
+            <td
+              [attr.colspan]="columns.length + 2"
+              class="loading-cell"
+            >
+
+              <div class="loader"></div>
+
+              <span>
+                Loading data...
+              </span>
+
+            </td>
+
+          </tr>
+
+        }
+
+
+        <!-- ===============================================
+             EMPTY
+        ================================================ -->
+
+        @else if (data.length === 0) {
+
+          <tr>
+
+            <td
+              [attr.colspan]="columns.length + 2"
+              class="empty-cell"
+            >
+
+              <div class="empty-icon">
+
+                <i class="fa fa-folder-open"></i>
+
+              </div>
+
+              <strong>
+                No data found
+              </strong>
+
+              <span>
+                There are no records to display.
+              </span>
+
+            </td>
+
+          </tr>
+
+        }
+
+
+        <!-- ===============================================
+             DATA
+        ================================================ -->
+
+        @else {
+
+          @for (
+            row of data;
+            track $index;
+            let i = $index
+          ) {
+
+            <tr>
+
+              <!-- =========================================
+                   SERIAL NUMBER
+              ========================================== -->
+
+              <td class="serial-column">
+
+                {{ getSerialNumber(i) }}
+
+              </td>
+
+
+              <!-- =========================================
+                   COLUMNS
+              ========================================== -->
+
+              @for (
+                column of columns;
+                track column.key
+              ) {
+
+                <td>
+
+                  <!-- STATUS -->
+
+                  @if (column.type === 'status') {
+
+                    <span
+                      class="status-badge"
+                      [class]="
+                        getStatusClass(
+                          getValue(
+                            row,
+                            column.key
+                          )
+                        )
+                      "
+                    >
+
+                      <span class="status-dot"></span>
+
+                      {{
+                        getStatusText(
+                          getValue(
+                            row,
+                            column.key
+                          )
+                        )
+                      }}
+
+                    </span>
+
+                  }
+
+
+                  <!-- NUMBER -->
+
+                  @else if (column.type === 'number') {
+
+                    <span class="number-value">
+
+                      {{
+                        getValue(
+                          row,
+                          column.key
+                        )
+                      }}
+
+                    </span>
+
+                  }
+
+
+                  <!-- DATE -->
+
+                  @else if (column.type === 'date') {
+
+                    <span>
+
+                      {{
+                        getValue(
+                          row,
+                          column.key
+                        ) | date:'dd MMM yyyy'
+                      }}
+
+                    </span>
+
+                  }
+
+
+                  <!-- DEFAULT TEXT -->
+
+                  @else {
+
+                    <span>
+
+                      {{
+                        getValue(
+                          row,
+                          column.key
+                        ) ?? '-'
+                      }}
+
+                    </span>
+
+                  }
+
+                </td>
+
+              }
+
+
+              <!-- =========================================
+                   ACTIONS
+              ========================================== -->
+
+              @if (showActions) {
+
+                <td class="actions-column">
+
+                  <div class="action-buttons">
+
+                    @for (
+                      action of actions;
+                      track action.type
+                    ) {
+
+                      <button
+                        type="button"
+                        class="action-button"
+
+                        [class.view]="
+                          action.type === 'view'
+                        "
+
+                        [class.edit]="
+                          action.type === 'edit'
+                        "
+
+                        [class.delete]="
+                          action.type === 'delete'
+                        "
+
+                        [title]="action.label"
+
+                        (click)="
+                          onAction(
+                            action,
+                            row
+                          )
+                        "
+                      >
+
+                        <i
+                          [class]="
+                            action.icon ||
+                            'fa fa-circle'
+                          "
+                        ></i>
+
+                      </button>
+
+                    }
+
+                  </div>
+
+                </td>
+
+              }
+
+            </tr>
+
+          }
+
+        }
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <div class="table-footer">
+
+    <!-- ===================================================
+         PAGE SIZE
+    ==================================================== -->
+
+    <div class="page-size">
+
+      <span>
+        Show
+      </span>
+
+      <select
+        [value]="pageSize"
+        (change)="changePageSize($event)"
+      >
+
+        <option [value]="10">
+          10
+        </option>
+
+        <option [value]="20">
+          20
+        </option>
+
+        <option [value]="50">
+          50
+        </option>
+
+        <option [value]="100">
+          100
+        </option>
+
+      </select>
+
+      <span>
+        entries
+      </span>
+
+    </div>
+
+
+    <!-- ===================================================
+         PAGINATION
+    ==================================================== -->
+
+    <div class="pagination">
+
+      <!-- PREVIOUS -->
+
+      <button
+        type="button"
+
+        [disabled]="
+          pageNumber === 1
+        "
+
+        (click)="
+          goToPage(
+            pageNumber - 1
+          )
+        "
+      >
+
+        <i class="fa fa-chevron-left"></i>
+
+      </button>
+
+
+      <!-- PAGE NUMBERS -->
+
+      @for (
+        page of pages;
+        track page
+      ) {
+
+        <button
+          type="button"
+
+          [class.active]="
+            page === pageNumber
+          "
+
+          (click)="
+            goToPage(page)
+          "
+        >
+
+          {{ page }}
+
+        </button>
+
+      }
+
+
+      <!-- NEXT -->
+
+      <button
+        type="button"
+
+        [disabled]="
+          pageNumber === totalPages
+        "
+
+        (click)="
+          goToPage(
+            pageNumber + 1
+          )
+        "
+      >
+
+        <i class="fa fa-chevron-right"></i>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

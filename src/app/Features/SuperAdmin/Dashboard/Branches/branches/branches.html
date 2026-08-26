@@ -1,0 +1,45 @@
+<!-- Add Branch Button -->
+@if (!showAddBranchForm) {
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="openAddBranchForm()"
+  >
+    + Add Branch
+  </button>
+}
+
+
+<!-- Branches Table -->
+@if (!showAddBranchForm) {
+  <app-data-table
+    [data]="branches"
+    [columns]="columns"
+    [actions]="actions"
+  >
+  </app-data-table>
+}
+
+
+<!-- Add Branch Form -->
+@if (showAddBranchForm) {
+
+  <app-global-form
+    [title]="'Add Branch'"
+    [model]="branchModel"
+    [fields]="formFields"
+    [buttons]="formButtons"
+    [loading]="saving"
+    (submitForm)="addBranch($event)"
+  >
+  </app-global-form>
+
+  <button
+    type="button"
+    class="btn btn-secondary"
+    (click)="cancelAddBranch()"
+  >
+    Cancel
+  </button>
+
+}

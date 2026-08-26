@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../../Environment/environment/environment';
+import { environment } from '../../../../environments/environment';
 
 import { LoginRequest } from '../../Models/login-request';
 import { LoginResponse } from '../../Models/login-response';
@@ -65,4 +65,37 @@ export class AuthService {
 
     return !!this.getToken();
   }
+
+
+
+
+
+
+  getUserName(): string {
+
+  const user = this.getCurrentUser();
+
+  return user?.userName ?? '';
+}
+
+getUserEmail(): string {
+
+  const user = this.getCurrentUser();
+
+  return user?.email ?? '';
+}
+
+getUserId(): number | null {
+
+  const user = this.getCurrentUser();
+
+  return user?.userID ?? null;
+}
+
+getUserType(): string {
+
+  const user = this.getCurrentUser();
+
+  return user?.userType ?? '';
+}
 }

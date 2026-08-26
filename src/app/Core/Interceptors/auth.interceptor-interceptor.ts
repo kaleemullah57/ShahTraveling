@@ -1,15 +1,18 @@
-import { CanActivateFn, Router } from '@angular/router';
-import { inject } from '@angular/core';
+import { HttpInterceptorFn } from '@angular/common/http';
 
-export const authGuard: CanActivateFn = () => {
-
-  const router = inject(Router);
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const token = localStorage.getItem('token');
 
-  if (token) {
-    return true;
+  if (!token) {
+    return next(req);
   }
 
-  return router.createUrlTree(['/login']);
+  const authReq = req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return next(authReq);
 };

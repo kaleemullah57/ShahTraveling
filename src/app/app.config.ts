@@ -12,7 +12,9 @@ import { routes } from './app.routes';
 
 import { provideClientHydration } from '@angular/platform-browser';
 
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { errorInterceptor } from './Core/Interceptors/error-interceptor';
+import { authInterceptor } from './Core/Interceptors/auth.interceptor-interceptor';
 
 export const appConfig: ApplicationConfig = {
 
@@ -28,7 +30,12 @@ export const appConfig: ApplicationConfig = {
       })
     ),
 
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([
+       authInterceptor,
+        errorInterceptor
+      ])
+    ),
 
     provideClientHydration()
 

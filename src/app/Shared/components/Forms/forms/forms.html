@@ -1,0 +1,332 @@
+<div class="global-form">
+
+
+  <!-- =====================================================
+       FORM HEADER
+  ====================================================== -->
+
+  @if (title) {
+
+    <div class="form-header">
+
+      <h2>
+        {{ title }}
+      </h2>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       FORM
+  ====================================================== -->
+
+  <form
+    (ngSubmit)="onSubmit()"
+    novalidate
+  >
+
+
+    <!-- ===================================================
+         FORM FIELDS
+    ==================================================== -->
+
+    <div class="form-grid">
+
+      @for (
+        field of fields;
+        track field.key
+      ) {
+
+
+        <div class="form-group">
+
+
+          <!-- =============================================
+               LABEL
+          ============================================== -->
+
+          <label
+            [for]="'field-' + field.key"
+          >
+
+            {{ field.label }}
+
+            @if (field.required) {
+
+              <span class="required">
+                *
+              </span>
+
+            }
+
+          </label>
+
+
+          <!-- =============================================
+               TEXT / NUMBER / EMAIL / PASSWORD / DATE
+          ============================================== -->
+
+          @if (
+            field.type === 'text' ||
+            field.type === 'number' ||
+            field.type === 'email' ||
+            field.type === 'password' ||
+            field.type === 'date'
+          ) {
+
+            <input
+
+              [id]="'field-' + field.key"
+
+              [type]="field.type"
+
+              [value]="getValue(field.key)"
+
+              [placeholder]="
+                field.placeholder || ''
+              "
+
+              [disabled]="
+                isFieldDisabled(field)
+              "
+
+              [required]="
+                field.required || false
+              "
+
+              (input)="
+                setValue(
+                  field.key,
+                  $any($event.target).value
+                )
+              "
+
+            />
+
+          }
+
+
+          <!-- =============================================
+               TEXTAREA
+          ============================================== -->
+
+          @else if (
+            field.type === 'textarea'
+          ) {
+
+            <textarea
+
+              [id]="'field-' + field.key"
+
+              [placeholder]="
+                field.placeholder || ''
+              "
+
+              [disabled]="
+                isFieldDisabled(field)
+              "
+
+              [required]="
+                field.required || false
+              "
+
+              (input)="
+                setValue(
+                  field.key,
+                  $any($event.target).value
+                )
+              "
+
+            >{{ getValue(field.key) }}</textarea>
+
+          }
+
+
+          <!-- =============================================
+               SELECT
+          ============================================== -->
+
+          @else if (
+            field.type === 'select'
+          ) {
+
+            <select
+
+              [id]="'field-' + field.key"
+
+              [value]="getValue(field.key)"
+
+              [disabled]="
+                isFieldDisabled(field)
+              "
+
+              [required]="
+                field.required || false
+              "
+
+              (change)="
+                setValue(
+                  field.key,
+                  $any($event.target).value
+                )
+              "
+
+            >
+
+              <option value="">
+
+                Select {{ field.label }}
+
+              </option>
+
+
+              @for (
+                option of field.options ?? [];
+                track option.value
+              ) {
+
+                <option
+                  [value]="option.value"
+                >
+
+                  {{ option.label }}
+
+                </option>
+
+              }
+
+            </select>
+
+          }
+
+
+          <!-- =============================================
+               CHECKBOX
+          ============================================== -->
+
+          @else if (
+            field.type === 'checkbox'
+          ) {
+
+            <label class="checkbox-wrapper">
+
+              <input
+
+                type="checkbox"
+
+                [checked]="
+                  !!getValue(field.key)
+                "
+
+                [disabled]="
+                  isFieldDisabled(field)
+                "
+
+                (change)="
+                  setValue(
+                    field.key,
+                    $any($event.target).checked
+                  )
+                "
+
+              />
+
+              <span>
+
+                {{
+                  field.placeholder ||
+                  field.label
+                }}
+
+              </span>
+
+            </label>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- ===================================================
+         FORM ACTIONS
+    ==================================================== -->
+
+    <div class="form-actions">
+
+
+      @for (
+        button of buttons;
+        track button.label
+      ) {
+
+        <button
+
+          [type]="
+            button.type || 'button'
+          "
+
+          [disabled]="
+            isButtonDisabled(button)
+          "
+
+          [class.primary]="
+            button.style === 'primary'
+          "
+
+          [class.secondary]="
+            button.style === 'secondary'
+          "
+
+          [class.danger]="
+            button.style === 'danger'
+          "
+
+          (click)="
+            onButtonClick(button)
+          "
+
+        >
+
+          <!-- ===========================================
+               BUTTON LOADING
+          ============================================ -->
+
+          @if (
+            button.loading ||
+            (
+              loading &&
+              button.type === 'submit'
+            )
+          ) {
+
+            <span class="button-loading">
+
+              <i class="fa fa-spinner fa-spin"></i>
+
+              Saving...
+
+            </span>
+
+          }
+
+          @else {
+
+            {{ button.label }}
+
+          }
+
+        </button>
+
+      }
+
+    </div>
+
+  </form>
+
+</div>
