@@ -1,0 +1,119 @@
+import { Component, ChangeDetectorRef,inject } from '@angular/core';
+import { GetCountriesRequest, GetCountry } from '../../Super Admin Models/CountriesModels/countries-model';
+import { CountriesService } from '../../Super Admin Services/countries services/countries-service';
+import { DataTable, TableAction, TableColumn } from '../../../../Shared/components/DataTables/data-table/data-table';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-countries',
+  imports: [DataTable, CommonModule],
+  templateUrl: './countries.html',
+  styleUrl: './countries.scss',
+})
+export class Countries {
+  private readonly countriesService = inject(CountriesService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  countries: GetCountry[] = [];
+
+  loading = false;
+
+  columns: TableColumn[] = [
+
+  {
+    key: 'countryName',
+    label: 'Country Name',
+    type: 'text'
+  },
+
+  {
+    key: 'countryCode',
+    label: 'Country Code',
+    type: 'text'
+  },
+
+  {
+    key: 'userName',
+    label: 'Created By',
+    type: 'text'
+  },
+
+  {
+    key: 'createdOn',
+    label: 'Created On',
+    type: 'date'
+  },
+
+  {
+    key: 'isActive',
+    label: 'Status',
+    type: 'status'
+  }
+
+];
+  actions: TableAction[] = [
+  {
+    type: 'view',
+    label: 'View',
+    icon: 'fa fa-eye'
+  },
+  {
+    type: 'edit',
+    label: 'Edit',
+    icon: 'fa fa-pencil'
+  },
+  {
+    type: 'delete',
+    label: 'Delete',
+    icon: 'fa fa-trash'
+  }
+];
+
+
+   ngOnInit(): void {
+    this.loadCountries();
+  }
+
+  loadCountries(): void {
+
+    this.loading = true;
+
+    const request: GetCountriesRequest = {
+      search: null,
+      pageNumber: 1,
+      pageSize: 20
+    };
+
+    this.countriesService
+      .getCountries(request)
+      .subscribe({
+
+        next: (response) => {
+          if (response.success) {
+
+            this.countries = response.data;
+
+          }
+
+          this.loading = false;
+
+          // Force Angular to update the view
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'Countries API Error:',
+            error
+          );
+
+          this.loading = false;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+  }
+}

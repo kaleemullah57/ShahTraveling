@@ -12,11 +12,21 @@ export class ApiService {
 
   private readonly baseUrl = environment.apiUrl;
 
-  get<T>(endpoint: string) {
-    return this.http.get<T>(
-      `${this.baseUrl}/${endpoint}`
-    );
-  }
+  // get<T>(endpoint: string) {
+  //   return this.http.get<T>(
+  //     `${this.baseUrl}/${endpoint}`
+  //   );
+  // }
+
+  get<T>(
+  endpoint: string,
+  params?: Record<string, string | number>
+) {
+  return this.http.get<T>(
+    `${this.baseUrl}/${endpoint}`,
+    { params }
+  );
+}
 
   post<T>(
     endpoint: string,

@@ -54,8 +54,14 @@ export const routes: Routes = [
       {
         path: 'branches',
         loadComponent: () =>
-          import('./Features/SuperAdmin/Dashboard/Branches/branches/branches')
+          import('./Features/SuperAdmin/branches/branches')
             .then(m => m.Branches)
+      },
+      {
+        path: 'Countries',
+        loadComponent: () =>
+          import('./Features/SuperAdmin/Countries/countries/countries')
+            .then(m => m.Countries)
       }
     ]
     },

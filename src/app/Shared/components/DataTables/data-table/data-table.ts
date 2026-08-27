@@ -3,7 +3,9 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output
+  Output,
+   OnChanges,
+   SimpleChanges
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -30,7 +32,7 @@ export interface TableAction {
   templateUrl: './data-table.html',
   styleUrl: './data-table.scss'
 })
-export class DataTable {
+export class DataTable implements OnChanges  {
 
   constructor() {
   }
@@ -83,6 +85,16 @@ actions: TableAction[] = [
   }
 ];
 
+ngOnChanges(changes: SimpleChanges): void {
+
+  // console.log('========== DATA TABLE ==========');
+  // console.log('loading:', this.loading);
+  // console.log('data:', this.data);
+  // console.log('data length:', this.data?.length);
+  // console.log('columns:', this.columns);
+  // console.log('actions:', this.actions);
+  // console.log('================================');
+}
 
   // =========================================================
   // OUTPUTS

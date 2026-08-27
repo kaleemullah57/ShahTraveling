@@ -10,14 +10,14 @@ import {
   DataTable,
   TableColumn,
   TableAction
-} from '../../../../../Shared/components/DataTables/data-table/data-table';
+} from '../../../Shared/components/DataTables/data-table/data-table';
 
-import { ApiService } from '../../../../../Core/Services/API Services/api-service';
+import { ApiService } from '../../../Core/Services/API Services/api-service';
 import { finalize } from 'rxjs';
-import { AddBranchModel } from '../../../Super Admin Models/BranchModels/branch-model';
+import { AddBranchModel } from '../Super Admin Models/BranchModels/branch-model';
 import { FormsModule } from '@angular/forms';
-import { FormButton, FormField, forms } from '../../../../../Shared/components/Forms/forms/forms';
-import { NotificationService } from '../../../../../Core/Services/Notification Services/notification-service';
+import { FormButton, FormField, forms } from '../../../Shared/components/Forms/forms/forms';
+import { NotificationService } from '../../../Core/Services/Notification Services/notification-service';
 
 @Component({
   selector: 'app-branches',

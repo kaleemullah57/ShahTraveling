@@ -103,257 +103,150 @@
 
       <tbody>
 
-        <!-- ===============================================
-             LOADING
-        ================================================ -->
+  @if (loading) {
 
-        @if (loading) {
+    <tr>
+      <td
+        [attr.colspan]="columns.length + 2"
+        class="loading-cell">
 
-          <tr>
+        <div class="loader"></div>
 
-            <td
-              [attr.colspan]="columns.length + 2"
-              class="loading-cell"
-            >
+        <span>Loading data...</span>
 
-              <div class="loader"></div>
+      </td>
+    </tr>
 
-              <span>
-                Loading data...
+  }
+
+  @else if (!data || data.length === 0) {
+
+    <tr>
+      <td
+        [attr.colspan]="columns.length + 2"
+        class="empty-cell">
+
+        <div class="empty-icon">
+          <i class="fa fa-folder-open"></i>
+        </div>
+
+        <strong>No data found</strong>
+
+        <span>
+          There are no records to display.
+        </span>
+
+      </td>
+    </tr>
+
+  }
+
+  @else {
+
+    @for (row of data; track $index) {
+
+      <tr>
+
+        <!-- Serial -->
+        <td class="serial-column">
+          {{ getSerialNumber($index) }}
+        </td>
+
+        <!-- Dynamic columns -->
+        @for (column of columns; track column.key) {
+
+          <td>
+
+            @if (column.type === 'status') {
+
+              <span
+                class="status-badge"
+                [class]="getStatusClass(
+                  getValue(row, column.key)
+                )">
+
+                <span class="status-dot"></span>
+
+                {{ getStatusText(
+                  getValue(row, column.key)
+                ) }}
+
               </span>
 
-            </td>
+            }
 
-          </tr>
+            @else if (column.type === 'date') {
+
+              <span>
+                {{
+                  getValue(row, column.key)
+                  | date:'dd MMM yyyy'
+                }}
+              </span>
+
+            }
+
+            @else {
+
+              <span>
+                {{
+                  getValue(row, column.key) ?? '-'
+                }}
+              </span>
+
+            }
+
+          </td>
 
         }
 
+        <!-- Actions -->
+        @if (showActions) {
 
-        <!-- ===============================================
-             EMPTY
-        ================================================ -->
+          <td class="actions-column">
 
-        @else if (data.length === 0) {
-
-          <tr>
-
-            <td
-              [attr.colspan]="columns.length + 2"
-              class="empty-cell"
-            >
-
-              <div class="empty-icon">
-
-                <i class="fa fa-folder-open"></i>
-
-              </div>
-
-              <strong>
-                No data found
-              </strong>
-
-              <span>
-                There are no records to display.
-              </span>
-
-            </td>
-
-          </tr>
-
-        }
-
-
-        <!-- ===============================================
-             DATA
-        ================================================ -->
-
-        @else {
-
-          @for (
-            row of data;
-            track $index;
-            let i = $index
-          ) {
-
-            <tr>
-
-              <!-- =========================================
-                   SERIAL NUMBER
-              ========================================== -->
-
-              <td class="serial-column">
-
-                {{ getSerialNumber(i) }}
-
-              </td>
-
-
-              <!-- =========================================
-                   COLUMNS
-              ========================================== -->
+            <div class="action-buttons">
 
               @for (
-                column of columns;
-                track column.key
+                action of actions;
+                track action.type
               ) {
 
-                <td>
+                <button
+                  type="button"
+                  class="action-button"
 
-                  <!-- STATUS -->
+                  [class.view]="action.type === 'view'"
+                  [class.edit]="action.type === 'edit'"
+                  [class.delete]="action.type === 'delete'"
 
-                  @if (column.type === 'status') {
+                  [title]="action.label"
 
-                    <span
-                      class="status-badge"
-                      [class]="
-                        getStatusClass(
-                          getValue(
-                            row,
-                            column.key
-                          )
-                        )
-                      "
-                    >
+                  (click)="onAction(action, row)">
 
-                      <span class="status-dot"></span>
+                  <i
+                    [class]="
+                      action.icon || 'fa fa-circle'
+                    ">
+                  </i>
 
-                      {{
-                        getStatusText(
-                          getValue(
-                            row,
-                            column.key
-                          )
-                        )
-                      }}
-
-                    </span>
-
-                  }
-
-
-                  <!-- NUMBER -->
-
-                  @else if (column.type === 'number') {
-
-                    <span class="number-value">
-
-                      {{
-                        getValue(
-                          row,
-                          column.key
-                        )
-                      }}
-
-                    </span>
-
-                  }
-
-
-                  <!-- DATE -->
-
-                  @else if (column.type === 'date') {
-
-                    <span>
-
-                      {{
-                        getValue(
-                          row,
-                          column.key
-                        ) | date:'dd MMM yyyy'
-                      }}
-
-                    </span>
-
-                  }
-
-
-                  <!-- DEFAULT TEXT -->
-
-                  @else {
-
-                    <span>
-
-                      {{
-                        getValue(
-                          row,
-                          column.key
-                        ) ?? '-'
-                      }}
-
-                    </span>
-
-                  }
-
-                </td>
+                </button>
 
               }
 
+            </div>
 
-              <!-- =========================================
-                   ACTIONS
-              ========================================== -->
-
-              @if (showActions) {
-
-                <td class="actions-column">
-
-                  <div class="action-buttons">
-
-                    @for (
-                      action of actions;
-                      track action.type
-                    ) {
-
-                      <button
-                        type="button"
-                        class="action-button"
-
-                        [class.view]="
-                          action.type === 'view'
-                        "
-
-                        [class.edit]="
-                          action.type === 'edit'
-                        "
-
-                        [class.delete]="
-                          action.type === 'delete'
-                        "
-
-                        [title]="action.label"
-
-                        (click)="
-                          onAction(
-                            action,
-                            row
-                          )
-                        "
-                      >
-
-                        <i
-                          [class]="
-                            action.icon ||
-                            'fa fa-circle'
-                          "
-                        ></i>
-
-                      </button>
-
-                    }
-
-                  </div>
-
-                </td>
-
-              }
-
-            </tr>
-
-          }
+          </td>
 
         }
 
-      </tbody>
+      </tr>
+
+    }
+
+  }
+
+</tbody>
 
     </table>
 
