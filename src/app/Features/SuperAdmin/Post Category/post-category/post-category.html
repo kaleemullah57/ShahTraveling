@@ -1,22 +1,22 @@
-<div class="branches-container">
+<div class="post-category-container">
 
-  @if (!showAddBranchForm) {
+  @if (!showAddForm) {
 
     <div class="page-header">
 
       <div>
 
-        <h2>Branches</h2>
+        <h2>Post Categories</h2>
 
-        <p>Manage branches</p>
+        <p>Manage post categories</p>
 
       </div>
 
       <button
         type="button"
-        (click)="openAddBranchForm()">
+        (click)="openAddPostCategory()">
 
-        + Add Branch
+        + Add Post Category
 
       </button>
 
@@ -25,11 +25,9 @@
 
     <app-data-table
 
-      [data]="branches"
-
       [columns]="columns"
 
-      [actions]="actions"
+      [data]="postCategories"
 
       [loading]="loading"
 
@@ -52,13 +50,13 @@
   }
 
 
-  @if (showAddBranchForm) {
+  @if (showAddForm) {
 
     <app-global-form
 
-      [title]="'Add Branch'"
+      [title]="'Add Post Category'"
 
-      [model]="branchModel"
+      [model]="postCategoryModel"
 
       [fields]="formFields"
 
@@ -66,9 +64,9 @@
 
       [loading]="saving"
 
-      (submitForm)="addBranch($event)"
+      (submitForm)="addPostCategory($event)"
 
-      (cancelForm)="cancelAddBranch()">
+      (cancelForm)="cancelAddPostCategory()">
 
     </app-global-form>
 

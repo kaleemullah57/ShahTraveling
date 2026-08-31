@@ -1,22 +1,22 @@
-<div class="branches-container">
+<div class="post-type-container">
 
-  @if (!showAddBranchForm) {
+  @if (!showAddForm) {
 
     <div class="page-header">
 
       <div>
 
-        <h2>Branches</h2>
+        <h2>Post Types</h2>
 
-        <p>Manage branches</p>
+        <p>Manage post types</p>
 
       </div>
 
       <button
         type="button"
-        (click)="openAddBranchForm()">
+        (click)="openAddPostType()">
 
-        + Add Branch
+        + Add Post Type
 
       </button>
 
@@ -25,11 +25,9 @@
 
     <app-data-table
 
-      [data]="branches"
-
       [columns]="columns"
 
-      [actions]="actions"
+      [data]="travelTypes"
 
       [loading]="loading"
 
@@ -52,13 +50,13 @@
   }
 
 
-  @if (showAddBranchForm) {
+  @if (showAddForm) {
 
     <app-global-form
 
-      [title]="'Add Branch'"
+      [title]="'Add Post Type'"
 
-      [model]="branchModel"
+      [model]="postTypeModel"
 
       [fields]="formFields"
 
@@ -66,9 +64,9 @@
 
       [loading]="saving"
 
-      (submitForm)="addBranch($event)"
+      (submitForm)="addPostType($event)"
 
-      (cancelForm)="cancelAddBranch()">
+      (cancelForm)="cancelAddPostType()">
 
     </app-global-form>
 

@@ -18,13 +18,13 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
     catchError((error: HttpErrorResponse) => {
 
-      console.error('HTTP Error:', {
-        url: req.url,
-        method: req.method,
-        status: error.status,
-        message: error.error?.message,
-        error
-      });
+      // console.error('HTTP Error:', {
+      //   url: req.url,
+      //   method: req.method,
+      //   status: error.status,
+      //   message: error.error?.message,
+      //   error
+      // });
 
       let message = 'Something went wrong.';
 

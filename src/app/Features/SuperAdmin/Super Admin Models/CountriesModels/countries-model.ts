@@ -23,3 +23,19 @@ export interface CountryResponse {
   message: string;
   data: GetCountry[];
 }
+
+
+
+
+// Add Countries 
+export interface AddCountryModel {
+  countryName: string;
+  countryCode: string;
+  isActive: boolean;
+}
+export interface ApiResponse<T = any> {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data?: T;
+}
