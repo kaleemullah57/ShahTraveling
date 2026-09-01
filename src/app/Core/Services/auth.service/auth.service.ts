@@ -8,6 +8,23 @@ import { LoginRequest } from '../../Models/login-request';
 import { LoginResponse } from '../../Models/login-response';
 import { User } from '../../Models/user';
 
+interface JwtPayload {
+  BranchId?: number | string;
+  branchId?: number | string;
+  BranchID?: number | string;
+  branchID?: number | string;
+
+  UserId?: number | string;
+  userId?: number | string;
+
+  RoleId?: number | string;
+  roleId?: number | string;
+
+  exp?: number;
+
+  [key: string]: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,6 +35,11 @@ export class AuthService {
   private readonly apiUrl =
     `${environment.apiUrl}/Auth`;
 
+
+  // ==========================================
+  // LOGIN
+  // ==========================================
+
   login(request: LoginRequest): Observable<LoginResponse> {
 
     return this.http.post<LoginResponse>(
@@ -25,6 +47,11 @@ export class AuthService {
       request
     );
   }
+
+
+  // ==========================================
+  // SAVE LOGIN
+  // ==========================================
 
   saveLogin(user: User): void {
 
@@ -39,10 +66,20 @@ export class AuthService {
     );
   }
 
+
+  // ==========================================
+  // GET TOKEN
+  // ==========================================
+
   getToken(): string | null {
 
     return localStorage.getItem('token');
   }
+
+
+  // ==========================================
+  // GET CURRENT USER
+  // ==========================================
 
   getCurrentUser(): User | null {
 
@@ -52,8 +89,22 @@ export class AuthService {
       return null;
     }
 
-    return JSON.parse(user) as User;
+    try {
+
+      return JSON.parse(user) as User;
+
+    } catch (error) {
+
+      console.error('Invalid user data in localStorage.', error);
+
+      return null;
+    }
   }
+
+
+  // ==========================================
+  // LOGOUT
+  // ==========================================
 
   logout(): void {
 
@@ -61,41 +112,120 @@ export class AuthService {
     localStorage.removeItem('user');
   }
 
+
+  // ==========================================
+  // CHECK LOGIN
+  // ==========================================
+
   isLoggedIn(): boolean {
 
     return !!this.getToken();
   }
 
 
-
-
-
+  // ==========================================
+  // GET USER NAME
+  // ==========================================
 
   getUserName(): string {
 
-  const user = this.getCurrentUser();
+    const user = this.getCurrentUser();
 
-  return user?.userName ?? '';
-}
+    return user?.userName ?? '';
+  }
 
-getUserEmail(): string {
 
-  const user = this.getCurrentUser();
+  // ==========================================
+  // GET USER EMAIL
+  // ==========================================
 
-  return user?.email ?? '';
-}
+  getUserEmail(): string {
 
-getUserId(): number | null {
+    const user = this.getCurrentUser();
 
-  const user = this.getCurrentUser();
+    return user?.email ?? '';
+  }
 
-  return user?.userID ?? null;
-}
 
-getUserType(): string {
+  // ==========================================
+  // GET USER ID
+  // ==========================================
 
-  const user = this.getCurrentUser();
+  getUserId(): number | null {
 
-  return user?.userType ?? '';
-}
+    const user = this.getCurrentUser();
+
+    return user?.userID ?? null;
+  }
+
+
+  // ==========================================
+  // GET USER TYPE
+  // ==========================================
+
+  getUserType(): string {
+
+    const user = this.getCurrentUser();
+
+    return user?.userType ?? '';
+  }
+
+
+  // ==========================================
+  // DECODE JWT
+  // ==========================================
+
+  private getDecodedToken(): any | null {
+
+    const token = this.getToken();
+
+    if (!token) {
+      return null;
+    }
+
+    try {
+
+      const payload = token.split('.')[1];
+
+      if (!payload) {
+        return null;
+      }
+
+      const base64 = payload
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+
+      const decodedPayload = atob(base64);
+
+      return JSON.parse(decodedPayload);
+
+    } catch (error) {
+
+      console.error('Unable to decode JWT token.', error);
+
+      return null;
+    }
+  }
+
+
+  // ==========================================
+  // GET BRANCH ID FROM JWT
+  // ==========================================
+
+  getBranchId(): number {
+
+    const token = this.getDecodedToken();
+
+    if (!token) {
+      return 0;
+    }
+
+    return Number(
+      token.BranchId ??
+      token.branchId ??
+      token.BranchID ??
+      token.branchID ??
+      0
+    );
+  }
 }

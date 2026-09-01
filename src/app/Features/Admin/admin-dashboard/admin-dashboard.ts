@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { Topbar } from '../../../Shared/Admin/topbar/topbar';
 import { Sidebar } from '../../../Shared/Admin/sidebar/sidebar';
+import { BranchAdminService } from '../Admin Services/Admin Services/branch-admin-service';
+import { AuthService } from '../../../Core/Services/auth.service/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -10,7 +12,6 @@ import { Sidebar } from '../../../Shared/Admin/sidebar/sidebar';
 
   imports: [
     CommonModule,
-
     Topbar,
     Sidebar
   ],
@@ -18,18 +19,80 @@ import { Sidebar } from '../../../Shared/Admin/sidebar/sidebar';
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss'
 })
-export class AdminDashboard {
-
-  // =========================================
-  // SIDEBAR STATE
-  // =========================================
+export class AdminDashboard implements OnInit {
+  branchId: number = 0;
+  branchName: string = '';
 
   sidebarOpen: boolean = true;
 
+  constructor(
+    private branchAdminService: BranchAdminService,
+    private AuthService: AuthService,
+     private cdr: ChangeDetectorRef
+  ) { }
 
-  // =========================================
-  // TOPBAR -> SIDEBAR
-  // =========================================
+
+  ngOnInit(): void {
+
+  this.branchId = this.AuthService.getBranchId();
+
+  if (this.branchId > 0) {
+
+    this.getBranchDetails();
+
+  } else {
+
+    console.error('BranchId not found in JWT.');
+
+  }
+
+  }
+
+
+  // ==========================================
+  // Get Logged-In Admin Branch
+  // ==========================================
+
+getBranchDetails(): void {
+
+  console.log('getBranchDetails() called');
+
+  this.branchAdminService
+    .getBranchByBranchId(this.branchId)
+    .subscribe({
+
+      next: (response: any) => {
+
+        console.log('Branch API Response:', response);
+
+        if (
+          response.statusCode === 200 &&
+          response.status === true &&
+          response.data
+        ) {
+
+          this.branchName = response.data.branchName;
+          // Force Angular to update the template
+          this.cdr.detectChanges();
+        }
+
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Branch API Error:',
+          error
+        );
+
+      }
+
+    });
+}
+
+  // ==========================================
+  // Sidebar
+  // ==========================================
 
   toggleSidebar(): void {
 
@@ -38,10 +101,6 @@ export class AdminDashboard {
   }
 
 
-  // =========================================
-  // SIDEBAR -> DASHBOARD
-  // =========================================
-
   closeSidebar(): void {
 
     this.sidebarOpen = false;
@@ -49,7 +108,10 @@ export class AdminDashboard {
   }
 
 
-  // Your existing stats
+  // ==========================================
+  // Statistics
+  // ==========================================
+
   stats = [
     {
       title: 'Total Bookings',
@@ -78,6 +140,10 @@ export class AdminDashboard {
   ];
 
 
+  // ==========================================
+  // Recent Activities
+  // ==========================================
+
   recentActivities = [
     {
       title: 'New booking received',
@@ -104,4 +170,5 @@ export class AdminDashboard {
       icon: 'fa-solid fa-pen'
     }
   ];
+
 }
