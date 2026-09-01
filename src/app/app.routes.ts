@@ -89,12 +89,15 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () =>
       import('./Features/Admin/admin-dashboard/admin-dashboard')
-        .then(m => m.AdminDashboard)
+        .then(m => m.AdminDashboard),
+
+    children: [
+      {
+        path: 'Destinations',
+        loadComponent: () =>
+          import('./Features/Admin/Destinations/destinations/destinations')
+            .then(m => m.DestinationsComponent)
+      }
+    ]
   }
-  //   {
-  //   path: 'SuperAdminDashboard',
-  //   loadComponent: () =>
-  //     import('./Features/SuperAdmin/Dashboard/admin-dashobard/admin-dashobard')
-  //       .then(m => m.AdminDashobard)
-  // }
 ];

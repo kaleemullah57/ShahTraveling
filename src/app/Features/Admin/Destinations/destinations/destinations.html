@@ -1,0 +1,209 @@
+<div class="destinations-container">
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div>
+      <span class="eyebrow">TRAVEL COLLECTION</span>
+      <h1>Destinations</h1>
+      <p>Discover and manage destinations available in your branch.</p>
+    </div>
+
+    <div class="destination-count">
+      <strong>{{ destinations.length }}</strong>
+      <span>Destinations</span>
+    </div>
+  </div>
+
+
+  <!-- LOADING -->
+  @if (loading) {
+    <div class="state-box">
+      <div class="loader"></div>
+      <h3>Loading destinations...</h3>
+      <p>Preparing your travel collection</p>
+    </div>
+  }
+
+
+  <!-- ERROR -->
+  @if (!loading && errorMessage) {
+    <div class="state-box error-state">
+      <div class="state-icon">!</div>
+
+      <h3>Unable to load destinations</h3>
+
+      <p>{{ errorMessage }}</p>
+
+      <button type="button" (click)="getDestinations()">
+        Try Again
+      </button>
+    </div>
+  }
+
+
+  <!-- DESTINATIONS -->
+  @if (!loading && destinations.length > 0) {
+
+    <div class="destinations-list">
+
+      @for (destination of destinations; track destination.destinationId) {
+
+        <article class="destination-card">
+
+          <!-- IMAGE GALLERY -->
+          <div class="destination-gallery">
+
+            @if (destination.picturePath?.length) {
+
+              @for (
+                picture of destination.picturePath;
+                track picture;
+                let imageIndex = $index
+              ) {
+
+                <div class="gallery-image">
+
+                  <img
+                    [src]="'https://localhost:7298' + picture"
+                    [alt]="destination.destinationName + ' image ' + (imageIndex + 1)"
+                  />
+
+                  <span class="image-number">
+                    {{ imageIndex + 1 }}
+                  </span>
+
+                </div>
+
+              }
+
+            } @else {
+
+              <div class="no-image">
+                <span>✈</span>
+                <p>No image available</p>
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- CARD CONTENT -->
+          <div class="destination-content">
+
+            <div class="destination-top">
+
+              <div>
+                <span class="destination-label">
+                  DESTINATION
+                </span>
+
+                <h2>
+                  {{ destination.destinationName }}
+                </h2>
+              </div>
+
+              <span
+                class="status"
+                [class.inactive]="!destination.isActive"
+              >
+                <span class="status-dot"></span>
+                {{ destination.isActive ? 'Active' : 'Inactive' }}
+              </span>
+
+            </div>
+
+
+            <p class="description">
+              {{ destination.description }}
+            </p>
+
+
+            <!-- LOCATION -->
+            <div class="location-details">
+
+              <div class="location-item">
+                <span class="icon">🌍</span>
+
+                <div>
+                  <small>Country</small>
+                  <strong>{{ destination.countryName }}</strong>
+                </div>
+              </div>
+
+
+              <div class="location-item">
+                <span class="icon">📍</span>
+
+                <div>
+                  <small>Province</small>
+                  <strong>{{ destination.provinceName }}</strong>
+                </div>
+              </div>
+
+
+              <div class="location-item">
+                <span class="icon">🏙</span>
+
+                <div>
+                  <small>City</small>
+                  <strong>{{ destination.cityName }}</strong>
+                </div>
+              </div>
+
+            </div>
+
+
+            <!-- FOOTER -->
+            <div class="destination-footer">
+
+              <div class="created-by">
+                <span class="avatar">
+                  {{ destination.createdBy.charAt(0) }}
+                </span>
+
+                <div>
+                  <small>Created by</small>
+                  <strong>{{ destination.createdBy }}</strong>
+                </div>
+              </div>
+
+
+              <div class="created-date">
+                <small>Created</small>
+                <strong>
+                  {{ destination.createdOn | date:'dd MMM yyyy' }}
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  }
+
+
+  <!-- EMPTY -->
+  @if (!loading && destinations.length === 0 && !errorMessage) {
+
+    <div class="state-box">
+
+      <div class="state-icon">✈</div>
+
+      <h3>No Destinations Found</h3>
+
+      <p>
+        There are currently no destinations available for this branch.
+      </p>
+
+    </div>
+
+  }
+
+</div>

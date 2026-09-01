@@ -1,17 +1,10 @@
-<div class="admin-layout">
-
-  <!-- =====================================================
-       TOPBAR
-  ====================================================== -->
-
-  <app-topbar
-    (menuToggle)="toggleSidebar()">
-  </app-topbar>
-
+<div
+  class="admin-layout"
+  [class.sidebar-collapsed]="!sidebarOpen">
 
   <!-- =====================================================
        SIDEBAR
-  ====================================================== -->
+       ===================================================== -->
 
   <app-sidebar
     [isOpen]="sidebarOpen"
@@ -20,254 +13,312 @@
 
 
   <!-- =====================================================
-       MOBILE OVERLAY
-  ====================================================== -->
+       MAIN APPLICATION AREA
+       ===================================================== -->
 
-  <div
-    class="sidebar-overlay"
-    [class.show]="sidebarOpen"
-    (click)="closeSidebar()">
-  </div>
+  <main class="dashboard-content">
 
+    <!-- ===================================================
+         TOPBAR
+         =================================================== -->
 
-  <!-- =====================================================
-       MAIN CONTENT
-  ====================================================== -->
-
-  <main
-    class="admin-main"
-    [class.sidebar-closed]="!sidebarOpen">
-
-    <div class="admin-dashboard">
+    <app-topbar
+      (menuToggle)="toggleSidebar()">
+    </app-topbar>
 
 
-      <!-- =================================================
-           DASHBOARD HEADER
-      ================================================= -->
+    <!-- ===================================================
+         DASHBOARD BODY
+         =================================================== -->
 
-      <section class="dashboard-header">
+    <div class="dashboard-body">
 
-        <div class="welcome-content">
+      @if (isDashboardHome) {
 
-          <div class="welcome-label">
-            <span></span>
-            ADMINISTRATION
-          </div>
+        <!-- =================================================
+             WELCOME HERO
+             ================================================= -->
 
-         <h1>
-  <span>Welcome to</span>
-  <span class="branch-name">{{ branchName }}</span>
-  <span class="wave">👋</span>
-</h1>
+        <section class="welcome-section">
 
-          <p>
-            Manage your travel agency, destinations, users
-            and bookings from one powerful dashboard.
-          </p>
+          <div class="welcome-content">
 
-        </div>
-
-
-        <div class="header-actions">
-
-          <button class="outline-btn">
-            <i class="fa-solid fa-download"></i>
-            Export Report
-          </button>
-
-          <button class="primary-btn">
-            <i class="fa-solid fa-plus"></i>
-            Add New
-          </button>
-
-        </div>
-
-      </section>
-
-
-      <!-- =================================================
-           STATISTICS
-      ================================================== -->
-
-      <section class="stats-grid">
-
-        <div
-          class="stat-card"
-          *ngFor="let stat of stats">
-
-          <div class="stat-top">
-
-            <div class="stat-icon">
-              <i [class]="stat.icon"></i>
+            <div class="welcome-label">
+              BRANCH ADMIN PANEL
             </div>
 
-            <span class="stat-change">
-              <i class="fa-solid fa-arrow-trend-up"></i>
-              {{ stat.change }}
-            </span>
+            <h1>
+              Welcome back,
+              <span>{{ userName }}</span>
+            </h1>
+
+            <p>
+              Manage your branch, bookings, customers,
+              destinations and travel services from one place.
+            </p>
+
+
+            <div class="welcome-actions">
+
+              <button
+                type="button"
+                class="primary-btn">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Create New Package
+
+              </button>
+
+
+              <button
+                type="button"
+                class="secondary-btn">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                View Reports
+
+              </button>
+
+            </div>
 
           </div>
 
-          <div class="stat-info">
 
-            <span class="stat-title">
-              {{ stat.title }}
-            </span>
+          <!-- =================================================
+               HERO VISUAL
+               ================================================= -->
 
-            <h2>
-              {{ stat.value }}
-            </h2>
+          <div class="welcome-visual">
+
+            <div class="orbit orbit-one"></div>
+
+            <div class="orbit orbit-two"></div>
+
+            <div class="orbit orbit-three"></div>
+
+
+            <div class="plane-icon">
+
+              <i class="fa-solid fa-plane"></i>
+
+            </div>
+
+
+            <div class="floating-card card-one">
+
+              <div class="floating-icon">
+                <i class="fa-solid fa-location-dot"></i>
+              </div>
+
+              <div>
+                <strong>126</strong>
+                <span>Destinations</span>
+              </div>
+
+            </div>
+
+
+            <div class="floating-card card-two">
+
+              <div class="floating-icon">
+                <i class="fa-solid fa-calendar-check"></i>
+              </div>
+
+              <div>
+                <strong>1,284</strong>
+                <span>Bookings</span>
+              </div>
+
+            </div>
+
+
+            <div class="floating-card card-three">
+
+              <div class="floating-icon">
+                <i class="fa-solid fa-users"></i>
+              </div>
+
+              <div>
+                <strong>8,492</strong>
+                <span>Customers</span>
+              </div>
+
+            </div>
 
           </div>
 
-          <div class="stat-footer">
-            Compared to last month
-          </div>
-
-        </div>
-
-      </section>
+        </section>
 
 
-      <!-- =================================================
-           MAIN DASHBOARD
-      ================================================== -->
+        <!-- =================================================
+             STATISTICS
+             ================================================= -->
 
-      <section class="dashboard-grid">
+        <section class="stats-grid">
+
+          <div
+            class="stat-card"
+            *ngFor="let stat of stats">
+
+            <div class="stat-card-top">
+
+              <div class="stat-icon">
+
+                <i [class]="stat.icon"></i>
+
+              </div>
+
+              <span class="stat-change">
+                {{ stat.change }}
+              </span>
+
+            </div>
 
 
-        <!-- BOOKING OVERVIEW -->
+            <div class="stat-info">
 
-        <div class="dashboard-card overview-card">
-
-          <div class="card-header">
-
-            <div>
-
-              <span class="card-label">
-                PERFORMANCE
+              <span class="stat-title">
+                {{ stat.title }}
               </span>
 
               <h3>
-                Booking Overview
+                {{ stat.value }}
               </h3>
 
             </div>
 
-
-            <button class="period-btn">
-
-              This Year
-
-              <i class="fa-solid fa-chevron-down"></i>
-
-            </button>
-
           </div>
 
+        </section>
 
-          <div class="chart-container">
 
-            <div class="chart-y-axis">
+        <!-- =================================================
+             REVENUE + CHART
+             ================================================= -->
 
-              <span>400</span>
-              <span>300</span>
-              <span>200</span>
-              <span>100</span>
-              <span>0</span>
+        <section class="dashboard-grid">
+
+          <div class="dashboard-card revenue-card">
+
+            <div class="card-header">
+
+              <div>
+
+                <span class="card-label">
+                  FINANCIAL OVERVIEW
+                </span>
+
+                <h2>
+                  Revenue Overview
+                </h2>
+
+              </div>
+
+
+              <button
+                type="button"
+                class="card-menu">
+
+                <i class="fa-solid fa-ellipsis"></i>
+
+              </button>
 
             </div>
 
 
-            <div class="chart-area">
+            <div class="revenue-summary">
 
-              <div class="chart-grid-line line-1"></div>
-              <div class="chart-grid-line line-2"></div>
-              <div class="chart-grid-line line-3"></div>
-              <div class="chart-grid-line line-4"></div>
-              <div class="chart-grid-line line-5"></div>
+              <div>
 
+                <span>
+                  Total Revenue
+                </span>
 
-              <svg
-                class="booking-chart"
-                viewBox="0 0 700 260"
-                preserveAspectRatio="none">
+                <strong>
+                  $84,290
+                </strong>
 
-                <defs>
-
-                  <linearGradient
-                    id="chartFill"
-                    x1="0"
-                    y1="0"
-                    x2="0"
-                    y2="1">
-
-                    <stop
-                      offset="0%"
-                      stop-color="#14b8a6"
-                      stop-opacity=".25">
-                    </stop>
-
-                    <stop
-                      offset="100%"
-                      stop-color="#14b8a6"
-                      stop-opacity="0">
-                    </stop>
-
-                  </linearGradient>
-
-                </defs>
+              </div>
 
 
-                <path
-                  class="chart-fill"
-                  d="
-                    M0,205
-                    C45,190 65,180 100,188
-                    C135,196 155,150 200,160
-                    C240,170 250,125 300,140
-                    C340,155 355,105 400,120
-                    C445,135 460,90 500,102
-                    C540,114 560,65 600,80
-                    C635,94 660,50 700,58
-                    L700,260
-                    L0,260
-                    Z
-                  ">
-                </path>
+              <div class="revenue-growth">
+
+                <i class="fa-solid fa-arrow-up"></i>
+
+                18.7%
+
+              </div>
+
+            </div>
 
 
-                <path
-                  class="chart-line"
-                  d="
-                    M0,205
-                    C45,190 65,180 100,188
-                    C135,196 155,150 200,160
-                    C240,170 250,125 300,140
-                    C340,155 355,105 400,120
-                    C445,135 460,90 500,102
-                    C540,114 560,65 600,80
-                    C635,94 660,50 700,58
-                  ">
-                </path>
+            <div class="chart-container">
 
-              </svg>
+              <div class="chart-y-axis">
+
+                <span>$100k</span>
+                <span>$75k</span>
+                <span>$50k</span>
+                <span>$25k</span>
+                <span>$0</span>
+
+              </div>
 
 
-              <div class="chart-months">
+              <div class="chart-area">
 
-                <span>Jan</span>
-                <span>Feb</span>
-                <span>Mar</span>
-                <span>Apr</span>
-                <span>May</span>
-                <span>Jun</span>
-                <span>Jul</span>
-                <span>Aug</span>
-                <span>Sep</span>
-                <span>Oct</span>
-                <span>Nov</span>
-                <span>Dec</span>
+                <div class="chart-grid-line"></div>
+                <div class="chart-grid-line"></div>
+                <div class="chart-grid-line"></div>
+                <div class="chart-grid-line"></div>
+                <div class="chart-grid-line"></div>
+
+
+                <div class="chart-bars">
+
+                  <div class="chart-bar">
+                    <span style="height: 45%"></span>
+                    <label>Jan</label>
+                  </div>
+
+                  <div class="chart-bar">
+                    <span style="height: 60%"></span>
+                    <label>Feb</label>
+                  </div>
+
+                  <div class="chart-bar">
+                    <span style="height: 52%"></span>
+                    <label>Mar</label>
+                  </div>
+
+                  <div class="chart-bar">
+                    <span style="height: 72%"></span>
+                    <label>Apr</label>
+                  </div>
+
+                  <div class="chart-bar">
+                    <span style="height: 65%"></span>
+                    <label>May</label>
+                  </div>
+
+                  <div class="chart-bar">
+                    <span style="height: 82%"></span>
+                    <label>Jun</label>
+                  </div>
+
+                  <div class="chart-bar">
+                    <span style="height: 90%"></span>
+                    <label>Jul</label>
+                  </div>
+
+                  <div class="chart-bar">
+                    <span style="height: 78%"></span>
+                    <label>Aug</label>
+                  </div>
+
+                </div>
 
               </div>
 
@@ -275,14 +326,172 @@
 
           </div>
 
-        </div>
+
+          <!-- =================================================
+               RECENT BOOKINGS
+               ================================================= -->
+
+          <div class="dashboard-card bookings-card">
+
+            <div class="card-header">
+
+              <div>
+
+                <span class="card-label">
+                  ACTIVITY
+                </span>
+
+                <h2>
+                  Recent Bookings
+                </h2>
+
+              </div>
 
 
-        <!-- QUICK ACTIONS -->
+              <button
+                type="button"
+                class="view-all-btn">
 
-        <div class="dashboard-card quick-actions-card">
+                View All
 
-          <div class="card-header">
+                <i class="fa-solid fa-arrow-right"></i>
+
+              </button>
+
+            </div>
+
+
+            <div class="bookings-list">
+
+              <div class="booking-item">
+
+                <div class="booking-avatar">
+                  AK
+                </div>
+
+                <div class="booking-info">
+
+                  <strong>
+                    Ahmed Khan
+                  </strong>
+
+                  <span>
+                    Dubai Tour
+                  </span>
+
+                </div>
+
+                <div class="booking-price">
+                  $1,250
+                </div>
+
+                <span class="booking-status confirmed">
+                  Confirmed
+                </span>
+
+              </div>
+
+
+              <div class="booking-item">
+
+                <div class="booking-avatar">
+                  SK
+                </div>
+
+                <div class="booking-info">
+
+                  <strong>
+                    Sara Khan
+                  </strong>
+
+                  <span>
+                    Turkey Package
+                  </span>
+
+                </div>
+
+                <div class="booking-price">
+                  $2,100
+                </div>
+
+                <span class="booking-status pending">
+                  Pending
+                </span>
+
+              </div>
+
+
+              <div class="booking-item">
+
+                <div class="booking-avatar">
+                  MR
+                </div>
+
+                <div class="booking-info">
+
+                  <strong>
+                    Muhammad Rizwan
+                  </strong>
+
+                  <span>
+                    Saudi Arabia
+                  </span>
+
+                </div>
+
+                <div class="booking-price">
+                  $1,850
+                </div>
+
+                <span class="booking-status confirmed">
+                  Confirmed
+                </span>
+
+              </div>
+
+
+              <div class="booking-item">
+
+                <div class="booking-avatar">
+                  FA
+                </div>
+
+                <div class="booking-info">
+
+                  <strong>
+                    Fatima Ali
+                  </strong>
+
+                  <span>
+                    Malaysia Tour
+                  </span>
+
+                </div>
+
+                <div class="booking-price">
+                  $980
+                </div>
+
+                <span class="booking-status cancelled">
+                  Cancelled
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             QUICK ACCESS
+             ================================================= -->
+
+        <section class="quick-access-section">
+
+          <div class="section-heading">
 
             <div>
 
@@ -290,283 +499,136 @@
                 SHORTCUTS
               </span>
 
-              <h3>
-                Quick Actions
-              </h3>
+              <h2>
+                Quick Access
+              </h2>
 
             </div>
 
           </div>
 
 
-          <div class="quick-actions">
+          <div class="quick-access-grid">
 
+            <a
+              routerLink="/AdminDashboard/Bookings"
+              class="quick-card">
 
-            <button class="quick-action">
+              <div class="quick-icon">
 
-              <span class="quick-icon teal">
-                <i class="fa-solid fa-plus"></i>
-              </span>
+                <i class="fa-solid fa-calendar-check"></i>
 
-              <span class="quick-text">
-
-                <strong>
-                  Add Destination
-                </strong>
-
-                <small>
-                  Create a new destination
-                </small>
-
-              </span>
-
-              <i class="fa-solid fa-chevron-right"></i>
-
-            </button>
-
-
-            <button class="quick-action">
-
-              <span class="quick-icon blue">
-                <i class="fa-solid fa-pen"></i>
-              </span>
-
-              <span class="quick-text">
-
-                <strong>
-                  Create Post
-                </strong>
-
-                <small>
-                  Publish travel content
-                </small>
-
-              </span>
-
-              <i class="fa-solid fa-chevron-right"></i>
-
-            </button>
-
-
-            <button class="quick-action">
-
-              <span class="quick-icon purple">
-                <i class="fa-solid fa-user-plus"></i>
-              </span>
-
-              <span class="quick-text">
-
-                <strong>
-                  Add User
-                </strong>
-
-                <small>
-                  Create admin or staff
-                </small>
-
-              </span>
-
-              <i class="fa-solid fa-chevron-right"></i>
-
-            </button>
-
-
-            <button class="quick-action">
-
-              <span class="quick-icon orange">
-                <i class="fa-solid fa-chart-line"></i>
-              </span>
-
-              <span class="quick-text">
-
-                <strong>
-                  View Reports
-                </strong>
-
-                <small>
-                  Analyze your business
-                </small>
-
-              </span>
-
-              <i class="fa-solid fa-chevron-right"></i>
-
-            </button>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =================================================
-           BOTTOM SECTION
-      ================================================== -->
-
-      <section class="bottom-grid">
-
-
-        <!-- RECENT ACTIVITY -->
-
-        <div class="dashboard-card activity-card">
-
-          <div class="card-header">
-
-            <div>
-
-              <span class="card-label">
-                ACTIVITY
-              </span>
-
-              <h3>
-                Recent Activity
-              </h3>
-
-            </div>
-
-
-            <button class="view-all-btn">
-
-              View All
-
-              <i class="fa-solid fa-arrow-right"></i>
-
-            </button>
-
-          </div>
-
-
-          <div class="activity-list">
-
-            <div
-              class="activity-item"
-              *ngFor="let activity of recentActivities">
-
-              <div class="activity-icon">
-                <i [class]="activity.icon"></i>
               </div>
 
-              <div class="activity-content">
+              <div class="quick-content">
 
                 <strong>
-                  {{ activity.title }}
+                  Bookings
                 </strong>
 
                 <span>
-                  {{ activity.description }}
+                  Manage reservations
                 </span>
 
               </div>
 
-              <time>
-                {{ activity.time }}
-              </time>
+              <i class="fa-solid fa-arrow-right quick-arrow"></i>
 
-            </div>
+            </a>
+
+
+            <a
+              routerLink="/AdminDashboard/Customers"
+              class="quick-card">
+
+              <div class="quick-icon">
+
+                <i class="fa-solid fa-users"></i>
+
+              </div>
+
+              <div class="quick-content">
+
+                <strong>
+                  Customers
+                </strong>
+
+                <span>
+                  Manage customers
+                </span>
+
+              </div>
+
+              <i class="fa-solid fa-arrow-right quick-arrow"></i>
+
+            </a>
+
+
+            <a
+              routerLink="/AdminDashboard/Packages"
+              class="quick-card">
+
+              <div class="quick-icon">
+
+                <i class="fa-solid fa-suitcase-rolling"></i>
+
+              </div>
+
+              <div class="quick-content">
+
+                <strong>
+                  Packages
+                </strong>
+
+                <span>
+                  Manage travel packages
+                </span>
+
+              </div>
+
+              <i class="fa-solid fa-arrow-right quick-arrow"></i>
+
+            </a>
+
+
+            <a
+              routerLink="/AdminDashboard/Destinations"
+              class="quick-card">
+
+              <div class="quick-icon">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+              </div>
+
+              <div class="quick-content">
+
+                <strong>
+                  Destinations
+                </strong>
+
+                <span>
+                  Manage destinations
+                </span>
+
+              </div>
+
+              <i class="fa-solid fa-arrow-right quick-arrow"></i>
+
+            </a>
 
           </div>
 
-        </div>
+        </section>
+
+      }
 
 
-        <!-- SYSTEM STATUS -->
+      <!-- =================================================
+           CHILD ROUTES
+           ================================================= -->
 
-        <div class="dashboard-card status-card">
-
-          <div class="card-header">
-
-            <div>
-
-              <span class="card-label">
-                SYSTEM
-              </span>
-
-              <h3>
-                System Status
-              </h3>
-
-            </div>
-
-
-            <span class="status-online">
-
-              <span></span>
-
-              Operational
-
-            </span>
-
-          </div>
-
-
-          <div class="system-status">
-
-
-            <div class="system-row">
-
-              <div>
-                <i class="fa-solid fa-server"></i>
-                <span>Server</span>
-              </div>
-
-              <strong>99.9%</strong>
-
-            </div>
-
-
-            <div class="progress">
-              <span style="width: 99%"></span>
-            </div>
-
-
-            <div class="system-row">
-
-              <div>
-                <i class="fa-solid fa-database"></i>
-                <span>Database</span>
-              </div>
-
-              <strong>98.7%</strong>
-
-            </div>
-
-
-            <div class="progress">
-              <span style="width: 98%"></span>
-            </div>
-
-
-            <div class="system-row">
-
-              <div>
-                <i class="fa-solid fa-cloud"></i>
-                <span>API Services</span>
-              </div>
-
-              <strong>99.5%</strong>
-
-            </div>
-
-
-            <div class="progress">
-              <span style="width: 99.5%"></span>
-            </div>
-
-
-            <div class="last-updated">
-
-              <i class="fa-regular fa-clock"></i>
-
-              Last checked a few seconds ago
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
+      <router-outlet></router-outlet>
 
     </div>
 

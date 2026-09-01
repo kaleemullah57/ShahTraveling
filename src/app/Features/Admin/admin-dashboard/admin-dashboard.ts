@@ -1,116 +1,57 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject
+} from '@angular/core';
 
-import { Topbar } from '../../../Shared/Admin/topbar/topbar';
+import { CommonModule } from '@angular/common';
+import { Router, RouterOutlet } from '@angular/router';
+
 import { Sidebar } from '../../../Shared/Admin/sidebar/sidebar';
-import { BranchAdminService } from '../Admin Services/Admin Services/branch-admin-service';
+import { Topbar } from '../../../Shared/Admin/topbar/topbar';
+
+import { BranchAdminService } from '../Admin Services/Admin Global Services/branch-admin-service';
 import { AuthService } from '../../../Core/Services/auth.service/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-
   imports: [
     CommonModule,
+    Sidebar,
     Topbar,
-    Sidebar
+    RouterOutlet
   ],
-
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.scss'
 })
-export class AdminDashboard implements OnInit {
-  branchId: number = 0;
-  branchName: string = '';
+export class AdminDashboard {
 
-  sidebarOpen: boolean = true;
-
-  constructor(
-    private branchAdminService: BranchAdminService,
-    private AuthService: AuthService,
-     private cdr: ChangeDetectorRef
-  ) { }
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
+  private readonly branchAdminService = inject(BranchAdminService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
 
-  ngOnInit(): void {
+  // =========================================
+  // SIDEBAR
+  // =========================================
 
-  this.branchId = this.AuthService.getBranchId();
-
-  if (this.branchId > 0) {
-
-    this.getBranchDetails();
-
-  } else {
-
-    console.error('BranchId not found in JWT.');
-
-  }
-
-  }
+  sidebarOpen = true;
 
 
-  // ==========================================
-  // Get Logged-In Admin Branch
-  // ==========================================
+  // =========================================
+  // USER / BRANCH
+  // =========================================
 
-getBranchDetails(): void {
-
-  console.log('getBranchDetails() called');
-
-  this.branchAdminService
-    .getBranchByBranchId(this.branchId)
-    .subscribe({
-
-      next: (response: any) => {
-
-        console.log('Branch API Response:', response);
-
-        if (
-          response.statusCode === 200 &&
-          response.status === true &&
-          response.data
-        ) {
-
-          this.branchName = response.data.branchName;
-          // Force Angular to update the template
-          this.cdr.detectChanges();
-        }
-
-      },
-
-      error: (error) => {
-
-        console.error(
-          'Branch API Error:',
-          error
-        );
-
-      }
-
-    });
-}
-
-  // ==========================================
-  // Sidebar
-  // ==========================================
-
-  toggleSidebar(): void {
-
-    this.sidebarOpen = !this.sidebarOpen;
-
-  }
+  userName = '';
+  branchId = 0;
+  branchName = '';
 
 
-  closeSidebar(): void {
-
-    this.sidebarOpen = false;
-
-  }
-
-
-  // ==========================================
-  // Statistics
-  // ==========================================
+  // =========================================
+  // DASHBOARD STATS
+  // =========================================
 
   stats = [
     {
@@ -140,35 +81,131 @@ getBranchDetails(): void {
   ];
 
 
-  // ==========================================
-  // Recent Activities
-  // ==========================================
+  // =========================================
+  // DASHBOARD HOME
+  // =========================================
 
-  recentActivities = [
-    {
-      title: 'New booking received',
-      description: 'Dubai Holiday Package',
-      time: '5 min ago',
-      icon: 'fa-solid fa-calendar-check'
-    },
-    {
-      title: 'New user registered',
-      description: 'Ahmed Khan joined the platform',
-      time: '18 min ago',
-      icon: 'fa-solid fa-user-plus'
-    },
-    {
-      title: 'Destination added',
-      description: 'Maldives destination was added',
-      time: '42 min ago',
-      icon: 'fa-solid fa-location-dot'
-    },
-    {
-      title: 'New travel post',
-      description: 'Top places to visit in Turkey',
-      time: '1 hour ago',
-      icon: 'fa-solid fa-pen'
+  get isDashboardHome(): boolean {
+
+    return this.router.url === '/AdminDashboard';
+
+  }
+
+
+  // =========================================
+  // INITIALIZATION
+  // =========================================
+
+  ngOnInit(): void {
+
+    this.userName =
+      this.authService.getUserName();
+
+    this.branchId =
+      this.authService.getBranchId();
+
+
+    console.log(
+      'Logged in user:',
+      this.authService.getCurrentUser()
+    );
+
+
+    console.log(
+      'Logged in BranchId:',
+      this.branchId
+    );
+
+
+    if (this.branchId > 0) {
+
+      this.getBranchDetails();
+
+    } else {
+
+      console.error(
+        'BranchId not found in JWT.'
+      );
+
     }
-  ];
+
+  }
+
+
+  // =========================================
+  // TOGGLE SIDEBAR
+  // =========================================
+
+  toggleSidebar(): void {
+
+    this.sidebarOpen =
+      !this.sidebarOpen;
+
+  }
+
+
+  // =========================================
+  // CLOSE SIDEBAR
+  // =========================================
+
+  closeSidebar(): void {
+
+    this.sidebarOpen = false;
+
+  }
+
+
+  // =========================================
+  // GET BRANCH DETAILS
+  // =========================================
+
+  getBranchDetails(): void {
+
+    console.log(
+      'getBranchDetails() called'
+    );
+
+
+    this.branchAdminService
+      .getBranchByBranchId(this.branchId)
+      .subscribe({
+
+        next: (response: any) => {
+
+          console.log(
+            'Branch API Response:',
+            response
+          );
+
+
+          if (
+            response.statusCode === 200 &&
+            response.status === true &&
+            response.data
+          ) {
+
+            this.branchName =
+              response.data.branchName;
+
+
+            this.cdr.detectChanges();
+
+          }
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Branch API Error:',
+            error
+          );
+
+        }
+
+      });
+
+  }
 
 }

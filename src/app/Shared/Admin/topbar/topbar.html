@@ -69,6 +69,7 @@
 
   <div class="topbar-right">
 
+
     <!-- ===================================================
          NOTIFICATION
     ==================================================== -->
@@ -99,11 +100,15 @@
           <div class="notification-header">
 
             <div>
-              <h3>Notifications</h3>
+
+              <h3>
+                Notifications
+              </h3>
 
               <span>
                 You have 4 new notifications
               </span>
+
             </div>
 
             <button type="button">
@@ -118,7 +123,9 @@
           <div class="notification-item">
 
             <div class="notification-icon booking">
+
               <i class="fa-solid fa-ticket"></i>
+
             </div>
 
             <div class="notification-content">
@@ -145,7 +152,9 @@
           <div class="notification-item">
 
             <div class="notification-icon payment">
+
               <i class="fa-solid fa-credit-card"></i>
+
             </div>
 
             <div class="notification-content">
@@ -172,7 +181,9 @@
           <div class="notification-item">
 
             <div class="notification-icon user">
+
               <i class="fa-solid fa-user"></i>
+
             </div>
 
             <div class="notification-content">
@@ -230,11 +241,14 @@
         (click)="toggleProfile()"
         aria-label="Open profile menu">
 
+
         <!-- AVATAR -->
 
         <div class="profile-avatar">
 
-          <span>AD</span>
+          <span>
+            AD
+          </span>
 
           <span class="online-indicator"></span>
 
@@ -246,11 +260,11 @@
         <div class="profile-details">
 
           <strong>
-            Admin
+            {{ userName || 'Admin' }}
           </strong>
 
           <span>
-            Administrator
+            Branch Administrator
           </span>
 
         </div>
@@ -274,6 +288,7 @@
 
         <div class="profile-dropdown">
 
+
           <!-- HEADER -->
 
           <div class="dropdown-header">
@@ -285,11 +300,11 @@
             <div class="dropdown-user-info">
 
               <strong>
-                Admin
+                {{ userName || 'Admin' }}
               </strong>
 
               <span>
-                Administrator
+                Branch Administrator
               </span>
 
             </div>
@@ -300,62 +315,32 @@
           <div class="dropdown-line"></div>
 
 
-          <!-- PROFILE -->
+          <!-- =================================================
+               BRANCH ADMIN DASHBOARD
+               ================================================= -->
 
-          <button type="button">
+          @if (isBranchAdmin) {
 
-            <i class="fa-solid fa-user"></i>
+            <button
+              type="button"
+              (click)="goToDashboard()">
 
-            <span>
-              My Profile
-            </span>
+              <i class="fa-solid fa-gauge-high"></i>
 
-          </button>
+              <span>
+                Dashboard
+              </span>
 
+            </button>
 
-          <!-- SETTINGS -->
-
-          <button type="button">
-
-            <i class="fa-solid fa-gear"></i>
-
-            <span>
-              Account Settings
-            </span>
-
-          </button>
+          }
 
 
-          <!-- NOTIFICATIONS -->
-
-          <button type="button">
-
-            <i class="fa-solid fa-bell"></i>
-
-            <span>
-              Notifications
-            </span>
-
-          </button>
-
-
-          <!-- HELP -->
-
-          <button type="button">
-
-            <i class="fa-solid fa-circle-question"></i>
-
-            <span>
-              Help &amp; Support
-            </span>
-
-          </button>
-
+          <!-- =================================================
+               LOGOUT
+               ================================================= -->
 
           <div class="dropdown-line"></div>
-
-
-          <!-- LOGOUT -->
 
           <button
             type="button"
@@ -369,6 +354,7 @@
             </span>
 
           </button>
+
 
         </div>
 
