@@ -1,604 +1,746 @@
-<!-- =========================================
-     DESTINATIONS PAGE
-========================================= -->
-
 <div class="destinations-page">
 
+  <!-- ==========================================================
+       PAGE HEADER
+  =========================================================== -->
 
-  <!-- =========================================
-       HERO
-  ========================================== -->
+<section class="page-header">
 
-  <section class="destination-hero">
+  <div class="header-content">
 
-    <div class="destination-hero-overlay"></div>
+    <div class="header-eyebrow">
 
-    <div class="destination-hero-content">
+      <span class="eyebrow-line"></span>
 
-      <span class="hero-label">
-        <i class="fa fa-globe"></i>
-        Discover The World
+      <span>
+        SHAH TRAVELING AGENCY
       </span>
 
-      <h1>
-        Find Your Next
-        <span>Dream Destination</span>
-      </h1>
-
-      <p>
-        From breathtaking beaches to historic cities,
-        discover destinations that inspire unforgettable journeys.
-      </p>
+      <span class="eyebrow-line"></span>
 
     </div>
 
-  </section>
+
+    <h1>
+      Explore Travel Destinations
+      <span>Around the World</span>
+    </h1>
 
 
-  <!-- =========================================
-       SEARCH / FILTER
-  ========================================== -->
-
-  <section class="destination-search-wrapper">
-
-    <div class="destination-search">
-
-      <div class="destination-search-field">
-
-        <div class="field-icon">
-          <i class="fa fa-search"></i>
-        </div>
-
-        <div class="field-content">
-
-          <label>
-            Search Destination
-          </label>
-
-          <input
-            type="text"
-            placeholder="Where do you want to go?"
-          />
-
-        </div>
-
-      </div>
+    <p>
+      Discover beautiful travel destinations, explore exciting places,
+      and plan unforgettable journeys with Shah Traveling Agency.
+      Find your next destination and start your travel adventure today.
+    </p>
 
 
-      <div class="destination-search-field">
+    <div class="header-bottom">
 
-        <div class="field-icon">
-          <i class="fa fa-globe"></i>
-        </div>
+      <span class="header-dot"></span>
 
-        <div class="field-content">
+      <span>
+        DISCOVER • EXPLORE • TRAVEL
+      </span>
 
-          <label>
-            Region
-          </label>
+      <span class="header-dot"></span>
 
-          <select>
+    </div>
 
-            <option value="">
-              All Regions
-            </option>
+  </div>
 
-            <option>
-              Asia
-            </option>
+</section>
 
-            <option>
-              Europe
-            </option>
 
-            <option>
-              Middle East
-            </option>
 
-            <option>
-              Africa
-            </option>
 
-            <option>
-              Americas
-            </option>
+<!-- ==========================================================
+     SEARCH & SORT
+=========================================================== -->
 
-          </select>
+<section class="destination-search-section">
 
-        </div>
+  <div class="search-container">
+
+    <!-- ======================================================
+         SEARCH BOX
+    ======================================================= -->
+
+    <div class="search-box">
+
+
+      <!-- SEARCH ICON -->
+
+      <div class="search-icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+
+          <circle
+            cx="11"
+            cy="11"
+            r="7"
+          ></circle>
+
+          <line
+            x1="16.5"
+            y1="16.5"
+            x2="21"
+            y2="21"
+          ></line>
+
+        </svg>
 
       </div>
 
+
+      <!-- INPUT -->
+
+      <input
+        type="text"
+        [(ngModel)]="searchText"
+        placeholder="Search destination, country, city..."
+        (keydown)="onSearchKeydown($event)"
+      />
+
+
+      <!-- CLEAR -->
 
       <button
-        class="destination-search-button">
+        *ngIf="searchText"
+        type="button"
+        class="clear-search"
+        (click)="clearSearch()"
+        aria-label="Clear search"
+      >
+        ×
+      </button>
 
-        <i class="fa fa-search"></i>
 
-        Search
+      <!-- SEARCH BUTTON -->
+
+      <button
+        type="button"
+        class="search-button"
+        [disabled]="loading"
+        (click)="searchDestinations()"
+      >
+
+        <span *ngIf="!loading">
+          Search
+        </span>
+
+        <span *ngIf="loading">
+          Searching...
+        </span>
 
       </button>
 
     </div>
 
+
+    <!-- ======================================================
+         SEARCH INFO + SORT
+    ======================================================= -->
+
+    <div class="search-toolbar">
+
+
+      <!-- RESULT -->
+
+      <div class="result-info">
+
+        <ng-container
+          *ngIf="searchedText; else allResults"
+        >
+
+          <span>
+            Results for
+          </span>
+
+          <strong>
+            "{{ searchedText }}"
+          </strong>
+
+          <span>
+            • {{ destinations.length }}
+            {{ destinations.length === 1
+              ? 'destination'
+              : 'destinations'
+            }}
+          </span>
+
+        </ng-container>
+
+
+        <ng-template #allResults>
+
+          <span>
+            Showing
+          </span>
+
+          <strong>
+            {{ destinations.length }}
+          </strong>
+
+          <span>
+            {{ destinations.length === 1
+              ? 'destination'
+              : 'destinations'
+            }}
+          </span>
+
+        </ng-template>
+
+      </div>
+
+
+      <!-- SORT -->
+
+      <div class="sort-container">
+  <label for="destinationSort">Sort by</label>
+
+  <select
+    id="destinationSort"
+    [(ngModel)]="sortOption"
+    (change)="onSortChange()"
+  >
+    <option value="default">Default</option>
+    <option value="az">Name: A - Z</option>
+    <option value="za">Name: Z - A</option>
+  </select>
+</div>
+
+    </div>
+
+  </div>
+
+</section>
+
+  <!-- ==========================================================
+       MAIN CONTENT
+  =========================================================== -->
+
+  <section class="destinations-section">
+
+    <div class="container">
+
+
+      <!-- ======================================================
+           LOADING
+      ======================================================= -->
+
+      <div class="loading-container" *ngIf="loading">
+
+        <div class="loader"></div>
+
+        <span>
+          Loading destinations...
+        </span>
+
+      </div>
+
+
+      <!-- ======================================================
+           ERROR
+      ======================================================= -->
+
+      <div class="error-container" *ngIf="!loading && errorMessage">
+
+        <div class="error-box">
+
+          <h3>
+            Unable to Load Destinations
+          </h3>
+
+          <p>
+            {{ errorMessage }}
+          </p>
+
+          <button type="button" class="retry-button" (click)="getDestinations()">
+            Try Again
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================
+           DESTINATION LIST
+      ======================================================= -->
+
+      <div class="destination-list" *ngIf="
+          !loading &&
+          !errorMessage &&
+          destinations.length > 0
+        ">
+
+        <!-- ====================================================
+             DESTINATION CARD
+        ===================================================== -->
+
+        <article class="destination-card" *ngFor="let destination of destinations">
+
+
+          <!-- ==================================================
+               IMAGE
+          =================================================== -->
+
+          <div class="destination-image">
+
+            <ng-container *ngIf="
+                destination.picturePath &&
+                destination.picturePath.length > 0
+              ">
+
+              <img [src]="
+                  getImageUrl(
+                    destination.picturePath[0]
+                  )
+                " [alt]="
+                  destination.destinationName
+                " (error)="imageError($event)" />
+
+            </ng-container>
+
+
+            <!-- IMAGE OVERLAY -->
+
+            <div class="image-overlay"></div>
+
+
+            <!-- IMAGE COUNT -->
+
+            <div class="image-count" *ngIf="
+                destination.picturePath &&
+                destination.picturePath.length > 1
+              ">
+
+              <span class="image-icon">
+                ▧
+              </span>
+
+              {{ destination.picturePath.length }}
+              Photos
+
+            </div>
+
+          </div>
+
+
+          <!-- ==================================================
+               CARD CONTENT
+          =================================================== -->
+
+          <div class="destination-content">
+
+
+            <!-- TOP -->
+
+            <div class="destination-top">
+
+              <div class="destination-heading">
+
+                <span class="destination-label">
+                  DESTINATION
+                </span>
+
+                <h2>
+                  {{ destination.destinationName }}
+                </h2>
+
+              </div>
+
+
+              <!-- LOCATION -->
+
+              <div class="location">
+
+                <span class="location-icon">
+                  ●
+                </span>
+
+                <span *ngIf="destination.cityName">
+                  {{ destination.cityName }}
+                </span>
+
+                <span *ngIf="
+                    destination.cityName &&
+                    destination.provinceName
+                  ">
+                  ,
+                </span>
+
+                <span *ngIf="destination.provinceName">
+                  {{ destination.provinceName }}
+                </span>
+
+                <span *ngIf="
+                    (
+                      destination.cityName ||
+                      destination.provinceName
+                    ) &&
+                    destination.countryName
+                  ">
+                  ,
+                </span>
+
+                <span *ngIf="destination.countryName">
+                  {{ destination.countryName }}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DESCRIPTION
+            ================================================== -->
+
+            <div class="description-section">
+
+              <span class="section-label">
+                ABOUT THIS DESTINATION
+              </span>
+
+              <p class="description-preview">
+                {{ destination.description }}
+              </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 BOTTOM INFORMATION
+            ================================================== -->
+
+            <div class="card-bottom">
+
+
+              <!-- AGENCY -->
+
+              <div class="agency-details">
+
+                <div class="agency-item">
+
+                  <span class="agency-label">
+                    AGENCY
+                  </span>
+
+                  <strong>
+                    {{ destination.branchName || 'N/A' }}
+                  </strong>
+
+                </div>
+
+
+                <div class="divider"></div>
+
+
+                <!-- CREATED BY -->
+
+                <div class="agency-item">
+
+                  <span class="agency-label">
+                    CREATED BY
+                  </span>
+
+                  <strong>
+                    {{ destination.createdBy || 'N/A' }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <!-- SEE MORE BUTTON -->
+
+              <button type="button" class="see-more-button" (click)="openDestination(destination)">
+
+                <span>
+                  See More
+                </span>
+
+                <span class="button-arrow">
+                  →
+                </span>
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+      <!-- ======================================================
+           NO DATA
+      ======================================================= -->
+
+      <div class="empty-container" *ngIf="
+          !loading &&
+          !errorMessage &&
+          destinations.length === 0
+        ">
+
+        <div class="empty-box">
+
+          <div class="empty-icon">
+            —
+          </div>
+
+          <h3>
+            No Destinations Found
+          </h3>
+
+          <p>
+            There are currently no destinations
+            available.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </section>
 
+</div>
 
-  <!-- =========================================
-       FEATURED DESTINATIONS
-  ========================================== -->
 
-  <section class="destinations-section" >
+<!-- ============================================================
+     DESTINATION DETAILS MODAL
+============================================================= -->
 
-    <div class="section-heading">
+<div class="destination-modal" *ngIf="selectedDestination" (click)="closeDestination()" tabindex="0"
+  (keydown)="onKeyDown($event)">
 
-      <div>
 
-        <span class="section-label">
-          <i class="fa fa-star"></i>
-          Featured Destinations
+  <!-- ==========================================================
+       MODAL
+  =========================================================== -->
+
+  <div class="modal-container" (click)="$event.stopPropagation()">
+
+
+    <!-- ========================================================
+         CLOSE BUTTON
+    ========================================================= -->
+
+    <button type="button" class="modal-close-button" aria-label="Close" (click)="closeDestination()">
+
+      <span></span>
+      <span></span>
+
+    </button>
+
+
+    <!-- ========================================================
+         MODAL IMAGE
+    ========================================================= -->
+
+    <div class="modal-main-image">
+
+      <img *ngIf="
+          selectedDestination.picturePath &&
+          selectedDestination.picturePath.length > 0
+        " [src]="
+          getImageUrl(
+            selectedDestination.picturePath[0]
+          )
+        " [alt]="
+          selectedDestination.destinationName
+        " />
+
+      <div class="modal-image-overlay"></div>
+
+
+      <div class="modal-image-title">
+
+        <span>
+          DESTINATION
         </span>
 
         <h2>
-          Places Worth
-          <span>Exploring</span>
+          {{ selectedDestination.destinationName }}
         </h2>
 
       </div>
 
-      <p>
-        Handpicked destinations loved by travelers
-        around the world.
-      </p>
-
     </div>
 
 
-    <div class="featured-grid">
+    <!-- ========================================================
+         MODAL BODY
+    ========================================================= -->
+
+    <div class="modal-body">
 
 
-      <!-- Dubai -->
+      <!-- LOCATION -->
 
-      <article class="featured-destination featured-large">
+      <div class="modal-location">
 
-        <img
-          src="assets/images/destinations/dubai.jpg"
-          alt="Dubai">
+        <span class="location-dot"></span>
 
-        <div class="destination-card-overlay"></div>
+        <span *ngIf="selectedDestination.cityName">
+          {{ selectedDestination.cityName }}
+        </span>
 
-        <div class="destination-card-content">
+        <span *ngIf="
+            selectedDestination.cityName &&
+            selectedDestination.provinceName
+          ">
+          ,
+        </span>
+
+        <span *ngIf="selectedDestination.provinceName">
+          {{ selectedDestination.provinceName }}
+        </span>
+
+        <span *ngIf="
+            (
+              selectedDestination.cityName ||
+              selectedDestination.provinceName
+            ) &&
+            selectedDestination.countryName
+          ">
+          ,
+        </span>
+
+        <span *ngIf="selectedDestination.countryName">
+          {{ selectedDestination.countryName }}
+        </span>
+
+      </div>
+
+
+      <!-- ========================================================
+           AGENCY INFORMATION
+      ========================================================= -->
+
+      <div class="modal-agency">
+
+        <div class="modal-agency-item">
 
           <span>
-            United Arab Emirates
+            AGENCY
           </span>
 
-          <h3>
-            Dubai
-          </h3>
-
-          <p>
-            Luxury, adventure and unforgettable experiences.
-          </p>
-
-          <a routerLink="/packages/dubai">
-
-            Explore Destination
-
-            <i class="fa fa-arrow-right"></i>
-
-          </a>
+          <strong>
+            {{ selectedDestination.branchName || 'N/A' }}
+          </strong>
 
         </div>
 
-      </article>
 
-
-      <!-- Turkey -->
-
-      <article class="featured-destination">
-
-        <img
-          src="assets/images/destinations/turkey.jpg"
-          alt="Turkey">
-
-        <div class="destination-card-overlay"></div>
-
-        <div class="destination-card-content">
+        <div class="modal-agency-item">
 
           <span>
-            Europe & Asia
+            CREATED BY
           </span>
 
-          <h3>
-            Turkey
-          </h3>
-
-          <p>
-            Where history meets breathtaking beauty.
-          </p>
-
-          <a routerLink="/packages/turkey">
-
-            Explore Destination
-
-            <i class="fa fa-arrow-right"></i>
-
-          </a>
+          <strong>
+            {{ selectedDestination.createdBy || 'N/A' }}
+          </strong>
 
         </div>
 
-      </article>
+      </div>
 
 
-      <!-- Maldives -->
+      <!-- ========================================================
+           FULL DESCRIPTION
+      ========================================================= -->
 
-      <article class="featured-destination">
+      <div class="full-description">
 
-        <img
-          src="assets/images/destinations/maldives.jpg"
-          alt="Maldives">
+        <span class="section-label">
+          ABOUT THIS DESTINATION
+        </span>
 
-        <div class="destination-card-overlay"></div>
+        <h3>
+          Discover {{ selectedDestination.destinationName }}
+        </h3>
 
-        <div class="destination-card-content">
+        <p>
+          {{ selectedDestination.description }}
+        </p>
 
-          <span>
-            Indian Ocean
-          </span>
-
-          <h3>
-            Maldives
-          </h3>
-
-          <p>
-            Crystal waters and tropical paradise.
-          </p>
-
-          <a routerLink="/packages/maldives">
-
-            Explore Destination
-
-            <i class="fa fa-arrow-right"></i>
-
-          </a>
-
-        </div>
-
-      </article>
-
-    </div>
-
-  </section>
+      </div>
 
 
-  <!-- =========================================
-       ALL DESTINATIONS
-  ========================================== -->
+      <!-- ========================================================
+           PHOTO GALLERY
+      ========================================================= -->
 
-  <section class="all-destinations-section">
+      <div class="gallery-section" *ngIf="
+          selectedDestination.picturePath &&
+          selectedDestination.picturePath.length > 0
+        ">
 
-    <div class="section-heading centered">
-
-      <span class="section-label">
-        <i class="fa fa-compass"></i>
-        Explore More
-      </span>
-
-      <h2>
-        Explore Our
-        <span>Destinations</span>
-      </h2>
-
-      <p>
-        Discover beautiful places and start planning
-        your next adventure.
-      </p>
-
-    </div>
-
-
-    <div class="destination-grid">
-
-
-      <!-- Pakistan -->
-
-      <article class="destination-item">
-
-        <div class="destination-image">
-
-          <img
-            src="assets/images/destinations/pakistan.jpg"
-            alt="Pakistan">
-
-          <span class="country-badge">
-            Asia
-          </span>
-
-        </div>
-
-        <div class="destination-item-content">
+        <div class="gallery-header">
 
           <div>
 
-            <span class="destination-country">
-              Pakistan
+            <span class="section-label">
+              DESTINATION GALLERY
             </span>
 
             <h3>
-              Pakistan
+              Photos
             </h3>
 
           </div>
 
-          <a routerLink="/destinations/pakistan">
-
-            <i class="fa fa-arrow-right"></i>
-
-          </a>
-
-        </div>
-
-      </article>
-
-
-      <!-- Saudi Arabia -->
-
-      <article class="destination-item">
-
-        <div class="destination-image">
-
-          <img
-            src="assets/images/destinations/saudi-arabia.jpg"
-            alt="Saudi Arabia">
-
-          <span class="country-badge">
-            Middle East
+          <span class="photo-count">
+            {{ selectedDestination.picturePath.length }}
+            Photos
           </span>
 
         </div>
 
-        <div class="destination-item-content">
 
-          <div>
+        <div class="gallery-grid">
 
-            <span class="destination-country">
-              Saudi Arabia
-            </span>
+          <div class="gallery-image" *ngFor="
+              let picture
+              of selectedDestination.picturePath
+            ">
 
-            <h3>
-              Saudi Arabia
-            </h3>
-
-          </div>
-
-          <a routerLink="/destinations/saudi-arabia">
-
-            <i class="fa fa-arrow-right"></i>
-
-          </a>
-
-        </div>
-
-      </article>
-
-
-      <!-- Malaysia -->
-
-      <article class="destination-item">
-
-        <div class="destination-image">
-
-          <img
-            src="assets/images/destinations/malaysia.jpg"
-            alt="Malaysia">
-
-          <span class="country-badge">
-            Asia
-          </span>
-
-        </div>
-
-        <div class="destination-item-content">
-
-          <div>
-
-            <span class="destination-country">
-              Malaysia
-            </span>
-
-            <h3>
-              Malaysia
-            </h3>
+            <img [src]="getImageUrl(picture)" [alt]="
+                selectedDestination.destinationName
+              " />
 
           </div>
 
-          <a routerLink="/destinations/malaysia">
-
-            <i class="fa fa-arrow-right"></i>
-
-          </a>
-
         </div>
 
-      </article>
+      </div>
 
 
-      <!-- Thailand -->
+      <!-- ========================================================
+           MODAL FOOTER
+      ========================================================= -->
 
-      <article class="destination-item">
+      <div class="modal-footer">
 
-        <div class="destination-image">
-
-          <img
-            src="assets/images/destinations/thailand.jpg"
-            alt="Thailand">
-
-          <span class="country-badge">
-            Asia
-          </span>
-
-        </div>
-
-        <div class="destination-item-content">
-
-          <div>
-
-            <span class="destination-country">
-              Thailand
-            </span>
-
-            <h3>
-              Thailand
-            </h3>
-
-          </div>
-
-          <a routerLink="/destinations/thailand">
-
-            <i class="fa fa-arrow-right"></i>
-
-          </a>
-
-        </div>
-
-      </article>
-
-
-      <!-- Switzerland -->
-
-      <article class="destination-item">
-
-        <div class="destination-image">
-
-          <img
-            src="assets/images/destinations/switzerland.jpg"
-            alt="Switzerland">
-
-          <span class="country-badge">
-            Europe
-          </span>
-
-        </div>
-
-        <div class="destination-item-content">
-
-          <div>
-
-            <span class="destination-country">
-              Switzerland
-            </span>
-
-            <h3>
-              Switzerland
-            </h3>
-
-          </div>
-
-          <a routerLink="/destinations/switzerland">
-
-            <i class="fa fa-arrow-right"></i>
-
-          </a>
-
-        </div>
-
-      </article>
-
-
-      <!-- Azerbaijan -->
-
-      <article class="destination-item">
-
-        <div class="destination-image">
-
-          <img
-            src="assets/images/destinations/azerbaijan.jpg"
-            alt="Azerbaijan">
-
-          <span class="country-badge">
-            Asia
-          </span>
-
-        </div>
-
-        <div class="destination-item-content">
-
-          <div>
-
-            <span class="destination-country">
-              Azerbaijan
-            </span>
-
-            <h3>
-              Azerbaijan
-            </h3>
-
-          </div>
-
-          <a routerLink="/destinations/azerbaijan">
-
-            <i class="fa fa-arrow-right"></i>
-
-          </a>
-
-        </div>
-
-      </article>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================
-       TRAVEL CTA
-  ========================================== -->
-
-  <section class="destination-cta">
-
-    <div class="cta-content">
-
-      <span class="cta-icon">
-        <i class="fa fa-plane"></i>
-      </span>
-
-      <h2>
-        Where Will You
-        <span>Go Next?</span>
-      </h2>
-
-      <p>
-        Tell us your dream destination and let our
-        travel experts create the perfect journey for you.
-      </p>
-
-      <div class="cta-actions">
-
-        <a
-          routerLink="/booking"
-          class="cta-button">
-
-          <i class="fa fa-paper-plane"></i>
-
-          Plan My Trip
-
-        </a>
-
-        <a
-          routerLink="/contact"
-          class="cta-outline-button">
-
-          Talk To An Expert
-
-          <i class="fa fa-arrow-right"></i>
-
-        </a>
+        <button type="button" class="close-button" (click)="closeDestination()">
+          Close
+        </button>
 
       </div>
 
     </div>
 
-  </section>
+  </div>
 
 </div>
