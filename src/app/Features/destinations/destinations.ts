@@ -12,7 +12,7 @@ import { finalize } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PublicDestinationsService } from '../../Core/Services/public Services/Destinations Service/public-destinations-service';
 import { GetPublicDestinationModel,PublicDestinationResponse } from '../../Core/Models/Public Destinations Model/public-destinations-model';
-
+import { Button } from "../../Shared/components/button/button";
 
 @Component({
   selector: 'app-destinations',
@@ -20,8 +20,9 @@ import { GetPublicDestinationModel,PublicDestinationResponse } from '../../Core/
 
   imports: [
     CommonModule,
-    FormsModule
-  ],
+    FormsModule,
+    Button
+],
 
   templateUrl: './destinations.html',
   styleUrl: './destinations.scss'

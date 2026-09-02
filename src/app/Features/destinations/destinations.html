@@ -4,219 +4,188 @@
        PAGE HEADER
   =========================================================== -->
 
-<section class="page-header">
+  <section class="page-header">
 
-  <div class="header-content">
+    <div class="header-content">
 
-    <div class="header-eyebrow">
+      <div class="header-eyebrow">
 
-      <span class="eyebrow-line"></span>
+        <span class="eyebrow-line"></span>
 
-      <span>
-        SHAH TRAVELING AGENCY
-      </span>
+        <span>
+          SHAH TRAVELING AGENCY
+        </span>
 
-      <span class="eyebrow-line"></span>
+        <span class="eyebrow-line"></span>
+
+      </div>
+
+
+      <h1>
+        Explore Travel Destinations
+        <span>Around the World</span>
+      </h1>
+
+
+      <p>
+        Discover beautiful travel destinations, explore exciting places,
+        and plan unforgettable journeys with Shah Traveling Agency.
+        Find your next destination and start your travel adventure today.
+      </p>
+
+
+      <div class="header-bottom">
+
+        <span class="header-dot"></span>
+
+        <span>
+          DISCOVER • EXPLORE • TRAVEL
+        </span>
+
+        <span class="header-dot"></span>
+
+      </div>
 
     </div>
 
-
-    <h1>
-      Explore Travel Destinations
-      <span>Around the World</span>
-    </h1>
-
-
-    <p>
-      Discover beautiful travel destinations, explore exciting places,
-      and plan unforgettable journeys with Shah Traveling Agency.
-      Find your next destination and start your travel adventure today.
-    </p>
-
-
-    <div class="header-bottom">
-
-      <span class="header-dot"></span>
-
-      <span>
-        DISCOVER • EXPLORE • TRAVEL
-      </span>
-
-      <span class="header-dot"></span>
-
-    </div>
-
-  </div>
-
-</section>
+  </section>
 
 
 
 
-<!-- ==========================================================
+  <!-- ==========================================================
      SEARCH & SORT
 =========================================================== -->
 
-<section class="destination-search-section">
+  <section class="destination-search-section">
 
-  <div class="search-container">
+    <div class="search-container">
 
-    <!-- ======================================================
+      <!-- ======================================================
          SEARCH BOX
     ======================================================= -->
 
-    <div class="search-box">
+      <div class="search-box">
 
 
-      <!-- SEARCH ICON -->
+        <!-- SEARCH ICON -->
 
-      <div class="search-icon">
+        <div class="search-icon">
 
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
 
-          <circle
-            cx="11"
-            cy="11"
-            r="7"
-          ></circle>
+            <circle cx="11" cy="11" r="7"></circle>
 
-          <line
-            x1="16.5"
-            y1="16.5"
-            x2="21"
-            y2="21"
-          ></line>
+            <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
 
-        </svg>
+          </svg>
+
+        </div>
+
+
+        <!-- INPUT -->
+
+        <input type="text" [(ngModel)]="searchText" placeholder="Search destination, country, city..."
+          (keydown)="onSearchKeydown($event)" />
+
+
+        <!-- CLEAR -->
+
+        <app-button
+  *ngIf="searchText"
+  label="×"
+  variant="ghost"
+  size="small"
+  type="button"
+  (clicked)="clearSearch()">
+</app-button>
+
+
+        <!-- SEARCH BUTTON -->
+<app-button
+  [label]="loading ? 'Searching...' : 'Search'"
+  variant="success"
+  size="medium"
+  type="button"
+  [disabled]="loading"
+  [loading]="loading"
+  (clicked)="searchDestinations()">
+</app-button>
 
       </div>
 
 
-      <!-- INPUT -->
-
-      <input
-        type="text"
-        [(ngModel)]="searchText"
-        placeholder="Search destination, country, city..."
-        (keydown)="onSearchKeydown($event)"
-      />
-
-
-      <!-- CLEAR -->
-
-      <button
-        *ngIf="searchText"
-        type="button"
-        class="clear-search"
-        (click)="clearSearch()"
-        aria-label="Clear search"
-      >
-        ×
-      </button>
-
-
-      <!-- SEARCH BUTTON -->
-
-      <button
-        type="button"
-        class="search-button"
-        [disabled]="loading"
-        (click)="searchDestinations()"
-      >
-
-        <span *ngIf="!loading">
-          Search
-        </span>
-
-        <span *ngIf="loading">
-          Searching...
-        </span>
-
-      </button>
-
-    </div>
-
-
-    <!-- ======================================================
+      <!-- ======================================================
          SEARCH INFO + SORT
     ======================================================= -->
 
-    <div class="search-toolbar">
+      <div class="search-toolbar">
 
 
-      <!-- RESULT -->
+        <!-- RESULT -->
 
-      <div class="result-info">
+        <div class="result-info">
 
-        <ng-container
-          *ngIf="searchedText; else allResults"
-        >
+          <ng-container *ngIf="searchedText; else allResults">
 
-          <span>
-            Results for
-          </span>
+            <span>
+              Results for
+            </span>
 
-          <strong>
-            "{{ searchedText }}"
-          </strong>
+            <strong>
+              "{{ searchedText }}"
+            </strong>
 
-          <span>
-            • {{ destinations.length }}
-            {{ destinations.length === 1
+            <span>
+              • {{ destinations.length }}
+              {{ destinations.length === 1
               ? 'destination'
               : 'destinations'
-            }}
-          </span>
+              }}
+            </span>
 
-        </ng-container>
+          </ng-container>
 
 
-        <ng-template #allResults>
+          <ng-template #allResults>
 
-          <span>
-            Showing
-          </span>
+            <span>
+              Showing
+            </span>
 
-          <strong>
-            {{ destinations.length }}
-          </strong>
+            <strong>
+              {{ destinations.length }}
+            </strong>
 
-          <span>
-            {{ destinations.length === 1
+            <span>
+              {{ destinations.length === 1
               ? 'destination'
               : 'destinations'
-            }}
-          </span>
+              }}
+            </span>
 
-        </ng-template>
+          </ng-template>
+
+        </div>
+
+
+        <!-- SORT -->
+
+        <div class="sort-container">
+          <label for="destinationSort">Sort by</label>
+
+          <select id="destinationSort" [(ngModel)]="sortOption" (change)="onSortChange()">
+            <option value="default">Default</option>
+            <option value="az">Name: A - Z</option>
+            <option value="za">Name: Z - A</option>
+          </select>
+        </div>
 
       </div>
 
-
-      <!-- SORT -->
-
-      <div class="sort-container">
-  <label for="destinationSort">Sort by</label>
-
-  <select
-    id="destinationSort"
-    [(ngModel)]="sortOption"
-    (change)="onSortChange()"
-  >
-    <option value="default">Default</option>
-    <option value="az">Name: A - Z</option>
-    <option value="za">Name: Z - A</option>
-  </select>
-</div>
-
     </div>
 
-  </div>
-
-</section>
+  </section>
 
   <!-- ==========================================================
        MAIN CONTENT
@@ -458,18 +427,13 @@
 
 
               <!-- SEE MORE BUTTON -->
-
-              <button type="button" class="see-more-button" (click)="openDestination(destination)">
-
-                <span>
-                  See More
-                </span>
-
-                <span class="button-arrow">
-                  →
-                </span>
-
-              </button>
+<app-button
+  label="See More →"
+  variant="success"
+  size="medium"
+  type="button"
+  (clicked)="openDestination(destination)">
+</app-button>
 
             </div>
 

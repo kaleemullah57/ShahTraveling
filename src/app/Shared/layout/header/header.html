@@ -64,10 +64,10 @@
       <!-- LOGGED IN -->
       @if (isLoggedIn) {
 
-      <app-button label="Dashboard" variant="primary" size="small" icon="fa fa-dashboard"
+      <app-button label="Dashboard" variant="light" size="small" icon="fa fa-dashboard"
         routerLink="/SuperAdminDashboard" />
 
-      <app-button label="Logout" variant="secondary" size="small" icon="fa fa-sign-out" (click)="logout()" />
+      <!-- <app-button label="Logout" variant="light" size="small" icon="fa fa-sign-out" (click)="logout()" /> -->
 
       }
     </nav>
@@ -190,7 +190,7 @@
 
       <app-button
         label="Logout"
-        variant="secondary"
+        variant="success"
         size="small"
         icon="fa fa-sign-out"
         (click)="logout()"

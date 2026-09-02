@@ -4,12 +4,7 @@
 
     <!-- SIDEBAR TOGGLE -->
 
-    <button
-      type="button"
-      class="menu-button"
-      (click)="toggleMenu()"
-      aria-label="Toggle sidebar"
-    >
+    <button type="button" class="menu-button" (click)="toggleMenu()" aria-label="Toggle sidebar">
 
       <i class="fa fa-bars"></i>
 
@@ -47,10 +42,7 @@
 
       <i class="fa fa-search"></i>
 
-      <input
-        type="text"
-        placeholder="Search anything..."
-      />
+      <input type="text" placeholder="Search anything..." />
 
       <span class="search-shortcut">
         Ctrl K
@@ -65,12 +57,7 @@
     <div class="topbar-dropdown">
 
 
-      <button
-        type="button"
-        class="icon-button"
-        (click)="toggleNotifications()"
-        aria-label="Notifications"
-      >
+      <button type="button" class="icon-button" (click)="toggleNotifications()" aria-label="Notifications">
 
         <i class="fa fa-bell"></i>
 
@@ -83,126 +70,126 @@
 
       @if (notificationOpen) {
 
-        <div class="dropdown-panel notification-panel">
+      <div class="dropdown-panel notification-panel">
 
 
-          <div class="dropdown-header">
+        <div class="dropdown-header">
 
-            <div>
+          <div>
 
-              <h3>
-                Notifications
-              </h3>
+            <h3>
+              Notifications
+            </h3>
 
-              <span>
-                You have 4 new notifications
-              </span>
-
-            </div>
-
-            <button type="button">
-              Mark all read
-            </button>
+            <span>
+              You have 4 new notifications
+            </span>
 
           </div>
 
+          <button type="button">
+            Mark all read
+          </button>
 
-          <!-- Notification -->
+        </div>
 
-          <div class="notification-item">
 
-            <div class="notification-icon booking">
+        <!-- Notification -->
 
-              <i class="fa fa-ticket"></i>
+        <div class="notification-item">
 
-            </div>
+          <div class="notification-icon booking">
 
-            <div class="notification-content">
-
-              <strong>
-                New booking received
-              </strong>
-
-              <p>
-                Ahmed Khan booked a Dubai package.
-              </p>
-
-              <small>
-                5 minutes ago
-              </small>
-
-            </div>
+            <i class="fa fa-ticket"></i>
 
           </div>
 
+          <div class="notification-content">
 
-          <!-- Notification -->
+            <strong>
+              New booking received
+            </strong>
 
-          <div class="notification-item">
+            <p>
+              Ahmed Khan booked a Dubai package.
+            </p>
 
-            <div class="notification-icon payment">
-
-              <i class="fa fa-credit-card"></i>
-
-            </div>
-
-            <div class="notification-content">
-
-              <strong>
-                Payment received
-              </strong>
-
-              <p>
-                Payment of $1,250 was received.
-              </p>
-
-              <small>
-                32 minutes ago
-              </small>
-
-            </div>
-
-          </div>
-
-
-          <!-- Notification -->
-
-          <div class="notification-item">
-
-            <div class="notification-icon user">
-
-              <i class="fa fa-user"></i>
-
-            </div>
-
-            <div class="notification-content">
-
-              <strong>
-                New customer registered
-              </strong>
-
-              <p>
-                A new customer joined your agency.
-              </p>
-
-              <small>
-                1 hour ago
-              </small>
-
-            </div>
-
-          </div>
-
-
-          <div class="notification-footer">
-
-            <a routerLink="/notifications">
-              View all notifications
-            </a>
+            <small>
+              5 minutes ago
+            </small>
 
           </div>
 
         </div>
+
+
+        <!-- Notification -->
+
+        <div class="notification-item">
+
+          <div class="notification-icon payment">
+
+            <i class="fa fa-credit-card"></i>
+
+          </div>
+
+          <div class="notification-content">
+
+            <strong>
+              Payment received
+            </strong>
+
+            <p>
+              Payment of $1,250 was received.
+            </p>
+
+            <small>
+              32 minutes ago
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <!-- Notification -->
+
+        <div class="notification-item">
+
+          <div class="notification-icon user">
+
+            <i class="fa fa-user"></i>
+
+          </div>
+
+          <div class="notification-content">
+
+            <strong>
+              New customer registered
+            </strong>
+
+            <p>
+              A new customer joined your agency.
+            </p>
+
+            <small>
+              1 hour ago
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div class="notification-footer">
+
+          <a routerLink="/notifications">
+            View all notifications
+          </a>
+
+        </div>
+
+      </div>
 
       }
 
@@ -221,11 +208,7 @@
     <div class="topbar-dropdown">
 
 
-      <button
-        type="button"
-        class="profile-button"
-        (click)="toggleProfile()"
-      >
+      <button type="button" class="profile-button" (click)="toggleProfile()">
 
         <div class="profile-avatar">
 
@@ -261,93 +244,78 @@
 
       @if (profileOpen) {
 
-        <div class="dropdown-panel profile-panel">
+      <div class="dropdown-panel profile-panel">
 
 
-          <div class="profile-dropdown-header">
+        <div class="profile-dropdown-header">
 
-            <div class="large-avatar">
-              KA
-            </div>
+          <div class="large-avatar">
+            KA
+          </div>
 
-            <div>
+          <div>
 
-              <strong>
-                {{ userName }}
-              </strong>
+            <strong>
+              {{ userName }}
+            </strong>
 
-              <span>
-                admin@shahtraveling.com
-              </span>
-
-            </div>
+            <span>
+              admin@shahtraveling.com
+            </span>
 
           </div>
 
-
-          <div class="dropdown-divider"></div>
-
-
-          <a
-            routerLink="/profile"
-            (click)="profileOpen = false"
-          >
-
-            <i class="fa fa-user"></i>
-
-            <span>
-              My Profile
-            </span>
-
-          </a>
-
-
-          <a
-            routerLink="/settings"
-            (click)="profileOpen = false"
-          >
-
-            <i class="fa fa-cog"></i>
-
-            <span>
-              Account Settings
-            </span>
-
-          </a>
-
-
-          <a
-            routerLink="/notifications"
-            (click)="profileOpen = false"
-          >
-
-            <i class="fa fa-bell"></i>
-
-            <span>
-              Notifications
-            </span>
-
-          </a>
-
-
-          <div class="dropdown-divider"></div>
-
-
-          <button
-            type="button"
-            class="logout-button"
-            (click)="logout()"
-          >
-
-            <i class="fa fa-sign-out"></i>
-
-            <span>
-              Logout
-            </span>
-
-          </button>
-
         </div>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <a routerLink="/profile" (click)="profileOpen = false">
+
+          <i class="fa fa-user"></i>
+
+          <span>
+            My Profile
+          </span>
+
+        </a>
+
+
+        <a routerLink="/settings" (click)="profileOpen = false">
+
+          <i class="fa fa-cog"></i>
+
+          <span>
+            Account Settings
+          </span>
+
+        </a>
+
+
+        <a routerLink="/notifications" (click)="profileOpen = false">
+
+          <i class="fa fa-bell"></i>
+
+          <span>
+            Notifications
+          </span>
+
+        </a>
+
+
+        <div class="dropdown-divider"></div>
+
+
+        <button type="button" class="logout-button" (click)="logout()">
+          <i class="fa fa-sign-out"></i>
+
+          <span>
+            Logout
+          </span>
+        </button>
+
+      </div>
 
       }
 

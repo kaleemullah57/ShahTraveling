@@ -17,6 +17,7 @@ import {
 import {
   AuthService
 } from '../../../Core/Services/auth.service/auth.service';
+import { Button } from '../../components/button/button';
 
 
 @Component({
@@ -26,7 +27,8 @@ import {
 
   imports: [
     CommonModule,
-    RouterLink
+    RouterLink,
+    Button
   ],
 
   templateUrl: './topbar.html',

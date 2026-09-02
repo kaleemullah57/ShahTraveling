@@ -321,17 +321,15 @@
 
           @if (isBranchAdmin) {
 
-            <button
-              type="button"
-              (click)="goToDashboard()">
-
-              <i class="fa-solid fa-gauge-high"></i>
-
-              <span>
-                Dashboard
-              </span>
-
-            </button>
+          <app-button
+  label="Dashboard"
+  variant="ghost"
+  size="medium"
+  type="button"
+  icon="fa-solid fa-gauge-high"
+  iconPosition="left"
+  (clicked)="goToDashboard()">
+</app-button>
 
           }
 
@@ -342,18 +340,15 @@
 
           <div class="dropdown-line"></div>
 
-          <button
-            type="button"
-            class="logout-btn"
-            (click)="logout()">
-
-            <i class="fa-solid fa-right-from-bracket"></i>
-
-            <span>
-              Sign Out
-            </span>
-
-          </button>
+          <app-button
+              label="Sign Out"
+              variant="danger"
+              size="small"
+              type="button"
+              icon="fa-solid fa-right-from-bracket"
+              iconPosition="left"
+              (clicked)="logout()">
+            </app-button>
 
 
         </div>
