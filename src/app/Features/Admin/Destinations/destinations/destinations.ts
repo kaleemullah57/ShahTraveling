@@ -13,16 +13,20 @@ import {
 import { DestinationsService } from '../../Admin Services/Destination Services/destinations-service';
 
 import {
+  AddDestinationRequest,
   Destination
 } from '../../Admin Models/Destinations/destination-model';
+import { FormButton, FormField, forms } from "../../../../Shared/components/Forms/forms/forms";
+import { Button } from '../../../../Shared/components/button/button';
+import { FormsModule } from '@angular/forms';
+import { NotificationService } from '../../../../Core/Services/Notification Services/notification-service';
 
 
 @Component({
   selector: 'app-destinations',
   standalone: true,
   imports: [
-    CommonModule,
-    DatePipe
+    CommonModule, FormsModule, DatePipe, forms, Button
   ],
   templateUrl: './destinations.html',
   styleUrl: './destinations.scss'
@@ -40,6 +44,8 @@ export class DestinationsComponent implements OnInit {
   private readonly cdr = inject(
     ChangeDetectorRef
   );
+  private readonly notificationService =
+  inject(NotificationService);
 
 
   // =====================================================
@@ -181,6 +187,209 @@ export class DestinationsComponent implements OnInit {
 
       });
 
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Add Destinations
+
+
+  formFields: FormField[] = [
+    {
+      key: 'destinationName',
+      label: 'Destination Name',
+      type: 'text',
+      placeholder: 'Enter destination name',
+      required: true
+    },
+
+    {
+      key: 'description',
+      label: 'Description',
+      type: 'textarea',
+      placeholder: 'Enter destination description',
+      required: true
+    },
+
+    {
+      key: 'countryId',
+      label: 'Country ID',
+      type: 'number',
+      placeholder: 'Enter country ID',
+      required: true
+    },
+
+    {
+      key: 'provinceId',
+      label: 'Province ID',
+      type: 'number',
+      placeholder: 'Enter province ID',
+      required: true
+    },
+
+    {
+      key: 'cityId',
+      label: 'City ID',
+      type: 'number',
+      placeholder: 'Enter city ID',
+      required: true
+    },
+
+    {
+      key: 'picturePath',
+      label: 'Destination Images',
+      type: 'file',
+      required: false
+    },
+
+    {
+      key: 'isActive',
+      label: 'Active',
+      type: 'checkbox'
+    }
+  ];
+
+  formButtons: FormButton[] = [
+    {
+      label: 'Add Destination',
+      type: 'submit'
+    },
+    {
+      label: 'Cancel',
+      type: 'reset'
+    }
+  ];
+  destinationModel: AddDestinationRequest = {
+    destinationName: '',
+    description: '',
+    picturePath: [],
+    countryId: 0,
+    provinceId: 0,
+    cityId: 0,
+    isActive: true
+  };
+
+  saving = false;
+
+
+  addDestination(model: AddDestinationRequest): void {
+
+    console.log('🔥 ADD DESTINATION METHOD CALLED');
+    console.log('MODEL:', model);
+
+    this.saving = true;
+    this.errorMessage = '';
+
+    this.destinationsService
+      .addDestination(model)
+      .subscribe({
+
+        // =================================================
+        // SUCCESS
+        // =================================================
+
+        next: (response) => {
+
+          console.log('🔥 API RESPONSE:', response);
+
+          // Stop button loading
+          this.saving = false;
+
+          if (response.status === true) {
+
+            // =============================================
+            // SHOW SUCCESS NOTIFICATION
+            // =============================================
+
+            this.notificationService.success(
+              response.message ||
+              'Destination added successfully.'
+            );
+
+            // =============================================
+            // CLOSE FORM
+            // =============================================
+
+            this.showDestinationForm = false;
+
+            // =============================================
+            // REFRESH DESTINATIONS
+            // =============================================
+
+            this.getDestinations();
+
+            console.log(
+              '✅',
+              response.message
+            );
+
+          } else {
+
+            // =============================================
+            // API RETURNED FAILURE
+            // =============================================
+
+            this.notificationService.error(
+              response.message ||
+              'Unable to add destination.'
+            );
+
+          }
+
+          this.cdr.detectChanges();
+        },
+
+        // =================================================
+        // ERROR
+        // =================================================
+
+        error: (error) => {
+
+          console.error(
+            '🔥 API ERROR:',
+            error
+          );
+
+          // Stop loading even when API fails
+          this.saving = false;
+
+          this.notificationService.error(
+            error?.error?.message ||
+            'Something went wrong while adding destination.'
+          );
+
+          this.cdr.detectChanges();
+        }
+
+      });
+  }
+
+
+
+
+
+  showDestinationForm = false;
+
+  openDestinationForm(): void {
+    this.showDestinationForm = true;
+  }
+
+  closeDestinationForm(): void {
+    this.showDestinationForm = false;
   }
 
 }

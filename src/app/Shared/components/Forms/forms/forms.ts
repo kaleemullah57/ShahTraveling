@@ -19,14 +19,15 @@ export interface FormField {
   label: string;
 
   type:
-    | 'text'
-    | 'number'
-    | 'email'
-    | 'password'
-    | 'textarea'
-    | 'select'
-    | 'checkbox'
-    | 'date';
+  | 'text'
+  | 'number'
+  | 'email'
+  | 'password'
+  | 'textarea'
+  | 'select'
+  | 'checkbox'
+  | 'date'
+  | 'file';
 
   placeholder?: string;
 
@@ -265,6 +266,42 @@ export class forms {
       this.loading
     );
 
+  }
+
+
+
+
+  onFileChange(
+    event: Event,
+    key: string
+  ): void {
+
+    const input =
+      event.target as HTMLInputElement;
+
+    if (!input.files) {
+
+      this.setValue(key, []);
+
+      return;
+
+    }
+
+    const files: File[] =
+      Array.from(input.files);
+
+    this.setValue(key, files);
+  }
+
+
+
+
+  convertValue(fieldType: string, value: any): any {
+    if (fieldType === 'number') {
+      return Number(value);
+    }
+
+    return value;
   }
 
 }

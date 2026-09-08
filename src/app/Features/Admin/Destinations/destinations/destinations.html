@@ -1,86 +1,239 @@
+
 <div class="destinations-container">
 
-  <!-- HEADER -->
-  <div class="page-header">
-    <div>
-      <span class="eyebrow">TRAVEL COLLECTION</span>
-      <h1>Destinations</h1>
-      <p>Discover and manage destinations available in your branch.</p>
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <section class="page-header">
+
+    <div class="header-content">
+
+      <div class="header-eyebrow">
+        <span class="eyebrow-line"></span>
+
+        <span>SHAH TRAVELING AGENCY</span>
+
+        <span class="eyebrow-line"></span>
+      </div>
+
+      <h1>
+        Manage Travel Destinations
+        <span>Your Branch Destinations</span>
+      </h1>
+
+      <p>
+        Add, manage and monitor the travel destinations available
+        for your branch. Keep your destination collection organized
+        and ready for your customers.
+      </p>
+
+      <div class="header-bottom">
+
+        <span class="header-dot"></span>
+
+        <span>
+          MANAGE • ORGANIZE • TRAVEL
+        </span>
+
+        <span class="header-dot"></span>
+
+      </div>
+
     </div>
 
-    <div class="destination-count">
-      <strong>{{ destinations.length }}</strong>
-      <span>Destinations</span>
-    </div>
+  </section>
+
+
+  <!-- =====================================================
+       ADMIN ACTION
+       ===================================================== -->
+
+  <div class="admin-actions">
+
+    <button
+      type="button"
+      class="add-destination-button"
+      (click)="openDestinationForm()">
+
+      <i class="fa fa-plus"></i>
+
+      <span>
+        Add Destination
+      </span>
+
+    </button>
+
   </div>
 
 
-  <!-- LOADING -->
+  <!-- =====================================================
+       ADD DESTINATION FORM
+       ===================================================== -->
+
+  @if (showDestinationForm) {
+
+    <div class="destination-form-wrapper">
+
+      <app-global-form
+        [title]="'Add Destination'"
+        [model]="destinationModel"
+        [fields]="formFields"
+        [buttons]="formButtons"
+        [loading]="saving"
+        (submitForm)="addDestination($event)"
+        (cancelForm)="closeDestinationForm()">
+      </app-global-form>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       DESTINATION COUNT
+       ===================================================== -->
+
+  <div class="destination-toolbar">
+
+    <div class="destination-result">
+
+      <span class="toolbar-label">
+        DESTINATIONS
+      </span>
+
+      <strong>
+        {{ destinations.length }}
+      </strong>
+
+      <span>
+        {{ destinations.length === 1 ? 'Destination' : 'Destinations' }}
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
+
   @if (loading) {
-    <div class="state-box">
+
+    <div class="state-container">
+
       <div class="loader"></div>
-      <h3>Loading destinations...</h3>
-      <p>Preparing your travel collection</p>
+
+      <span>
+        Loading destinations...
+      </span>
+
     </div>
+
   }
 
 
-  <!-- ERROR -->
+  <!-- =====================================================
+       ERROR
+       ===================================================== -->
+
   @if (!loading && errorMessage) {
-    <div class="state-box error-state">
-      <div class="state-icon">!</div>
 
-      <h3>Unable to load destinations</h3>
+    <div class="state-container error-state">
 
-      <p>{{ errorMessage }}</p>
+      <div class="state-icon">
+        !
+      </div>
 
-      <button type="button" (click)="getDestinations()">
+      <h3>
+        Unable to Load Destinations
+      </h3>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="retry-button"
+        (click)="getDestinations()">
+
         Try Again
+
       </button>
+
     </div>
+
   }
 
 
-  <!-- DESTINATIONS -->
-  @if (!loading && destinations.length > 0) {
+  <!-- =====================================================
+       DESTINATION LIST
+       ===================================================== -->
 
-    <div class="destinations-list">
+  @if (!loading && !errorMessage && destinations.length > 0) {
 
-      @for (destination of destinations; track destination.destinationId) {
+    <div class="destination-list">
+
+      @for (destination of destinations; track $index) {
 
         <article class="destination-card">
 
-          <!-- IMAGE GALLERY -->
-          <div class="destination-gallery">
 
-            @if (destination.picturePath?.length) {
+          <!-- =================================================
+               IMAGE
+               ================================================= -->
 
-              @for (
-                picture of destination.picturePath;
-                track picture;
-                let imageIndex = $index
-              ) {
+          <div class="destination-image">
 
-                <div class="gallery-image">
+            @if (
+              destination.picturePath &&
+              destination.picturePath.length > 0
+            ) {
 
-                  <img
-                    [src]="'https://localhost:7298' + picture"
-                    [alt]="destination.destinationName + ' image ' + (imageIndex + 1)"
-                  />
+              <img
+                [src]="'https://localhost:7298' + destination.picturePath[0]"
+                [alt]="destination.destinationName"
+              />
 
-                  <span class="image-number">
-                    {{ imageIndex + 1 }}
-                  </span>
-
-                </div>
-
-              }
-
-            } @else {
+            }
+            @else {
 
               <div class="no-image">
-                <span>✈</span>
-                <p>No image available</p>
+
+                <i class="fa fa-image"></i>
+
+                <span>
+                  No Image
+                </span>
+
+              </div>
+
+            }
+
+
+            <!-- Image overlay -->
+
+            <div class="image-overlay"></div>
+
+
+            <!-- Image count -->
+
+            @if (
+              destination.picturePath &&
+              destination.picturePath.length > 1
+            ) {
+
+              <div class="image-count">
+
+                <i class="fa fa-picture-o"></i>
+
+                <span>
+                  {{ destination.picturePath.length }}
+                  Photos
+                </span>
+
               </div>
 
             }
@@ -88,12 +241,21 @@
           </div>
 
 
-          <!-- CARD CONTENT -->
+          <!-- =================================================
+               CONTENT
+               ================================================= -->
+
           <div class="destination-content">
+
+
+            <!-- =================================================
+                 TOP
+                 ================================================= -->
 
             <div class="destination-top">
 
-              <div>
+              <div class="destination-heading">
+
                 <span class="destination-label">
                   DESTINATION
                 </span>
@@ -101,82 +263,157 @@
                 <h2>
                   {{ destination.destinationName }}
                 </h2>
+
               </div>
 
-              <span
-                class="status"
-                [class.inactive]="!destination.isActive"
-              >
+
+              <!-- STATUS -->
+
+              <div
+                class="status-badge"
+                [class.active]="destination.isActive"
+                [class.inactive]="!destination.isActive">
+
                 <span class="status-dot"></span>
+
                 {{ destination.isActive ? 'Active' : 'Inactive' }}
-              </span>
 
-            </div>
-
-
-            <p class="description">
-              {{ destination.description }}
-            </p>
-
-
-            <!-- LOCATION -->
-            <div class="location-details">
-
-              <div class="location-item">
-                <span class="icon">🌍</span>
-
-                <div>
-                  <small>Country</small>
-                  <strong>{{ destination.countryName }}</strong>
-                </div>
-              </div>
-
-
-              <div class="location-item">
-                <span class="icon">📍</span>
-
-                <div>
-                  <small>Province</small>
-                  <strong>{{ destination.provinceName }}</strong>
-                </div>
-              </div>
-
-
-              <div class="location-item">
-                <span class="icon">🏙</span>
-
-                <div>
-                  <small>City</small>
-                  <strong>{{ destination.cityName }}</strong>
-                </div>
               </div>
 
             </div>
 
 
-            <!-- FOOTER -->
-            <div class="destination-footer">
+            <!-- =================================================
+                 LOCATION
+                 ================================================= -->
 
-              <div class="created-by">
-                <span class="avatar">
-                  {{ destination.createdBy.charAt(0) }}
+            <div class="location">
+
+              <i class="fa fa-map-marker"></i>
+
+              @if (destination.cityName) {
+
+                <span>
+                  {{ destination.cityName }}
                 </span>
 
-                <div>
-                  <small>Created by</small>
-                  <strong>{{ destination.createdBy }}</strong>
+              }
+
+              @if (
+                destination.cityName &&
+                destination.provinceName
+              ) {
+
+                <span>,</span>
+
+              }
+
+              @if (destination.provinceName) {
+
+                <span>
+                  {{ destination.provinceName }}
+                </span>
+
+              }
+
+              @if (
+                (destination.cityName ||
+                destination.provinceName) &&
+                destination.countryName
+              ) {
+
+                <span>,</span>
+
+              }
+
+              @if (destination.countryName) {
+
+                <span>
+                  {{ destination.countryName }}
+                </span>
+
+              }
+
+            </div>
+
+
+            <!-- =================================================
+                 DESCRIPTION
+                 ================================================= -->
+
+            <div class="description-section">
+
+              <span class="section-label">
+                ABOUT THIS DESTINATION
+              </span>
+
+              <p class="description-preview">
+
+                {{ destination.description }}
+
+              </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 ADMIN INFORMATION
+                 ================================================= -->
+
+            <div class="card-bottom">
+
+
+              <div class="destination-meta">
+
+
+                <!-- Created By -->
+
+                <div class="meta-item">
+
+                  <span class="meta-label">
+                    CREATED BY
+                  </span>
+
+                  <strong>
+                    {{ destination.createdBy || 'N/A' }}
+                  </strong>
+
                 </div>
+
+
+                <div class="meta-divider"></div>
+
+
+                <!-- Created On -->
+
+                <div class="meta-item">
+
+                  <span class="meta-label">
+                    CREATED ON
+                  </span>
+
+                  <strong>
+                    {{ destination.createdOn | date:'dd MMM yyyy' }}
+                  </strong>
+
+                </div>
+
+
               </div>
 
 
-              <div class="created-date">
-                <small>Created</small>
-                <strong>
-                  {{ destination.createdOn | date:'dd MMM yyyy' }}
-                </strong>
+              <!-- Admin status -->
+
+              <div class="admin-card-label">
+
+                <span class="admin-label">
+                  ADMIN DESTINATION
+                </span>
+
               </div>
 
             </div>
+
 
           </div>
 
@@ -189,21 +426,43 @@
   }
 
 
-  <!-- EMPTY -->
-  @if (!loading && destinations.length === 0 && !errorMessage) {
+  <!-- =====================================================
+       EMPTY
+       ===================================================== -->
 
-    <div class="state-box">
+  @if (
+    !loading &&
+    !errorMessage &&
+    destinations.length === 0
+  ) {
 
-      <div class="state-icon">✈</div>
+    <div class="state-container empty-state">
 
-      <h3>No Destinations Found</h3>
+      <div class="state-icon">
+        <i class="fa fa-map-o"></i>
+      </div>
+
+      <h3>
+        No Destinations Found
+      </h3>
 
       <p>
-        There are currently no destinations available for this branch.
+        There are currently no destinations available
+        for your branch.
       </p>
+
+      <button
+        type="button"
+        class="retry-button"
+        (click)="openDestinationForm()">
+
+        Add Your First Destination
+
+      </button>
 
     </div>
 
   }
 
 </div>
+```

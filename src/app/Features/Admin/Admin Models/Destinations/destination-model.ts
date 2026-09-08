@@ -45,3 +45,26 @@ export interface DestinationResponse {
   data: Destination[];
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Add Branch Destinations
+export interface AddDestinationRequest {
+  destinationName: string;
+  description: string;
+  picturePath: File[];
+  countryId: number;
+  provinceId: number;
+  cityId: number;
+  isActive: boolean;
+}
