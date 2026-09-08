@@ -26,7 +26,7 @@ import { NotificationService } from '../../../../Core/Services/Notification Serv
   selector: 'app-destinations',
   standalone: true,
   imports: [
-    CommonModule, FormsModule, DatePipe, forms, Button
+    CommonModule, FormsModule, DatePipe, forms
   ],
   templateUrl: './destinations.html',
   styleUrl: './destinations.scss'

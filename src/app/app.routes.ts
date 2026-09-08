@@ -74,6 +74,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./Features/SuperAdmin/Post Category/post-category/post-category')
             .then(m => m.PostCategory)
+      },
+      {
+        path: 'Airlines',
+        loadComponent: () =>
+          import('./Features/SuperAdmin/Airlines/airlines/airlines')
+            .then(m => m.Airlines)
       }
     ]
     },
