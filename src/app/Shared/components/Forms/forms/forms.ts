@@ -7,133 +7,78 @@ import {
 
 import { FormsModule } from '@angular/forms';
 
-
-// =========================================================
-// FORM FIELD
-// =========================================================
-
 export interface FormField {
-
   key: string;
-
   label: string;
 
   type:
-  | 'text'
-  | 'number'
-  | 'email'
-  | 'password'
-  | 'textarea'
-  | 'select'
-  | 'checkbox'
-  | 'date'
-  | 'file';
+    | 'text'
+    | 'number'
+    | 'email'
+    | 'password'
+    | 'textarea'
+    | 'select'
+    | 'checkbox'
+    | 'date'
+    | 'file';
 
   placeholder?: string;
-
   required?: boolean;
-
   disabled?: boolean;
 
   options?: {
     label: string;
     value: any;
   }[];
-
 }
-
-
-// =========================================================
-// FORM BUTTON
-// =========================================================
 
 export interface FormButton {
-
   label: string;
-
   type?: 'submit' | 'button' | 'reset';
-
   style?: 'primary' | 'secondary' | 'danger';
-
   disabled?: boolean;
-
   loading?: boolean;
-
 }
-
-
-// =========================================================
-// COMPONENT
-// =========================================================
 
 @Component({
   selector: 'app-global-form',
-
   standalone: true,
-
-  imports: [
-    FormsModule
-  ],
-
+  imports: [FormsModule],
   templateUrl: './forms.html',
-
   styleUrl: './forms.scss'
 })
 export class forms {
 
+  @Input() model: any = {};
 
-  // =========================================================
-  // INPUTS
-  // =========================================================
+  @Input() fields: FormField[] = [];
 
-  @Input()
-  model: any = {};
+  @Input() buttons: FormButton[] = [];
 
+  @Input() title = '';
 
-  @Input()
-  fields: FormField[] = [];
-
-
-  @Input()
-  buttons: FormButton[] = [];
-
-
-  @Input()
-  title = '';
-
-
-  /**
-   * Parent controls this value.
-   *
-   * Example:
-   *
-   * [loading]="saving"
-   */
-  @Input()
-  loading = false;
+  @Input() loading = false;
 
 
   // =========================================================
   // OUTPUTS
   // =========================================================
 
-  @Output()
-  submitForm =
-    new EventEmitter<any>();
+  @Output() submitForm = new EventEmitter<any>();
 
+  @Output() cancelForm = new EventEmitter<void>();
 
-  @Output()
-  cancelForm =
-    new EventEmitter<void>();
+  @Output() fieldChange = new EventEmitter<{
+    key: string;
+    value: any;
+  }>();
 
 
   // =========================================================
   // GET VALUE
   // =========================================================
 
-  getValue(
-    key: string
-  ): any {
+  getValue(key: string): any {
 
     return this.model?.[key];
 
@@ -150,38 +95,39 @@ export class forms {
   ): void {
 
     if (!this.model) {
-
       this.model = {};
-
     }
 
     this.model[key] = value;
 
+    console.log(
+      '📝 FIELD UPDATED:',
+      key,
+      value
+    );
+
+    this.fieldChange.emit({
+      key,
+      value
+    });
   }
 
 
   // =========================================================
-  // SUBMIT
+  // FORM SUBMIT
   // =========================================================
 
   onSubmit(): void {
 
-    /**
-     * Prevent double submission.
-     */
     if (this.loading) {
-
       return;
-
     }
 
+    console.log(
+      '🚀 GLOBAL FORM MODEL:',
+      this.model
+    );
 
-    /**
-     * Send a copy of the model.
-     *
-     * This prevents unexpected reference
-     * changes while the API request is running.
-     */
     this.submitForm.emit({
       ...this.model
     });
@@ -198,40 +144,23 @@ export class forms {
   ): void {
 
     if (this.loading) {
-
       return;
-
     }
-
 
     if (button.disabled) {
-
       return;
-
     }
-
-
-    // -------------------------------------------------------
-    // CANCEL
-    // -------------------------------------------------------
 
     if (button.type === 'reset') {
 
       this.cancelForm.emit();
 
       return;
-
     }
-
-
-    // -------------------------------------------------------
-    // NORMAL BUTTON
-    // -------------------------------------------------------
 
     if (button.type === 'button') {
 
       return;
-
     }
 
   }
@@ -269,7 +198,9 @@ export class forms {
   }
 
 
-
+  // =========================================================
+  // FILE CHANGE
+  // =========================================================
 
   onFileChange(
     event: Event,
@@ -281,27 +212,114 @@ export class forms {
 
     if (!input.files) {
 
-      this.setValue(key, []);
+      this.setValue(
+        key,
+        []
+      );
 
       return;
-
     }
 
     const files: File[] =
       Array.from(input.files);
 
-    this.setValue(key, files);
+    this.setValue(
+      key,
+      files
+    );
+
   }
 
 
+  // =========================================================
+  // CONVERT VALUE
+  // =========================================================
 
+  convertValue(
+    fieldType: string,
+    value: any
+  ): any {
 
-  convertValue(fieldType: string, value: any): any {
     if (fieldType === 'number') {
+
+      if (
+        value === null ||
+        value === undefined ||
+        value === ''
+      ) {
+
+        return null;
+      }
+
       return Number(value);
     }
 
     return value;
+  }
+
+
+  // =========================================================
+  // SELECT CHANGE
+  // =========================================================
+
+  onSelectChange(
+    key: string,
+    value: any
+  ): void {
+
+    console.log(
+      '🔽 SELECT CHANGE'
+    );
+
+    console.log(
+      'Key:',
+      key
+    );
+
+    console.log(
+      'Raw Value:',
+      value
+    );
+
+
+    // Empty option
+    if (
+      value === '' ||
+      value === null ||
+      value === undefined
+    ) {
+
+      this.setValue(
+        key,
+        null
+      );
+
+      return;
+    }
+
+
+    // Convert dropdown value to number
+    const numericValue =
+      Number(value);
+
+
+    console.log(
+      '🔢 Numeric Value:',
+      numericValue
+    );
+
+
+    this.setValue(
+      key,
+      numericValue
+    );
+
+
+    console.log(
+      '✅ MODEL AFTER SELECT:',
+      this.model
+    );
+
   }
 
 }

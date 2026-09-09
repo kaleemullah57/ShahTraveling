@@ -68,15 +68,13 @@ export class DestinationsComponent implements OnInit {
   // INIT
   // =====================================================
 
-  ngOnInit(): void {
+ ngOnInit(): void {
 
-    console.log(
-      'Destinations Component Initialized'
-    );
+  console.log('🔥 DESTINATIONS COMPONENT CREATED');
+  console.log('🔥 CURRENT URL:', window.location.href);
 
-    this.getDestinations();
-
-  }
+  this.getDestinations();
+}
 
 
   // =====================================================

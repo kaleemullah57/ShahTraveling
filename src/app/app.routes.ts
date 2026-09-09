@@ -64,6 +64,12 @@ export const routes: Routes = [
             .then(m => m.Countries)
       },
       {
+        path: 'Provinces',
+        loadComponent: () =>
+          import('./Features/SuperAdmin/Provinces/provinces/provinces')
+            .then(m => m.Provinces)
+      },
+      {
         path: 'PostTypes',
         loadComponent: () =>
           import('./Features/SuperAdmin/PostTypes/post-type/post-type')

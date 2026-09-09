@@ -8,12 +8,7 @@
       <p>Manage airlines</p>
     </div>
 
-    <app-button
-      type="button"
-      label="Add Airline"
-      icon="fa fa-plus"
-      variant="primary"
-      size="medium"
+    <app-button type="button" label="Add Airline" icon="fa fa-plus" variant="primary" size="medium"
       (clicked)="openAddAirlineForm()">
     </app-button>
 
@@ -23,52 +18,39 @@
   <!-- Add Airline Form -->
   @if (showAddAirlineForm) {
 
-    <div class="airline-form-container">
+  <div class="airline-form-container">
 
-      <div class="form-header">
+    <div class="form-header">
 
-        <div>
-          <h3>Add Airline</h3>
-          <p>Enter airline information</p>
-        </div>
-
-        <app-button
-          type="button"
-          icon="fa fa-times"
-          variant="ghost"
-          size="small"
-          (clicked)="cancelAddAirline()">
-        </app-button>
-
+      <div>
+        <h3>Add Airline</h3>
+        <p>Enter airline information</p>
       </div>
 
-      <app-global-form
-        [model]="airlineModel"
-        [fields]="formFields"
-        [buttons]="formButtons"
-        [loading]="saving"
-        (submitForm)="addAirline($event)"
-        (cancelForm)="cancelAddAirline()">
-      </app-global-form>
+      <app-button type="button" icon="fa fa-times" variant="ghost" size="small" (clicked)="cancelAddAirline()">
+      </app-button>
 
     </div>
+
+<app-global-form
+  [model]="airlineModel"
+  [fields]="formFields"
+  [buttons]="formButtons"
+  [loading]="saving"
+  (submitForm)="addAirline($event)"
+  (cancelForm)="cancelAddAirline()"
+  (fieldChange)="onFieldChange($event)">
+</app-global-form>
+
+  </div>
 
   }
 
 
   <!-- Airlines Table -->
-  <app-data-table
-    [data]="airlines"
-    [columns]="columns"
-    [actions]="actions"
-    [loading]="loading"
-    [totalRecords]="totalRecords"
-    [pageNumber]="pageNumber"
-    [pageSize]="pageSize"
-    (searchChange)="onSearch($event)"
-    (pageChange)="onPageChange($event)"
-    (pageSizeChange)="onPageSizeChange($event)"
-    (action)="onAction($event)">
+  <app-data-table [data]="airlines" [columns]="columns" [actions]="actions" [loading]="loading"
+    [totalRecords]="totalRecords" [pageNumber]="pageNumber" [pageSize]="pageSize" (searchChange)="onSearch($event)"
+    (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)" (action)="onAction($event)">
   </app-data-table>
 
 </div>

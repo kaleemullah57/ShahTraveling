@@ -23,6 +23,7 @@ import { NotificationService } from '../../../../Core/Services/Notification Serv
 import { AddAirlineModel, Airline } from '../../Super Admin Models/Airlines Models/airlines-model';
 import { AirlinesService } from '../../Super Admin Services/Airlines Services/airlines-service';
 import { Button } from "../../../../Shared/components/button/button";
+import { DropdownItem, GlobalDropdownService } from '../../../../Core/Services/Dropdown Services/global-dropdown-service';
 
 
 @Component({
@@ -35,7 +36,7 @@ import { Button } from "../../../../Shared/components/button/button";
     DataTable,
     forms,
     Button
-],
+  ],
 
   templateUrl: './airlines.html',
   styleUrl: './airlines.scss'
@@ -53,7 +54,8 @@ export class Airlines implements OnInit, OnDestroy {
 
 
   constructor(
-    private readonly airlineService: AirlinesService
+    private readonly airlineService: AirlinesService,
+    private readonly GlobalDropDownService: GlobalDropdownService
   ) { }
 
 
@@ -167,7 +169,6 @@ export class Airlines implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.loadAirlines();
-
   }
 
 
@@ -359,6 +360,8 @@ export class Airlines implements OnInit, OnDestroy {
     logoPath: '',
     isActive: true
   };
+  countries: DropdownItem[] = [];
+
   formFields: FormField[] = [
     {
       key: 'airlineName',
@@ -391,9 +394,10 @@ export class Airlines implements OnInit, OnDestroy {
     {
       key: 'countryId',
       label: 'Country',
-      type: 'number',
-      placeholder: 'Enter country ID',
-      required: true
+      type: 'select',
+      placeholder: 'Select Country',
+      required: true,
+      options: []
     },
     {
       key: 'logoPath',
@@ -423,11 +427,16 @@ export class Airlines implements OnInit, OnDestroy {
   ];
   openAddAirlineForm(): void {
     this.showAddAirlineForm = true;
+
+    if (!this.countriesLoaded && !this.countriesLoading) {
+      this.loadCountries();
+    }
   }
 
-  
+
 
   cancelAddAirline(): void {
+
   this.showAddAirlineForm = false;
 
   this.airlineModel = {
@@ -435,10 +444,14 @@ export class Airlines implements OnInit, OnDestroy {
     airlineCode: '',
     iataCode: '',
     icaoCode: '',
-    countryId: null,
+    countryId:
+      this.countries.length > 0
+        ? this.countries[0].value
+        : null,
     logoPath: '',
     isActive: true
   };
+
 }
 
   addAirline(model: AddAirlineModel): void {
@@ -520,4 +533,124 @@ export class Airlines implements OnInit, OnDestroy {
   }
 
 
+
+
+  // =========================================================
+  // LOAD COUNTRIES DROPDOWN
+  // =========================================================
+
+ loadCountries(): void {
+  console.log('🌍 LOAD COUNTRIES CALLED');
+
+  if (this.countriesLoaded || this.countriesLoading) {
+    return;
+  }
+
+  this.countriesLoading = true;
+
+  this.GlobalDropDownService
+    .getCountries()
+    .pipe(
+      finalize(() => {
+        this.countriesLoading = false;
+      })
+    )
+    .subscribe({
+      next: (response) => {
+
+        console.log('🌍 COUNTRIES API RESPONSE:', response);
+
+        if (response?.statusCode === 200) {
+
+          // API returns Value / Text
+          this.countries = (response.data ?? []).map((country: any) => ({
+            value: Number(country.Value),
+            text: country.Text
+          }));
+
+          console.log('🌍 MAPPED COUNTRIES:', this.countries);
+
+          const countryField = this.formFields.find(
+            field => field.key === 'countryId'
+          );
+
+          if (countryField) {
+
+            countryField.options = this.countries.map(country => ({
+              label: country.text,
+              value: country.value
+            }));
+
+            console.log(
+              '🔽 COUNTRY OPTIONS:',
+              countryField.options
+            );
+          }
+
+          this.countriesLoaded = true;
+
+          // Default country
+          if (
+            this.countries.length > 0 &&
+            (
+              this.airlineModel.countryId === null ||
+              this.airlineModel.countryId === undefined
+            )
+          ) {
+            this.airlineModel = {
+              ...this.airlineModel,
+              countryId: this.countries[0].value
+            };
+          }
+
+          // 🔥 VERY IMPORTANT
+          this.cdr.detectChanges();
+
+        } else {
+
+          this.countries = [];
+
+          this.notification.error(
+            response?.message ?? 'Unable to load countries.'
+          );
+        }
+      },
+
+      error: (error) => {
+
+        console.error('❌ GET COUNTRIES ERROR:', error);
+
+        this.countries = [];
+
+        this.notification.error(
+          error?.error?.message ??
+          'Unable to load countries.'
+        );
+      }
+    });
+}
+  countriesLoaded = false;
+  countriesLoading = false;
+
+  onFieldChange(event: {
+    key: string;
+    value: any;
+  }): void {
+
+    console.log(
+      '📌 PARENT FIELD CHANGE:',
+      event
+    );
+
+    this.airlineModel = {
+      ...this.airlineModel,
+      [event.key]: event.value
+    };
+
+    console.log(
+      '📦 AIRLINE MODEL:',
+      this.airlineModel
+    );
+
+  }
 }

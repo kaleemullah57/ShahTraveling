@@ -14,6 +14,7 @@ import { NotificationService } from '../../../../Core/Services/Notification Serv
 export class Countries {
   private readonly countriesService = inject(CountriesService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly notification = inject(NotificationService);
   countries: GetCountry[] = [];
 
   loading = false;
@@ -228,37 +229,60 @@ export class Countries {
 
   addCountry(model: AddCountryModel): void {
 
-    this.saving = true;
+  this.saving = true;
 
-    this.countriesService
-      .addCountry(model)
-      .subscribe({
+  this.countriesService
+    .addCountry(model)
+    .subscribe({
 
-        next: (response) => {
-          this.saving = false;
+      next: (response) => {
 
-          if (response.success) {
+        this.saving = false;
 
-            this.countryModel = {
-              countryName: '',
-              countryCode: '',
-              isActive: true
-            };
+        console.log('ADD COUNTRY RESPONSE:', response);
 
-            this.showAddForm = false;
+        if (response.success) {
 
-            this.loadCountries();
+          // 🔔 SUCCESS NOTIFICATION
+          this.notification.success(
+            response.message ?? 'Country added successfully.'
+          );
 
-            this.cdr.detectChanges();
-          }
-        },
+          this.countryModel = {
+            countryName: '',
+            countryCode: '',
+            isActive: true
+          };
 
-        error: (error) => {
-          this.saving = false;
+          this.showAddForm = false;
 
-          this.cdr.detectChanges();
+          this.loadCountries();
+
+        } else {
+
+          // 🔔 API returned failure
+          this.notification.error(
+            response.message ?? 'Unable to add country.'
+          );
         }
 
-      });
-  }
+        this.cdr.detectChanges();
+      },
+
+      error: (error) => {
+
+        this.saving = false;
+
+        console.error('❌ ADD COUNTRY ERROR:', error);
+
+        this.notification.error(
+          error?.error?.message ??
+          'Something went wrong while adding country.'
+        );
+
+        this.cdr.detectChanges();
+      }
+
+    });
+}
 }

@@ -115,3 +115,80 @@
   }
 
 }
+
+
+
+
+
+
+/* =========================================================
+   SELECT / DROPDOWN
+   ========================================================= */
+
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+
+  background-color: #ffffff;
+  color: #1f2937;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-family: inherit;
+
+  outline: none;
+  box-sizing: border-box;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   SELECT FOCUS
+   ========================================================= */
+
+.form-group select:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+
+/* =========================================================
+   SELECT OPTIONS
+   ========================================================= */
+
+.form-group select option {
+  background-color: #ffffff;
+  color: #1f2937;
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   PLACEHOLDER / DEFAULT OPTION
+   ========================================================= */
+
+.form-group select option:first-child {
+  color: #6b7280;
+}
+
+
+/* =========================================================
+   DISABLED SELECT
+   ========================================================= */
+
+.form-group select:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+
+  cursor: not-allowed;
+}
