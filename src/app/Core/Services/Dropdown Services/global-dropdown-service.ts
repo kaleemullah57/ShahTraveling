@@ -22,12 +22,38 @@ export class GlobalDropdownService {
         private apiService: ApiService
     ) { }
 
+
+    // Countries Dropdown
     getCountries(): Observable<DropdownResponse> {
 
-  return this.apiService.get<DropdownResponse>(
-    'DropDown/GetCountries'
-  );
+        return this.apiService.get<DropdownResponse>(
+            'DropDown/GetCountries'
+        );
 
-}
+    }
+
+
+
+
+    // Provinces Dropdown
+    getProvincesByCountryId(
+        countryId: number
+    ): Observable<DropdownResponse> {
+
+        return this.apiService.get<DropdownResponse>(
+            `DropDown/GetProvincesByCountryId?countryId=${countryId}`
+        );
+    }
+
+
+
+    // Cities Dropdown
+    getCitiesByProvinceId(
+        provinceId: number
+    ): Observable<DropdownResponse> {
+        return this.apiService.get<DropdownResponse>(
+            `DropDown/GetCitiesByProvinceId?provinceId=${provinceId}`
+        );
+    }
 
 }

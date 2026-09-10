@@ -25,61 +25,75 @@ export class DestinationsService {
 
 
   // Add Destinations
- addDestination(
-  model: AddDestinationRequest
-): Observable<any> {
+  addDestination(
+    model: AddDestinationRequest
+  ): Observable<any> {
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-  formData.append(
-    'DestinationName',
-    model.destinationName
-  );
+    formData.append(
+      'DestinationName',
+      model.destinationName
+    );
 
-  formData.append(
-    'Description',
-    model.description
-  );
+    formData.append(
+      'Description',
+      model.description
+    );
 
-  formData.append(
-    'CountryId',
-    model.countryId.toString()
-  );
+    formData.append(
+      'CountryId',
+      model.countryId.toString()
+    );
 
-  formData.append(
-    'ProvinceId',
-    model.provinceId.toString()
-  );
+    formData.append(
+      'ProvinceId',
+      model.provinceId.toString()
+    );
 
-  formData.append(
-    'CityId',
-    model.cityId.toString()
-  );
+    formData.append(
+      'CityId',
+      model.cityId.toString()
+    );
 
-  formData.append(
-    'IsActive',
-    model.isActive.toString()
-  );
+    formData.append(
+      'IsActive',
+      model.isActive.toString()
+    );
 
-  // Multiple pictures
-  if (model.picturePath?.length) {
+    // Multiple pictures
+    if (model.picturePath?.length) {
 
-    model.picturePath.forEach(file => {
+      model.picturePath.forEach(file => {
 
-      formData.append(
-        'PicturePath',
-        file,
-        file.name
-      );
+        formData.append(
+          'PicturePath',
+          file,
+          file.name
+        );
 
-    });
+      });
 
+    }
+
+    return this.apiService.post<any>(
+      'BranchAdmin/AddDestination',
+      formData
+    );
   }
 
-  return this.apiService.post<any>(
-    'BranchAdmin/AddDestination',
-    formData
-  );
-}
 
+
+
+
+
+
+
+
+  // Delete Destinations
+  deleteDestination(destinationId: number): Observable<any> {
+    return this.apiService.delete(
+      `BranchAdmin/DeleteDestination/${destinationId}`
+    );
+  }
 }

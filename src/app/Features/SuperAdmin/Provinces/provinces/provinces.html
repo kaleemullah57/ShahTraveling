@@ -1,57 +1,41 @@
 <div class="provinces-container">
 
-  @if (!showProvinceForm) {
+    @if (!showProvinceForm) {
 
     <div class="page-header">
 
-      <div>
+        <div>
 
-        <h2>Provinces</h2>
+            <h2>Provinces</h2>
 
-        <p>Manage provinces</p>
+            <p>Manage provinces</p>
 
-      </div>
+        </div>
 
-      <button
-        type="button"
-        (click)="openProvinceForm()">
+        <button type="button" (click)="openProvinceForm()">
 
-        + Add Province
+            + Add Province
 
-      </button>
+        </button>
 
     </div>
 
 
-    <app-data-table
-  [data]="provinces"
-  [columns]="columns"
-  [loading]="loading"
-  [pageNumber]="pageNumber"
-  [pageSize]="pageSize"
-  [totalRecords]="totalCount"
-  [showSearch]="true"
-  (searchChange)="onSearch($event)"
-  (pageChange)="onPageChange($event)"
-  (pageSizeChange)="onPageSizeChange($event)">
-</app-data-table>
+    <app-data-table [data]="provinces" [columns]="columns" [loading]="loading" [pageNumber]="pageNumber"
+        [pageSize]="pageSize" [totalRecords]="totalCount" [showSearch]="true" (searchChange)="onSearch($event)"
+        (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)">
+    </app-data-table>
 
-  }
+    }
 
 
-  @if (showProvinceForm) {
+    @if (showProvinceForm) {
 
-    <app-global-form
-      [title]="'Add Province'"
-      [model]="provinceModel"
-      [fields]="formFields"
-      [buttons]="formButtons"
-      [loading]="saving"
-      (submitForm)="addProvince($event)"
-      (cancelForm)="closeProvinceForm()">
+    <app-global-form [title]="'Add Province'" [model]="provinceModel" [fields]="formFields" [buttons]="formButtons"
+        [loading]="saving" (submitForm)="addProvince($event)" (cancelForm)="closeProvinceForm()">
 
     </app-global-form>
 
-  }
+    }
 
 </div>
