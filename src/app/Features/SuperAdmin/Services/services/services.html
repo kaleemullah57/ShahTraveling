@@ -1,0 +1,76 @@
+<div class="services-container">
+
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+
+  <section class="page-header">
+
+    <div>
+      <h2>Services</h2>
+
+      <p>
+        Manage services provided by the agency
+      </p>
+    </div>
+
+    <app-button
+      type="button"
+      label="Add Service"
+      icon="fa fa-plus"
+      variant="primary"
+      size="medium"
+      (clicked)="openAddService()">
+    </app-button>
+
+  </section>
+
+
+  <!-- =====================================================
+       ADD SERVICE FORM
+  ====================================================== -->
+
+  @if (showAddForm) {
+
+    <div class="form-wrapper">
+
+      <app-global-form
+        [title]="'Add Service'"
+        [fields]="formFields"
+        [buttons]="formButtons"
+        [model]="serviceModel"
+        [loading]="saving"
+        (submitForm)="addService($event)"
+        (cancelForm)="cancelAddService()">
+      </app-global-form>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       SERVICES DATA TABLE
+  ====================================================== -->
+
+  <app-data-table
+    [columns]="columns"
+    [data]="services"
+    [loading]="loading"
+    [pageNumber]="currentPage"
+    [pageSize]="pageSize"
+    [totalRecords]="totalRecords"
+
+    [showSearch]="true"
+    [searchPlaceholder]="'Search services...'"
+
+    [showActions]="true"
+    [actions]="actions"
+
+    (searchChange)="onSearch($event)"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+    (actionClick)="onActionClick($event)">
+  </app-data-table>
+
+</div>
