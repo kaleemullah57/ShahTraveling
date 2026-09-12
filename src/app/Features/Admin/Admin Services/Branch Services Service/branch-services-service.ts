@@ -32,13 +32,23 @@ export class BranchServicesService {
 
 
     // Get Branch Services
-   getBranchServices(
-  request: GetBranchServicesRequest
-): Observable<GetBranchServicesResponse> {
+    getBranchServices(
+        request: GetBranchServicesRequest
+    ): Observable<GetBranchServicesResponse> {
 
-  return this.apiservice.post(
-    'BranchAdmin/GetBranchServices',
-    request
-  );
-}
+        return this.apiservice.post(
+            'BranchAdmin/GetBranchServices',
+            request
+        );
+    }
+
+
+
+
+    // Delete Branch Services
+    deleteBranchService(branchServiceId: number): Observable<any> {
+        return this.apiservice.delete(
+            `BranchAdmin/DeleteBranchService/${branchServiceId}`
+        );
+    }
 }

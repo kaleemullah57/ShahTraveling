@@ -43,7 +43,7 @@ import { TableAction, TableColumn, DataTable } from '../../../../Shared/componen
     forms,
     Button,
     DataTable
-],
+  ],
   templateUrl: './branch-services.html',
   styleUrl: './branch-services.scss',
 })
@@ -292,12 +292,6 @@ export class BranchServices implements OnInit {
       )
       .subscribe({
         next: (response) => {
-
-          console.log(
-            'ADD BRANCH SERVICE RESPONSE:',
-            response
-          );
-
           if (
             response?.status === true &&
             response?.statusCode === 200 &&
@@ -309,6 +303,7 @@ export class BranchServices implements OnInit {
               'Branch Service Added Successfully'
             );
 
+            this.loadBranchServices();
             this.branchServiceModel = {
               serviceId: 0,
               branchServiceName: '',
@@ -368,98 +363,234 @@ export class BranchServices implements OnInit {
 
 
 
-onActionClick(event: any): void {
+  onActionClick(event: {
+    action: TableAction;
+    row: any;
+  }): void {
 
-  console.log(
-    'BRANCH SERVICE ACTION:',
-    event
-  );
+    if (event.action?.type === 'edit') {
 
-  if (event.action === 'edit') {
+      const branchService = event.row as BranchService;
 
-    const branchService = event.row as BranchService;
+      // Edit implementation later
+      return;
+    }
 
-    console.log(
-      'EDIT BRANCH SERVICE:',
-      branchService
-    );
+    if (event.action?.type === 'delete') {
 
-    // Edit implementation later
+      const branchService = event.row as BranchService;
+
+      if (!branchService?.branchServiceId) {
+        return;
+      }
+
+      // Don't delete immediately
+      this.selectedBranchServiceId =
+        branchService.branchServiceId;
+
+      this.selectedBranchServiceName =
+        branchService.branchServiceName || 'this branch service';
+
+      this.showDeleteConfirmation = true;
+    }
   }
-}
 
 
   // Get Branch Services
   branchServices: BranchService[] = [];
 
-columns: TableColumn[] = [
-  {
-    key: 'branchServiceName',
-    label: 'Branch Service'
-  },
-  {
-    key: 'serviceName',
-    label: 'Service'
-  },
-  {
-    key: 'branchName',
-    label: 'Branch'
-  },
-  {
-    key: 'userName',
-    label: 'Created By'
-  },
-  {
-    key: 'createdOn',
-    label: 'Created On'
-  },
-  {
-    key: 'isActive',
-    label: 'Status'
+  columns: TableColumn[] = [
+    {
+      key: 'branchServiceName',
+      label: 'Branch Service'
+    },
+    {
+      key: 'serviceName',
+      label: 'Service'
+    },
+    {
+      key: 'branchName',
+      label: 'Branch'
+    },
+    {
+      key: 'userName',
+      label: 'Created By'
+    },
+    {
+      key: 'createdOn',
+      label: 'Created On'
+    },
+    {
+      key: 'isActive',
+      label: 'Status'
+    }
+  ];
+
+  actions: TableAction[] = [
+    {
+      label: 'Edit',
+      icon: 'fa fa-edit',
+      type: 'edit'
+    },
+    {
+      label: 'Delete',
+      icon: 'fa fa-trash',
+      type: 'delete'
+    }
+  ];
+  loading = false;
+
+  totalRecords = 0;
+  pageNumber = 1;
+  pageSize = 10;
+
+  search = '';
+
+
+
+
+
+
+  loadBranchServices(): void {
+
+    this.loading = true;
+
+    const request: GetBranchServicesRequest = {
+      search: this.search?.trim() || '',
+      pageNumber: this.pageNumber,
+      pageSize: this.pageSize
+    };
+
+    this.branchServicesService
+      .getBranchServices(request)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+
+        next: (response) => {
+
+          if (
+            response?.status === true &&
+            response?.statusCode === 200 &&
+            response?.success === true
+          ) {
+
+            this.branchServices = response.data ?? [];
+
+            this.totalRecords = response.totalCount ?? 0;
+
+            return;
+          }
+
+          this.branchServices = [];
+          this.totalRecords = 0;
+
+          if (response?.statusCode !== 404) {
+            this.notificationService.error(
+              response?.message ||
+              'Unable to load branch services.'
+            );
+          }
+        },
+
+        error: (error) => {
+
+          console.log(
+            'GET BRANCH SERVICES ERROR:',
+            error
+          );
+
+          this.branchServices = [];
+          this.totalRecords = 0;
+
+          // Don't show notification here.
+          // Global errorInterceptor handles HTTP errors.
+        }
+
+      });
   }
-];
 
-actions: TableAction[] = [
-  {
-    label: 'Edit',
-    icon: 'fa fa-edit',
-    type: 'edit'
+
+
+  onPageChange(event: any): void {
+
+    this.pageNumber = event.pageNumber;
+    this.pageSize = event.pageSize;
+
+    this.loadBranchServices();
   }
-];
-loading = false;
 
-totalRecords = 0;
-pageNumber = 1;
-pageSize = 10;
+  // onPageChange(pageNumber: number, pageSize: number): void {
 
-search = '';
+  //   this.pageNumber = pageNumber;
+  //   this.pageSize = pageSize;
+
+  //   this.loadBranchServices();
+  // }
+
+  onSearch(searchText: string): void {
+
+    this.search = searchText;
+
+    this.pageNumber = 1;
+
+    this.loadBranchServices();
+  }
 
 
 
 
 
 
-loadBranchServices(): void {
 
-  this.loading = true;
 
-  const request: GetBranchServicesRequest = {
-    search: this.search?.trim() || '',
-    pageNumber: this.pageNumber,
-    pageSize: this.pageSize
-  };
+
+
+
+
+
+
+
+
+
+
+
+  // Delete Services
+  showDeleteConfirmation = false;
+  deleting = false;
+  selectedBranchServiceId: number | null = null;
+  selectedBranchServiceName = '';
+  cancelDelete(): void {
+
+    if (this.deleting) {
+      return;
+    }
+
+    this.showDeleteConfirmation = false;
+    this.selectedBranchServiceId = null;
+    this.selectedBranchServiceName = '';
+  }
+
+  confirmDelete(): void {
+  if (
+    !this.selectedBranchServiceId ||
+    this.deleting
+  ) {
+    return;
+  }
+
+  this.deleting = true;
 
   this.branchServicesService
-    .getBranchServices(request)
-    .pipe(
-      finalize(() => {
-        this.loading = false;
-        this.cdr.detectChanges();
-      })
-    )
+    .deleteBranchService(this.selectedBranchServiceId)
     .subscribe({
-
       next: (response) => {
+
+        this.deleting = false;
 
         if (
           response?.status === true &&
@@ -467,66 +598,41 @@ loadBranchServices(): void {
           response?.success === true
         ) {
 
-          this.branchServices = response.data ?? [];
+          this.notificationService.success(
+            response.message ||
+            'Branch Service Deleted Successfully'
+          );
 
-          this.totalRecords = response.totalCount ?? 0;
+          // Hide popup
+          this.showDeleteConfirmation = false;
+
+          // Clear selected item
+          this.selectedBranchServiceId = null;
+          this.selectedBranchServiceName = '';
+
+          // Reload table
+          this.loadBranchServices();
+
+          this.cdr.detectChanges();
 
           return;
         }
 
-        this.branchServices = [];
-        this.totalRecords = 0;
-
-        if (response?.statusCode !== 404) {
-          this.notificationService.error(
-            response?.message ||
-            'Unable to load branch services.'
-          );
-        }
+        this.notificationService.error(
+          response?.message ||
+          'Branch Service could not be deleted.'
+        );
       },
 
       error: (error) => {
 
+        this.deleting = false;
+
         console.log(
-          'GET BRANCH SERVICES ERROR:',
+          'DELETE BRANCH SERVICE ERROR:',
           error
         );
-
-        this.branchServices = [];
-        this.totalRecords = 0;
-
-        // Don't show notification here.
-        // Global errorInterceptor handles HTTP errors.
       }
-
     });
 }
-
-
-
-onPageChange(event: any): void {
-
-  this.pageNumber = event.pageNumber;
-  this.pageSize = event.pageSize;
-
-  this.loadBranchServices();
 }
-
-// onPageChange(pageNumber: number, pageSize: number): void {
-
-//   this.pageNumber = pageNumber;
-//   this.pageSize = pageSize;
-
-//   this.loadBranchServices();
-// }
-
-onSearch(searchText: string): void {
-
-  this.search = searchText;
-
-  this.pageNumber = 1;
-
-  this.loadBranchServices();
-}
-}
-

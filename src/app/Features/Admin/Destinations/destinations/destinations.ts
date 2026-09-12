@@ -36,11 +36,6 @@ import { Button } from "../../../../Shared/components/button/button";
   styleUrl: './destinations.scss'
 })
 export class DestinationsComponent implements OnInit {
-
-  // =====================================================
-  // SERVICES
-  // =====================================================
-
   private readonly destinationsService = inject(
     DestinationsService
   );
@@ -52,35 +47,17 @@ export class DestinationsComponent implements OnInit {
   private readonly dropdownService = inject(GlobalDropdownService);
 
 
-  // =====================================================
-  // DATA
-  // =====================================================
-
   destinations: Destination[] = [];
   countries: DropdownItem[] = [];
-
-
-  // =====================================================
-  // STATE
-  // =====================================================
 
   loading = false;
 
   errorMessage = '';
-
-
-  // =====================================================
-  // INIT
-  // =====================================================
-
+  
   ngOnInit(): void {
     this.getDestinations();
 
   }
-
-  // =====================================================
-  // GET DESTINATIONS
-  // =====================================================
 
   getDestinations(): void {
 
@@ -88,43 +65,17 @@ export class DestinationsComponent implements OnInit {
 
     this.errorMessage = '';
 
-    // Make loading state visible immediately
     this.cdr.detectChanges();
 
 
     this.destinationsService
       .getDestinations()
       .subscribe({
-
-        // =================================================
-        // SUCCESS
-        // =================================================
-
         next: (response) => {
-
-          console.log(
-            'FULL RESPONSE:',
-            response
-          );
-
-
           if (response.status === true) {
 
             this.destinations =
               response.data || [];
-
-
-            console.log(
-              'DESTINATIONS:',
-              this.destinations
-            );
-
-
-            console.log(
-              'DESTINATIONS LENGTH:',
-              this.destinations.length
-            );
-
           }
           else {
 
@@ -135,51 +86,16 @@ export class DestinationsComponent implements OnInit {
               'Unable to load destinations.';
 
           }
-
-
-          // ===============================================
-          // IMPORTANT
-          // ===============================================
-
           this.loading = false;
-
-
-          console.log(
-            'LOADING:',
-            this.loading
-          );
-
-
-          // Force Angular to update UI
           this.cdr.detectChanges();
 
         },
-
-
-        // =================================================
-        // ERROR
-        // =================================================
-
         error: (error) => {
-
-          console.error(
-            'Destinations API Error:',
-            error
-          );
-
-
           this.destinations = [];
-
-
           this.errorMessage =
             error?.error?.message ||
             'Something went wrong while loading destinations.';
-
-
           this.loading = false;
-
-
-          // Force Angular to update UI
           this.cdr.detectChanges();
 
         }
@@ -201,9 +117,6 @@ export class DestinationsComponent implements OnInit {
 
 
   loadCountries(): void {
-
-    console.log('🌍 LOAD COUNTRIES CALLED');
-
     if (this.countriesLoaded || this.countriesLoading) {
       return;
     }
@@ -220,9 +133,6 @@ export class DestinationsComponent implements OnInit {
       .subscribe({
 
         next: (response) => {
-
-          console.log('🌍 COUNTRIES API RESPONSE:', response);
-
           if (response?.statusCode === 200) {
 
             this.countries = (response.data ?? []).map(
@@ -234,12 +144,6 @@ export class DestinationsComponent implements OnInit {
                   country.Text ?? country.text
               })
             );
-
-            console.log(
-              '🌍 MAPPED COUNTRIES:',
-              this.countries
-            );
-
             this.formFields = this.formFields.map(field => {
 
               if (field.key === 'countryId') {
@@ -271,14 +175,7 @@ export class DestinationsComponent implements OnInit {
         },
 
         error: (error) => {
-
-          console.error(
-            '❌ GET COUNTRIES ERROR:',
-            error
-          );
-
           this.countries = [];
-
           this.notificationService.error(
             error?.error?.message ??
             'Unable to load countries.'
@@ -294,10 +191,6 @@ export class DestinationsComponent implements OnInit {
 
   // Load Provinces DropDown
   loadProvinces(countryId: number): void {
-
-    console.log('🏙️ Loading provinces for CountryId:', countryId);
-
-    // Clear old province selection
     this.destinationModel.provinceId = 0;
 
     this.dropdownService
@@ -305,9 +198,6 @@ export class DestinationsComponent implements OnInit {
       .subscribe({
 
         next: (response) => {
-
-          console.log('🏙️ PROVINCES RESPONSE:', response);
-
           if (response?.statusCode === 200) {
 
             const provinces: DropdownItem[] =
@@ -321,9 +211,6 @@ export class DestinationsComponent implements OnInit {
                   province.Text ??
                   province.text
               }));
-
-            console.log('🏙️ PROVINCES:', provinces);
-
             this.formFields = this.formFields.map(field => {
 
               if (field.key === 'provinceId') {
@@ -343,24 +230,11 @@ export class DestinationsComponent implements OnInit {
               return field;
 
             });
-
-            console.log(
-              '🔥 UPDATED FORM FIELDS:',
-              this.formFields
-            );
-
-            // Force parent + child update
             this.formFields = [...this.formFields];
 
             this.cdr.detectChanges();
 
           } else {
-
-            console.warn(
-              '⚠️ Provinces API returned:',
-              response?.message
-            );
-
             this.formFields = this.formFields.map(field =>
               field.key === 'provinceId'
                 ? {
@@ -376,12 +250,6 @@ export class DestinationsComponent implements OnInit {
         },
 
         error: (error) => {
-
-          console.error(
-            '❌ PROVINCES API ERROR:',
-            error
-          );
-
           this.notificationService.error(
             error?.error?.message ??
             'Unable to load provinces.'
@@ -398,23 +266,11 @@ export class DestinationsComponent implements OnInit {
 
   // Load Cities DropDown
   loadCities(provinceId: number): void {
-
-    console.log(
-      '🏘️ Loading cities for ProvinceId:',
-      provinceId
-    );
-
     this.dropdownService
       .getCitiesByProvinceId(provinceId)
       .subscribe({
 
         next: (response) => {
-
-          console.log(
-            '🏘️ CITIES RESPONSE:',
-            response
-          );
-
           if (response?.statusCode === 200) {
 
             const cities: DropdownItem[] =
@@ -431,11 +287,6 @@ export class DestinationsComponent implements OnInit {
                     city.text
                 })
               );
-
-            console.log(
-              '🏘️ CITIES:',
-              cities
-            );
 
             this.formFields =
               this.formFields.map(field => {
@@ -462,12 +313,6 @@ export class DestinationsComponent implements OnInit {
         },
 
         error: (error) => {
-
-          console.error(
-            '❌ CITIES API ERROR:',
-            error
-          );
-
           this.notificationService.error(
             error?.error?.message ??
             'Unable to load cities.'
@@ -484,20 +329,12 @@ export class DestinationsComponent implements OnInit {
   countriesLoading = false;
 
   onFieldChange(event: { key: string; value: any }): void {
-
-    console.log('🚨 FIELD CHANGE:', event);
-
     if (event.key === 'countryId') {
 
       const countryId = Number(event.value);
-
-      console.log('🌍 COUNTRY ID:', countryId);
-
-      // Reset dependent fields
       this.destinationModel.provinceId = 0;
       this.destinationModel.cityId = 0;
 
-      // Clear old province options immediately
       this.formFields = this.formFields.map(field => {
 
         if (field.key === 'provinceId') {
@@ -521,20 +358,9 @@ export class DestinationsComponent implements OnInit {
     if (event.key === 'provinceId') {
 
       const provinceId = Number(event.value);
-
-      console.log(
-        '🏙️ SELECTED PROVINCE ID:',
-        provinceId
-      );
-
       if (!provinceId) {
         return;
       }
-
-      console.log(
-        '🚀 CALLING LOAD CITIES'
-      );
-
       this.loadCities(provinceId);
     }
   }
@@ -632,9 +458,6 @@ export class DestinationsComponent implements OnInit {
 
   addDestination(model: AddDestinationRequest): void {
 
-    console.log('🔥 ADD DESTINATION METHOD CALLED');
-    console.log('MODEL:', model);
-
     this.saving = true;
     this.errorMessage = '';
 
@@ -642,51 +465,20 @@ export class DestinationsComponent implements OnInit {
       .addDestination(model)
       .subscribe({
 
-        // =================================================
-        // SUCCESS
-        // =================================================
-
         next: (response) => {
-
-          console.log('🔥 API RESPONSE:', response);
-
           // Stop button loading
           this.saving = false;
 
           if (response.status === true) {
-
-            // =============================================
-            // SHOW SUCCESS NOTIFICATION
-            // =============================================
-
             this.notificationService.success(
               response.message ||
               'Destination added successfully.'
             );
-
-            // =============================================
-            // CLOSE FORM
-            // =============================================
-
             this.showDestinationForm = false;
-
-            // =============================================
-            // REFRESH DESTINATIONS
-            // =============================================
 
             this.getDestinations();
 
-            console.log(
-              '✅',
-              response.message
-            );
-
           } else {
-
-            // =============================================
-            // API RETURNED FAILURE
-            // =============================================
-
             this.notificationService.error(
               response.message ||
               'Unable to add destination.'
@@ -696,19 +488,7 @@ export class DestinationsComponent implements OnInit {
 
           this.cdr.detectChanges();
         },
-
-        // =================================================
-        // ERROR
-        // =================================================
-
         error: (error) => {
-
-          console.error(
-            '🔥 API ERROR:',
-            error
-          );
-
-          // Stop loading even when API fails
           this.saving = false;
 
           this.notificationService.error(
@@ -730,11 +510,7 @@ export class DestinationsComponent implements OnInit {
 
 
   openDestinationForm(): void {
-
-    // 1. Open the form
     this.showDestinationForm = true;
-
-    // 2. Wait until Angular creates the form component
     setTimeout(() => {
       this.loadCountries();
     });
@@ -783,7 +559,6 @@ export class DestinationsComponent implements OnInit {
             );
 
             this.getDestinations();
-            // Remove from current UI immediately
             this.destinations = this.destinations.filter(
               destination => destination.destinationId !== destinationId
             );

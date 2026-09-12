@@ -8,7 +8,12 @@
             <p>Manage services provided by your branch</p>
         </div>
 
-        <app-button type="button" label="Add Service" icon="fa fa-plus" variant="primary" size="medium"
+        <app-button
+            type="button"
+            label="Add Service"
+            icon="fa fa-plus"
+            variant="primary"
+            size="medium"
             (clicked)="openAddBranchServiceForm()">
         </app-button>
 
@@ -18,44 +23,124 @@
     <!-- ADD SERVICE FORM -->
     @if (showAddBranchServiceForm) {
 
-    <div class="branch-service-form-container">
+        <div class="branch-service-form-container">
 
-        <div class="form-header">
+            <div class="form-header">
 
-            <div>
-                <h3>Add Branch Service</h3>
-                <p>Select a service and define how your branch provides it.</p>
+                <div>
+                    <h3>Add Branch Service</h3>
+                    <p>
+                        Select a service and define how your branch provides it.
+                    </p>
+                </div>
+
+                <app-button
+                    type="button"
+                    icon="fa fa-times"
+                    variant="ghost"
+                    size="small"
+                    (clicked)="cancelAddBranchService()">
+                </app-button>
+
             </div>
 
-            <app-button type="button" icon="fa fa-times" variant="ghost" size="small"
-                (clicked)="cancelAddBranchService()">
-            </app-button>
+            <app-global-form
+                [title]="'Add Branch Service'"
+                [model]="branchServiceModel"
+                [fields]="formFields"
+                [buttons]="formButtons"
+                [loading]="saving"
+                (submitForm)="addBranchService($event)"
+                (cancelForm)="cancelAddBranchService()">
+            </app-global-form>
 
         </div>
-
-
-        <app-global-form [title]="'Add Branch Service'" [model]="branchServiceModel" [fields]="formFields"
-            [buttons]="formButtons" [loading]="saving" (submitForm)="addBranchService($event)"
-            (cancelForm)="cancelAddBranchService()">
-        </app-global-form>
-    </div>
 
     }
 
 
-  <app-data-table
-    [columns]="columns"
-    [data]="branchServices"
-    [actions]="actions"
-    [loading]="loading"
-    [totalRecords]="totalRecords"
-    [pageNumber]="pageNumber"
-    [pageSize]="pageSize"
+    <!-- DATA TABLE -->
+    <app-data-table
+        [columns]="columns"
+        [data]="branchServices"
+        [actions]="actions"
+        [loading]="loading"
+        [totalRecords]="totalRecords"
+        [pageNumber]="pageNumber"
+        [pageSize]="pageSize"
+        (pageChange)="onPageChange($event)"
+        (searchChange)="onSearch($event)"
+        (actionClick)="onActionClick($event)">
+    </app-data-table>
 
-    (pageChange)="onPageChange($event)"
-    (searchChange)="onSearch($event)"
-    (actionClick)="onActionClick($event)">
-  </app-data-table>
 
+    <!-- =====================================================
+         DELETE CONFIRMATION POPUP
+    ====================================================== -->
+
+    @if (showDeleteConfirmation) {
+
+        <div class="confirmation-overlay">
+
+            <div class="confirmation-modal">
+
+                <!-- ICON -->
+                <div class="confirmation-icon">
+                    <i class="fa fa-trash"></i>
+                </div>
+
+
+                <!-- CONTENT -->
+                <div class="confirmation-content">
+
+                    <h3>
+                        Delete Branch Service?
+                    </h3>
+
+                    <p>
+                        Are you sure you want to delete
+                        <strong>
+                            {{ selectedBranchServiceName }}
+                        </strong>?
+                    </p>
+
+                    <span class="confirmation-warning">
+                        This action cannot be undone.
+                    </span>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+                <div class="confirmation-actions">
+
+                    <app-button
+                        type="button"
+                        label="Cancel"
+                        variant="secondary"
+                        size="medium"
+                        [disabled]="deleting"
+                        (clicked)="cancelDelete()">
+                    </app-button>
+
+
+                    <app-button
+                        type="button"
+                        label="Delete"
+                        icon="fa fa-trash"
+                        variant="danger"
+                        size="medium"
+                        [loading]="deleting"
+                        [disabled]="deleting"
+                        (clicked)="confirmDelete()">
+                    </app-button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    }
 
 </div>
