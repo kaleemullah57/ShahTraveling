@@ -173,49 +173,24 @@
          FORM ACTIONS
          ===================================================== -->
 
-    <div class="form-actions">
 
-      @for (
-      button of buttons;
-      track button.label
-      ) {
+   <div class="form-actions">
 
-      <button [type]="button.type || 'button'" [disabled]="isButtonDisabled(button)"
-        [class.primary]="button.style === 'primary'" [class.secondary]="button.style === 'secondary'"
-        [class.danger]="button.style === 'danger'" (click)="onButtonClick(button)">
+  @for (button of buttons; track button.label) {
 
-        <!-- ===============================================
-               LOADING
-               =============================================== -->
+    <app-button
+      [label]="button.label"
+      [type]="button.type || 'button'"
+      [style]="button.style || 'primary'"
+      [disabled]="isButtonDisabled(button)"
+      [loading]="button.loading || (loading && button.type === 'submit')"
+      (click)="onButtonClick(button)">
+    </app-button>
 
-        @if (loading && button.type === 'submit') {
-
-        <span class="button-loading">
-
-          <i class="fa fa-spinner fa-spin"></i>
-
-          Saving...
-
-        </span>
-
-        }
+  }
 
 
-        <!-- ===============================================
-               NORMAL BUTTON TEXT
-               =============================================== -->
-
-        @else {
-
-        {{ button.label }}
-
-        }
-
-      </button>
-
-      }
-
-    </div>
+</div>
 
   </form>
 

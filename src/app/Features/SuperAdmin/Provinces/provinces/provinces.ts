@@ -9,7 +9,7 @@ import { DataTable, TableColumn } from "../../../../Shared/components/DataTables
 import { DropdownItem, GlobalDropdownService } from '../../../../Core/Services/Dropdown Services/global-dropdown-service';
 @Component({
   selector: 'app-provinces',
-  imports: [FormsModule, forms, DataTable],
+  imports: [FormsModule, forms, DataTable, Button],
   templateUrl: './provinces.html',
   styleUrl: './provinces.scss',
 })

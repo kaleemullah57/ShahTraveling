@@ -2,52 +2,28 @@
 
   @if (!showAddBranchForm) {
 
-    <div class="page-header">
+  <div class="page-header">
 
-      <div>
+    <div>
 
-        <h2>Branches</h2>
+      <h2>Branches</h2>
 
-        <p>Manage branches</p>
-
-      </div>
-
-      <button
-        type="button"
-        (click)="openAddBranchForm()">
-
-        + Add Branch
-
-      </button>
+      <p>Manage branches</p>
 
     </div>
 
+    <app-button type="button" label="Add Branch" icon="fa fa-plus" variant="primary" size="medium"
+      (clicked)="openAddBranchForm()">
+    </app-button>
 
-    <app-data-table
+  </div>
 
-      [data]="branches"
 
-      [columns]="columns"
+  <app-data-table [data]="branches" [columns]="columns" [actions]="actions" [loading]="loading"
+    [pageNumber]="pageNumber" [pageSize]="pageSize" [totalRecords]="totalRecords" [showSearch]="true"
+    (searchChange)="onSearch($event)" (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)">
 
-      [actions]="actions"
-
-      [loading]="loading"
-
-      [pageNumber]="pageNumber"
-
-      [pageSize]="pageSize"
-
-      [totalRecords]="totalRecords"
-
-      [showSearch]="true"
-
-      (searchChange)="onSearch($event)"
-
-      (pageChange)="onPageChange($event)"
-
-      (pageSizeChange)="onPageSizeChange($event)">
-
-    </app-data-table>
+  </app-data-table>
 
   }
 
@@ -55,22 +31,14 @@
   @if (showAddBranchForm) {
 
     <app-global-form
-
-      [title]="'Add Branch'"
-
-      [model]="branchModel"
-
-      [fields]="formFields"
-
-      [buttons]="formButtons"
-
-      [loading]="saving"
-
-      (submitForm)="addBranch($event)"
-
-      (cancelForm)="cancelAddBranch()">
-
-    </app-global-form>
+    [title]="'Add Branch'"
+    [model]="branchModel"
+    [fields]="formFields"
+    [buttons]="formButtons"
+    [loading]="saving"
+    (submitForm)="addBranch($event)"
+    (cancelForm)="cancelAddBranch()">
+  </app-global-form>
 
   }
 

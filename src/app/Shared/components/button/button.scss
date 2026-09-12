@@ -76,7 +76,14 @@
 ================================ */
 
 .button-primary {
-  background: #0f4c81;
+  // background: #0f4c81;
+  background:
+    linear-gradient(
+      135deg,
+      #063d47 0%,
+      #087f8c 48%,
+      #0fa7a7 100%
+    );
   color: #ffffff;
 
   box-shadow: 0 6px 18px rgba(15, 76, 129, 0.20);

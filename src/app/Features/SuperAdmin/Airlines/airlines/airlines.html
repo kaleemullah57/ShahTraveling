@@ -33,14 +33,25 @@
         <p>Enter airline information</p>
       </div>
 
-      <app-button type="button" icon="fa fa-times" variant="ghost" size="small" (clicked)="cancelAddAirline()">
-      </app-button>
+      <app-button
+  type="button"
+  icon="fa fa-times"
+  size="small"
+  variant="primary"
+  (clicked)="cancelAddAirline()">
+</app-button>
 
     </div>
 
-    <app-global-form [model]="airlineModel" [fields]="formFields" [buttons]="formButtons" [loading]="saving"
-      (submitForm)="addAirline($event)" (cancelForm)="cancelAddAirline()" (fieldChange)="onFieldChange($event)">
-    </app-global-form>
+   <app-global-form
+  [model]="airlineModel"
+  [fields]="formFields"
+  [buttons]="formButtons"
+  [loading]="saving"
+  (submitForm)="addAirline($event)"
+  (cancelForm)="cancelAddAirline()"
+  (fieldChange)="onFieldChange($event)">
+</app-global-form>
 
   </div>
 

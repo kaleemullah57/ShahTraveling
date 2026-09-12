@@ -2,53 +2,29 @@
 
   @if (!showAddForm) {
 
-    <div class="page-header">
+  <div class="page-header">
 
-      <div>
-
-        <h2>Countries</h2>
-
-        <p>Manage countries</p>
-
-      </div>
-
-      <button
-        type="button"
-        (click)="openAddCountry()">
-
-        + Add Country
-
-      </button>
-
+    <div>
+      <h2>Countries</h2>
+      <p>Manage countries</p>
     </div>
 
+    <app-button label="+ Add Country" type="button" variant="primary" (click)="openAddCountry()">
+    </app-button>
 
-    <app-data-table
-      [data]="countries"
-      [columns]="columns"
-      [actions]="actions"
-      [loading]="loading"
-      [pageNumber]="1"
-      [pageSize]="20"
-      [totalRecords]="countries.length">
+  </div>
 
-    </app-data-table>
+  <app-data-table [data]="countries" [columns]="columns" [actions]="actions" [loading]="loading" [pageNumber]="1"
+    [pageSize]="20" [totalRecords]="countries.length">
+  </app-data-table>
 
   }
 
-
   @if (showAddForm) {
 
-    <app-global-form
-      [title]="'Add Country'"
-      [model]="countryModel"
-      [fields]="formFields"
-      [buttons]="formButtons"
-      [loading]="saving"
-      (submitForm)="addCountry($event)"
-      (cancelForm)="cancelAddCountry()">
-
-    </app-global-form>
+  <app-global-form [model]="countryModel" [fields]="formFields" [buttons]="formButtons" [loading]="saving"
+    (submitForm)="addCountry($event)" (cancelForm)="cancelAddCountry()">
+  </app-global-form>
 
   }
 

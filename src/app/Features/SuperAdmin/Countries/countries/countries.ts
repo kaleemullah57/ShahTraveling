@@ -5,11 +5,13 @@ import { DataTable, TableAction, TableColumn } from '../../../../Shared/componen
 import { CommonModule } from '@angular/common';
 import { FormButton, FormField, forms } from '../../../../Shared/components/Forms/forms/forms';
 import { NotificationService } from '../../../../Core/Services/Notification Services/notification-service';
+import { Button } from '../../../../Shared/components/button/button';
 @Component({
   selector: 'app-countries',
-  imports: [DataTable, CommonModule, forms],
+  standalone:true,
+  imports: [DataTable, CommonModule, forms,Button],
   templateUrl: './countries.html',
-  styleUrl: './countries.scss',
+  styleUrl: './countries.scss'
 })
 export class Countries {
   private readonly countriesService = inject(CountriesService);

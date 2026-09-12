@@ -12,8 +12,24 @@
 
   width: 100%;
 
-  background: #0F6045;
+  // background: #5273b9;
+  // background:
+  //   linear-gradient(
+  //     180deg,
+  //     #111827 0%,
+  //     #0f172a 100%
+  //   );
 
+   background:
+    linear-gradient(
+      135deg,
+      #063d47 0%,
+      #087f8c 48%,
+      #0fa7a7 100%
+    );
+
+  box-shadow:
+    0 20px 45px rgba(8, 127, 140, 0.20);
   border-bottom:
     1px solid rgba(255, 255, 255, 0.12);
 

@@ -30,6 +30,7 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../../../Core/Services/Notification Services/notification-service';
+import { Button } from '../../../../Shared/components/button/button';
 
 @Component({
   selector: 'app-post-category',
@@ -38,8 +39,9 @@ import { NotificationService } from '../../../../Core/Services/Notification Serv
   imports: [
     DataTable,
     CommonModule,
-    forms
-  ],
+    forms,
+    Button
+],
 
   templateUrl: './post-category.html',
   styleUrl: './post-category.scss'

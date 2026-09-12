@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
+import { Button } from '../../button/button';
 
 export interface FormField {
   key: string;
@@ -43,7 +44,7 @@ export interface FormButton {
 @Component({
   selector: 'app-global-form',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,Button],
   templateUrl: './forms.html',
   styleUrl: './forms.scss'
 })
@@ -135,29 +136,25 @@ export class forms {
 
   onButtonClick(button: FormButton): void {
 
-    if (this.loading) {
-      return;
-    }
-
-    if (button.disabled) {
-      return;
-    }
-
-    // Cancel button
-    if (
-      button.type === 'reset' ||
-      (
-        button.type === 'button' &&
-        button.style === 'secondary'
-      )
-    ) {
-
-      this.cancelForm.emit();
-
-      return;
-    }
-
+  if (this.loading) {
+    return;
   }
+
+  if (button.disabled) {
+    return;
+  }
+
+  if (
+    button.type === 'reset' ||
+    (
+      button.type === 'button' &&
+      button.style === 'secondary'
+    )
+  ) {
+    this.cancelForm.emit();
+    return;
+  }
+}
 
   // =========================================================
   // FIELD DISABLED

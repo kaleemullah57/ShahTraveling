@@ -16,6 +16,7 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { FormButton, FormField, forms } from '../../../../Shared/components/Forms/forms/forms';
+import { Button } from '../../../../Shared/components/button/button';
 
 @Component({
   selector: 'app-post-type',
@@ -23,8 +24,9 @@ import { FormButton, FormField, forms } from '../../../../Shared/components/Form
   imports: [
     DataTable,
     CommonModule,
-    forms
-  ],
+    forms,
+    Button
+],
   templateUrl: './post-type.html',
   styleUrl: './post-type.scss',
 })

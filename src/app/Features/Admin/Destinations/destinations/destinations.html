@@ -50,15 +50,9 @@
 
   <div class="admin-actions">
 
-    <button type="button" class="add-destination-button" (click)="openDestinationForm()">
-
-      <i class="fa fa-plus"></i>
-
-      <span>
-        Add Destination
-      </span>
-
-    </button>
+    <app-button type="button" label="Add Destination" icon="fa fa-plus" variant="primary"
+      (clicked)="openDestinationForm()">
+    </app-button>
 
   </div>
 
@@ -498,25 +492,13 @@
       <!-- Actions -->
       <div class="confirmation-actions">
 
-        <app-button
-          type="button"
-          label="Cancel"
-          variant="secondary"
-          size="small"
-          [disabled]="deleting"
+        <app-button type="button" label="Cancel" variant="secondary" size="small" [disabled]="deleting"
           (clicked)="cancelDeleteDestination()">
         </app-button>
 
 
-        <app-button
-          type="button"
-          label="Delete Destination"
-          icon="fa fa-trash"
-          variant="danger"
-          size="small"
-          [loading]="deleting"
-          [disabled]="deleting"
-          (clicked)="confirmDeleteDestination()">
+        <app-button type="button" label="Delete Destination" icon="fa fa-trash" variant="danger" size="small"
+          [loading]="deleting" [disabled]="deleting" (clicked)="confirmDeleteDestination()">
         </app-button>
 
       </div>
@@ -525,6 +507,6 @@
 
   </div>
 
-}
+  }
 
 </div>

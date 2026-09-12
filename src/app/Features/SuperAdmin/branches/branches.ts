@@ -18,6 +18,7 @@ import { AddBranchModel } from '../Super Admin Models/BranchModels/branch-model'
 import { FormsModule } from '@angular/forms';
 import { FormButton, FormField, forms } from '../../../Shared/components/Forms/forms/forms';
 import { NotificationService } from '../../../Core/Services/Notification Services/notification-service';
+import { Button } from '../../../Shared/components/button/button';
 
 @Component({
   selector: 'app-branches',
@@ -26,8 +27,8 @@ import { NotificationService } from '../../../Core/Services/Notification Service
   imports: [
     DataTable,
     FormsModule,
-    forms
-
+    forms,
+    Button
   ],
   templateUrl: './branches.html',
   styleUrl: './branches.scss'
@@ -37,9 +38,6 @@ export class Branches implements OnInit, OnDestroy {
   private readonly apiService = inject(ApiService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly notification = inject(NotificationService);
-  // =========================================================
-  // TABLE STATE
-  // =========================================================
 
   loading = false;
 
@@ -80,9 +78,6 @@ export class Branches implements OnInit, OnDestroy {
   ];
 
 
-  // =========================================================
-  // TABLE ACTIONS
-  // =========================================================
 
   actions: TableAction[] = [
 
@@ -105,22 +100,10 @@ export class Branches implements OnInit, OnDestroy {
     }
 
   ];
-
-
-  // =========================================================
-  // INIT
-  // =========================================================
-
   ngOnInit(): void {
     this.loadBranches();
 
   }
-
-
-  // =========================================================
-  // DESTROY
-  // =========================================================
-
   ngOnDestroy(): void {
 
     console.log(
@@ -129,11 +112,6 @@ export class Branches implements OnInit, OnDestroy {
     );
 
   }
-
-
-  // =========================================================
-  // LOAD BRANCHES
-  // =========================================================
 
   loadBranches(): void {
     this.loading = true;
@@ -159,13 +137,6 @@ export class Branches implements OnInit, OnDestroy {
         finalize(() => {
 
           this.loading = false;
-
-          // console.log('🏁 REQUEST FINISHED', {
-          //   loading: this.loading,
-          //   branches: this.branches.length,
-          //   totalRecords: this.totalRecords
-          // });
-
           this.cdr.detectChanges();
 
         })
@@ -244,38 +215,13 @@ export class Branches implements OnInit, OnDestroy {
 
   private viewBranch(row: any): void {
 
-    console.log(
-      '👁 View Branch:',
-      row
-    );
-
   }
-
-
-  // =========================================================
-  // EDIT
-  // =========================================================
 
   private editBranch(row: any): void {
 
-    console.log(
-      '✏️ Edit Branch:',
-      row
-    );
-
   }
-
-
-  // =========================================================
-  // DELETE
-  // =========================================================
-
   private deleteBranch(row: any): void {
 
-    console.log(
-      '🗑 Delete Branch:',
-      row
-    );
 
   }
 
@@ -285,15 +231,15 @@ export class Branches implements OnInit, OnDestroy {
 
 
 
-showAddBranchForm = false;
+  showAddBranchForm = false;
 
-openAddBranchForm(): void {
-  this.showAddBranchForm = true;
-}
+  openAddBranchForm(): void {
+    this.showAddBranchForm = true;
+  }
 
-cancelAddBranch(): void {
-  this.showAddBranchForm = false;
-}
+  cancelAddBranch(): void {
+    this.showAddBranchForm = false;
+  }
   // Add Branches
   branchModel: AddBranchModel = {
     branchName: '',
@@ -302,7 +248,6 @@ cancelAddBranch(): void {
   };
   saving = false;
 
-  // Add Branches Object
   addBranch(model: AddBranchModel): void {
 
     const payload: AddBranchModel = {
@@ -317,8 +262,8 @@ cancelAddBranch(): void {
 
     this.saving = false;
 
-      // Hide form
-      this.showAddBranchForm = false;
+    // Hide form
+    this.showAddBranchForm = false;
 
 
     this.apiService
@@ -363,12 +308,12 @@ cancelAddBranch(): void {
 
         error: (error) => {
 
-  console.error(
-    '❌ ADD BRANCH ERROR:',
-    error
-  );
+          console.error(
+            '❌ ADD BRANCH ERROR:',
+            error
+          );
 
-}
+        }
       });
 
   }
