@@ -35,64 +35,29 @@ export class Destinations implements OnInit {
   private readonly cdr =
     inject(ChangeDetectorRef);
 
-
-  // ============================================================
-  // DESTINATION DATA
-  // ============================================================
-
   destinations: GetPublicDestinationModel[] = [];
 
   selectedDestination:
     GetPublicDestinationModel | null = null;
 
-
-  // ============================================================
-  // SEARCH
-  // ============================================================
-
   searchText = '';
 
   searchedText = '';
 
-
-  // ============================================================
-  // SORT
-  // ============================================================
-
   sortOption = 'default';
-
-
-  // ============================================================
-  // STATES
-  // ============================================================
 
   loading = false;
 
   errorMessage = '';
 
-
-  // ============================================================
-  // API BASE URL
-  // ============================================================
-
   readonly apiBaseUrl =
     environment.apiUrl.replace('/api', '');
-
-
-  // ============================================================
-  // INIT
-  // ============================================================
 
   ngOnInit(): void {
 
     this.getDestinations();
 
   }
-
-
-  // ============================================================
-  // GET DESTINATIONS
-  // ============================================================
 
   getDestinations(search?: string): void {
 
@@ -122,13 +87,6 @@ export class Destinations implements OnInit {
       .subscribe({
 
         next: (response: PublicDestinationResponse) => {
-
-          console.log(
-            'Destination API Response:',
-            response
-          );
-
-
           if (response.status === true) {
 
             this.destinations =
@@ -181,11 +139,6 @@ export class Destinations implements OnInit {
 
   }
 
-
-  // ============================================================
-  // SEARCH
-  // ============================================================
-
   searchDestinations(): void {
 
     const search =
@@ -207,11 +160,6 @@ export class Destinations implements OnInit {
 
   }
 
-
-  // ============================================================
-  // SEARCH ENTER
-  // ============================================================
-
   onSearchKeydown(
     event: KeyboardEvent
   ): void {
@@ -227,10 +175,6 @@ export class Destinations implements OnInit {
   }
 
 
-  // ============================================================
-  // CLEAR SEARCH
-  // ============================================================
-
   clearSearch(): void {
 
     this.searchText = '';
@@ -242,10 +186,6 @@ export class Destinations implements OnInit {
   }
 
 
-  // ============================================================
-  // SORT
-  // ============================================================
-
   onSortChange(): void {
 
     this.applySort();
@@ -253,13 +193,7 @@ export class Destinations implements OnInit {
   }
 
 
-  // ============================================================
-  // APPLY SORT
-  // ============================================================
-
  private applySort(): void {
-
-  // Default = API order
   if (this.sortOption === 'default') {
     return;
   }
@@ -281,9 +215,6 @@ export class Destinations implements OnInit {
   }
 }
 
-  // ============================================================
-  // IMAGE URL
-  // ============================================================
 
   getImageUrl(
     path: string | null | undefined
@@ -309,10 +240,6 @@ export class Destinations implements OnInit {
   }
 
 
-  // ============================================================
-  // IMAGE ERROR
-  // ============================================================
-
   imageError(event: Event): void {
 
     const image =
@@ -322,10 +249,6 @@ export class Destinations implements OnInit {
 
   }
 
-
-  // ============================================================
-  // OPEN DESTINATION
-  // ============================================================
 
   openDestination(
     destination: GetPublicDestinationModel
@@ -344,10 +267,6 @@ export class Destinations implements OnInit {
   }
 
 
-  // ============================================================
-  // CLOSE DESTINATION
-  // ============================================================
-
   closeDestination(): void {
 
     this.selectedDestination = null;
@@ -359,9 +278,6 @@ export class Destinations implements OnInit {
   }
 
 
-  // ============================================================
-  // ESCAPE KEY
-  // ============================================================
 
   onKeyDown(
     event: KeyboardEvent
