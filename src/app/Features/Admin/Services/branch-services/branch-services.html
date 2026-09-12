@@ -43,15 +43,19 @@
     }
 
 
-    <!-- TABLE WILL COME HERE -->
-    <!--
   <app-data-table
-      [data]="branchServices"
-      [columns]="columns"
-      [actions]="actions"
-      ...
-  >
+    [columns]="columns"
+    [data]="branchServices"
+    [actions]="actions"
+    [loading]="loading"
+    [totalRecords]="totalRecords"
+    [pageNumber]="pageNumber"
+    [pageSize]="pageSize"
+
+    (pageChange)="onPageChange($event)"
+    (searchChange)="onSearch($event)"
+    (actionClick)="onActionClick($event)">
   </app-data-table>
-  -->
+
 
 </div>

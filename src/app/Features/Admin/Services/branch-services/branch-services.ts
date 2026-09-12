@@ -4,7 +4,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import {
-  AddBranchServiceRequest
+  AddBranchServiceRequest,
+  BranchService,
+  GetBranchServicesRequest
 } from '../../Admin Models/Branch Services Models/branch-services-model';
 
 import {
@@ -29,6 +31,7 @@ import {
   Button
 } from '../../../../Shared/components/button/button';
 import { finalize } from 'rxjs';
+import { TableAction, TableColumn, DataTable } from '../../../../Shared/components/DataTables/data-table/data-table';
 
 
 @Component({
@@ -38,8 +41,9 @@ import { finalize } from 'rxjs';
     CommonModule,
     FormsModule,
     forms,
-    Button
-  ],
+    Button,
+    DataTable
+],
   templateUrl: './branch-services.html',
   styleUrl: './branch-services.scss',
 })
@@ -140,6 +144,7 @@ export class BranchServices implements OnInit {
 
 
   ngOnInit(): void {
+    this.loadBranchServices();
   }
 
   loadServices(): void {
@@ -332,4 +337,196 @@ export class BranchServices implements OnInit {
 
       });
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+onActionClick(event: any): void {
+
+  console.log(
+    'BRANCH SERVICE ACTION:',
+    event
+  );
+
+  if (event.action === 'edit') {
+
+    const branchService = event.row as BranchService;
+
+    console.log(
+      'EDIT BRANCH SERVICE:',
+      branchService
+    );
+
+    // Edit implementation later
+  }
 }
+
+
+  // Get Branch Services
+  branchServices: BranchService[] = [];
+
+columns: TableColumn[] = [
+  {
+    key: 'branchServiceName',
+    label: 'Branch Service'
+  },
+  {
+    key: 'serviceName',
+    label: 'Service'
+  },
+  {
+    key: 'branchName',
+    label: 'Branch'
+  },
+  {
+    key: 'userName',
+    label: 'Created By'
+  },
+  {
+    key: 'createdOn',
+    label: 'Created On'
+  },
+  {
+    key: 'isActive',
+    label: 'Status'
+  }
+];
+
+actions: TableAction[] = [
+  {
+    label: 'Edit',
+    icon: 'fa fa-edit',
+    type: 'edit'
+  }
+];
+loading = false;
+
+totalRecords = 0;
+pageNumber = 1;
+pageSize = 10;
+
+search = '';
+
+
+
+
+
+
+loadBranchServices(): void {
+
+  this.loading = true;
+
+  const request: GetBranchServicesRequest = {
+    search: this.search?.trim() || '',
+    pageNumber: this.pageNumber,
+    pageSize: this.pageSize
+  };
+
+  this.branchServicesService
+    .getBranchServices(request)
+    .pipe(
+      finalize(() => {
+        this.loading = false;
+        this.cdr.detectChanges();
+      })
+    )
+    .subscribe({
+
+      next: (response) => {
+
+        if (
+          response?.status === true &&
+          response?.statusCode === 200 &&
+          response?.success === true
+        ) {
+
+          this.branchServices = response.data ?? [];
+
+          this.totalRecords = response.totalCount ?? 0;
+
+          return;
+        }
+
+        this.branchServices = [];
+        this.totalRecords = 0;
+
+        if (response?.statusCode !== 404) {
+          this.notificationService.error(
+            response?.message ||
+            'Unable to load branch services.'
+          );
+        }
+      },
+
+      error: (error) => {
+
+        console.log(
+          'GET BRANCH SERVICES ERROR:',
+          error
+        );
+
+        this.branchServices = [];
+        this.totalRecords = 0;
+
+        // Don't show notification here.
+        // Global errorInterceptor handles HTTP errors.
+      }
+
+    });
+}
+
+
+
+onPageChange(event: any): void {
+
+  this.pageNumber = event.pageNumber;
+  this.pageSize = event.pageSize;
+
+  this.loadBranchServices();
+}
+
+// onPageChange(pageNumber: number, pageSize: number): void {
+
+//   this.pageNumber = pageNumber;
+//   this.pageSize = pageSize;
+
+//   this.loadBranchServices();
+// }
+
+onSearch(searchText: string): void {
+
+  this.search = searchText;
+
+  this.pageNumber = 1;
+
+  this.loadBranchServices();
+}
+}
+
