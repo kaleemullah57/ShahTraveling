@@ -56,4 +56,19 @@ export class GlobalDropdownService {
         );
     }
 
+
+
+    // Services DropDown
+
+    getServicesDropDown(search?: string): Observable<any> {
+
+        let endpoint = 'DropDown/GetServicesDropDown';
+
+        if (search?.trim()) {
+            endpoint += `?search=${encodeURIComponent(search.trim())}`;
+        }
+
+        return this.apiService.get(endpoint);
+    }
+
 }

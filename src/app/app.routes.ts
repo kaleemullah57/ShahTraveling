@@ -115,6 +115,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./Features/Admin/Destinations/destinations/destinations')
             .then(m => m.DestinationsComponent)
+      },
+      {
+        path: 'BranchService',
+        loadComponent: () =>
+          import('./Features/Admin/Services/branch-services/branch-services')
+            .then(m => m.BranchServices)
       }
     ]
   }

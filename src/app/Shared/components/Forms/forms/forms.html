@@ -188,13 +188,7 @@
                LOADING
                =============================================== -->
 
-        @if (
-        button.loading ||
-        (
-        loading &&
-        button.type === 'submit'
-        )
-        ) {
+        @if (loading && button.type === 'submit') {
 
         <span class="button-loading">
 

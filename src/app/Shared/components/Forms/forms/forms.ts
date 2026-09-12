@@ -12,15 +12,15 @@ export interface FormField {
   label: string;
 
   type:
-    | 'text'
-    | 'number'
-    | 'email'
-    | 'password'
-    | 'textarea'
-    | 'select'
-    | 'checkbox'
-    | 'date'
-    | 'file';
+  | 'text'
+  | 'number'
+  | 'email'
+  | 'password'
+  | 'textarea'
+  | 'select'
+  | 'checkbox'
+  | 'date'
+  | 'file';
 
   placeholder?: string;
   required?: boolean;
@@ -133,9 +133,7 @@ export class forms {
   // BUTTON CLICK
   // =========================================================
 
-  onButtonClick(
-    button: FormButton
-  ): void {
+  onButtonClick(button: FormButton): void {
 
     if (this.loading) {
       return;
@@ -145,20 +143,21 @@ export class forms {
       return;
     }
 
-    if (button.type === 'reset') {
+    // Cancel button
+    if (
+      button.type === 'reset' ||
+      (
+        button.type === 'button' &&
+        button.style === 'secondary'
+      )
+    ) {
 
       this.cancelForm.emit();
 
       return;
     }
 
-    if (button.type === 'button') {
-
-      return;
-    }
-
   }
-
 
   // =========================================================
   // FIELD DISABLED

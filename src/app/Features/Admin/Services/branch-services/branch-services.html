@@ -1,0 +1,57 @@
+<div class="branch-services-container">
+
+    <!-- HEADER -->
+    <div class="page-header">
+
+        <div>
+            <h2>Branch Services</h2>
+            <p>Manage services provided by your branch</p>
+        </div>
+
+        <app-button type="button" label="Add Service" icon="fa fa-plus" variant="primary" size="medium"
+            (clicked)="openAddBranchServiceForm()">
+        </app-button>
+
+    </div>
+
+
+    <!-- ADD SERVICE FORM -->
+    @if (showAddBranchServiceForm) {
+
+    <div class="branch-service-form-container">
+
+        <div class="form-header">
+
+            <div>
+                <h3>Add Branch Service</h3>
+                <p>Select a service and define how your branch provides it.</p>
+            </div>
+
+            <app-button type="button" icon="fa fa-times" variant="ghost" size="small"
+                (clicked)="cancelAddBranchService()">
+            </app-button>
+
+        </div>
+
+
+        <app-global-form [title]="'Add Branch Service'" [model]="branchServiceModel" [fields]="formFields"
+            [buttons]="formButtons" [loading]="saving" (submitForm)="addBranchService($event)"
+            (cancelForm)="cancelAddBranchService()">
+        </app-global-form>
+    </div>
+
+    }
+
+
+    <!-- TABLE WILL COME HERE -->
+    <!--
+  <app-data-table
+      [data]="branchServices"
+      [columns]="columns"
+      [actions]="actions"
+      ...
+  >
+  </app-data-table>
+  -->
+
+</div>
