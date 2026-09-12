@@ -19,6 +19,7 @@ import { NotificationService } from '../../../../Core/Services/Notification Serv
 
 import {
   AddServiceRequest,
+  EditServiceRequest,
   ServicesModel
 } from '../../Super Admin Models/Services Models/services-model';
 
@@ -327,13 +328,6 @@ export class Services {
   }
 
 
-  editService(service: ServicesModel): void {
-
-
-    // Edit API can be added here.
-  }
-
-
   // =========================================================
   // OPEN ADD FORM
   // =========================================================
@@ -490,4 +484,167 @@ export class Services {
 
       });
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Edit Services
+  editModel: EditServiceRequest = {
+    serviceId: 0,
+    serviceName: '',
+    description: '',
+    isActive: true
+  };
+
+  showEditForm = false;
+  editService(service: ServicesModel): void {
+
+    console.log('✏️ EDIT SERVICE:', service);
+
+    this.editModel = {
+      serviceId: service.serviceId,
+      serviceName: service.serviceName,
+      description: service.description ?? '',
+      isActive: service.isActive
+    };
+
+    this.showEditForm = true;
+
+  }
+
+
+  editFormFields: FormField[] = [
+
+    {
+      key: 'serviceName',
+      label: 'Service Name',
+      type: 'text',
+      placeholder: 'Enter service name',
+      required: true
+    },
+
+    {
+      key: 'description',
+      label: 'Description',
+      type: 'textarea',
+      placeholder: 'Enter service description',
+      required: false
+    },
+
+    {
+      key: 'isActive',
+      label: 'Active',
+      type: 'checkbox'
+    }
+
+  ];
+
+  editFormButtons: FormButton[] = [
+
+    {
+      label: 'Cancel',
+      type: 'reset',
+      style: 'secondary'
+    },
+
+    {
+      label: 'Update Service',
+      type: 'submit',
+      style: 'primary'
+    }
+
+  ];
+
+  updateService(model: EditServiceRequest): void {
+
+    console.log('🔥 UPDATE SERVICE:', model);
+
+    this.saving = true;
+
+    this.servicesService
+      .editService(model)
+      .subscribe({
+
+        next: (response) => {
+
+          console.log(
+            '✅ UPDATE SERVICE RESPONSE:',
+            response
+          );
+
+          this.saving = false;
+
+          if (response.status === true) {
+
+            this.notificationService.success(
+              response.message
+            );
+
+            this.showEditForm = false;
+
+            this.loadServices();
+
+          }
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (error) => {
+
+          console.error(
+            '❌ UPDATE SERVICE ERROR:',
+            error
+          );
+
+          this.saving = false;
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+
+  }
+
+  cancelEditService(): void {
+
+    this.showEditForm = false;
+
+    this.editModel = {
+      serviceId: 0,
+      serviceName: '',
+      description: '',
+      isActive: true
+    };
+
+  }
+
 }

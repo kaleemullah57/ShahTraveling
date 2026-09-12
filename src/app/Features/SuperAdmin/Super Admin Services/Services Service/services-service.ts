@@ -1,6 +1,6 @@
 import { Inject, Injectable, Service } from '@angular/core';
 import { ApiService } from '../../../../Core/Services/API Services/api-service';
-import { AddServiceRequest } from '../../Super Admin Models/Services Models/services-model';
+import { AddServiceRequest, EditServiceRequest } from '../../Super Admin Models/Services Models/services-model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -50,6 +50,21 @@ export class ServicesService {
 
         return this.apiService.delete(
             `${this.endpoint}/DeleteService/${serviceId}`
+        );
+    }
+
+
+
+
+
+    // Edit Services
+    editService(
+        model: EditServiceRequest
+    ): Observable<any> {
+
+        return this.apiService.put(
+            `${this.endpoint}/EditService`,
+            model
         );
 
     }

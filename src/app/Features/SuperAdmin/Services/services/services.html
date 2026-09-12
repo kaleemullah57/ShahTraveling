@@ -49,6 +49,27 @@
   }
 
 
+  @if (showEditForm) {
+
+  <div class="form-wrapper">
+
+    <app-global-form
+      [title]="'Edit Service'"
+      [fields]="editFormFields"
+      [buttons]="editFormButtons"
+      [model]="editModel"
+      [loading]="saving"
+
+      (submitForm)="updateService($event)"
+      (cancelForm)="cancelEditService()">
+
+    </app-global-form>
+
+  </div>
+
+}
+
+
   <!-- =====================================================
        SERVICES DATA TABLE
   ====================================================== -->

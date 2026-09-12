@@ -23,3 +23,15 @@ export interface AddServiceRequest {
     description: string;
     isActive: boolean;
 }
+
+
+
+
+// Edit Service
+export interface EditServiceRequest {
+  serviceId: number;
+  serviceName: string;
+  description: string;
+  isActive: boolean;
+}
+
