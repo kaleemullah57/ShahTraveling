@@ -65,6 +65,6 @@ export interface AddDestinationRequest {
   picturePath: File[];
   countryId: number;
   provinceId: number;
-  cityId?: number;
+  cityId: number;
   isActive: boolean;
 }

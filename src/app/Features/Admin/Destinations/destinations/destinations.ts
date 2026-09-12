@@ -533,53 +533,100 @@ export class DestinationsComponent implements OnInit {
 
 
   // Delete Destintions
-  deleteDestination(destinationId: number): void {
+  showDeleteConfirmation = false;
+deleting = false;
 
-    if (!destinationId) {
-      return;
-    }
+selectedDestinationId: number | null = null;
+selectedDestinationName = '';
 
-    const confirmed = confirm(
-      'Are you sure you want to delete this destination?'
-    );
+deleteDestination(destinationId: number): void {
 
-    if (!confirmed) {
-      return;
-    }
-
-    this.destinationsService
-      .deleteDestination(destinationId)
-      .subscribe({
-        next: (response) => {
-
-          if (response?.success) {
-
-            this.notificationService.success(
-              response.message || 'Destination deleted successfully'
-            );
-
-            this.getDestinations();
-            this.destinations = this.destinations.filter(
-              destination => destination.destinationId !== destinationId
-            );
-
-          } else {
-
-            this.notificationService.error(
-              response?.message || 'Unable to delete destination'
-            );
-          }
-        },
-
-        error: (error) => {
-
-          console.error('Delete destination error:', error);
-
-          this.notificationService.error(
-            error?.error?.message ||
-            'Unable to delete destination'
-          );
-        }
-      });
+  if (!destinationId) {
+    return;
   }
+
+  const destination = this.destinations.find(
+    x => x.destinationId === destinationId
+  );
+
+  if (!destination) {
+    return;
+  }
+
+  this.selectedDestinationId = destinationId;
+  this.selectedDestinationName = destination.destinationName;
+
+  this.showDeleteConfirmation = true;
+}
+cancelDeleteDestination(): void {
+
+  if (this.deleting) {
+    return;
+  }
+
+  this.showDeleteConfirmation = false;
+  this.selectedDestinationId = null;
+  this.selectedDestinationName = '';
+}
+confirmDeleteDestination(): void {
+
+  if (!this.selectedDestinationId || this.deleting) {
+    return;
+  }
+
+  this.deleting = true;
+
+  const destinationId = this.selectedDestinationId;
+
+  this.destinationsService
+    .deleteDestination(destinationId)
+    .subscribe({
+
+      next: (response) => {
+
+        this.deleting = false;
+
+        if (response?.success) {
+
+          this.notificationService.success(
+            response.message || 'Destination deleted successfully'
+          );
+
+          // Remove immediately from UI
+          this.destinations = this.destinations.filter(
+            destination =>
+              destination.destinationId !== destinationId
+          );
+
+          // Close popup
+          this.showDeleteConfirmation = false;
+
+          this.selectedDestinationId = null;
+          this.selectedDestinationName = '';
+
+          return;
+        }
+
+        this.notificationService.error(
+          response?.message || 'Unable to delete destination'
+        );
+      },
+
+      error: (error) => {
+
+        this.deleting = false;
+
+        console.error(
+          'Delete destination error:',
+          error
+        );
+
+        // Keep popup open so user can try again
+        this.notificationService.error(
+          error?.error?.message ||
+          'Unable to delete destination'
+        );
+      }
+    });
+}
 }

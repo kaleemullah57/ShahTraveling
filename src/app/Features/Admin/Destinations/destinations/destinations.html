@@ -387,14 +387,9 @@
               ADMIN DESTINATION
             </span>
 
-              <app-button
-    type="button"
-    label="Delete"
-    icon="fa fa-trash"
-    variant="danger"
-    size="small"
-    (clicked)="deleteDestination(destination.destinationId)">
-  </app-button>
+            <app-button type="button" label="Delete" icon="fa fa-trash" variant="danger" size="small"
+              (clicked)="deleteDestination(destination.destinationId)">
+            </app-button>
 
           </div>
 
@@ -447,5 +442,89 @@
   </div>
 
   }
+
+
+
+  @if (showDeleteConfirmation) {
+
+  <div class="confirmation-overlay">
+
+    <div class="confirmation-modal">
+
+      <!-- Glow -->
+      <div class="confirmation-glow"></div>
+
+      <!-- Icon -->
+      <div class="confirmation-icon">
+
+        <i class="fa fa-trash"></i>
+
+      </div>
+
+
+      <!-- Content -->
+      <div class="confirmation-content">
+
+        <span class="confirmation-label">
+          DANGER ZONE
+        </span>
+
+        <h3>
+          Delete Destination?
+        </h3>
+
+        <p>
+          You are about to permanently delete
+          <strong>
+            {{ selectedDestinationName }}
+          </strong>
+          from your branch destinations.
+        </p>
+
+
+        <div class="confirmation-warning">
+
+          <i class="fa fa-exclamation-triangle"></i>
+
+          <span>
+            This action cannot be undone.
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- Actions -->
+      <div class="confirmation-actions">
+
+        <app-button
+          type="button"
+          label="Cancel"
+          variant="secondary"
+          size="small"
+          [disabled]="deleting"
+          (clicked)="cancelDeleteDestination()">
+        </app-button>
+
+
+        <app-button
+          type="button"
+          label="Delete Destination"
+          icon="fa fa-trash"
+          variant="danger"
+          size="small"
+          [loading]="deleting"
+          [disabled]="deleting"
+          (clicked)="confirmDeleteDestination()">
+        </app-button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
 
 </div>
