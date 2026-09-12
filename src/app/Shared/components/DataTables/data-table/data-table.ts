@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 export interface TableColumn {
   key: string;
   label: string;
-  type?: 'text' | 'status' | 'number' | 'date';
+  type?: 'text' | 'number' | 'date' | 'status';
   sortable?: boolean;
 }
 

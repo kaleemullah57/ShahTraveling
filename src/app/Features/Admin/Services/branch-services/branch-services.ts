@@ -422,7 +422,8 @@ export class BranchServices implements OnInit {
     },
     {
       key: 'isActive',
-      label: 'Status'
+      label: 'Status',
+      type:'status'
     }
   ];
 
@@ -471,32 +472,36 @@ export class BranchServices implements OnInit {
       )
       .subscribe({
 
-        next: (response) => {
+       next: (response) => {
 
-          if (
-            response?.status === true &&
-            response?.statusCode === 200 &&
-            response?.success === true
-          ) {
+  if (
+    response?.status === true &&
+    response?.statusCode === 200 &&
+    response?.success === true
+  ) {
 
-            this.branchServices = response.data ?? [];
+    this.branchServices = (response.data ?? []).map(service => ({
+      ...service,
+      isActive: service.isActive
+        ? 'Active'
+        : 'Inactive'
+    })) as any;
 
-            this.totalRecords = response.totalCount ?? 0;
+    this.totalRecords = response.totalCount ?? 0;
 
-            return;
-          }
+    return;
+  }
 
-          this.branchServices = [];
-          this.totalRecords = 0;
+  this.branchServices = [];
+  this.totalRecords = 0;
 
-          if (response?.statusCode !== 404) {
-            this.notificationService.error(
-              response?.message ||
-              'Unable to load branch services.'
-            );
-          }
-        },
-
+  if (response?.statusCode !== 404) {
+    this.notificationService.error(
+      response?.message ||
+      'Unable to load branch services.'
+    );
+  }
+},
         error: (error) => {
 
           console.log(
