@@ -16,14 +16,28 @@ import {
   TableColumn
 } from '../../../../Shared/components/DataTables/data-table/data-table';
 
-import { FormButton, FormField, forms } from '../../../../Shared/components/Forms/forms/forms';
+import {
+  FormButton,
+  FormField,
+  forms
+} from '../../../../Shared/components/Forms/forms/forms';
 
 import { NotificationService } from '../../../../Core/Services/Notification Services/notification-service';
 
-import { AddAirlineModel, Airline } from '../../Super Admin Models/Airlines Models/airlines-model';
+import {
+  AddAirlineModel,
+  Airline,
+  EditAirlineRequest
+} from '../../Super Admin Models/Airlines Models/airlines-model';
+
 import { AirlinesService } from '../../Super Admin Services/Airlines Services/airlines-service';
-import { Button } from "../../../../Shared/components/button/button";
-import { DropdownItem, GlobalDropdownService } from '../../../../Core/Services/Dropdown Services/global-dropdown-service';
+
+import { Button } from '../../../../Shared/components/button/button';
+
+import {
+  DropdownItem,
+  GlobalDropdownService
+} from '../../../../Core/Services/Dropdown Services/global-dropdown-service';
 
 
 @Component({
@@ -51,7 +65,6 @@ export class Airlines implements OnInit, OnDestroy {
 
   private readonly notification =
     inject(NotificationService);
-
 
   constructor(
     private readonly airlineService: AirlinesService,
@@ -169,6 +182,7 @@ export class Airlines implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.loadAirlines();
+
   }
 
 
@@ -194,7 +208,6 @@ export class Airlines implements OnInit, OnDestroy {
 
     this.loading = true;
 
-
     this.airlineService
       .getAirlines(
         this.search,
@@ -215,18 +228,10 @@ export class Airlines implements OnInit, OnDestroy {
       .subscribe({
 
         next: (response: any) => {
-
-          console.log(
-            'Airlines API Response:',
-            response
-          );
-
-
           if (response?.statusCode === 200) {
 
             this.airlines =
               response?.data ?? [];
-
 
             this.totalRecords =
               response?.totalCount ??
@@ -249,7 +254,6 @@ export class Airlines implements OnInit, OnDestroy {
 
         },
 
-
         error: (error: any) => {
 
           console.error(
@@ -257,11 +261,9 @@ export class Airlines implements OnInit, OnDestroy {
             error
           );
 
-
           this.airlines = [];
 
           this.totalRecords = 0;
-
 
           this.notification.error(
             error?.error?.message ??
@@ -319,39 +321,44 @@ export class Airlines implements OnInit, OnDestroy {
 
 
   // =========================================================
-  // TABLE ACTION
+  // TABLE ACTION CLICK
   // =========================================================
-  onAction(event: any): void {
 
-    console.log('Airline Action:', event);
+  onActionClick(event: {
+    action: TableAction;
+    row: Airline;
+  }): void {
+
+    switch (event.action.type) {
+
+      case 'edit':
+
+        this.editAirline(event.row);
+
+        break;
+
+      case 'delete':
+
+        this.deleteAirline(event.row);
+
+        break;
+
+    }
 
   }
 
 
+  // =========================================================
+  // ADD AIRLINE
+  // =========================================================
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Add Airlines
   showAddAirlineForm = false;
 
   saving = false;
 
+
   airlineModel: AddAirlineModel = {
+
     airlineName: '',
     airlineCode: '',
     iataCode: '',
@@ -359,10 +366,18 @@ export class Airlines implements OnInit, OnDestroy {
     countryId: null,
     logoPath: '',
     isActive: true
+
   };
+
   countries: DropdownItem[] = [];
 
+  countriesLoaded = false;
+
+  countriesLoading = false;
+
+
   formFields: FormField[] = [
+
     {
       key: 'airlineName',
       label: 'Airline Name',
@@ -370,6 +385,7 @@ export class Airlines implements OnInit, OnDestroy {
       placeholder: 'Enter airline name',
       required: true
     },
+
     {
       key: 'airlineCode',
       label: 'Airline Code',
@@ -377,6 +393,7 @@ export class Airlines implements OnInit, OnDestroy {
       placeholder: 'Enter airline code',
       required: true
     },
+
     {
       key: 'iataCode',
       label: 'IATA Code',
@@ -384,6 +401,7 @@ export class Airlines implements OnInit, OnDestroy {
       placeholder: 'Enter IATA code',
       required: true
     },
+
     {
       key: 'icaoCode',
       label: 'ICAO Code',
@@ -391,6 +409,7 @@ export class Airlines implements OnInit, OnDestroy {
       placeholder: 'Enter ICAO code',
       required: true
     },
+
     {
       key: 'countryId',
       label: 'Country',
@@ -399,121 +418,182 @@ export class Airlines implements OnInit, OnDestroy {
       required: true,
       options: []
     },
+
     {
       key: 'logoPath',
       label: 'Logo Path',
       type: 'text',
       placeholder: 'Enter logo path'
     },
+
     {
       key: 'isActive',
       label: 'Status',
       type: 'checkbox',
       placeholder: 'Active'
     }
+
   ];
 
+
+
   formButtons: FormButton[] = [
+
     {
       label: 'Cancel',
       type: 'reset',
       style: 'secondary'
     },
+
     {
       label: 'Add Airline',
       type: 'submit',
       style: 'primary'
     }
+
   ];
+
+
+
   openAddAirlineForm(): void {
+
     this.showAddAirlineForm = true;
 
-    if (!this.countriesLoaded && !this.countriesLoading) {
-      this.loadCountries();
-    }
-  }
+    if (
+      !this.countriesLoaded &&
+      !this.countriesLoading
+    ) {
 
+      this.loadCountries();
+
+    }
+
+  }
 
 
   cancelAddAirline(): void {
 
-  this.showAddAirlineForm = false;
+    this.showAddAirlineForm = false;
 
-  this.airlineModel = {
-    airlineName: '',
-    airlineCode: '',
-    iataCode: '',
-    icaoCode: '',
-    countryId:
-      this.countries.length > 0
-        ? this.countries[0].value
-        : null,
-    logoPath: '',
-    isActive: true
-  };
+    this.resetAddModel();
 
-}
+  }
+
+
+  resetAddModel(): void {
+
+    this.airlineModel = {
+
+      airlineName: '',
+      airlineCode: '',
+      iataCode: '',
+      icaoCode: '',
+
+      countryId:
+        this.countries.length > 0
+          ? this.countries[0].value
+          : null,
+
+      logoPath: '',
+      isActive: true
+
+    };
+
+  }
+
+
 
   addAirline(model: AddAirlineModel): void {
 
     const payload: AddAirlineModel = {
-      airlineName: model.airlineName.trim(),
-      airlineCode: model.airlineCode.trim(),
-      iataCode: model.iataCode.trim(),
-      icaoCode: model.icaoCode.trim(),
-      countryId: model.countryId,
-      logoPath: model.logoPath?.trim() ?? '',
-      isActive: model.isActive
+
+      airlineName:
+        model.airlineName?.trim() ?? '',
+
+      airlineCode:
+        model.airlineCode?.trim() ?? '',
+
+      iataCode:
+        model.iataCode?.trim() ?? '',
+
+      icaoCode:
+        model.icaoCode?.trim() ?? '',
+
+      countryId:
+        model.countryId !== null
+          ? Number(model.countryId)
+          : null,
+
+      logoPath:
+        model.logoPath?.trim() ?? '',
+
+      isActive:
+        Boolean(model.isActive)
+
     };
 
     this.saving = true;
 
+
     this.airlineService
       .addAirline(payload)
       .pipe(
+
         finalize(() => {
+
           this.saving = false;
+
           this.cdr.detectChanges();
+
         })
+
       )
       .subscribe({
 
         next: (response: any) => {
-          if (response?.statusCode === 200) {
 
-            // 1. Show success notification
+          if (
+            response?.statusCode === 200 ||
+            response?.status === true
+          ) {
+
             this.notification.success(
+
               response?.message ??
               'Airline added successfully.'
+
             );
 
-            // 2. Close form
+
+            // Close form
+
             this.showAddAirlineForm = false;
 
-            // 3. Reset form model
-            this.airlineModel = {
-              airlineName: '',
-              airlineCode: '',
-              iataCode: '',
-              icaoCode: '',
-              countryId: null,
-              logoPath: '',
-              isActive: true
-            };
 
-            // 4. Automatically call GET API
+            // Reset model
+
+            this.resetAddModel();
+
+
+            // Refresh table
+
             this.loadAirlines();
 
-          } else {
+          }
+
+          else {
 
             this.notification.error(
+
               response?.message ??
               'Unable to add airline.'
+
             );
 
           }
 
         },
+
 
         error: (error: any) => {
 
@@ -522,80 +602,87 @@ export class Airlines implements OnInit, OnDestroy {
             error
           );
 
+
           this.notification.error(
+
             error?.error?.message ??
             'Unable to add airline.'
+
           );
 
         }
 
       });
+
   }
 
 
+  loadCountries(): void {
 
+    if (this.countriesLoaded || this.countriesLoading) {
+      return;
+    }
 
-  // =========================================================
-  // LOAD COUNTRIES DROPDOWN
-  // =========================================================
+    this.countriesLoading = true;
 
- loadCountries(): void {
-  console.log('🌍 LOAD COUNTRIES CALLED');
+    this.GlobalDropDownService.getCountries()
+      .pipe(
+        finalize(() => {
+          this.countriesLoading = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          if (response?.statusCode !== 200) {
+            this.countries = [];
+            this.notification.error(
+              response?.message ?? 'Unable to load countries.'
+            );
+            return;
+          }
 
-  if (this.countriesLoaded || this.countriesLoading) {
-    return;
-  }
-
-  this.countriesLoading = true;
-
-  this.GlobalDropDownService
-    .getCountries()
-    .pipe(
-      finalize(() => {
-        this.countriesLoading = false;
-      })
-    )
-    .subscribe({
-      next: (response) => {
-
-        console.log('🌍 COUNTRIES API RESPONSE:', response);
-
-        if (response?.statusCode === 200) {
-
-          // API returns Value / Text
+          // Convert API response
           this.countries = (response.data ?? []).map((country: any) => ({
             value: Number(country.Value),
             text: country.Text
           }));
 
-          console.log('🌍 MAPPED COUNTRIES:', this.countries);
+          // Create dropdown options ONLY ONCE
+          const countryOptions = this.countries.map(country => ({
+            label: country.text,
+            value: country.value
+          }));
 
-          const countryField = this.formFields.find(
-            field => field.key === 'countryId'
+          // IMPORTANT:
+          // Replace the complete field object instead of
+          // modifying field.options directly.
+
+          this.formFields = this.formFields.map(field =>
+            field.key === 'countryId'
+              ? {
+                ...field,
+                options: [...countryOptions]
+              }
+              : field
           );
 
-          if (countryField) {
-
-            countryField.options = this.countries.map(country => ({
-              label: country.text,
-              value: country.value
-            }));
-
-            console.log(
-              '🔽 COUNTRY OPTIONS:',
-              countryField.options
-            );
-          }
+          this.editFormFields = this.editFormFields.map(field =>
+            field.key === 'countryId'
+              ? {
+                ...field,
+                options: [...countryOptions]
+              }
+              : field
+          );
 
           this.countriesLoaded = true;
 
-          // Default country
+          // Default country ONLY for Add form
           if (
             this.countries.length > 0 &&
-            (
-              this.airlineModel.countryId === null ||
-              this.airlineModel.countryId === undefined
-            )
+            (this.airlineModel.countryId === null ||
+              this.airlineModel.countryId === undefined)
           ) {
             this.airlineModel = {
               ...this.airlineModel,
@@ -603,54 +690,406 @@ export class Airlines implements OnInit, OnDestroy {
             };
           }
 
-          // 🔥 VERY IMPORTANT
           this.cdr.detectChanges();
+        },
 
-        } else {
+        error: (error) => {
+
+          console.error('❌ GET COUNTRIES ERROR:', error);
 
           this.countries = [];
 
           this.notification.error(
-            response?.message ?? 'Unable to load countries.'
+            error?.error?.message ?? 'Unable to load countries.'
           );
         }
-      },
+      });
+  }
 
-      error: (error) => {
 
-        console.error('❌ GET COUNTRIES ERROR:', error);
 
-        this.countries = [];
 
-        this.notification.error(
-          error?.error?.message ??
-          'Unable to load countries.'
-        );
-      }
-    });
-}
-  countriesLoaded = false;
-  countriesLoading = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // =========================================================
+  // EDIT AIRLINE
+  // =========================================================
+
+  showEditForm = false;
+
+
+  editModel: EditAirlineRequest = {
+
+    airlineId: 0,
+
+    airlineName: '',
+    airlineCode: '',
+    iataCode: '',
+    icaoCode: '',
+
+    countryId: 0,
+
+    isActive: true
+
+  };
+
+
+
+  editFormFields: FormField[] = [
+
+    {
+      key: 'airlineName',
+      label: 'Airline Name',
+      type: 'text',
+      placeholder: 'Enter airline name',
+      required: true
+    },
+
+    {
+      key: 'airlineCode',
+      label: 'Airline Code',
+      type: 'text',
+      placeholder: 'Enter airline code',
+      required: true
+    },
+
+    {
+      key: 'iataCode',
+      label: 'IATA Code',
+      type: 'text',
+      placeholder: 'Enter IATA code',
+      required: true
+    },
+
+    {
+      key: 'icaoCode',
+      label: 'ICAO Code',
+      type: 'text',
+      placeholder: 'Enter ICAO code',
+      required: true
+    },
+
+    {
+      key: 'countryId',
+      label: 'Country',
+      type: 'select',
+      placeholder: 'Select Country',
+      required: true,
+      options: []
+    },
+
+    {
+      key: 'isActive',
+      label: 'Status',
+      type: 'checkbox',
+      placeholder: 'Active'
+    }
+
+  ];
+
+  editFormButtons: FormButton[] = [
+
+    {
+      label: 'Cancel',
+      type: 'reset',
+      style: 'secondary'
+    },
+
+    {
+      label: 'Update Airline',
+      type: 'submit',
+      style: 'primary'
+    }
+
+  ];
+
+
+  editAirline(airline: Airline): void {
+    this.editModel = {
+      airlineId: Number(airline.airlineId),
+      airlineName: airline.airlineName ?? '',
+      airlineCode: airline.airlineCode ?? '',
+      iataCode: airline.iataCode ?? '',
+      icaoCode: airline.icaoCode ?? '',
+      countryId: Number(airline.countryId),
+      isActive: Boolean(airline.isActive)
+    };
+
+
+    if (this.countriesLoaded) {
+
+      this.showEditForm = true;
+
+      this.cdr.detectChanges();
+
+      return;
+    }
+
+    // Countries not loaded yet
+    this.loadCountries();
+
+    this.showEditForm = true;
+
+    this.cdr.detectChanges();
+  }
+
+
+
+  updateAirline(
+    model: EditAirlineRequest
+  ): void {
+
+    const request: EditAirlineRequest = {
+
+      airlineId:
+        Number(model.airlineId),
+
+      airlineName:
+        model.airlineName?.trim() ?? '',
+
+      airlineCode:
+        model.airlineCode?.trim() ?? '',
+
+      iataCode:
+        model.iataCode?.trim() ?? '',
+
+      icaoCode:
+        model.icaoCode?.trim() ?? '',
+
+      countryId:
+        Number(model.countryId),
+
+      isActive:
+        Boolean(model.isActive)
+
+    };
+
+    this.saving = true;
+
+
+    this.airlineService
+      .editAirline(request)
+      .pipe(
+
+        finalize(() => {
+
+          this.saving = false;
+
+          this.cdr.detectChanges();
+
+        })
+
+      )
+      .subscribe({
+
+        next: (response: any) => {
+
+
+          if (
+            response?.status === true ||
+            response?.statusCode === 200
+          ) {
+
+            this.notification.success(
+
+              response?.message ??
+              'Airline updated successfully.'
+
+            );
+
+
+            // Close edit form
+
+            this.showEditForm = false;
+
+
+            // Reset edit model
+
+            this.resetEditModel();
+
+
+            // Refresh table
+
+            this.loadAirlines();
+
+          }
+
+          else {
+
+            this.notification.error(
+
+              response?.message ??
+              'Unable to update airline.'
+
+            );
+
+          }
+
+        },
+
+
+        error: (error: any) => {
+
+          console.error(
+            '❌ UPDATE AIRLINE ERROR:',
+            error
+          );
+
+
+          this.notification.error(
+
+            error?.error?.message ??
+            'Unable to update airline.'
+
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // =========================================================
+  // RESET EDIT MODEL
+  // =========================================================
+
+  resetEditModel(): void {
+
+    this.editModel = {
+
+      airlineId: 0,
+
+      airlineName: '',
+
+      airlineCode: '',
+
+      iataCode: '',
+
+      icaoCode: '',
+
+      countryId: 0,
+
+      isActive: true
+
+    };
+
+  }
+
+
+  // =========================================================
+  // CANCEL EDIT
+  // =========================================================
+
+  cancelEditAirline(): void {
+
+    this.showEditForm = false;
+
+    this.resetEditModel();
+
+  }
+
+
+  // =========================================================
+  // GLOBAL FORM FIELD CHANGE
+  // =========================================================
+
 
   onFieldChange(event: {
     key: string;
     value: any;
   }): void {
 
-    console.log(
-      '📌 PARENT FIELD CHANGE:',
-      event
-    );
+    if (this.showAddAirlineForm) {
 
-    this.airlineModel = {
-      ...this.airlineModel,
-      [event.key]: event.value
-    };
+      this.airlineModel = {
+        ...this.airlineModel,
+        [event.key]:
+          event.key === 'countryId'
+            ? Number(event.value)
+            : event.value
+      };
 
-    console.log(
-      '📦 AIRLINE MODEL:',
-      this.airlineModel
-    );
+      return;
+    }
 
+    if (this.showEditForm) {
+
+      this.editModel = {
+        ...this.editModel,
+        [event.key]:
+          event.key === 'countryId'
+            ? Number(event.value)
+            : event.value
+      };
+    }
   }
+
+
+
+
+  deleteAirline(airline: Airline): void {
+
+    const airlineId = Number(airline.airlineId);
+
+    if (!airlineId) {
+      this.notification.error('Invalid airline ID.');
+      return;
+    }
+
+    this.airlineService.deleteAirline(airlineId).subscribe({
+      next: (response) => {
+
+        if (response?.success) {
+
+          this.notification.success(
+            response.message || 'Airline deleted successfully.'
+          );
+
+          this.loadAirlines();
+
+        } else {
+
+          this.notification.error(
+            response?.message || 'Airline could not be deleted.'
+          );
+        }
+      },
+
+      error: (error) => {
+
+        this.notification.error(
+          error?.error?.message ||
+          'Unable to delete airline.'
+        );
+      }
+    });
+  }
+
+
+
+  onTableAction(event: any): void {
+
+  if (event.action === 'edit') {
+    this.editAirline(event.row);
+  }
+
+  if (event.action === 'delete') {
+    this.deleteAirline(event.row);
+  }
+}
 }

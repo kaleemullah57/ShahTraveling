@@ -100,12 +100,6 @@ export class forms {
 
     this.model[key] = value;
 
-    console.log(
-      '📝 FIELD UPDATED:',
-      key,
-      value
-    );
-
     this.fieldChange.emit({
       key,
       value
@@ -314,11 +308,6 @@ export class forms {
       numericValue
     );
 
-
-    console.log(
-      '✅ MODEL AFTER SELECT:',
-      this.model
-    );
 
   }
 

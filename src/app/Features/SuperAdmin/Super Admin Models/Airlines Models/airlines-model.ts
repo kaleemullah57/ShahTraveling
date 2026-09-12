@@ -40,3 +40,17 @@ export interface AddAirlineModel {
   logoPath: string;
   isActive: boolean;
 }
+
+
+
+
+// Edit Airlines
+export interface EditAirlineRequest {
+  airlineId: number;
+  airlineName: string;
+  airlineCode: string;
+  iataCode: string;
+  icaoCode: string;
+  countryId: number;
+  isActive: boolean;
+}
