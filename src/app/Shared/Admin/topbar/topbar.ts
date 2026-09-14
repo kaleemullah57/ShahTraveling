@@ -1,22 +1,10 @@
-import {
-  CommonModule
-} from '@angular/common';
+import { CommonModule } from '@angular/common';
 
-import {
-  Component,
-  EventEmitter,
-  inject,
-  Output
-} from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 
-import {
-  Router,
-  RouterLink
-} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
-import {
-  AuthService
-} from '../../../Core/Services/auth.service/auth.service';
+import { AuthService } from '../../../Core/Services/auth.service/auth.service';
 import { Button } from '../../components/button/button';
 
 
@@ -37,39 +25,17 @@ import { Button } from '../../components/button/button';
 })
 export class Topbar {
 
+  private readonly authService = inject(AuthService);
 
-  // =====================================================
-  // SERVICES
-  // =====================================================
-
-  private readonly authService =
-    inject(AuthService);
-
-  private readonly router =
-    inject(Router);
-
-
-  // =====================================================
-  // SIDEBAR
-  // =====================================================
+  private readonly router = inject(Router);
 
   @Output()
-  menuToggle =
-    new EventEmitter<void>();
+  menuToggle = new EventEmitter<void>();
 
-
-  // =====================================================
-  // DROPDOWNS
-  // =====================================================
 
   profileOpen = false;
 
   notificationOpen = false;
-
-
-  // =====================================================
-  // USER INFORMATION
-  // =====================================================
 
   userName = '';
 
@@ -78,47 +44,17 @@ export class Topbar {
   branchId = 0;
 
 
-  // =====================================================
-  // INITIALIZATION
-  // =====================================================
-
   ngOnInit(): void {
 
-    this.userName =
-      this.authService.getUserName();
+    this.userName = this.authService.getUserName();
 
 
-    this.userType =
-      this.authService.getUserType();
+    this.userType = this.authService.getUserType();
 
 
-    this.branchId =
-      this.authService.getBranchId();
-
-
-    console.log(
-      'Topbar User:',
-      this.userName
-    );
-
-
-    console.log(
-      'Topbar User Type:',
-      this.userType
-    );
-
-
-    console.log(
-      'Topbar BranchId:',
-      this.branchId
-    );
+    this.branchId = this.authService.getBranchId();
 
   }
-
-
-  // =====================================================
-  // BRANCH ADMIN CHECK
-  // =====================================================
 
   get isBranchAdmin(): boolean {
 
@@ -130,10 +66,6 @@ export class Topbar {
   }
 
 
-  // =====================================================
-  // SIDEBAR TOGGLE
-  // =====================================================
-
   toggleMenu(): void {
 
     this.menuToggle.emit();
@@ -141,23 +73,16 @@ export class Topbar {
   }
 
 
-  // =====================================================
-  // PROFILE
-  // =====================================================
 
   toggleProfile(): void {
 
-    this.profileOpen =
-      !this.profileOpen;
+    this.profileOpen = !this.profileOpen;
 
     this.notificationOpen = false;
 
   }
 
 
-  // =====================================================
-  // NOTIFICATIONS
-  // =====================================================
 
   toggleNotifications(): void {
 
@@ -169,9 +94,6 @@ export class Topbar {
   }
 
 
-  // =====================================================
-  // GO TO BRANCH ADMIN DASHBOARD
-  // =====================================================
 
   goToDashboard(): void {
 
@@ -182,11 +104,6 @@ export class Topbar {
     ]);
 
   }
-
-
-  // =====================================================
-  // LOGOUT
-  // =====================================================
 
   logout(): void {
 

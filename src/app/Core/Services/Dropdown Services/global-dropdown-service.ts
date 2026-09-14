@@ -51,6 +51,7 @@ export class GlobalDropdownService {
     getCitiesByProvinceId(
         provinceId: number
     ): Observable<DropdownResponse> {
+
         return this.apiService.get<DropdownResponse>(
             `DropDown/GetCitiesByProvinceId?provinceId=${provinceId}`
         );

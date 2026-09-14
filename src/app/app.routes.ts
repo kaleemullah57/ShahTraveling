@@ -94,6 +94,12 @@ export const routes: Routes = [
             .then(m => m.Airlines)
       },
       {
+        path: 'Airports',
+        loadComponent: () =>
+          import('./Features/SuperAdmin/Airports/airports/airports')
+            .then(m => m.Airports)
+      },
+      {
         path: 'Services',
         loadComponent: () =>
           import('./Features/SuperAdmin/Services/services/services')

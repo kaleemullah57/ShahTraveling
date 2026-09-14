@@ -54,7 +54,7 @@
     </div>
 
 
-    <button type="button" class="navigation-group" [class.expanded]="managementOpen" (click)="toggleManagement()"
+    <button type="button"  class="navigation-group" [class.expanded]="managementOpen" (click)="toggleManagement()"
       title="Management">
 
       <span class="navigation-group-left">
@@ -77,38 +77,29 @@
     <div class="navigation-submenu">
 
 
-
-      <a routerLink="/SuperAdminDashboard/branches" routerLinkActive="active" class="navigation-subitem"
-        title="Branches" (click)="closeOnNavigation()">
-
-        <i class="fa fa-calendar-check-o"></i>
-
-        <span>
-          Branches
-        </span>
-
-        <span class="notification-badge">
-          12
-        </span>
-
-      </a>
-
-
-
       <a routerLink="/SuperAdminDashboard/registerUsers" routerLinkActive="active" class="navigation-subitem"
         title="Register Users" (click)="closeOnNavigation()">
 
-        <i class="fa fa-user-plus"></i>
+       <i class="fa fa-users"></i>
 
         <span>
           Register Users
         </span>
 
-        <span class="notification-badge">
-          12
+      </a>
+
+      <a routerLink="/SuperAdminDashboard/branches" routerLinkActive="active" class="navigation-subitem"
+        title="Branches" (click)="closeOnNavigation()">
+
+      <i class="fa fa-building"></i>
+
+        <span>
+          Branches
         </span>
 
       </a>
+
+  
 
 
 
@@ -253,6 +244,17 @@
 
         <span>
           Airlines
+        </span>
+
+      </a>
+
+      <a routerLink="/SuperAdminDashboard/Airports" routerLinkActive="active" class="navigation-subitem"
+        title="Airlines" (click)="closeOnNavigation()">
+
+        <i class="fa fa-plane"></i>
+
+        <span>
+          Airports
         </span>
 
       </a>

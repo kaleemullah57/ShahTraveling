@@ -54,10 +54,5 @@ export class AdminDashobard {
 
     this.userName =
       this.authService.getUserName();
-
-    console.log(
-      'Logged in user:',
-      this.authService.getCurrentUser()
-    );
   }
 }

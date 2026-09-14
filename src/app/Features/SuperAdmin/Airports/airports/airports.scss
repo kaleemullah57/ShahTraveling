@@ -1,0 +1,107 @@
+:host {
+  display: block;
+}
+
+.airports-page {
+  min-height: 100%;
+  padding: 30px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 30px;
+}
+
+
+.header-content {
+  flex: 1;
+}
+
+
+.header-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 10px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+
+  color: #0fa7a7;
+}
+
+
+.eyebrow-line {
+  width: 30px;
+  height: 1px;
+
+  background: #0fa7a7;
+}
+
+
+.header-content h1 {
+  margin: 0;
+
+  font-size: 32px;
+  font-weight: 700;
+
+  color: #172b3a;
+}
+
+
+.header-content p {
+  margin: 8px 0 0;
+
+  font-size: 15px;
+
+  color: #7a8a97;
+}
+
+
+.header-action {
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.airport-form-section {
+  width: 100%;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .airports-page {
+    padding: 20px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-action {
+    width: 100%;
+  }
+
+}

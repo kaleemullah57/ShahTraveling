@@ -56,17 +56,17 @@
         field.type === 'date'
         ) {
 
-        <input [id]="'field-' + field.key" [type]="field.type" [value]="getValue(field.key)"
+        <input [id]="'field-' + field.key" [type]="field.type" [value]="getValue(field.key) ?? ''"
           [placeholder]="field.placeholder || ''" [disabled]="isFieldDisabled(field)"
           [required]="field.required || false" (input)="
-                setValue(
-                  field.key,
-                  convertValue(
-                    field.type,
-                    $any($event.target).value
-                  )
-                )
-              " />
+    setValue(
+      field.key,
+      convertValue(
+        field.type,
+        $any($event.target).value
+      )
+    )
+  " />
 
         }
 
@@ -94,38 +94,31 @@
 
         @else if (field.type === 'select') {
 
-        <select
-    [id]="'field-' + field.key"
-    [value]="getValue(field.key)"
-    [disabled]="isFieldDisabled(field)"
-    [required]="field.required || false"
-    (change)="
+        <select [id]="'field-' + field.key" [value]="getValue(field.key)" [disabled]="isFieldDisabled(field)"
+          [required]="field.required || false" (change)="
       onSelectChange(
         field.key,
         $any($event.target).value
       )
-    "
-  ><option value="">
-      Select {{ field.label }}
-    </option>
+    ">
+          <option value="">
+            Select {{ field.label }}
+          </option>
 
-    @for (
-      option of field.options ?? [];
-      track option.value
-    ) {
+          @for (
+          option of field.options ?? [];
+          track option.value
+          ) {
 
-      <option
-  [value]="option.value"
-  [selected]="isOptionSelected(field.key, option.value)"
->
-  {{ option.label }}
-</option>
+          <option [value]="option.value" [selected]="isOptionSelected(field.key, option.value)">
+            {{ option.label }}
+          </option>
 
-    }
+          }
 
-  </select>
+        </select>
 
-}
+        }
 
 
         <!-- =================================================
@@ -180,23 +173,19 @@
          ===================================================== -->
 
 
-   <div class="form-actions">
+    <div class="form-actions">
 
-  @for (button of buttons; track button.label) {
+      @for (button of buttons; track button.label) {
 
-    <app-button
-      [label]="button.label"
-      [type]="button.type || 'button'"
-      [style]="button.style || 'primary'"
-      [disabled]="isButtonDisabled(button)"
-      [loading]="button.loading || (loading && button.type === 'submit')"
-      (click)="onButtonClick(button)">
-    </app-button>
+      <app-button [label]="button.label" [type]="button.type || 'button'" [style]="button.style || 'primary'"
+        [disabled]="isButtonDisabled(button)" [loading]="button.loading || (loading && button.type === 'submit')"
+        (click)="onButtonClick(button)">
+      </app-button>
 
-  }
+      }
 
 
-</div>
+    </div>
 
   </form>
 

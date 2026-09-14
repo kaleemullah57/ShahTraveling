@@ -33,25 +33,15 @@ export class AdminDashboard {
   private readonly cdr = inject(ChangeDetectorRef);
 
 
-  // =========================================
-  // SIDEBAR
-  // =========================================
 
   sidebarOpen = true;
 
-
-  // =========================================
-  // USER / BRANCH
-  // =========================================
 
   userName = '';
   branchId = 0;
   branchName = '';
 
 
-  // =========================================
-  // DASHBOARD STATS
-  // =========================================
 
   stats = [
     {
@@ -81,9 +71,6 @@ export class AdminDashboard {
   ];
 
 
-  // =========================================
-  // DASHBOARD HOME
-  // =========================================
 
   get isDashboardHome(): boolean {
 
@@ -91,10 +78,6 @@ export class AdminDashboard {
 
   }
 
-
-  // =========================================
-  // INITIALIZATION
-  // =========================================
 
   ngOnInit(): void {
 
@@ -104,17 +87,6 @@ export class AdminDashboard {
     this.branchId =
       this.authService.getBranchId();
 
-
-    console.log(
-      'Logged in user:',
-      this.authService.getCurrentUser()
-    );
-
-
-    console.log(
-      'Logged in BranchId:',
-      this.branchId
-    );
 
 
     if (this.branchId > 0) {
@@ -132,10 +104,6 @@ export class AdminDashboard {
   }
 
 
-  // =========================================
-  // TOGGLE SIDEBAR
-  // =========================================
-
   toggleSidebar(): void {
 
     this.sidebarOpen =
@@ -144,10 +112,6 @@ export class AdminDashboard {
   }
 
 
-  // =========================================
-  // CLOSE SIDEBAR
-  // =========================================
-
   closeSidebar(): void {
 
     this.sidebarOpen = false;
@@ -155,28 +119,13 @@ export class AdminDashboard {
   }
 
 
-  // =========================================
-  // GET BRANCH DETAILS
-  // =========================================
-
   getBranchDetails(): void {
-
-    console.log(
-      'getBranchDetails() called'
-    );
-
 
     this.branchAdminService
       .getBranchByBranchId(this.branchId)
       .subscribe({
 
         next: (response: any) => {
-
-          console.log(
-            'Branch API Response:',
-            response
-          );
-
 
           if (
             response.statusCode === 200 &&

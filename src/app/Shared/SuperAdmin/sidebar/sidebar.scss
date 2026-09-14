@@ -1,7 +1,3 @@
-/* =========================================================
-   SHAH TRAVELING
-   SUPER ADMIN SIDEBAR
-========================================================= */
 
 :host {
   display: block;
@@ -30,6 +26,9 @@ $danger: #e05252;
 ========================================================= */
 
 .sidebar {
+  width: 260px;
+  min-width: 260px;
+
   height: 100vh;
   height: 100dvh;
 
@@ -37,6 +36,8 @@ $danger: #e05252;
   flex-direction: column;
 
   overflow: hidden;
+
+  background: $white;
 }
 
 
@@ -57,9 +58,10 @@ $danger: #e05252;
 
   flex-shrink: 0;
 
+  background: $white;
+
   border-bottom: 1px solid $border;
 }
-
 
 .brand-link {
   width: 100%;
@@ -83,7 +85,6 @@ $danger: #e05252;
 .brand-icon {
   width: 42px;
   height: 42px;
-
   min-width: 42px;
 
   display: flex;
@@ -94,8 +95,9 @@ $danger: #e05252;
 
   background: linear-gradient(
     135deg,
-    $teal,
-    $teal-dark
+    #063d47 0%,
+    #087f8c 48%,
+    #0fa7a7 100%
   );
 
   color: $white;
@@ -120,7 +122,6 @@ $danger: #e05252;
   gap: 3px;
 }
 
-
 .brand-info h2 {
   margin: 0;
 
@@ -136,11 +137,9 @@ $danger: #e05252;
   white-space: nowrap;
 }
 
-
 .brand-info h2 span {
   color: $teal;
 }
-
 
 .brand-info small {
   color: $text-muted;
@@ -166,11 +165,14 @@ $danger: #e05252;
   overflow-y: auto;
   overflow-x: hidden;
 
-  /* Keep your existing padding if you already have it */
-  scrollbar-width: thin;
-  scrollbar-color: #0fa7a7 transparent;
-}
+  padding-bottom: 8px;
 
+  box-sizing: border-box;
+
+  background: $white;
+
+  scrollbar-width: thin;
+}
 
 
 /* =========================================================
@@ -187,6 +189,7 @@ $danger: #e05252;
 
 .sidebar-navigation::-webkit-scrollbar-thumb {
   background: #0fa7a7;
+
   border-radius: 10px;
 }
 
@@ -214,7 +217,7 @@ $danger: #e05252;
 
 
 /* =========================================================
-   NAVIGATION ITEM
+   NORMAL NAVIGATION ITEM
 ========================================================= */
 
 .navigation-item {
@@ -273,7 +276,7 @@ $danger: #e05252;
 
 
 /* =========================================================
-   HOVER
+   NAVIGATION ITEM HOVER
 ========================================================= */
 
 .navigation-item:hover {
@@ -282,14 +285,13 @@ $danger: #e05252;
   color: $teal;
 }
 
-
 .navigation-item:hover i {
   color: $teal;
 }
 
 
 /* =========================================================
-   ACTIVE
+   NAVIGATION ITEM ACTIVE
 ========================================================= */
 
 .navigation-item.active {
@@ -299,7 +301,6 @@ $danger: #e05252;
 
   font-weight: 600;
 }
-
 
 .navigation-item.active i {
   color: $teal;
@@ -349,13 +350,385 @@ $danger: #e05252;
 
   background: #f04f55;
 
-  color: white;
+  color: $white;
 
   font-size: 10px;
-
   line-height: 1;
 
   font-weight: 700;
+}
+
+
+/* =========================================================
+   MAIN NAVIGATION GROUP
+   Management / Finance / System
+========================================================= */
+
+.navigation-group {
+  width: 100%;
+  min-height: 44px;
+
+  margin-bottom: 4px;
+
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+
+  border: none;
+  border-radius: 9px;
+
+  background: linear-gradient(
+    135deg,
+    #063d47 0%,
+    #087f8c 48%,
+    #0fa7a7 100%
+  );
+
+  color: $white;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  line-height: 1.2;
+
+  font-weight: 500;
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+/* =========================================================
+   MAIN GROUP HOVER
+========================================================= */
+
+.navigation-group:hover {
+  background: linear-gradient(
+    135deg,
+    #063d47 0%,
+    #087f8c 48%,
+    #0fa7a7 100%
+  );
+
+  color: $white;
+}
+
+
+/* =========================================================
+   GROUP LEFT
+========================================================= */
+
+.navigation-group-left {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.navigation-group-left i {
+  width: 20px;
+  min-width: 20px;
+
+  text-align: center;
+
+  color: rgba(255, 255, 255, 0.88);
+
+  font-size: 15px;
+
+  transition:
+    color 0.2s ease;
+}
+
+
+/* =========================================================
+   GROUP HOVER ICON
+========================================================= */
+
+.navigation-group:hover .navigation-group-left i {
+  color: $white;
+}
+
+
+/* =========================================================
+   GROUP EXPANDED
+========================================================= */
+
+.navigation-group.expanded {
+  background: linear-gradient(
+    135deg,
+    #063d47 0%,
+    #087f8c 48%,
+    #0fa7a7 100%
+  );
+
+  color: $white;
+}
+
+.navigation-group.expanded .navigation-group-left i,
+.navigation-group.expanded .group-arrow {
+  color: $white;
+}
+
+
+/* =========================================================
+   GROUP ARROW
+========================================================= */
+
+.group-arrow {
+  color: rgba(255, 255, 255, 0.85);
+
+  font-size: 11px;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.group-arrow.rotate {
+  transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   SUBMENU
+========================================================= */
+
+.navigation-submenu {
+  position: relative;
+
+  margin: 0 0 6px 10px;
+
+  padding-left: 22px;
+}
+
+
+/* =========================================================
+   SUBMENU VERTICAL LINE
+========================================================= */
+
+.navigation-submenu::before {
+  content: '';
+
+  position: absolute;
+
+  left: 10px;
+
+  top: 2px;
+  bottom: 2px;
+
+  width: 1px;
+
+  background: $border;
+}
+
+
+/* =========================================================
+   SUBMENU ITEM
+========================================================= */
+
+.navigation-subitem {
+  position: relative;
+
+  width: 100%;
+  min-height: 38px;
+
+  padding: 0 10px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  box-sizing: border-box;
+
+  border-radius: 8px;
+
+  color: #71808a;
+
+  text-decoration: none;
+
+  font-size: 12.5px;
+
+  font-weight: 500;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+/* =========================================================
+   SUBMENU ICON
+========================================================= */
+
+.navigation-subitem i {
+  width: 18px;
+  min-width: 18px;
+
+  text-align: center;
+
+  color: #8998a1;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   SUBMENU HOVER
+========================================================= */
+
+.navigation-subitem:hover {
+  background: $hover-bg;
+
+  color: $teal;
+}
+
+.navigation-subitem:hover i {
+  color: $teal;
+}
+
+
+/* =========================================================
+   SUBMENU ACTIVE
+========================================================= */
+
+.navigation-subitem.active {
+  background: rgba(15, 167, 167, 0.10);
+
+  color: $teal;
+
+  font-weight: 600;
+}
+
+.navigation-subitem.active i {
+  color: $teal;
+}
+
+
+/* =========================================================
+   SUBMENU ACTIVE INDICATOR
+========================================================= */
+
+.navigation-subitem.active::before {
+  content: '';
+
+  position: absolute;
+
+  left: -12px;
+
+  top: 7px;
+  bottom: 7px;
+
+  width: 3px;
+
+  border-radius: 0 4px 4px 0;
+
+  background: $teal;
+}
+
+
+/* =========================================================
+   NESTED GROUP
+   Regions / Content
+
+   IMPORTANT:
+   These override .navigation-group so they
+   DON'T look like large primary buttons.
+========================================================= */
+
+.navigation-nested-group {
+  min-height: 36px;
+
+  margin-bottom: 2px;
+
+  padding: 0 10px;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #71808a;
+
+  font-size: 12.5px;
+}
+
+
+/* =========================================================
+   NESTED GROUP LEFT
+========================================================= */
+
+.navigation-nested-group .navigation-group-left {
+  gap: 10px;
+}
+
+.navigation-nested-group .navigation-group-left i {
+  width: 18px;
+  min-width: 18px;
+
+  color: #8998a1;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   NESTED GROUP ARROW
+========================================================= */
+
+.navigation-nested-group .group-arrow {
+  color: #8998a1;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   NESTED GROUP HOVER
+========================================================= */
+
+.navigation-nested-group:hover {
+  background: $hover-bg;
+
+  color: $teal;
+}
+
+.navigation-nested-group:hover .navigation-group-left i,
+.navigation-nested-group:hover .group-arrow {
+  color: $teal;
+}
+
+
+/* =========================================================
+   NESTED GROUP EXPANDED
+========================================================= */
+
+.navigation-nested-group.expanded {
+  background: rgba(15, 167, 167, 0.08);
+
+  color: $teal;
+}
+
+.navigation-nested-group.expanded .navigation-group-left i,
+.navigation-nested-group.expanded .group-arrow {
+  color: $teal;
+}
+
+
+/* =========================================================
+   NESTED SUBMENU
+========================================================= */
+
+.navigation-nested-submenu {
+  margin-left: 8px;
 }
 
 
@@ -367,6 +740,8 @@ $danger: #e05252;
   flex-shrink: 0;
 
   padding: 12px;
+
+  background: $white;
 
   border-top: 1px solid $border;
 }
@@ -418,6 +793,10 @@ $danger: #e05252;
 }
 
 
+/* =========================================================
+   FOOTER ICON
+========================================================= */
+
 .sidebar-action i {
   width: 20px;
   min-width: 20px;
@@ -430,12 +809,15 @@ $danger: #e05252;
 }
 
 
+/* =========================================================
+   FOOTER HOVER
+========================================================= */
+
 .sidebar-action:hover {
   background: $hover-bg;
 
   color: $teal;
 }
-
 
 .sidebar-action:hover i {
   color: $teal;
@@ -450,11 +832,9 @@ $danger: #e05252;
   color: $danger;
 }
 
-
 .sidebar-action.logout i {
   color: $danger;
 }
-
 
 .sidebar-action.logout:hover {
   background: #fff4f4;
@@ -470,6 +850,8 @@ $danger: #e05252;
 .sidebar.collapsed {
   width: 76px;
   min-width: 76px;
+
+  background: $white;
 }
 
 
@@ -481,15 +863,15 @@ $danger: #e05252;
   padding: 0;
 
   justify-content: center;
-}
 
+  background: $white;
+}
 
 .sidebar.collapsed .brand-link {
   width: auto;
 
   justify-content: center;
 }
-
 
 .sidebar.collapsed .brand-info {
   display: none;
@@ -503,13 +885,18 @@ $danger: #e05252;
 .sidebar.collapsed .sidebar-navigation {
   padding-left: 10px;
   padding-right: 10px;
-}
 
+  background: $white;
+}
 
 .sidebar.collapsed .navigation-title {
   display: none;
 }
 
+
+/* =========================================================
+   COLLAPSED NORMAL ITEM
+========================================================= */
 
 .sidebar.collapsed .navigation-item {
   justify-content: center;
@@ -517,19 +904,51 @@ $danger: #e05252;
   padding: 0;
 
   gap: 0;
-}
 
+  background: #f5f8f9;
+}
 
 .sidebar.collapsed .navigation-item span {
   display: none;
 }
-
 
 .sidebar.collapsed .navigation-item i {
   width: auto;
   min-width: auto;
 
   font-size: 16px;
+
+  color: #61727d;
+}
+
+
+/* =========================================================
+   COLLAPSED ITEM HOVER
+========================================================= */
+
+.sidebar.collapsed .navigation-item:hover {
+  background: #e7f5f5;
+
+  color: $teal;
+}
+
+.sidebar.collapsed .navigation-item:hover i {
+  color: $teal;
+}
+
+
+/* =========================================================
+   COLLAPSED ACTIVE ITEM
+========================================================= */
+
+.sidebar.collapsed .navigation-item.active {
+  background: #dff4f4;
+
+  color: $teal;
+}
+
+.sidebar.collapsed .navigation-item.active i {
+  color: $teal;
 }
 
 
@@ -545,6 +964,7 @@ $danger: #e05252;
 
   width: 16px;
   min-width: 16px;
+
   height: 16px;
 
   padding: 0;
@@ -554,13 +974,150 @@ $danger: #e05252;
 
 
 /* =========================================================
+   COLLAPSED MAIN GROUP
+========================================================= */
+
+.sidebar.collapsed .navigation-group {
+  width: 100%;
+
+  min-height: 44px;
+
+  padding: 0;
+
+  justify-content: center;
+
+  gap: 0;
+
+  background: linear-gradient(
+    135deg,
+    #063d47 0%,
+    #087f8c 48%,
+    #0fa7a7 100%
+  );
+
+  color: $white;
+
+  opacity: 1;
+}
+
+
+/* =========================================================
+   COLLAPSED GROUP HOVER
+========================================================= */
+
+.sidebar.collapsed .navigation-group:hover {
+  background: linear-gradient(
+    135deg,
+    #063d47 0%,
+    #087f8c 48%,
+    #0fa7a7 100%
+  );
+
+  color: $white;
+
+  opacity: 1;
+}
+
+
+/* =========================================================
+   COLLAPSED GROUP LEFT
+========================================================= */
+
+.sidebar.collapsed .navigation-group-left {
+  width: 100%;
+
+  justify-content: center;
+
+  gap: 0;
+}
+
+
+/* =========================================================
+   COLLAPSED GROUP TEXT
+========================================================= */
+
+.sidebar.collapsed .navigation-group-left span {
+  display: none;
+}
+
+
+/* =========================================================
+   COLLAPSED GROUP ICON
+========================================================= */
+
+.sidebar.collapsed .navigation-group-left i {
+  width: auto;
+  min-width: auto;
+
+  color: $white;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   COLLAPSED GROUP ARROW
+========================================================= */
+
+.sidebar.collapsed .navigation-group .group-arrow {
+  display: none;
+}
+
+
+/* =========================================================
+   COLLAPSED NESTED GROUP
+========================================================= */
+
+.sidebar.collapsed .navigation-nested-group {
+  min-height: 40px;
+
+  margin-bottom: 2px;
+
+  padding: 0;
+
+  background: linear-gradient(
+    135deg,
+    #063d47 0%,
+    #087f8c 48%,
+    #0fa7a7 100%
+  );
+
+  color: $white;
+
+  opacity: 1;
+}
+
+.sidebar.collapsed .navigation-nested-group .navigation-group-left {
+  width: 100%;
+
+  justify-content: center;
+}
+
+.sidebar.collapsed .navigation-nested-group .navigation-group-left i {
+  color: $white;
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   COLLAPSED SUBMENU
+========================================================= */
+
+.sidebar.collapsed .navigation-submenu {
+  display: none;
+}
+
+
+/* =========================================================
    COLLAPSED FOOTER
 ========================================================= */
 
 .sidebar.collapsed .sidebar-footer {
   padding: 10px;
-}
 
+  background: $white;
+}
 
 .sidebar.collapsed .sidebar-action {
   justify-content: center;
@@ -568,19 +1125,44 @@ $danger: #e05252;
   padding: 0;
 
   gap: 0;
-}
 
+  background: #f5f8f9;
+}
 
 .sidebar.collapsed .sidebar-action span {
   display: none;
 }
-
 
 .sidebar.collapsed .sidebar-action i {
   width: auto;
   min-width: auto;
 
   font-size: 15px;
+}
+
+
+/* =========================================================
+   COLLAPSED FOOTER HOVER
+========================================================= */
+
+.sidebar.collapsed .sidebar-action:hover {
+  background: #e7f5f5;
+
+  color: $teal;
+}
+
+.sidebar.collapsed .sidebar-action:hover i {
+  color: $teal;
+}
+
+.sidebar.collapsed .sidebar-action.logout {
+  background: #fff4f4;
+
+  color: $danger;
+}
+
+.sidebar.collapsed .sidebar-action.logout i {
+  color: $danger;
 }
 
 
@@ -604,22 +1186,22 @@ $danger: #e05252;
     min-width: 220px;
   }
 
-
   .sidebar.collapsed {
     width: 70px;
     min-width: 70px;
   }
 
-
   .navigation-item {
     font-size: 12px;
   }
-
 
   .brand-info h2 {
     font-size: 16px;
   }
 
+  .navigation-group {
+    font-size: 12px;
+  }
 }
 
 
@@ -629,13 +1211,7 @@ $danger: #e05252;
 
 @media (max-width: 700px) {
 
-  /*
-    Sidebar becomes an overlay.
-    It no longer takes space from the main layout.
-  */
-
   .sidebar {
-
     position: fixed;
 
     top: 0;
@@ -654,6 +1230,8 @@ $danger: #e05252;
 
     z-index: 3000;
 
+    background: $white;
+
     box-shadow:
       10px 0 35px rgba(0, 0, 0, 0.15);
 
@@ -662,19 +1240,25 @@ $danger: #e05252;
   }
 
 
-  /* OPEN */
+  /* =====================================================
+     OPEN
+  ===================================================== */
 
   .sidebar.mobile-open {
     transform: translateX(0);
   }
 
 
-  /* Never use desktop collapse on mobile */
+  /* =====================================================
+     NEVER USE DESKTOP COLLAPSE ON MOBILE
+  ===================================================== */
 
   .sidebar.collapsed {
     width: min(270px, 85vw);
 
     min-width: 0;
+
+    background: $white;
   }
 
 
@@ -683,30 +1267,25 @@ $danger: #e05252;
   ===================================================== */
 
   .sidebar-brand {
-
     height: 70px;
-
     min-height: 70px;
 
     padding: 0 18px;
+
+    background: $white;
   }
 
-
   .brand-icon {
-
     width: 40px;
     height: 40px;
-
     min-width: 40px;
 
     font-size: 16px;
   }
 
-
   .brand-info h2 {
     font-size: 16px;
   }
-
 
   .brand-info small {
     font-size: 10px;
@@ -718,29 +1297,38 @@ $danger: #e05252;
   ===================================================== */
 
   .sidebar-navigation {
-
     padding: 16px 12px;
+
+    background: $white;
   }
 
-
   .navigation-title {
-
     padding: 12px 10px 8px;
 
     font-size: 10px;
   }
 
-
   .navigation-item {
-
     min-height: 44px;
 
     font-size: 13px;
-  }
 
+    background: transparent;
+  }
 
   .navigation-item i {
     font-size: 15px;
+  }
+
+
+  /* =====================================================
+     MOBILE GROUP
+  ===================================================== */
+
+  .navigation-group {
+    min-height: 44px;
+
+    font-size: 13px;
   }
 
 
@@ -752,11 +1340,14 @@ $danger: #e05252;
     display: flex;
   }
 
-
   .sidebar.collapsed .navigation-title {
     display: block;
   }
 
+
+  /* =====================================================
+     RESTORE NORMAL ITEM
+  ===================================================== */
 
   .sidebar.collapsed .navigation-item {
     justify-content: flex-start;
@@ -764,16 +1355,15 @@ $danger: #e05252;
     padding: 0 12px;
 
     gap: 12px;
-  }
 
+    background: transparent;
+  }
 
   .sidebar.collapsed .navigation-item span {
     display: inline;
   }
 
-
   .sidebar.collapsed .navigation-item i {
-
     width: 20px;
     min-width: 20px;
 
@@ -781,23 +1371,135 @@ $danger: #e05252;
   }
 
 
-  .sidebar.collapsed .sidebar-action {
+  /* =====================================================
+     RESTORE MAIN GROUP
+  ===================================================== */
 
+  .sidebar.collapsed .navigation-group {
+    width: 100%;
+
+    min-height: 44px;
+
+    padding: 0 12px;
+
+    justify-content: space-between;
+
+    gap: 0;
+
+    background: linear-gradient(
+      135deg,
+      #063d47 0%,
+      #087f8c 48%,
+      #0fa7a7 100%
+    );
+
+    color: $white;
+
+    opacity: 1;
+  }
+
+  .sidebar.collapsed .navigation-group-left {
+    width: auto;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+  }
+
+  .sidebar.collapsed .navigation-group-left span {
+    display: inline;
+  }
+
+  .sidebar.collapsed .navigation-group-left i {
+    width: 20px;
+    min-width: 20px;
+
+    color: rgba(255, 255, 255, 0.88);
+
+    font-size: 15px;
+  }
+
+  .sidebar.collapsed .navigation-group .group-arrow {
+    display: block;
+
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+
+  /* =====================================================
+     RESTORE NESTED GROUP ON MOBILE
+  ===================================================== */
+
+  .sidebar.collapsed .navigation-nested-group {
+    min-height: 36px;
+
+    padding: 0 10px;
+
+    background: transparent;
+
+    color: #71808a;
+  }
+
+  .sidebar.collapsed .navigation-nested-group .navigation-group-left {
+    width: auto;
+
+    justify-content: flex-start;
+
+    gap: 10px;
+  }
+
+  .sidebar.collapsed .navigation-nested-group .navigation-group-left span {
+    display: inline;
+  }
+
+  .sidebar.collapsed .navigation-nested-group .navigation-group-left i {
+    width: 18px;
+    min-width: 18px;
+
+    color: #8998a1;
+
+    font-size: 13px;
+  }
+
+  .sidebar.collapsed .navigation-nested-group .group-arrow {
+    display: block;
+
+    color: #8998a1;
+  }
+
+
+  /* =====================================================
+     RESTORE SUBMENUS
+  ===================================================== */
+
+  .sidebar.collapsed .navigation-submenu {
+    display: block;
+  }
+
+
+  /* =====================================================
+     MOBILE FOOTER
+  ===================================================== */
+
+  .sidebar-footer {
+    background: $white;
+  }
+
+  .sidebar.collapsed .sidebar-action {
     justify-content: flex-start;
 
     padding: 0 12px;
 
     gap: 12px;
-  }
 
+    background: transparent;
+  }
 
   .sidebar.collapsed .sidebar-action span {
     display: inline;
   }
 
-
   .sidebar.collapsed .sidebar-action i {
-
     width: 20px;
     min-width: 20px;
   }
@@ -808,7 +1510,6 @@ $danger: #e05252;
   ===================================================== */
 
   .sidebar-overlay {
-
     display: block;
 
     position: fixed;
@@ -830,16 +1531,13 @@ $danger: #e05252;
       visibility 0.25s ease;
   }
 
-
   .sidebar-overlay.active {
-
     opacity: 1;
 
     visibility: visible;
 
     pointer-events: auto;
   }
-
 }
 
 
@@ -853,11 +1551,9 @@ $danger: #e05252;
     width: min(260px, 88vw);
   }
 
-
   .sidebar.collapsed {
     width: min(260px, 88vw);
   }
-
 
   .navigation-item {
     min-height: 42px;
@@ -865,18 +1561,21 @@ $danger: #e05252;
     font-size: 12.5px;
   }
 
+  .navigation-group {
+    min-height: 42px;
+
+    font-size: 12.5px;
+  }
 
   .sidebar-footer {
     padding: 10px;
   }
-
 
   .sidebar-action {
     height: 40px;
 
     font-size: 12.5px;
   }
-
 }
 
 
@@ -890,11 +1589,9 @@ $danger: #e05252;
     width: 245px;
   }
 
-
   .sidebar.collapsed {
     width: 245px;
   }
-
 
   .navigation-item {
     min-height: 40px;
@@ -902,243 +1599,9 @@ $danger: #e05252;
     font-size: 12px;
   }
 
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* =========================================================
-   NAVIGATION GROUP
-========================================================= */
-
-.navigation-group {
-  width: 100%;
-  min-height: 44px;
-  margin-bottom: 4px;
-  padding: 0 12px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  box-sizing: border-box;
-
-  border: none;
-  border-radius: 9px;
-
-  background: transparent;
-
-  color: #61727d;
-
-  font-family: inherit;
-  font-size: 13px;
-  line-height: 1.2;
-  font-weight: 500;
-
-  cursor: pointer;
-  text-align: left;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.navigation-group:hover {
-  background: $hover-bg;
-  color: $teal;
-}
-
-.navigation-group-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.navigation-group-left i {
-  width: 20px;
-  min-width: 20px;
-
-  text-align: center;
-
-  color: #8998a1;
-  font-size: 15px;
-}
-
-.navigation-group:hover i {
-  color: $teal;
-}
-
-.navigation-group.expanded {
-  background: rgba(15, 167, 167, 0.06);
-  color: $teal;
-}
-
-.navigation-group.expanded .navigation-group-left i,
-.navigation-group.expanded .group-arrow {
-  color: $teal;
-}
-
-
-/* =========================================================
-   GROUP ARROW
-========================================================= */
-
-.group-arrow {
-  color: #8998a1;
-  font-size: 11px;
-
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
-}
-
-.group-arrow.rotate {
-  transform: rotate(180deg);
-}
-
-
-/* =========================================================
-   SUBMENU
-========================================================= */
-
-.navigation-submenu {
-  position: relative;
-
-  margin: 0 0 6px 10px;
-  padding-left: 22px;
-}
-
-.navigation-submenu::before {
-  content: '';
-
-  position: absolute;
-
-  left: 10px;
-  top: 2px;
-  bottom: 2px;
-
-  width: 1px;
-
-  background: $border;
-}
-
-
-/* =========================================================
-   SUBMENU ITEM
-========================================================= */
-
-.navigation-subitem {
-  position: relative;
-
-  width: 100%;
-  min-height: 38px;
-
-  padding: 0 10px;
-
-  display: flex;
-  align-items: center;
-
-  gap: 10px;
-
-  box-sizing: border-box;
-
-  border-radius: 8px;
-
-  color: #71808a;
-
-  text-decoration: none;
-
-  font-size: 12.5px;
-  font-weight: 500;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease;
-}
-
-.navigation-subitem i {
-  width: 18px;
-  min-width: 18px;
-
-  text-align: center;
-
-  color: #8998a1;
-  font-size: 13px;
-}
-
-.navigation-subitem:hover {
-  background: $hover-bg;
-  color: $teal;
-}
-
-.navigation-subitem:hover i {
-  color: $teal;
-}
-
-.navigation-subitem.active {
-  background: rgba(15, 167, 167, 0.10);
-  color: $teal;
-  font-weight: 600;
-}
-
-.navigation-subitem.active i {
-  color: $teal;
-}
-
-.navigation-subitem.active::before {
-  content: '';
-
-  position: absolute;
-
-  left: -12px;
-  top: 7px;
-  bottom: 7px;
-
-  width: 3px;
-
-  border-radius: 0 4px 4px 0;
-
-  background: $teal;
-}
-
-
-/* =========================================================
-   NESTED GROUP
-========================================================= */
-
-.navigation-nested-group {
-  min-height: 40px;
-  margin-bottom: 2px;
-
-  padding-left: 10px;
-
-  font-size: 12.5px;
-}
-
-.navigation-nested-submenu {
-  margin-left: 8px;
+  .navigation-group {
+    min-height: 40px;
+
+    font-size: 12px;
+  }
 }
