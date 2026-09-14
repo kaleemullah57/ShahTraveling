@@ -30,31 +30,13 @@ $danger: #e05252;
 ========================================================= */
 
 .sidebar {
-  position: relative;
-
-  width: 250px;
-  min-width: 250px;
-
   height: 100vh;
   height: 100dvh;
 
   display: flex;
   flex-direction: column;
 
-  box-sizing: border-box;
-
-  background: $white;
-
-  border-right: 1px solid $border;
-
   overflow: hidden;
-
-  z-index: 1500;
-
-  transition:
-    width 0.25s ease,
-    min-width 0.25s ease,
-    transform 0.25s ease;
 }
 
 
@@ -181,11 +163,14 @@ $danger: #e05252;
 
   min-height: 0;
 
-  padding: 18px 12px;
-
   overflow-y: auto;
   overflow-x: hidden;
+
+  /* Keep your existing padding if you already have it */
+  scrollbar-width: thin;
+  scrollbar-color: #0fa7a7 transparent;
 }
+
 
 
 /* =========================================================
@@ -193,7 +178,7 @@ $danger: #e05252;
 ========================================================= */
 
 .sidebar-navigation::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 .sidebar-navigation::-webkit-scrollbar-track {
@@ -201,9 +186,12 @@ $danger: #e05252;
 }
 
 .sidebar-navigation::-webkit-scrollbar-thumb {
-  background: #dce5e8;
-
+  background: #0fa7a7;
   border-radius: 10px;
+}
+
+.sidebar-navigation::-webkit-scrollbar-thumb:hover {
+  background: #0c8f8f;
 }
 
 
@@ -914,4 +902,243 @@ $danger: #e05252;
     font-size: 12px;
   }
 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   NAVIGATION GROUP
+========================================================= */
+
+.navigation-group {
+  width: 100%;
+  min-height: 44px;
+  margin-bottom: 4px;
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  box-sizing: border-box;
+
+  border: none;
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #61727d;
+
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 500;
+
+  cursor: pointer;
+  text-align: left;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.navigation-group:hover {
+  background: $hover-bg;
+  color: $teal;
+}
+
+.navigation-group-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navigation-group-left i {
+  width: 20px;
+  min-width: 20px;
+
+  text-align: center;
+
+  color: #8998a1;
+  font-size: 15px;
+}
+
+.navigation-group:hover i {
+  color: $teal;
+}
+
+.navigation-group.expanded {
+  background: rgba(15, 167, 167, 0.06);
+  color: $teal;
+}
+
+.navigation-group.expanded .navigation-group-left i,
+.navigation-group.expanded .group-arrow {
+  color: $teal;
+}
+
+
+/* =========================================================
+   GROUP ARROW
+========================================================= */
+
+.group-arrow {
+  color: #8998a1;
+  font-size: 11px;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.group-arrow.rotate {
+  transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   SUBMENU
+========================================================= */
+
+.navigation-submenu {
+  position: relative;
+
+  margin: 0 0 6px 10px;
+  padding-left: 22px;
+}
+
+.navigation-submenu::before {
+  content: '';
+
+  position: absolute;
+
+  left: 10px;
+  top: 2px;
+  bottom: 2px;
+
+  width: 1px;
+
+  background: $border;
+}
+
+
+/* =========================================================
+   SUBMENU ITEM
+========================================================= */
+
+.navigation-subitem {
+  position: relative;
+
+  width: 100%;
+  min-height: 38px;
+
+  padding: 0 10px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  box-sizing: border-box;
+
+  border-radius: 8px;
+
+  color: #71808a;
+
+  text-decoration: none;
+
+  font-size: 12.5px;
+  font-weight: 500;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.navigation-subitem i {
+  width: 18px;
+  min-width: 18px;
+
+  text-align: center;
+
+  color: #8998a1;
+  font-size: 13px;
+}
+
+.navigation-subitem:hover {
+  background: $hover-bg;
+  color: $teal;
+}
+
+.navigation-subitem:hover i {
+  color: $teal;
+}
+
+.navigation-subitem.active {
+  background: rgba(15, 167, 167, 0.10);
+  color: $teal;
+  font-weight: 600;
+}
+
+.navigation-subitem.active i {
+  color: $teal;
+}
+
+.navigation-subitem.active::before {
+  content: '';
+
+  position: absolute;
+
+  left: -12px;
+  top: 7px;
+  bottom: 7px;
+
+  width: 3px;
+
+  border-radius: 0 4px 4px 0;
+
+  background: $teal;
+}
+
+
+/* =========================================================
+   NESTED GROUP
+========================================================= */
+
+.navigation-nested-group {
+  min-height: 40px;
+  margin-bottom: 2px;
+
+  padding-left: 10px;
+
+  font-size: 12.5px;
+}
+
+.navigation-nested-submenu {
+  margin-left: 8px;
 }

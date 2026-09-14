@@ -86,13 +86,17 @@
     <div class="users-table-container">
 
         <app-data-table
-            [columns]="userColumns"
-            [data]="users"
-            [loading]="loading"
-            [totalRecords]="totalRecords"
-            [pageNumber]="pageNumber"
-            [pageSize]="pageSize">
-        </app-data-table>
+    [columns]="userColumns"
+    [data]="users"
+    [loading]="loading"
+    [totalRecords]="totalRecords"
+    [pageNumber]="pageNumber"
+    [pageSize]="pageSize"
+
+    (searchChange)="onSearch($event)"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)">
+</app-data-table>
 
     </div>
 

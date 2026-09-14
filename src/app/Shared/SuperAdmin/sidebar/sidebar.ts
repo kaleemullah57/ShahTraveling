@@ -113,4 +113,39 @@ export class Sidebar {
 
   }
 
+
+
+
+
+
+
+
+
+
+
+  managementOpen = true;
+regionsOpen = false;
+contentOpen = false;
+financeOpen = false;
+systemOpen = false;
+
+toggleManagement(): void {
+  this.managementOpen = !this.managementOpen;
+}
+
+toggleRegions(): void {
+  this.regionsOpen = !this.regionsOpen;
+}
+
+toggleContent(): void {
+  this.contentOpen = !this.contentOpen;
+}
+
+toggleFinance(): void {
+  this.financeOpen = !this.financeOpen;
+}
+
+toggleSystem(): void {
+  this.systemOpen = !this.systemOpen;
+}
 }

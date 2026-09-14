@@ -1,17 +1,9 @@
-<aside
-  class="sidebar"
-  [class.collapsed]="collapsed"
-  [class.mobile-open]="mobileOpen"
->
+<aside class="sidebar" [class.collapsed]="collapsed" [class.mobile-open]="mobileOpen">
 
-  <!-- BRAND -->
+
   <div class="sidebar-brand">
 
-    <a
-      routerLink="/SuperAdminDashboard"
-      class="brand-link"
-      (click)="closeOnNavigation()"
-    >
+    <a routerLink="/SuperAdminDashboard" class="brand-link" (click)="closeOnNavigation()">
 
       <div class="brand-icon">
         <i class="fa fa-plane"></i>
@@ -34,8 +26,9 @@
   </div>
 
 
-  <!-- NAVIGATION -->
+
   <nav class="sidebar-navigation">
+
 
     <div class="navigation-title">
       MAIN
@@ -43,14 +36,9 @@
 
 
     <!-- DASHBOARD -->
-    <a
-      routerLink="/SuperAdminDashboard"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="navigation-item"
-      title="Dashboard"
-      (click)="closeOnNavigation()"
-    >
+
+    <a routerLink="/SuperAdminDashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+      class="navigation-item" title="Dashboard" (click)="closeOnNavigation()">
 
       <i class="fa fa-dashboard"></i>
 
@@ -66,298 +54,362 @@
     </div>
 
 
-    <!-- Branches -->
-    <a
-      routerLink="/SuperAdminDashboard/branches"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Branches"
-      (click)="closeOnNavigation()"
-    >
+    <button type="button" class="navigation-group" [class.expanded]="managementOpen" (click)="toggleManagement()"
+      title="Management">
 
-      <i class="fa fa-calendar-check-o"></i>
+      <span class="navigation-group-left">
 
-      <span>
-        Branches
+        <i class="fa fa-th-large"></i>
+
+        <span>
+          Management
+        </span>
+
       </span>
 
-      <span class="notification-badge">
-        12
-      </span>
+      <i class="fa fa-chevron-down group-arrow" [class.rotate]="managementOpen"></i>
 
-    </a>
+    </button>
 
 
-    <a
-      routerLink="/SuperAdminDashboard/registerUsers"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Branches"
-      (click)="closeOnNavigation()"
-    >
+    @if (managementOpen) {
 
-      <i class="fa fa-calendar-check-o"></i>
-
-      <span>
-        Register Users
-      </span>
-
-      <span class="notification-badge">
-        12
-      </span>
-
-    </a>
-
-
-    <!-- CUSTOMERS -->
-    <a
-      routerLink="/SuperAdminDashboard/Countries"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Countries"
-      (click)="closeOnNavigation()"
-    >
-
-      <i class="fa fa-users"></i>
-
-      <span>
-        Countries
-      </span>
-
-    </a>
-
-    <a
-      routerLink="/SuperAdminDashboard/Provinces"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Countries"
-      (click)="closeOnNavigation()"
-    >
-
-      <i class="fa fa-provinces"></i>
-
-      <span>
-        Provinces
-      </span>
-
-    </a>
-
-
-    <!-- DESTINATIONS -->
-    <a
-      routerLink="/SuperAdminDashboard/destinations"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Destinations"
-      (click)="closeOnNavigation()"
-    >
-
-      <i class="fa fa-globe"></i>
-
-      <span>
-        Destinations
-      </span>
-
-    </a>
-
-    <!-- DESTINATIONS -->
-    <a
-      routerLink="/SuperAdminDashboard/PostTypes"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Destinations"
-      (click)="closeOnNavigation()"
-    >
-
-     <i class="fa-solid fa-file-lines"></i>
-
-      <span>
-        Post Types
-      </span>
-
-    </a>
-
-    <a
-      routerLink="/SuperAdminDashboard/PostCategories"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Destinations"
-      (click)="closeOnNavigation()"
-    >
-
-      <i class="fa fa-tags"></i>
-
-      <span>
-        Post Categories
-      </span>
-
-    </a>
+    <div class="navigation-submenu">
 
 
 
-    <a
-      routerLink="/SuperAdminDashboard/Airlines"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Airlines"
-      (click)="closeOnNavigation()"
-    >
+      <a routerLink="/SuperAdminDashboard/branches" routerLinkActive="active" class="navigation-subitem"
+        title="Branches" (click)="closeOnNavigation()">
 
-      <i class="fa fa-plane"></i>
+        <i class="fa fa-calendar-check-o"></i>
 
-      <span>
-        Airlines
-      </span>
+        <span>
+          Branches
+        </span>
 
-    </a>
+        <span class="notification-badge">
+          12
+        </span>
 
-
-    <a
-      routerLink="/SuperAdminDashboard/Services"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Airlines"
-      (click)="closeOnNavigation()"
-    >
-
-      <i class="fa fa-plane"></i>
-
-      <span>
-        Services
-      </span>
-
-    </a>
-
-    <!-- PACKAGES -->
-    <a
-      routerLink="/SuperAdminDashboard/packages"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Travel Packages"
-      (click)="closeOnNavigation()"
-    >
-
-      <i class="fa fa-suitcase"></i>
-
-      <span>
-        Travel Packages
-      </span>
-
-    </a>
+      </a>
 
 
-    <!-- SERVICES -->
-    <a
-      routerLink="/SuperAdminDashboard/services"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Services"
-      (click)="closeOnNavigation()"
-    >
 
-      <i class="fa fa-cogs"></i>
+      <a routerLink="/SuperAdminDashboard/registerUsers" routerLinkActive="active" class="navigation-subitem"
+        title="Register Users" (click)="closeOnNavigation()">
 
-      <span>
-        Services
-      </span>
+        <i class="fa fa-user-plus"></i>
 
-    </a>
+        <span>
+          Register Users
+        </span>
+
+        <span class="notification-badge">
+          12
+        </span>
+
+      </a>
 
 
-    <!-- FINANCE -->
+
+      <button type="button" class="navigation-group navigation-nested-group" [class.expanded]="regionsOpen"
+        (click)="toggleRegions()" title="Regions">
+
+        <span class="navigation-group-left">
+
+          <i class="fa fa-globe"></i>
+
+          <span>
+            Regions
+          </span>
+
+        </span>
+
+        <i class="fa fa-chevron-down group-arrow" [class.rotate]="regionsOpen"></i>
+
+      </button>
+
+
+      @if (regionsOpen) {
+
+      <div class="navigation-submenu navigation-nested-submenu">
+
+        <!-- COUNTRIES -->
+
+        <a routerLink="/SuperAdminDashboard/Countries" routerLinkActive="active" class="navigation-subitem"
+          title="Countries" (click)="closeOnNavigation()">
+
+          <i class="fa fa-flag"></i>
+
+          <span>
+            Countries
+          </span>
+
+        </a>
+
+
+        <!-- PROVINCES -->
+
+        <a routerLink="/SuperAdminDashboard/Provinces" routerLinkActive="active" class="navigation-subitem"
+          title="Provinces" (click)="closeOnNavigation()">
+
+          <i class="fa fa-map"></i>
+
+          <span>
+            Provinces
+          </span>
+
+        </a>
+
+
+        <!-- CITIES -->
+
+        <a routerLink="/SuperAdminDashboard/Cities" routerLinkActive="active" class="navigation-subitem" title="Cities"
+          (click)="closeOnNavigation()">
+
+          <i class="fa fa-map-marker"></i>
+
+          <span>
+            Cities
+          </span>
+
+        </a>
+
+      </div>
+
+      }
+
+
+      <a routerLink="/SuperAdminDashboard/destinations" routerLinkActive="active" class="navigation-subitem"
+        title="Destinations" (click)="closeOnNavigation()">
+
+        <i class="fa fa-globe"></i>
+
+        <span>
+          Destinations
+        </span>
+
+      </a>
+
+      <button type="button" class="navigation-group navigation-nested-group" [class.expanded]="contentOpen"
+        (click)="toggleContent()" title="Content">
+
+        <span class="navigation-group-left">
+
+          <i class="fa fa-file-text-o"></i>
+
+          <span>
+            Content
+          </span>
+
+        </span>
+
+        <i class="fa fa-chevron-down group-arrow" [class.rotate]="contentOpen"></i>
+
+      </button>
+
+
+      @if (contentOpen) {
+
+      <div class="navigation-submenu navigation-nested-submenu">
+
+        <!-- POST TYPES -->
+
+        <a routerLink="/SuperAdminDashboard/PostTypes" routerLinkActive="active" class="navigation-subitem"
+          title="Post Types" (click)="closeOnNavigation()">
+
+          <i class="fa fa-file-text-o"></i>
+
+          <span>
+            Post Types
+          </span>
+
+        </a>
+
+
+        <!-- POST CATEGORIES -->
+
+        <a routerLink="/SuperAdminDashboard/PostCategories" routerLinkActive="active" class="navigation-subitem"
+          title="Post Categories" (click)="closeOnNavigation()">
+
+          <i class="fa fa-tags"></i>
+
+          <span>
+            Post Categories
+          </span>
+
+        </a>
+
+      </div>
+
+      }
+
+
+
+      <a routerLink="/SuperAdminDashboard/Airlines" routerLinkActive="active" class="navigation-subitem"
+        title="Airlines" (click)="closeOnNavigation()">
+
+        <i class="fa fa-plane"></i>
+
+        <span>
+          Airlines
+        </span>
+
+      </a>
+
+
+      <a routerLink="/SuperAdminDashboard/Services" routerLinkActive="active" class="navigation-subitem"
+        title="Services" (click)="closeOnNavigation()">
+
+        <i class="fa fa-cogs"></i>
+
+        <span>
+          Services
+        </span>
+
+      </a>
+
+      <a routerLink="/SuperAdminDashboard/packages" routerLinkActive="active" class="navigation-subitem"
+        title="Travel Packages" (click)="closeOnNavigation()">
+
+        <i class="fa fa-suitcase"></i>
+
+        <span>
+          Travel Packages
+        </span>
+
+      </a>
+
+    </div>
+
+    }
+
+
+
     <div class="navigation-title">
       FINANCE
     </div>
 
 
-    <!-- PAYMENTS -->
-    <a
-      routerLink="/SuperAdminDashboard/payments"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Payments"
-      (click)="closeOnNavigation()"
-    >
+    <button type="button" class="navigation-group" [class.expanded]="financeOpen" (click)="toggleFinance()"
+      title="Finance">
 
-      <i class="fa fa-credit-card"></i>
+      <span class="navigation-group-left">
 
-      <span>
-        Payments
+        <i class="fa fa-money"></i>
+
+        <span>
+          Finance
+        </span>
+
       </span>
 
-    </a>
+      <i class="fa fa-chevron-down group-arrow" [class.rotate]="financeOpen"></i>
+
+    </button>
 
 
-    <!-- REPORTS -->
-    <a
-      routerLink="/SuperAdminDashboard/reports"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Reports"
-      (click)="closeOnNavigation()"
-    >
+    @if (financeOpen) {
 
-      <i class="fa fa-bar-chart"></i>
-
-      <span>
-        Reports
-      </span>
-
-    </a>
+    <div class="navigation-submenu">
 
 
-    <!-- SYSTEM -->
+      <!-- PAYMENTS -->
+
+      <a routerLink="/SuperAdminDashboard/payments" routerLinkActive="active" class="navigation-subitem"
+        title="Payments" (click)="closeOnNavigation()">
+
+        <i class="fa fa-credit-card"></i>
+
+        <span>
+          Payments
+        </span>
+
+      </a>
+
+
+      <!-- REPORTS -->
+
+      <a routerLink="/SuperAdminDashboard/reports" routerLinkActive="active" class="navigation-subitem" title="Reports"
+        (click)="closeOnNavigation()">
+
+        <i class="fa fa-bar-chart"></i>
+
+        <span>
+          Reports
+        </span>
+
+      </a>
+
+    </div>
+
+    }
+
     <div class="navigation-title">
       SYSTEM
     </div>
 
 
-    <!-- USERS -->
-    <a
-      routerLink="/SuperAdminDashboard/users"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Users"
-      (click)="closeOnNavigation()"
-    >
+    <button type="button" class="navigation-group" [class.expanded]="systemOpen" (click)="toggleSystem()"
+      title="System">
 
-      <i class="fa fa-user-circle"></i>
+      <span class="navigation-group-left">
 
-      <span>
-        Users
+        <i class="fa fa-cog"></i>
+
+        <span>
+          System
+        </span>
+
       </span>
 
-    </a>
+      <i class="fa fa-chevron-down group-arrow" [class.rotate]="systemOpen"></i>
+
+    </button>
 
 
-    <!-- SETTINGS -->
-    <a
-      routerLink="/SuperAdminDashboard/settings"
-      routerLinkActive="active"
-      class="navigation-item"
-      title="Settings"
-      (click)="closeOnNavigation()"
-    >
+    @if (systemOpen) {
 
-      <i class="fa fa-cog"></i>
+    <div class="navigation-submenu">
 
-      <span>
-        Settings
-      </span>
 
-    </a>
+      <!-- USERS -->
+
+      <a routerLink="/SuperAdminDashboard/users" routerLinkActive="active" class="navigation-subitem" title="Users"
+        (click)="closeOnNavigation()">
+
+        <i class="fa fa-user-circle"></i>
+
+        <span>
+          Users
+        </span>
+
+      </a>
+
+
+      <!-- SETTINGS -->
+
+      <a routerLink="/SuperAdminDashboard/settings" routerLinkActive="active" class="navigation-subitem"
+        title="Settings" (click)="closeOnNavigation()">
+
+        <i class="fa fa-cog"></i>
+
+        <span>
+          Settings
+        </span>
+
+      </a>
+
+    </div>
+
+    }
 
   </nav>
 
 
-  <!-- FOOTER -->
   <div class="sidebar-footer">
 
-    <button
-      type="button"
-      class="sidebar-action"
-      title="Help & Support"
-    >
+    <button type="button" class="sidebar-action" title="Help & Support">
 
       <i class="fa fa-question-circle"></i>
 
@@ -368,12 +420,7 @@
     </button>
 
 
-    <button
-      type="button"
-      class="sidebar-action logout"
-      title="Logout"
-      (click)="logout()"
-    >
+    <button type="button" class="sidebar-action logout" title="Logout" (click)="logout()">
 
       <i class="fa fa-sign-out"></i>
 
@@ -388,10 +435,4 @@
 </aside>
 
 
-<!-- MOBILE OVERLAY -->
-
-<div
-  class="sidebar-overlay"
-  [class.active]="mobileOpen"
-  (click)="closeMobileSidebar()"
-></div>
+<div class="sidebar-overlay" [class.active]="mobileOpen" (click)="closeMobileSidebar()"></div>
