@@ -94,32 +94,38 @@
 
         @else if (field.type === 'select') {
 
-        <select [id]="'field-' + field.key" [value]="getValue(field.key)" [disabled]="isFieldDisabled(field)"
-          [required]="field.required || false" (change)="
+        <select
+    [id]="'field-' + field.key"
+    [value]="getValue(field.key)"
+    [disabled]="isFieldDisabled(field)"
+    [required]="field.required || false"
+    (change)="
       onSelectChange(
         field.key,
         $any($event.target).value
       )
-    ">
+    "
+  ><option value="">
+      Select {{ field.label }}
+    </option>
 
-          <option value="">
-            Select {{ field.label }}
-          </option>
+    @for (
+      option of field.options ?? [];
+      track option.value
+    ) {
 
-          @for (
-          option of field.options ?? [];
-          track option.value
-          ) {
+      <option
+  [value]="option.value"
+  [selected]="isOptionSelected(field.key, option.value)"
+>
+  {{ option.label }}
+</option>
 
-          <option [value]="option.value">
-            {{ option.label }}
-          </option>
+    }
 
-          }
+  </select>
 
-        </select>
-
-        }
+}
 
 
         <!-- =================================================

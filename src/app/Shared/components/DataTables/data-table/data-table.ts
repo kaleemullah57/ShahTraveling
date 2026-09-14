@@ -33,12 +33,9 @@ export interface TableAction {
   styleUrl: './data-table.scss'
 })
 export class DataTable implements OnChanges  {
-
+  
   constructor() {
   }
-  // =========================================================
-  // INPUTS
-  // =========================================================
 @Input()
 columns: TableColumn[] = [];
 
@@ -85,20 +82,11 @@ actions: TableAction[] = [
   }
 ];
 
-ngOnChanges(changes: SimpleChanges): void {
-
-  // console.log('========== DATA TABLE ==========');
-  // console.log('loading:', this.loading);
-  // console.log('data:', this.data);
-  // console.log('data length:', this.data?.length);
-  // console.log('columns:', this.columns);
-  // console.log('actions:', this.actions);
-  // console.log('================================');
+get hasActions(): boolean {
+  return this.showActions && this.actions?.length > 0;
 }
-
-  // =========================================================
-  // OUTPUTS
-  // =========================================================
+ngOnChanges(changes: SimpleChanges): void {
+}
 
   @Output()
   searchChange = new EventEmitter<string>();
@@ -115,185 +103,105 @@ ngOnChanges(changes: SimpleChanges): void {
     row: any;
   }>();
 
-
-  // =========================================================
-  // SEARCH
-  // =========================================================
-
   searchValue = '';
-
-
   onSearch(): void {
-
     this.searchChange.emit(
       this.searchValue.trim()
     );
-
   }
 
 
   clearSearch(): void {
-
     this.searchValue = '';
-
     this.searchChange.emit('');
-
   }
-
-
-  // =========================================================
-  // ACTION
-  // =========================================================
 
   onAction(
     action: TableAction,
     row: any
   ): void {
-
     this.actionClick.emit({
       action,
       row
     });
-
   }
 
-
-  // =========================================================
-  // PAGE
-  // =========================================================
-
   goToPage(page: number): void {
-
     if (
       page < 1 ||
       page > this.totalPages
     ) {
       return;
     }
-
     this.pageChange.emit(page);
-
   }
 
 
-  // =========================================================
-  // PAGE SIZE
-  // =========================================================
-
   changePageSize(event: Event): void {
-
     const value = Number(
       (event.target as HTMLSelectElement).value
     );
-
     this.pageSizeChange.emit(value);
-
   }
 
 
-  // =========================================================
-  // TOTAL PAGES
-  // =========================================================
-
  get totalPages(): number {
-
   const total = this.totalRecords;
-
   const size = this.pageSize;
-
   if (!total || !size) {
     return 1;
   }
-
   return Math.ceil(total / size);
-
 }
 
-// =========================================================
-// PAGE NUMBERS
-// =========================================================
-
 get pages(): number[] {
-
   return Array.from(
     {
       length: this.totalPages
     },
     (_, index) => index + 1
   );
-
 }
 
 
-  // =========================================================
-// SERIAL NUMBER
-// =========================================================
-
 getSerialNumber(index: number): number {
-
   return (
     (this.pageNumber - 1) *
     this.pageSize
   ) + index + 1;
-
 }
 
-
-  // =========================================================
-  // VALUE
-  // =========================================================
 
   getValue(
     row: any,
     key: string
   ): any {
-
     return row?.[key];
-
   }
 
-
-  // =========================================================
-  // STATUS CLASS
-  // =========================================================
 
   getStatusClass(value: any): string {
-
     if (
       value === true ||
       value === 1 ||
       value === 'Active' ||
       value === 'active'
     ) {
-
       return 'status-active';
-
     }
-
     return 'status-inactive';
-
   }
 
-
-  // =========================================================
-  // STATUS TEXT
-  // =========================================================
 
   getStatusText(value: any): string {
-
     if (
       value === true ||
       value === 1 ||
       value === 'Active' ||
       value === 'active'
     ) {
-
       return 'Active';
-
     }
-
     return 'Inactive';
-
   }
-
 }

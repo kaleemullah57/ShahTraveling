@@ -22,7 +22,6 @@
 
 
       <h1>
-        Explore Travel Destinations
         <span>Around the World</span>
       </h1>
 
@@ -50,80 +49,34 @@
 
   </section>
 
-
-
-
-  <!-- ==========================================================
-     SEARCH & SORT
-=========================================================== -->
-
   <section class="destination-search-section">
 
     <div class="search-container">
-
-      <!-- ======================================================
-         SEARCH BOX
-    ======================================================= -->
-
       <div class="search-box">
-
-
-        <!-- SEARCH ICON -->
-
         <div class="search-icon">
-
           <svg viewBox="0 0 24 24" aria-hidden="true">
-
             <circle cx="11" cy="11" r="7"></circle>
-
             <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
-
           </svg>
-
         </div>
-
-
-        <!-- INPUT -->
-
         <input type="text" [(ngModel)]="searchText" placeholder="Search destination, country, city..."
           (keydown)="onSearchKeydown($event)" />
-
-
-        <!-- CLEAR -->
+        <app-button *ngIf="searchText" label="×" variant="ghost" size="small" type="button" (clicked)="clearSearch()">
+        </app-button>
 
         <app-button
-  *ngIf="searchText"
-  label="×"
-  variant="ghost"
-  size="small"
-  type="button"
-  (clicked)="clearSearch()">
-</app-button>
-
-
-        <!-- SEARCH BUTTON -->
-<app-button
   [label]="loading ? 'Searching...' : 'Search'"
-  variant="success"
+  icon="fa fa-search"
+  variant="primary"
   size="medium"
   type="button"
   [disabled]="loading"
   [loading]="loading"
   (clicked)="searchDestinations()">
 </app-button>
-
       </div>
 
-
-      <!-- ======================================================
-         SEARCH INFO + SORT
-    ======================================================= -->
-
       <div class="search-toolbar">
-
-
-        <!-- RESULT -->
-
         <div class="result-info">
 
           <ng-container *ngIf="searchedText; else allResults">
@@ -227,9 +180,13 @@
             {{ errorMessage }}
           </p>
 
-          <button type="button" class="retry-button" (click)="getDestinations()">
-            Try Again
-          </button>
+          <app-button
+  label="Try Again"
+  variant="success"
+  size="medium"
+  type="button"
+  (clicked)="getDestinations()">
+</app-button>
 
         </div>
 
@@ -427,13 +384,9 @@
 
 
               <!-- SEE MORE BUTTON -->
-<app-button
-  label="See More →"
-  variant="success"
-  size="medium"
-  type="button"
-  (clicked)="openDestination(destination)">
-</app-button>
+              <app-button label="See More →" variant="success" size="medium" type="button"
+                (clicked)="openDestination(destination)">
+              </app-button>
 
             </div>
 
@@ -499,12 +452,13 @@
          CLOSE BUTTON
     ========================================================= -->
 
-    <button type="button" class="modal-close-button" aria-label="Close" (click)="closeDestination()">
-
-      <span></span>
-      <span></span>
-
-    </button>
+    <app-button
+  label="×"
+  variant="ghost"
+  size="small"
+  type="button"
+  (clicked)="closeDestination()">
+</app-button>
 
 
     <!-- ========================================================
@@ -697,9 +651,13 @@
 
       <div class="modal-footer">
 
-        <button type="button" class="close-button" (click)="closeDestination()">
-          Close
-        </button>
+        <app-button
+  label="Close"
+  variant="primary"
+  size="medium"
+  type="button"
+  (clicked)="closeDestination()">
+</app-button>
 
       </div>
 

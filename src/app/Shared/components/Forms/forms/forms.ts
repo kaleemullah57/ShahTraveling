@@ -307,4 +307,15 @@ export class forms {
 
   }
 
+
+
+  isOptionSelected(
+  fieldKey: string,
+  optionValue: any
+): boolean {
+
+  const currentValue = this.getValue(fieldKey);
+
+  return Number(currentValue) === Number(optionValue);
+}
 }

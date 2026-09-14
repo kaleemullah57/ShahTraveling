@@ -17,6 +17,7 @@ export interface AddBranchServiceRequest {
 // Get Branch Services
 
 export interface BranchService {
+
   branchServiceId: number;
   branchServiceName: string;
   isActive: boolean;
@@ -27,10 +28,11 @@ export interface BranchService {
   serviceName: string;
   createdById: number;
   userName: string;
+
 }
 
 export interface GetBranchServicesRequest {
-  search?: string;
+   search: string | null;
   pageNumber: number;
   pageSize: number;
 }
@@ -42,4 +44,17 @@ export interface GetBranchServicesResponse {
   data: BranchService[];
   totalCount: number;
   success: boolean;
+}
+
+
+
+
+
+
+// Update Branch Services
+export interface UpdateBranchServiceRequest {
+  branchServiceId: number;
+  serviceId: number;
+  isActive: boolean;
+  branchServiceName: string;
 }

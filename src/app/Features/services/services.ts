@@ -1,115 +1,189 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
-import { Flightschedule } from '../../Shared/components/Services/FlightScheduleService/flightschedule';
-import { TimetableFlight } from '../../Shared/components/modal/FlightSchedules/flightschedule';
-import { finalize } from 'rxjs';
-
+import { ChangeDetectorRef, Component, inject } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { Button } from "../../Shared/components/button/button";
+import { GlobalCard } from "../../Shared/components/Card/global-card/global-card";
+import { PublicBranchServices } from "../../Core/Services/public Services/Public BranchServicess/public-branch-services";
+import { BranchServices } from "../Admin/Services/branch-services/branch-services";
+import { BranchService } from "../../Core/Models/BranchServices Model/branch-services-model";
+import { GetBranchServicesRequest } from "../../Core/Models/BranchServices Model/branch-services-model";
 @Component({
   selector: 'app-services',
+
   standalone: true,
+
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    Button,
+    GlobalCard
   ],
+
   templateUrl: './services.html',
+
   styleUrl: './services.scss'
 })
 export class Services {
 
-  // =====================================================
-  // SEARCH
-  // =====================================================
+  private readonly publicBranchServices =
+    inject(PublicBranchServices);
 
-  iataCode: string = 'ISB';
+  private readonly cdr =
+    inject(ChangeDetectorRef);
 
-  type: 'arrival' | 'departure' = 'departure';
+  branchServices: BranchService[] = [];
 
+  loading = false;
 
-  // =====================================================
-  // FLIGHTS
-  // =====================================================
+  pageNumber = 1;
 
-  // All flights received from API
-  allFlights: TimetableFlight[] = [];
+  pageSize = 20;
 
-  // Flights currently displayed in HTML
-  flights: TimetableFlight[] = [];
-
-  pageSize: number = 4;
-
-  // Current number of displayed flights
-  displayedCount: number = 0;
-
-  loading: boolean = false;
-
-  error: string = '';
+  totalRecords = 0;
 
 
-  constructor(
-    private timetableService: Flightschedule
-  ) {}
+  get totalPages(): number {
+
+    return Math.ceil(
+      this.totalRecords / this.pageSize
+    );
+
+  }
+
+  search = '';
+
+  ngOnInit(): void {
+
+    this.loadBranchServices();
+
+  }
 
 
-  
-  search(): void {
-
-    const airport = this.iataCode.trim().toUpperCase();
-
-    // Validate airport
-    if (!airport || airport.length !== 3) {
-      this.error = 'Please enter a valid 3-letter airport IATA code.';
-      this.flights = [];
-      return;
-    }
+  loadBranchServices(): void {
 
     this.loading = true;
-    this.error = '';
-    this.flights = [];
 
-    console.log('Searching:', {
-      airport,
-      type: this.type
-    });
 
-    this.timetableService
-      .getTimetable(airport, this.type)
-      .pipe(
-        finalize(() => {
-          console.log('Request finished');
-          this.loading = false;
-        })
-      )
+    const request: GetBranchServicesRequest = {
+
+      search:
+        this.search.trim() === ''
+          ? null
+          : this.search.trim(),
+
+      pageNumber: this.pageNumber,
+
+      pageSize: this.pageSize
+
+    };
+
+
+    this.publicBranchServices
+      .getBranchServices(request)
       .subscribe({
 
         next: (response) => {
 
-          console.log('Timetable API Response:', response);
+          if (response.success) {
 
-          this.flights = response?.data ?? [];
+            this.branchServices =
+              response.data ?? [];
 
-          if (this.flights.length === 0) {
-            this.error = `No ${this.type} flights found for ${airport}.`;
+            this.totalRecords =
+              response.totalCount ?? 0;
+
           }
+          else {
+
+            this.branchServices = [];
+
+            this.totalRecords = 0;
+
+          }
+
+
+          this.loading = false;
+
+          this.cdr.detectChanges();
+
         },
+
 
         error: (error) => {
 
-          console.error('Timetable API Error:', error);
+          console.error(
+            'GET BRANCH SERVICES ERROR:',
+            error
+          );
 
-          this.flights = [];
+          this.branchServices = [];
 
-          this.error =
-            error?.error?.error?.message ||
-            'Unable to load flight timetable.';
+          this.totalRecords = 0;
+
+          this.loading = false;
+
+          this.cdr.detectChanges();
+
         }
 
       });
+
   }
 
-  logout(): void {
-  localStorage.removeItem('token');
-  localStorage.removeItem('user');
-}
+  
+  onSearch(): void {
+
+    this.pageNumber = 1;
+
+    this.loadBranchServices();
+
+  }
+
+  clearSearch(): void {
+
+    this.search = '';
+
+    this.pageNumber = 1;
+
+    this.loadBranchServices();
+
+  }
+
+  onPageChange(page: number): void {
+
+    if (
+      page < 1 ||
+      page > this.totalPages
+    ) {
+
+      return;
+
+    }
+
+
+    this.pageNumber = page;
+
+    this.loadBranchServices();
+
+  }
+
+  onPageSizeChange(size: number): void {
+
+    this.pageSize = size;
+
+    this.pageNumber = 1;
+
+    this.loadBranchServices();
+
+  }
+
+  onServiceClick(service: BranchService): void {
+
+    console.log(
+      'Selected service:',
+      service
+    );
+
+  }
+
 }

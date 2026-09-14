@@ -1,5 +1,5 @@
 import { Injectable, Service } from '@angular/core';
-import { AddBranchServiceRequest, GetBranchServicesRequest, GetBranchServicesResponse } from '../../Admin Models/Branch Services Models/branch-services-model';
+import { AddBranchServiceRequest, GetBranchServicesRequest, GetBranchServicesResponse, UpdateBranchServiceRequest } from '../../Admin Models/Branch Services Models/branch-services-model';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../../../Core/Services/API Services/api-service';
 
@@ -49,6 +49,21 @@ export class BranchServicesService {
     deleteBranchService(branchServiceId: number): Observable<any> {
         return this.apiservice.delete(
             `BranchAdmin/DeleteBranchService/${branchServiceId}`
+        );
+    }
+
+
+
+
+    // Update Branch Services 
+
+    updateBranchService(
+        request: UpdateBranchServiceRequest
+    ): Observable<any> {
+
+        return this.apiservice.put(
+            `${this.endpoint}/UpdateBranchService`,
+            request
         );
     }
 }

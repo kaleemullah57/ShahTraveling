@@ -1,0 +1,484 @@
+/* =========================================================
+   GLOBAL CARD
+========================================================= */
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+
+.global-card {
+
+  position: relative;
+
+  width: 100%;
+  height: 330px;
+  min-height: 330px;
+  max-height: 330px;
+
+  box-sizing: border-box;
+
+  padding: 28px 28px 24px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid #e5eeeb;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 28px rgba(6, 61, 71, 0.06);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.global-card.clickable {
+  cursor: pointer;
+}
+
+
+.global-card.clickable:hover {
+
+  transform: translateY(-6px);
+
+  border-color: rgba(8, 127, 140, 0.25);
+
+  box-shadow:
+    0 16px 38px rgba(6, 61, 71, 0.11);
+
+}
+
+
+/* =========================================================
+   LEFT ACCENT
+========================================================= */
+
+.card-accent {
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 5px;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #063d47 0%,
+      #087f8c 50%,
+      #0fa7a7 100%
+    );
+
+  transition:
+    width 0.25s ease;
+
+}
+
+
+.global-card:hover .card-accent {
+
+  width: 7px;
+
+}
+
+
+/* =========================================================
+   CARD HEADER
+========================================================= */
+
+.card-header {
+
+  flex: 0 0 auto;
+
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 24px;
+
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.card-icon {
+
+  width: 58px;
+  height: 58px;
+
+  flex: 0 0 58px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  color: #087f8c;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(6, 61, 71, 0.08),
+      rgba(15, 167, 167, 0.12)
+    );
+
+  font-size: 22px;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+
+}
+
+
+.global-card:hover .card-icon {
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #063d47,
+      #087f8c
+    );
+
+  transform: rotate(-3deg);
+
+}
+
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.card-number {
+
+  flex: 0 0 auto;
+
+  color: rgba(8, 127, 140, 0.16);
+
+  font-size: 42px;
+
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: -2px;
+
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.card-content {
+
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+}
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+.card-category {
+
+  display: block;
+
+  flex: 0 0 auto;
+
+  margin-bottom: 8px;
+
+  overflow: hidden;
+
+  color: #087f8c;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  line-height: 1.4;
+
+  letter-spacing: 1.8px;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.card-title {
+
+  flex: 0 0 auto;
+
+  margin: 0 0 12px;
+
+  overflow: hidden;
+
+  color: #12383d;
+
+  font-size: 23px;
+
+  font-weight: 700;
+
+  line-height: 1.3;
+
+  letter-spacing: -0.5px;
+
+  display: -webkit-box;
+
+  -webkit-box-orient: vertical;
+
+  -webkit-line-clamp: 2;
+
+  line-clamp: 2;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.card-description {
+
+  flex: 0 0 auto;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  color: #71817d;
+
+  font-size: 13px;
+
+  line-height: 1.65;
+
+  display: -webkit-box;
+
+  -webkit-box-orient: vertical;
+
+  -webkit-line-clamp: 3;
+
+  line-clamp: 3;
+
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.card-divider {
+
+  flex: 0 0 auto;
+
+  width: 100%;
+  height: 1px;
+
+  margin: 18px 0 16px;
+
+  background: #e8efed;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.card-footer {
+
+  flex: 0 0 auto;
+
+  min-height: 28px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+}
+
+
+/* =========================================================
+   FOOTER TEXT
+========================================================= */
+
+.footer-text {
+
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  overflow: hidden;
+
+  color: #637773;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+
+}
+
+
+.footer-dot {
+
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 7px;
+
+  border-radius: 50%;
+
+  background: #0fa7a7;
+
+}
+
+
+/* =========================================================
+   FOOTER ARROW
+========================================================= */
+
+.footer-arrow {
+
+  width: 34px;
+  height: 34px;
+
+  flex: 0 0 34px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #087f8c;
+
+  background: #edf7f5;
+
+  font-size: 12px;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+
+}
+
+
+.global-card:hover .footer-arrow {
+
+  color: #ffffff;
+
+  background: #087f8c;
+
+  transform: translateX(3px);
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .global-card {
+
+    height: 330px;
+    min-height: 330px;
+    max-height: 330px;
+
+    padding: 25px 25px 22px;
+
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .global-card {
+
+    height: 330px;
+    min-height: 330px;
+    max-height: 330px;
+
+    padding: 25px 24px 22px;
+
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .global-card {
+
+    height: 330px;
+    min-height: 330px;
+    max-height: 330px;
+
+    padding: 24px 22px 21px;
+
+  }
+
+}

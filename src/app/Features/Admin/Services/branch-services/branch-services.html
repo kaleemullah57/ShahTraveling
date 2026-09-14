@@ -59,6 +59,26 @@
     }
 
 
+
+    @if (showEditBranchServiceForm) 
+    { 
+        <div class="branch-service-form-container"> 
+            <div class="form-header"> 
+                <div> 
+                    <h3>Update Branch Service</h3> 
+                    <p> Update the service provided by your branch. </p> 
+                </div> 
+                <app-button type="button" icon="fa fa-times" variant="ghost" size="small" [disabled]="saving" (clicked)="cancelEditBranchService()"> 
+
+                </app-button> 
+            </div> 
+            <app-global-form [title]="'Update Branch Service'" [model]="branchServiceModel" [fields]="formFields" [buttons]="editFormButtons" [loading]="saving" (submitForm)="updateBranchService($event)" (cancelForm)="cancelEditBranchService()"> 
+
+            </app-global-form> 
+        </div> 
+    }
+
+
     <!-- DATA TABLE -->
     <app-data-table
         [columns]="columns"

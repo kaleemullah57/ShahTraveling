@@ -1,0 +1,112 @@
+<div
+  class="global-card"
+  [class.clickable]="clickable"
+  (click)="onCardClick()"
+  role="article"
+>
+
+  <!-- =====================================================
+       LEFT ACCENT
+  ====================================================== -->
+
+  <div class="card-accent"></div>
+
+
+  <!-- =====================================================
+       CARD HEADER
+  ====================================================== -->
+
+  <div class="card-header">
+
+    <!-- Icon -->
+
+    <div class="card-icon">
+
+      <i [class]="icon"></i>
+
+    </div>
+
+
+    <!-- Number -->
+
+    @if (number !== '') {
+
+      <span class="card-number">
+        {{ number }}
+      </span>
+
+    }
+
+  </div>
+
+
+  <!-- =====================================================
+       CONTENT
+  ====================================================== -->
+
+  <div class="card-content">
+
+    @if (category) {
+
+      <span class="card-category">
+        {{ category }}
+      </span>
+
+    }
+
+
+    @if (title) {
+
+      <h3 class="card-title">
+        {{ title }}
+      </h3>
+
+    }
+
+
+    @if (description) {
+
+      <p class="card-description">
+        {{ description }}
+      </p>
+
+    }
+
+  </div>
+
+
+  <!-- =====================================================
+       DIVIDER
+  ====================================================== -->
+
+  <div class="card-divider"></div>
+
+
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+
+  <div class="card-footer">
+
+    @if (footerText) {
+
+      <span class="footer-text">
+
+        <span class="footer-dot"></span>
+
+        {{ footerText }}
+
+      </span>
+
+    }
+
+
+    <span class="footer-arrow">
+
+      <i [class]="arrow"></i>
+
+    </span>
+
+  </div>
+
+</div>

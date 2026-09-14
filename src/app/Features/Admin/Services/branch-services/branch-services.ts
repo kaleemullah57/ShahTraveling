@@ -6,7 +6,8 @@ import { FormsModule } from '@angular/forms';
 import {
   AddBranchServiceRequest,
   BranchService,
-  GetBranchServicesRequest
+  GetBranchServicesRequest,
+  UpdateBranchServiceRequest
 } from '../../Admin Models/Branch Services Models/branch-services-model';
 
 import {
@@ -147,58 +148,83 @@ export class BranchServices implements OnInit {
     this.loadBranchServices();
   }
 
-  loadServices(): void {
+loadServices(): void {
 
-    this.servicesLoading = true;
+  this.servicesLoading = true;
 
-    this.globalDropdownService
-      .getServicesDropDown()
-      .subscribe({
+  this.globalDropdownService
+    .getServicesDropDown()
+    .subscribe({
 
-        next: (response) => {
+      next: (response) => {
 
-          this.servicesLoading = false;
+        this.servicesLoading = false;
 
-          if (response?.statusCode !== 200) {
-
-            this.serviceOptions = [];
-
-            this.updateServiceDropdown();
-
-            this.notificationService.error(
-              response?.message ||
-              'Unable to load services.'
-            );
-
-            return;
-          }
-
-          this.serviceOptions =
-            (response.data ?? []).map(
-              (item: any) => ({
-                label: item.Text,
-                value: Number(item.Value)
-              })
-            );
-
-          this.updateServiceDropdown();
-        },
-
-        error: (error) => {
-
-          this.servicesLoading = false;
+        if (response?.statusCode !== 200) {
 
           this.serviceOptions = [];
 
           this.updateServiceDropdown();
 
           this.notificationService.error(
-            error?.error?.message ||
-            'Unable to load services.'
+            response?.message || 'Unable to load services.'
+          );
+
+          return;
+        }
+
+        // Load dropdown options
+        this.serviceOptions =
+          (response.data ?? []).map((item: any) => ({
+            label: item.Text,
+            value: Number(item.Value)
+          }));
+
+        console.log('SERVICE OPTIONS:', this.serviceOptions);
+
+        // IMPORTANT:
+        // Restore selected service when editing
+        if (this.selectedBranchService) {
+
+          this.branchServiceModel = {
+            serviceId: Number(
+              this.selectedBranchService.serviceId
+            ),
+
+            branchServiceName:
+              this.selectedBranchService.branchServiceName ?? '',
+
+            isActive:
+              Boolean(this.selectedBranchService.isActive)
+          };
+
+          console.log(
+            'SELECTED SERVICE AFTER DROPDOWN LOAD:',
+            this.branchServiceModel.serviceId
           );
         }
-      });
-  }
+
+        // Update dropdown fields
+        this.updateServiceDropdown();
+
+        this.cdr.detectChanges();
+      },
+
+      error: (error) => {
+
+        this.servicesLoading = false;
+
+        this.serviceOptions = [];
+
+        this.updateServiceDropdown();
+
+        this.notificationService.error(
+          error?.error?.message ||
+          'Unable to load services.'
+        );
+      }
+    });
+}
 
 
   private updateServiceDropdown(): void {
@@ -363,37 +389,42 @@ export class BranchServices implements OnInit {
 
 
 
-  onActionClick(event: {
-    action: TableAction;
-    row: any;
-  }): void {
+onActionClick(event: {
+  action: TableAction;
+  row: any;
+}): void {
 
-    if (event.action?.type === 'edit') {
+  if (event.action?.type === 'edit') {
 
-      const branchService = event.row as BranchService;
+    const branchService =
+      event.row as BranchService;
 
-      // Edit implementation later
+    this.openEditBranchServiceForm(
+      branchService
+    );
+
+    return;
+  }
+
+  if (event.action?.type === 'delete') {
+
+    const branchService =
+      event.row as BranchService;
+
+    if (!branchService?.branchServiceId) {
       return;
     }
 
-    if (event.action?.type === 'delete') {
+    this.selectedBranchServiceId =
+      branchService.branchServiceId;
 
-      const branchService = event.row as BranchService;
+    this.selectedBranchServiceName =
+      branchService.branchServiceName ||
+      'this branch service';
 
-      if (!branchService?.branchServiceId) {
-        return;
-      }
-
-      // Don't delete immediately
-      this.selectedBranchServiceId =
-        branchService.branchServiceId;
-
-      this.selectedBranchServiceName =
-        branchService.branchServiceName || 'this branch service';
-
-      this.showDeleteConfirmation = true;
-    }
+    this.showDeleteConfirmation = true;
   }
+}
 
 
   // Get Branch Services
@@ -423,7 +454,7 @@ export class BranchServices implements OnInit {
     {
       key: 'isActive',
       label: 'Status',
-      type:'status'
+      type: 'status'
     }
   ];
 
@@ -472,36 +503,37 @@ export class BranchServices implements OnInit {
       )
       .subscribe({
 
-       next: (response) => {
+        next: (response) => {
 
-  if (
-    response?.status === true &&
-    response?.statusCode === 200 &&
-    response?.success === true
-  ) {
+          if (
+            response?.status === true &&
+            response?.statusCode === 200 &&
+            response?.success === true
+          ) {
 
-    this.branchServices = (response.data ?? []).map(service => ({
-      ...service,
-      isActive: service.isActive
-        ? 'Active'
-        : 'Inactive'
-    })) as any;
+            // this.branchServices = (response.data ?? []).map(service => ({
+            //   ...service,
+            //   isActive: service.isActive
+            //     ? 'Active'
+            //     : 'Inactive'
+            // })) as any;
+            this.branchServices = response.data ?? [];
 
-    this.totalRecords = response.totalCount ?? 0;
+            this.totalRecords = response.totalCount ?? 0;
 
-    return;
-  }
+            return;
+          }
 
-  this.branchServices = [];
-  this.totalRecords = 0;
+          this.branchServices = [];
+          this.totalRecords = 0;
 
-  if (response?.statusCode !== 404) {
-    this.notificationService.error(
-      response?.message ||
-      'Unable to load branch services.'
-    );
-  }
-},
+          if (response?.statusCode !== 404) {
+            this.notificationService.error(
+              response?.message ||
+              'Unable to load branch services.'
+            );
+          }
+        },
         error: (error) => {
 
           console.log(
@@ -581,21 +613,206 @@ export class BranchServices implements OnInit {
   }
 
   confirmDelete(): void {
-  if (
-    !this.selectedBranchServiceId ||
-    this.deleting
-  ) {
+    if (
+      !this.selectedBranchServiceId ||
+      this.deleting
+    ) {
+      return;
+    }
+
+    this.deleting = true;
+
+    this.branchServicesService
+      .deleteBranchService(this.selectedBranchServiceId)
+      .subscribe({
+        next: (response) => {
+
+          this.deleting = false;
+
+          if (
+            response?.status === true &&
+            response?.statusCode === 200 &&
+            response?.success === true
+          ) {
+
+            this.notificationService.success(
+              response.message ||
+              'Branch Service Deleted Successfully'
+            );
+
+            // Hide popup
+            this.showDeleteConfirmation = false;
+
+            // Clear selected item
+            this.selectedBranchServiceId = null;
+            this.selectedBranchServiceName = '';
+
+            // Reload table
+            this.loadBranchServices();
+
+            this.cdr.detectChanges();
+
+            return;
+          }
+
+          this.notificationService.error(
+            response?.message ||
+            'Branch Service could not be deleted.'
+          );
+        },
+
+        error: (error) => {
+
+          this.deleting = false;
+
+          console.log(
+            'DELETE BRANCH SERVICE ERROR:',
+            error
+          );
+        }
+      });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Update Branch Services
+
+showEditBranchServiceForm = false;
+
+selectedBranchService: BranchService | null = null;
+openEditBranchServiceForm(
+  branchService: BranchService
+): void {
+
+  if (!branchService?.branchServiceId) {
     return;
   }
 
-  this.deleting = true;
+  this.selectedBranchService = branchService;
+
+  this.branchServiceModel = {
+    serviceId: Number(branchService.serviceId),
+    branchServiceName: branchService.branchServiceName ?? '',
+    isActive: Boolean(branchService.isActive)
+  };
+
+  console.log(
+    'EDIT SERVICE ID:',
+    this.branchServiceModel.serviceId
+  );
+
+  this.serviceOptions = [];
+
+  this.showEditBranchServiceForm = true;
+
+  this.updateServiceDropdown();
+
+  setTimeout(() => {
+    this.loadServices();
+  }, 0);
+}
+
+editFormButtons: FormButton[] = [
+  {
+    label: 'Update Service',
+    type: 'submit',
+    style: 'primary'
+  },
+  {
+    label: 'Cancel',
+    type: 'button',
+    style: 'secondary'
+  }
+];
+
+updateBranchService(model: any): void {
+
+  if (!this.selectedBranchService?.branchServiceId) {
+
+    this.notificationService.error(
+      'Invalid Branch Service.'
+    );
+
+    return;
+  }
+
+  const request: UpdateBranchServiceRequest = {
+
+    branchServiceId:
+      Number(
+        this.selectedBranchService.branchServiceId
+      ),
+
+    serviceId:
+      Number(model.serviceId),
+
+    isActive:
+      Boolean(model.isActive),
+
+    branchServiceName:
+      model.branchServiceName?.trim() ?? ''
+
+  };
+
+
+  // =======================================================
+  // VALIDATION
+  // =======================================================
+
+  if (request.serviceId <= 0) {
+
+    this.notificationService.error(
+      'Please select a service.'
+    );
+
+    return;
+  }
+
+  if (!request.branchServiceName) {
+
+    this.notificationService.error(
+      'Branch Service Name is required.'
+    );
+
+    return;
+  }
+
+
+  // =======================================================
+  // API
+  // =======================================================
+
+  this.saving = true;
 
   this.branchServicesService
-    .deleteBranchService(this.selectedBranchServiceId)
-    .subscribe({
-      next: (response) => {
+    .updateBranchService(request)
+    .pipe(
+      finalize(() => {
 
-        this.deleting = false;
+        this.saving = false;
+
+        this.cdr.detectChanges();
+
+      })
+    )
+    .subscribe({
+
+      next: (response) => {
 
         if (
           response?.status === true &&
@@ -605,39 +822,73 @@ export class BranchServices implements OnInit {
 
           this.notificationService.success(
             response.message ||
-            'Branch Service Deleted Successfully'
+            'Branch Service Updated Successfully'
           );
 
-          // Hide popup
-          this.showDeleteConfirmation = false;
+          this.showEditBranchServiceForm = false;
 
-          // Clear selected item
-          this.selectedBranchServiceId = null;
-          this.selectedBranchServiceName = '';
+          this.selectedBranchService = null;
 
-          // Reload table
+          this.branchServiceModel = {
+
+            serviceId: 0,
+
+            branchServiceName: '',
+
+            isActive: true
+
+          };
+
           this.loadBranchServices();
-
-          this.cdr.detectChanges();
 
           return;
         }
 
         this.notificationService.error(
           response?.message ||
-          'Branch Service could not be deleted.'
+          'Branch Service could not be updated.'
         );
+
       },
 
       error: (error) => {
 
-        this.deleting = false;
-
         console.log(
-          'DELETE BRANCH SERVICE ERROR:',
+          'UPDATE BRANCH SERVICE ERROR:',
           error
         );
+
       }
+
     });
+
+}
+
+
+// =========================================================
+// CANCEL EDIT
+// =========================================================
+
+cancelEditBranchService(): void {
+
+  if (this.saving) {
+    return;
+  }
+
+  this.showEditBranchServiceForm = false;
+
+  this.selectedBranchService = null;
+
+  this.branchServiceModel = {
+    serviceId: 0,
+    branchServiceName: '',
+    isActive: true
+  };
+
+  this.serviceOptions = [];
+
+  this.updateServiceDropdown();
+
+  this.cdr.detectChanges();
 }
 }
