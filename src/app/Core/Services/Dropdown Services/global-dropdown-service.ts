@@ -71,4 +71,19 @@ export class GlobalDropdownService {
         return this.apiService.get(endpoint);
     }
 
+
+
+
+    // Branches Dropdwon
+    getBranchesDropDown(): Observable<any> {
+        return this.apiService.get('DropDown/GetBranches');
+    }
+
+
+
+
+    // Get User Types 
+    getUserTypesDropDown(): Observable<any> {
+        return this.apiService.get('DropDown/GetUserTypes');
+    }
 }

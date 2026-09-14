@@ -1,0 +1,99 @@
+<div class="users-container">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>Users</h2>
+
+            <p>
+                Manage Branch Admins and Customers
+            </p>
+
+        </div>
+
+
+        <app-button
+            type="button"
+            label="Add User"
+            icon="fa fa-plus"
+            variant="primary"
+            size="medium"
+            (clicked)="openUserForm()">
+        </app-button>
+
+    </div>
+
+
+    <!-- =====================================================
+         USER FORM
+    ====================================================== -->
+
+    @if (showUserForm) {
+
+        <div class="user-form-container">
+
+            <div class="form-header">
+
+                <div>
+
+                    <h3>
+                        Create User
+                    </h3>
+
+                    <p>
+                        Create a Branch Admin or Customer account.
+                    </p>
+
+                </div>
+
+
+                <app-button
+                    type="button"
+                    icon="fa fa-times"
+                    variant="ghost"
+                    size="small"
+                    [disabled]="saving"
+                    (clicked)="cancelUserForm()">
+                </app-button>
+
+            </div>
+
+
+            <app-global-form
+                [title]="'Create User'"
+                [model]="userModel"
+                [fields]="formFields"
+                [buttons]="formButtons"
+                [loading]="saving"
+                (submitForm)="registerUser($event)"
+                (cancelForm)="cancelUserForm()">
+            </app-global-form>
+
+        </div>
+
+    }
+
+
+    <!-- =====================================================
+         USERS TABLE
+    ====================================================== -->
+
+    <div class="users-table-container">
+
+        <app-data-table
+            [columns]="userColumns"
+            [data]="users"
+            [loading]="loading"
+            [totalRecords]="totalRecords"
+            [pageNumber]="pageNumber"
+            [pageSize]="pageSize">
+        </app-data-table>
+
+    </div>
+
+</div>

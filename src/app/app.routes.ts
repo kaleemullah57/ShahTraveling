@@ -58,6 +58,12 @@ export const routes: Routes = [
             .then(m => m.Branches)
       },
       {
+        path: 'registerUsers',
+        loadComponent: () =>
+          import('./Features/SuperAdmin/Register Users/register-users/register-users')
+            .then(m => m.RegisterUsers)
+      },
+      {
         path: 'Countries',
         loadComponent: () =>
           import('./Features/SuperAdmin/Countries/countries/countries')
