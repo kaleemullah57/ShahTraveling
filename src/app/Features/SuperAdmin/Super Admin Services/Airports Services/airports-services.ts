@@ -1,6 +1,6 @@
 import { Injectable, Service } from '@angular/core';
 import { ApiService } from '../../../../Core/Services/API Services/api-service';
-import { AddAirportRequest, GetAirportsRequest } from '../../Super Admin Models/Airports Models/airport-model';
+import { AddAirportRequest, GetAirportsRequest, UpdateAirportRequest } from '../../Super Admin Models/Airports Models/airport-model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -35,6 +35,17 @@ export class AirportsServices {
             'SuperAdminSetup/GetAirports',
             request
         );
-
     }
+
+
+
+
+
+    // Updaet Airports
+   updateAirport(request: UpdateAirportRequest) {
+  return this.apiService.put(
+    'SuperAdminSetup/UpdateAirport',
+    request
+  );
+}
 }

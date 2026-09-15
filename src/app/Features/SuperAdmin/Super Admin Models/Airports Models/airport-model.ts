@@ -46,3 +46,20 @@ export interface AddAirportRequest {
   isInternational: number;
   isActive: boolean;
 }
+
+
+
+
+
+// Update Airports
+export interface UpdateAirportRequest {
+  airportId: number;
+  airportName: string;
+  iataCode: string;
+  icaoCode: string;
+  countryId: number;
+  provinceId: number;
+  cityId: number;
+  isInternational: boolean;
+  isActive: boolean;
+}

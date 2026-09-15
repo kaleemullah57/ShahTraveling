@@ -2,13 +2,14 @@
 
     <!-- =====================================================
        PAGE HEADER
-  ====================================================== -->
+    ====================================================== -->
 
     <section class="page-header">
 
         <div class="header-content">
 
             <div class="header-eyebrow">
+
                 <span class="eyebrow-line"></span>
 
                 <span>
@@ -16,6 +17,7 @@
                 </span>
 
                 <span class="eyebrow-line"></span>
+
             </div>
 
             <h1>
@@ -40,13 +42,13 @@
 
     <!-- =====================================================
        AIRPORT FORM
-  ====================================================== -->
+    ====================================================== -->
 
     @if (showForm) {
 
     <section class="airport-form-section">
 
-        <app-global-form [title]="formTitle" [fields]="formFields" [buttons]="buttons"
+        <app-global-form [title]="formTitle" [fields]="formFields" [buttons]="buttons" [model]="formValues"
             (submitForm)="onFormSubmit($event)" (cancelForm)="onFormCancel()" (fieldChange)="onFieldChange($event)">
         </app-global-form>
 
@@ -55,21 +57,20 @@
     }
 
 
+    <!-- =====================================================
+       AIRPORT TABLE
+    ====================================================== -->
+
     @if (!showForm) {
 
-  <section class="airport-table-section">
+    <section class="airport-table-section">
 
-    <app-data-table
-      [columns]="columns"
-      [data]="airports"
-      [loading]="loading"
-      [totalRecords]="totalRecords"
-      [pageNumber]="pageNumber"
-      [pageSize]="pageSize">
-    </app-data-table>
+        <app-data-table [columns]="columns" [data]="airports" [loading]="loading" [totalRecords]="totalRecords"
+            [pageNumber]="pageNumber" [pageSize]="pageSize" (actionClick)="onActionClick($event)">
+        </app-data-table>
 
-  </section>
+    </section>
 
-}
+    }
 
 </div>
