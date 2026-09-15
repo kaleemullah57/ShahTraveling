@@ -58,9 +58,6 @@
   }
 
 
-  <!-- =====================================================
-       EDIT AIRLINE FORM
-       ===================================================== -->
 
   @if (showEditForm) {
 
@@ -87,14 +84,26 @@
   }
 
 
-  <!-- =====================================================
-       AIRLINES TABLE
-       ===================================================== -->
-
   <app-data-table [data]="airlines" [columns]="columns" [actions]="actions" [loading]="loading"
     [totalRecords]="totalRecords" [pageNumber]="pageNumber" [pageSize]="pageSize" (searchChange)="onSearch($event)"
     (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)"
     (actionClick)="onActionClick($event)">
   </app-data-table>
+
+
+
+
+<app-delete-confirmation
+  [visible]="showDeleteConfirmation"
+  title="Delete Airline"
+  message="Are you sure you want to delete"
+  [itemName]="selectedAirlineName"
+  warning="This action cannot be undone."
+  [deleting]="deleting"
+  confirmLabel="Delete"
+  cancelLabel="Cancel"
+  (confirmed)="confirmDeleteAirline()"
+  (cancelled)="cancelDeleteAirline()">
+</app-delete-confirmation>
 
 </div>

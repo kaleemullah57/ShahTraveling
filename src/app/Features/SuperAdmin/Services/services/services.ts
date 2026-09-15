@@ -26,6 +26,7 @@ import {
 import {
   ServicesService
 } from '../../Super Admin Services/Services Service/services-service';
+import { DeleteConfirmation } from '../../../../Shared/components/Delete Confirmation/delete-confirmation/delete-confirmation';
 
 
 @Component({
@@ -36,8 +37,9 @@ import {
     CommonModule,
     forms,
     Button,
-    DataTable
-  ],
+    DataTable,
+    DeleteConfirmation
+],
 
   templateUrl: './services.html',
   styleUrl: './services.scss'
@@ -444,46 +446,134 @@ export class Services {
 
 
   // Delete Services
-  deleteService(
-    service: ServicesModel
-  ): void {
 
-    if (!service.serviceId) {
+  showDeleteConfirmation = false;
+deleting = false;
 
-      this.notificationService.error(
-        'Invalid Service ID'
-      );
+selectedDeleteServiceId: number | null = null;
+selectedServiceName = '';
+ deleteService(service: ServicesModel): void {
 
-      return;
+  console.log('DELETE SERVICE CLICKED:', service);
 
-    }
+  const serviceId = Number(service?.serviceId);
 
-    this.servicesService
-      .deleteService(service.serviceId)
-      .subscribe({
+  if (!serviceId) {
 
-        next: (response) => {
+    this.notificationService.error(
+      'Invalid Service ID'
+    );
 
-          if (response.status === true) {
+    return;
+  }
 
-            this.notificationService.success(
-              response.message
-            );
+  this.selectedDeleteServiceId = serviceId;
 
-            this.loadServices();
+  this.selectedServiceName =
+    service?.serviceName || 'this service';
 
-          }
+  this.showDeleteConfirmation = true;
 
-        },
+  this.cdr.detectChanges();
+
+}
 
 
-        error: (error) => {
-          // Global errorInterceptor handles notification.
+confirmDeleteService(): void {
+
+  console.log(
+    'CONFIRM DELETE SERVICE:',
+    this.selectedDeleteServiceId
+  );
+
+  if (
+    !this.selectedDeleteServiceId ||
+    this.deleting
+  ) {
+    return;
+  }
+
+  this.deleting = true;
+
+  this.servicesService
+    .deleteService(
+      this.selectedDeleteServiceId
+    )
+    .subscribe({
+
+      next: (response) => {
+
+        console.log(
+          'DELETE SERVICE RESPONSE:',
+          response
+        );
+
+        this.deleting = false;
+
+        if (response?.status === true) {
+
+          this.notificationService.success(
+            response.message ||
+            'Service deleted successfully.'
+          );
+
+          this.showDeleteConfirmation = false;
+
+          this.selectedDeleteServiceId = null;
+
+          this.selectedServiceName = '';
+
+          this.loadServices();
+
+        }
+        else {
+
+          this.notificationService.error(
+            response?.message ||
+            'Unable to delete service.'
+          );
 
         }
 
-      });
+        this.cdr.detectChanges();
+
+      },
+
+      error: (error) => {
+
+        console.error(
+          'DELETE SERVICE ERROR:',
+          error
+        );
+
+        this.deleting = false;
+
+        this.notificationService.error(
+          error?.error?.message ||
+          'Failed to delete service.'
+        );
+
+        this.cdr.detectChanges();
+
+      }
+
+    });
+
+}
+
+cancelDeleteService(): void {
+
+  if (this.deleting) {
+    return;
   }
+
+  this.showDeleteConfirmation = false;
+
+  this.selectedDeleteServiceId = null;
+
+  this.selectedServiceName = '';
+
+}
 
 
 

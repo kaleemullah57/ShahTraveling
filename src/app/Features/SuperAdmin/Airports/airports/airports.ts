@@ -26,8 +26,11 @@ import { NotificationService } from '../../../../Core/Services/Notification Serv
 
 import {
   TableColumn,
-  DataTable
+  DataTable,
+  TableAction
 } from '../../../../Shared/components/DataTables/data-table/data-table';
+import { DeleteConfirmation } from '../../../../Shared/components/Delete Confirmation/delete-confirmation/delete-confirmation';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -36,7 +39,9 @@ import {
   imports: [
     forms,
     Button,
-    DataTable
+    DataTable,
+    DeleteConfirmation,
+    CommonModule
   ],
   templateUrl: './airports.html',
   styleUrl: './airports.scss'
@@ -232,6 +237,14 @@ export class Airports implements OnInit {
   pageSize = 10;
 
   totalRecords = 0;
+  showDeleteConfirmation = false;
+
+  deleting = false;
+
+  selectedDeleteAirportId: number | null = null;
+
+  selectedAirportName = '';
+
 
 
   ngOnInit(): void {
@@ -1114,34 +1127,227 @@ export class Airports implements OnInit {
   }
 
 
+actions: TableAction[] = [
+  {
+    type: 'edit',
+    label: 'Edit',
+    icon: 'fa fa-edit'
+  },
+  {
+    type: 'delete',
+    label: 'Delete',
+    icon: 'fa fa-trash'
+  }
+];
 
-  onActionClick(event: any): void {
+onActionClick(event: any): void {
 
+  console.log('AIRPORT ACTION:', event);
 
-    const actionType =      event?.action?.type;
+  const actionType = event?.action?.type;
+  const airport = event?.row;
 
-
-    if (
-      actionType !== 'edit'
-    ) {
-
-      return;
-
-    }
-
-
-    const airport = event?.row;
-
-
-    if (!airport) {
-      return;
-    }
-
-
-    this.editAirport(
-      airport
-    );
-
+  if (!airport) {
+    return;
   }
 
+  if (actionType === 'delete') {
+    this.deleteAirport(airport);
+    return;
+  }
+
+  if (actionType === 'edit') {
+    this.editAirport(airport);
+    return;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Delete Airports
+
+// deleteAirport(airport: any): void {
+
+//   const airportId = Number(
+//     airport?.airportId
+//   );
+
+//   if (!airportId) {
+
+//     this.notification.error(
+//       'Airport ID is missing.'
+//     );
+
+//     return;
+//   }
+
+//   this.selectedDeleteAirportId =
+//     airportId;
+
+//   this.selectedAirportName =
+//     airport?.airportName ||
+//     'this airport';
+
+//   this.showDeleteConfirmation = true;
+
+// }
+
+
+cancelDeleteAirport(): void {
+
+  if (this.deleting) {
+    return;
+  }
+
+  this.showDeleteConfirmation = false;
+
+  this.selectedDeleteAirportId = null;
+
+  this.selectedAirportName = '';
+
+}
+
+
+
+deleteAirport(airport: any): void {
+
+  console.log('deleteAirport() called:', airport);
+
+  const airportId = Number(
+    airport?.airportId
+  );
+
+  console.log('Airport ID:', airportId);
+
+  if (!airportId) {
+
+    this.notification.error(
+      'Airport ID is missing.'
+    );
+
+    return;
+  }
+
+  this.selectedDeleteAirportId = airportId;
+
+  this.selectedAirportName =
+    airport?.airportName || 'this airport';
+
+  this.showDeleteConfirmation = true;
+
+  console.log(
+    'Popup should open:',
+    this.showDeleteConfirmation
+  );
+
+  this.cdr.detectChanges();
+}
+
+
+confirmDeleteAirport(): void {
+
+  console.log(
+    'CONFIRM DELETE CALLED:',
+    this.selectedDeleteAirportId
+  );
+
+  if (
+    !this.selectedDeleteAirportId ||
+    this.deleting
+  ) {
+    console.log(
+      'DELETE STOPPED:',
+      this.selectedDeleteAirportId,
+      this.deleting
+    );
+
+    return;
+  }
+
+  this.deleting = true;
+
+  console.log(
+    'CALLING DELETE API:',
+    this.selectedDeleteAirportId
+  );
+
+  this.airportService
+    .deleteAirport(
+      this.selectedDeleteAirportId
+    )
+    .subscribe({
+
+      next: (response: any) => {
+
+        console.log(
+          'DELETE API RESPONSE:',
+          response
+        );
+
+        this.deleting = false;
+
+        if (
+          response?.success === true &&
+          response?.statusCode === 200
+        ) {
+
+          this.notification.success(
+            response?.message ||
+            'Airport deleted successfully.'
+          );
+
+          this.showDeleteConfirmation = false;
+
+          this.selectedDeleteAirportId = null;
+
+          this.selectedAirportName = '';
+
+          this.loadAirports();
+
+          this.cdr.detectChanges();
+
+          return;
+        }
+
+        this.notification.error(
+          response?.message ||
+          'Unable to delete airport.'
+        );
+
+      },
+
+      error: (error) => {
+
+        console.error(
+          'DELETE AIRPORT ERROR:',
+          error
+        );
+
+        this.deleting = false;
+
+        this.notification.error(
+          error?.error?.message ||
+          'Failed to delete airport.'
+        );
+
+        this.cdr.detectChanges();
+      }
+
+    });
+}
 }

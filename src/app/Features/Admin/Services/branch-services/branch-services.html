@@ -164,3 +164,19 @@
     }
 
 </div>
+
+
+
+<app-delete-confirmation
+  [visible]="showDeleteConfirmation"
+  title="Delete Branch Service"
+  message="Are you sure you want to delete"
+  [itemName]="selectedBranchServiceName"
+  warning="This action cannot be undone."
+  [deleting]="deleting"
+  confirmLabel="Delete"
+  cancelLabel="Cancel"
+  (confirmed)="confirmDelete()"
+  (cancelled)="cancelDelete()"
+>
+</app-delete-confirmation>

@@ -510,3 +510,19 @@
   }
 
 </div>
+
+
+
+<app-delete-confirmation
+  [visible]="showDeleteConfirmation"
+  title="Delete Destination"
+  message="Are you sure you want to delete"
+  [itemName]="selectedDestinationName"
+  warning="This action cannot be undone."
+  [deleting]="deleting"
+  confirmLabel="Delete"
+  cancelLabel="Cancel"
+  (confirmed)="confirmDeleteDestination()"
+  (cancelled)="cancelDeleteDestination()"
+>
+</app-delete-confirmation>

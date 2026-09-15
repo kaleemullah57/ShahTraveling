@@ -94,4 +94,21 @@
     (actionClick)="onActionClick($event)">
   </app-data-table>
 
+  <!-- =====================================================
+     DELETE SERVICE CONFIRMATION
+====================================================== -->
+
+<app-delete-confirmation
+  [visible]="showDeleteConfirmation"
+  title="Delete Service"
+  message="Are you sure you want to delete"
+  [itemName]="selectedServiceName"
+  warning="This action cannot be undone."
+  [deleting]="deleting"
+  confirmLabel="Delete"
+  cancelLabel="Cancel"
+  (confirmed)="confirmDeleteService()"
+  (cancelled)="cancelDeleteService()">
+</app-delete-confirmation>
+
 </div>

@@ -38,6 +38,7 @@ import {
   DropdownItem,
   GlobalDropdownService
 } from '../../../../Core/Services/Dropdown Services/global-dropdown-service';
+import { DeleteConfirmation } from '../../../../Shared/components/Delete Confirmation/delete-confirmation/delete-confirmation';
 
 
 @Component({
@@ -49,8 +50,9 @@ import {
     FormsModule,
     DataTable,
     forms,
-    Button
-  ],
+    Button,
+    DeleteConfirmation
+],
 
   templateUrl: './airlines.html',
   styleUrl: './airlines.scss'
@@ -1042,54 +1044,182 @@ export class Airlines implements OnInit, OnDestroy {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+  showDeleteConfirmation = false;
+  deleting = false;
+
+  selectedDeleteAirlineId: number | null = null;
+  selectedAirlineName = '';
+
+
   deleteAirline(airline: Airline): void {
 
-    const airlineId = Number(airline.airlineId);
+    console.log('DELETE AIRLINE CLICKED:', airline);
+
+    const airlineId = Number(
+      airline?.airlineId
+    );
+
+    console.log('Airline ID:', airlineId);
 
     if (!airlineId) {
-      this.notification.error('Invalid airline ID.');
+
+      this.notification.error(
+        'Invalid airline ID.'
+      );
+
       return;
     }
 
-    this.airlineService.deleteAirline(airlineId).subscribe({
-      next: (response) => {
+    this.selectedDeleteAirlineId =
+      airlineId;
 
-        if (response?.success) {
+    this.selectedAirlineName =
+      airline?.airlineName ||
+      'this airline';
 
-          this.notification.success(
-            response.message || 'Airline deleted successfully.'
-          );
+    this.showDeleteConfirmation = true;
 
-          this.loadAirlines();
+    console.log(
+      'DELETE POPUP:',
+      this.showDeleteConfirmation
+    );
 
-        } else {
+    this.cdr.detectChanges();
 
-          this.notification.error(
-            response?.message || 'Airline could not be deleted.'
-          );
-        }
-      },
-
-      error: (error) => {
-
-        this.notification.error(
-          error?.error?.message ||
-          'Unable to delete airline.'
-        );
-      }
-    });
   }
 
+
+  confirmDeleteAirline(): void {
+
+    console.log(
+      'CONFIRM DELETE AIRLINE:',
+      this.selectedDeleteAirlineId
+    );
+
+    if (
+      !this.selectedDeleteAirlineId ||
+      this.deleting
+    ) {
+      return;
+    }
+
+    this.deleting = true;
+
+    console.log(
+      'CALLING DELETE AIRLINE API:',
+      this.selectedDeleteAirlineId
+    );
+
+    this.airlineService
+      .deleteAirline(
+        this.selectedDeleteAirlineId
+      )
+      .subscribe({
+
+        next: (response: any) => {
+
+          console.log(
+            'DELETE AIRLINE RESPONSE:',
+            response
+          );
+
+          this.deleting = false;
+
+          if (
+            response?.success === true ||
+            response?.status === true ||
+            response?.statusCode === 200
+          ) {
+
+            this.notification.success(
+              response?.message ||
+              'Airline deleted successfully.'
+            );
+
+            this.showDeleteConfirmation =
+              false;
+
+            this.selectedDeleteAirlineId =
+              null;
+
+            this.selectedAirlineName =
+              '';
+
+            this.loadAirlines();
+
+          }
+          else {
+
+            this.notification.error(
+              response?.message ||
+              'Airline could not be deleted.'
+            );
+
+          }
+
+          this.cdr.detectChanges();
+
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            '❌ DELETE AIRLINE ERROR:',
+            error
+          );
+
+          this.deleting = false;
+
+          this.notification.error(
+            error?.error?.message ||
+            'Unable to delete airline.'
+          );
+
+          this.cdr.detectChanges();
+
+        }
+
+      });
+
+  }
+
+
+  cancelDeleteAirline(): void {
+
+    if (this.deleting) {
+      return;
+    }
+
+    this.showDeleteConfirmation = false;
+
+    this.selectedDeleteAirlineId = null;
+
+    this.selectedAirlineName = '';
+
+  }
 
 
   onTableAction(event: any): void {
 
-  if (event.action === 'edit') {
-    this.editAirline(event.row);
-  }
+    if (event.action === 'edit') {
+      this.editAirline(event.row);
+    }
 
-  if (event.action === 'delete') {
-    this.deleteAirline(event.row);
+    if (event.action === 'delete') {
+      this.deleteAirline(event.row);
+    }
   }
-}
 }

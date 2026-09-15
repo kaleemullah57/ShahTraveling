@@ -2,7 +2,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { DeleteConfirmation } from '../../../../Shared/components/Delete Confirmation/delete-confirmation/delete-confirmation';
 import {
   AddBranchServiceRequest,
   BranchService,
@@ -43,7 +43,8 @@ import { TableAction, TableColumn, DataTable } from '../../../../Shared/componen
     FormsModule,
     forms,
     Button,
-    DataTable
+    DataTable,
+    DeleteConfirmation
   ],
   templateUrl: './branch-services.html',
   styleUrl: './branch-services.scss',
@@ -405,6 +406,7 @@ onActionClick(event: {
 
     return;
   }
+
 
   if (event.action?.type === 'delete') {
 

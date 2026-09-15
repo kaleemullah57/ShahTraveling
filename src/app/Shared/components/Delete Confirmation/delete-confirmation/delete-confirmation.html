@@ -1,0 +1,81 @@
+@if (visible) {
+
+  <div
+    class="confirmation-overlay"
+    (click)="cancel()"
+  >
+
+    <div
+      class="confirmation-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- ICON -->
+      <div class="confirmation-icon">
+
+        <i class="fa fa-trash"></i>
+
+      </div>
+
+
+      <!-- CONTENT -->
+      <div class="confirmation-content">
+
+        <h3>
+          {{ title }}
+        </h3>
+
+
+        <p>
+
+          {{ message }}
+
+          @if (itemName) {
+
+            <strong>
+              {{ itemName }}
+            </strong>
+
+          }
+
+        </p>
+
+
+        <div class="confirmation-warning">
+
+          {{ warning }}
+
+        </div>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+      <div class="confirmation-actions">
+
+        <app-button
+          [label]="cancelLabel"
+          type="button"
+          variant="secondary"
+          [disabled]="deleting"
+          (click)="cancel()"
+        >
+        </app-button>
+
+
+        <app-button
+          [label]="deleting ? 'Deleting...' : confirmLabel"
+          type="button"
+          variant="danger"
+          [disabled]="deleting"
+          (click)="confirm()"
+        >
+        </app-button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

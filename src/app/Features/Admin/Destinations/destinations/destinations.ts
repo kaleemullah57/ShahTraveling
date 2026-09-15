@@ -23,6 +23,7 @@ import { NotificationService } from '../../../../Core/Services/Notification Serv
 import { DropdownItem, GlobalDropdownService } from '../../../../Core/Services/Dropdown Services/global-dropdown-service';
 import { finalize } from 'rxjs';
 import { Button } from "../../../../Shared/components/button/button";
+import { DeleteConfirmation } from '../../../../Shared/components/Delete Confirmation/delete-confirmation/delete-confirmation';
 
 
 @Component({
@@ -30,7 +31,8 @@ import { Button } from "../../../../Shared/components/button/button";
   standalone: true,
   imports: [
     CommonModule, FormsModule, DatePipe, forms,
-    Button
+    Button,
+    DeleteConfirmation
 ],
   templateUrl: './destinations.html',
   styleUrl: './destinations.scss'
@@ -533,100 +535,129 @@ export class DestinationsComponent implements OnInit {
 
 
   // Delete Destintions
-  showDeleteConfirmation = false;
-deleting = false;
+ showDeleteConfirmation = false;
+  deleting = false;
 
-selectedDestinationId: number | null = null;
-selectedDestinationName = '';
+  selectedDestinationId: number | null = null;
+  selectedDestinationName = '';
 
-deleteDestination(destinationId: number): void {
+  deleteDestination(destinationId: number): void {
 
-  if (!destinationId) {
-    return;
+    if (!destinationId) {
+      return;
+    }
+
+    const destination = this.destinations.find(
+      x => x.destinationId === destinationId
+    );
+
+    if (!destination) {
+      return;
+    }
+
+    this.selectedDestinationId = destinationId;
+    this.selectedDestinationName =
+      destination.destinationName;
+
+    this.showDeleteConfirmation = true;
+
+    this.cdr.detectChanges();
   }
 
-  const destination = this.destinations.find(
-    x => x.destinationId === destinationId
-  );
 
-  if (!destination) {
-    return;
+  cancelDeleteDestination(): void {
+
+    if (this.deleting) {
+      return;
+    }
+
+    this.showDeleteConfirmation = false;
+
+    this.selectedDestinationId = null;
+    this.selectedDestinationName = '';
+
+    this.cdr.detectChanges();
   }
 
-  this.selectedDestinationId = destinationId;
-  this.selectedDestinationName = destination.destinationName;
 
-  this.showDeleteConfirmation = true;
-}
-cancelDeleteDestination(): void {
+  confirmDeleteDestination(): void {
 
-  if (this.deleting) {
-    return;
-  }
+    if (
+      !this.selectedDestinationId ||
+      this.deleting
+    ) {
+      return;
+    }
 
-  this.showDeleteConfirmation = false;
-  this.selectedDestinationId = null;
-  this.selectedDestinationName = '';
-}
-confirmDeleteDestination(): void {
+    this.deleting = true;
 
-  if (!this.selectedDestinationId || this.deleting) {
-    return;
-  }
+    this.destinationsService
+      .deleteDestination(
+        this.selectedDestinationId
+      )
+      .subscribe({
 
-  this.deleting = true;
+        next: (response: any) => {
 
-  const destinationId = this.selectedDestinationId;
-
-  this.destinationsService
-    .deleteDestination(destinationId)
-    .subscribe({
-
-      next: (response) => {
-
-        this.deleting = false;
-
-        if (response?.success) {
-
-          this.notificationService.success(
-            response.message || 'Destination deleted successfully'
+          console.log(
+            'DELETE DESTINATION RESPONSE:',
+            response
           );
 
-          // Remove immediately from UI
-          this.destinations = this.destinations.filter(
-            destination =>
-              destination.destinationId !== destinationId
+          // Stop loading
+          this.deleting = false;
+
+          if (
+            response?.success === true &&
+            response?.statusCode === 200
+          ) {
+
+            this.notificationService.success(
+              response?.message ||
+              'Destination deleted successfully.'
+            );
+
+            // Close confirmation popup
+            this.showDeleteConfirmation = false;
+
+            // Clear selected destination
+            this.selectedDestinationId = null;
+            this.selectedDestinationName = '';
+
+            // Reload destinations
+            this.getDestinations();
+
+            this.cdr.detectChanges();
+
+            return;
+          }
+
+          this.notificationService.error(
+            response?.message ||
+            'Unable to delete destination.'
           );
 
-          // Close popup
-          this.showDeleteConfirmation = false;
+          this.cdr.detectChanges();
+        },
 
-          this.selectedDestinationId = null;
-          this.selectedDestinationName = '';
+        error: (error) => {
 
-          return;
+          console.error(
+            'DELETE DESTINATION ERROR:',
+            error
+          );
+
+          // Stop loading even when API fails
+          this.deleting = false;
+
+          this.notificationService.error(
+            error?.error?.message ||
+            'Failed to delete destination.'
+          );
+
+          this.cdr.detectChanges();
         }
 
-        this.notificationService.error(
-          response?.message || 'Unable to delete destination'
-        );
-      },
-
-      error: (error) => {
-
-        this.deleting = false;
-
-        console.error(
-          'Delete destination error:',
-          error
-        );
-
-        // Keep popup open so user can try again
-        this.notificationService.error(
-          error?.error?.message ||
-          'Unable to delete destination'
-        );
-      }
-    });
-}
+      });
+  }
 }

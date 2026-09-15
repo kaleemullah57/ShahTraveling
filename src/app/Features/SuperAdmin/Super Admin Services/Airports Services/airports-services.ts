@@ -42,10 +42,20 @@ export class AirportsServices {
 
 
     // Updaet Airports
-   updateAirport(request: UpdateAirportRequest) {
-  return this.apiService.put(
-    'SuperAdminSetup/UpdateAirport',
-    request
-  );
-}
+    updateAirport(request: UpdateAirportRequest) {
+        return this.apiService.put(
+            'SuperAdminSetup/UpdateAirport',
+            request
+        );
+    }
+
+
+
+
+    // Delete Airports
+    deleteAirport(airportId: number) {
+        return this.apiService.delete(
+            `SuperAdminSetup/DeleteAirport/${airportId}`
+        );
+    }
 }
