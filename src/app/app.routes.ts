@@ -133,6 +133,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./Features/Admin/Services/branch-services/branch-services')
             .then(m => m.BranchServices)
+      },
+      {
+        path: 'Inventory',
+        loadComponent: () =>
+          import('./Features/Admin/Inventory Management/Purchase Tickets/purchase-ticket/purchase-ticket')
+            .then(m => m.PurchaseTicket)
       }
     ]
   }

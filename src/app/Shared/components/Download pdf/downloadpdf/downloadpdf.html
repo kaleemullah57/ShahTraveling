@@ -1,0 +1,486 @@
+<div class="pdf-document">
+
+    <!-- HEADER -->
+    <header class="pdf-header">
+
+        <div class="agency">
+
+            <div class="logo">
+                <i class="fa fa-plane"></i>
+            </div>
+
+            <div>
+                <h1>
+                    {{ invoice.branchName }}
+                </h1>
+
+                <p>
+                    Travel & Ticketing Services
+                </p>
+            </div>
+
+        </div>
+
+        <div class="invoice-heading">
+
+            <span>INVOICE</span>
+
+            <strong>
+                {{ invoice.invoiceNumber }}
+            </strong>
+
+            <small>
+                {{ invoice.invoiceDate | date:'dd MMM yyyy' }}
+            </small>
+
+        </div>
+
+    </header>
+
+
+    <div class="divider"></div>
+
+
+    <!-- PURCHASE INFORMATION -->
+
+    <section class="section">
+
+        <h2>
+            <i class="fa fa-file-invoice"></i>
+            Purchase Information
+        </h2>
+
+        <div class="info-grid">
+
+            <div class="info-box">
+
+                <label>Purchased From</label>
+
+                <strong>
+                    {{ invoice.purchasedFrom }}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <label>Purchase Reference</label>
+
+                <strong>
+                    {{ invoice.purchaseReference || 'N/A' }}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <label>Created By</label>
+
+                <strong>
+                    {{ invoice.createdBy }}
+                </strong>
+
+            </div>
+
+            <div class="info-box">
+
+                <label>Inventory Status</label>
+
+                <strong>
+                    {{ invoice.inventoryStatus }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FLIGHT DETAILS -->
+
+    <section class="section">
+
+        <h2>
+            <i class="fa fa-plane"></i>
+            Flight Details
+        </h2>
+
+        <div class="flight-box">
+
+            <div class="airline">
+
+                <label>Airline</label>
+
+                <strong>
+                    {{ invoice.airlineName }}
+                </strong>
+
+                <small>
+                    Code: {{ invoice.airlineCode }}
+                </small>
+
+            </div>
+
+
+            <div class="route">
+
+                <div>
+
+                    <label>Departure</label>
+
+                    <strong>
+                        {{ invoice.fromAirport }}
+                    </strong>
+
+                    <small>
+                        {{ invoice.departureDateTime
+                        | date:'dd MMM yyyy, hh:mm a' }}
+                    </small>
+
+                </div>
+
+
+                <div class="route-icon">
+
+                    <i class="fa fa-plane"></i>
+
+                </div>
+
+
+                <div class="arrival">
+
+                    <label>Arrival</label>
+
+                    <strong>
+                        {{ invoice.toAirport }}
+                    </strong>
+
+                    <small>
+                        {{ invoice.arrivalDateTime
+                        | date:'dd MMM yyyy, hh:mm a' }}
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TICKET -->
+
+    <section class="section">
+
+        <h2>
+            <i class="fa fa-ticket"></i>
+            Ticket Information
+        </h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Description</th>
+                    <th>Qty</th>
+                    <th>Unit Price</th>
+                    <th>Amount</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+
+                        <strong>
+                            Air Ticket Inventory
+                        </strong>
+
+                        <small>
+                            {{ invoice.airlineName }}
+                            —
+                            {{ invoice.fromAirport }}
+                            to
+                            {{ invoice.toAirport }}
+                        </small>
+
+                    </td>
+
+                    <td>
+                        {{ invoice.ticketQuantity }}
+                    </td>
+
+                    <td>
+                        {{ invoice.purchasePrice | number:'1.2-2' }}
+                    </td>
+
+                    <td>
+                        {{
+                        invoice.ticketQuantity *
+                        invoice.purchasePrice
+                        | number:'1.2-2'
+                        }}
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+
+    <!-- BAGGAGE -->
+
+    <section class="section">
+
+        <h2>
+            <i class="fa fa-suitcase"></i>
+            Baggage Allowance
+        </h2>
+
+        <div class="baggage-grid">
+
+            <div>
+
+                <label>Checked Baggage</label>
+
+                <strong>
+                    {{ invoice.checkedBaggageKg ?? 0 }} KG
+                </strong>
+
+            </div>
+
+            <div>
+
+                <label>Hand Baggage</label>
+
+                <strong>
+                    {{ invoice.handBaggageKg ?? 0 }} KG
+                </strong>
+
+            </div>
+
+            <div>
+
+                <label>Personal Item</label>
+
+                <strong>
+                    {{ invoice.personalItemKg ?? 0 }} KG
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- VALIDITY -->
+
+    <section class="validity">
+
+        <div>
+
+            <label>Valid From</label>
+
+            <strong>
+                {{ invoice.validFrom
+                | date:'dd MMM yyyy, hh:mm a' }}
+            </strong>
+
+        </div>
+
+        <div>
+
+            <label>Valid Until</label>
+
+            <strong>
+                {{ invoice.validUntil
+                | date:'dd MMM yyyy, hh:mm a' }}
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAYMENT + TOTAL -->
+
+    <div class="payment-summary">
+
+        <div class="payment">
+
+            <h2>
+                <i class="fa fa-credit-card"></i>
+                Payment Information
+            </h2>
+
+            <div class="payment-row">
+
+                <span>Payment Method</span>
+
+                <strong>
+                    {{ invoice.methodName || 'N/A' }}
+                </strong>
+
+            </div>
+
+            <div class="payment-row">
+
+                <span>Payment Date</span>
+
+                <strong>
+                    {{ invoice.paymentDate
+                    ? (invoice.paymentDate | date:'dd MMM yyyy')
+                    : 'N/A' }}
+                </strong>
+
+            </div>
+
+            <div class="payment-row">
+
+                <span>Payment Reference</span>
+
+                <strong>
+                    {{ invoice.paymentReference || 'N/A' }}
+                </strong>
+
+            </div>
+
+            @if (invoice.paymentRemarks) {
+
+                <div class="remarks">
+
+                    <label>Remarks</label>
+
+                    <p>
+                        {{ invoice.paymentRemarks }}
+                    </p>
+
+                </div>
+
+            }
+
+        </div>
+
+
+        <div class="totals">
+
+            <div>
+
+                <span>Sub Total</span>
+
+                <strong>
+                    {{ invoice.subTotal | number:'1.2-2' }}
+                </strong>
+
+            </div>
+
+            <div>
+
+                <span>Discount</span>
+
+                <strong>
+                    {{ invoice.discount | number:'1.2-2' }}
+                </strong>
+
+            </div>
+
+            <div>
+
+                <span>Tax</span>
+
+                <strong>
+                    {{ invoice.tax | number:'1.2-2' }}
+                </strong>
+
+            </div>
+
+            <div class="grand-total">
+
+                <span>Grand Total</span>
+
+                <strong>
+                    {{ invoice.grandTotal | number:'1.2-2' }}
+                </strong>
+
+            </div>
+
+            <div class="paid">
+
+                <span>Paid</span>
+
+                <strong>
+                    {{ invoice.paidAmount | number:'1.2-2' }}
+                </strong>
+
+            </div>
+
+            <div class="remaining">
+
+                <span>Remaining</span>
+
+                <strong>
+                    {{ invoice.remainingAmount | number:'1.2-2' }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div class="payment-status">
+
+        <span>
+            Payment Status
+        </span>
+
+        <strong>
+            {{ invoice.paymentStatus }}
+        </strong>
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="pdf-footer">
+
+        <div>
+
+            <strong>
+                Thank you for your business
+            </strong>
+
+            <p>
+                This document represents the ticket purchase
+                and payment information recorded in our system.
+            </p>
+
+        </div>
+
+        <div>
+
+            <span>Invoice</span>
+
+            <strong>
+                {{ invoice.invoiceNumber }}
+            </strong>
+
+        </div>
+
+    </footer>
+
+</div>
