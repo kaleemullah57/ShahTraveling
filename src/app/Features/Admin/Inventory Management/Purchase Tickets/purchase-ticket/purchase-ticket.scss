@@ -933,3 +933,90 @@
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.invoice-filters {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #e5ebeb;
+  border-radius: 12px;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.filter-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #52646e;
+}
+
+.filter-field input {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d9e2e0;
+  border-radius: 8px;
+  outline: none;
+  font-size: 13px;
+  color: #263b48;
+  background: #ffffff;
+}
+
+.filter-field input:focus {
+  border-color: #0f6045;
+  box-shadow: 0 0 0 3px rgba(15, 96, 69, 0.08);
+}
+
+.clear-filter-btn {
+  height: 40px;
+  padding: 0 15px;
+  border: 1px solid #d9e2e0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #52646e;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.clear-filter-btn:hover {
+  background: #f5f8f7;
+  color: #0f6045;
+}
+
+@media (max-width: 700px) {
+
+  .invoice-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-field {
+    width: 100%;
+  }
+
+  .clear-filter-btn {
+    width: fit-content;
+  }
+
+}

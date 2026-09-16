@@ -1,6 +1,6 @@
 import { Injectable, Service } from '@angular/core';
 import { ApiService } from '../API Services/api-service';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 
 export interface DropdownItem {
@@ -86,5 +86,35 @@ export class GlobalDropdownService {
     // Get User Types 
     getUserTypesDropDown(): Observable<any> {
         return this.apiService.get('DropDown/GetUserTypes');
+    }
+
+
+
+
+    // Airlines DropDown
+    getAirlinesDropDown(): Observable<any> {
+
+        return this.apiService.get(
+            'DropDown/airlinesDropDown'
+        );
+
+    }
+
+
+
+
+    // Airports DropDown
+    getAirPortsDropDown(): Observable<any> {
+        return this.apiService.get(
+            'DropDown/GetAirPortsDropDown'
+        );
+    }
+
+
+
+
+    // Payment Methods
+    getPaymentMethodsDropDown(): Observable<any> {
+        return this.apiService.get('DropDown/GetPaymentMethodsDropDown');
     }
 }

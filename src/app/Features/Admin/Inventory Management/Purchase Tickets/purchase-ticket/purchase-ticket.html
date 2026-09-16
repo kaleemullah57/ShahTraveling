@@ -1,20 +1,114 @@
 <div class="page-container">
 
-  <!-- =====================================================
-       PAGE HEADER
-  ====================================================== -->
+  <button
+  type="button"
+  class="btn-primary"
+  (click)="openAddForm()">
+  <i class="fa fa-plus"></i>
+  Add Ticket Purchase
+</button>
+
+@if (showAddForm) {
+
+
+  <app-global-form
+    [fields]="ticketFormFields"
+    [buttons]="formButtons"
+    [title]="'Add Ticket Purchase'"
+    (formSubmit)="submitTicketPurchase($event)"
+    (formReset)="closeAddForm()">
+  </app-global-form>
+
+
+
+}
+
+
+
+
+  <div class="page-container">
 
   <div class="page-header">
 
     <div>
-      <h2>Purchase Invoices</h2>
+
+      <h2>
+        Purchase Invoices
+      </h2>
 
       <p>
         Manage ticket purchase invoices and payments
       </p>
+
     </div>
 
   </div>
+
+
+  <!-- =====================================================
+       DATE FILTER
+  ====================================================== -->
+
+  <div class="invoice-filters">
+
+  <div class="filter-field">
+
+    <label for="fromDate">
+      From Date
+    </label>
+
+    <input
+      id="fromDate"
+      type="date"
+      [(ngModel)]="filterFromDate"
+    />
+
+  </div>
+
+
+  <div class="filter-field">
+
+    <label for="toDate">
+      To Date
+    </label>
+
+    <input
+      id="toDate"
+      type="date"
+      [(ngModel)]="filterToDate"
+    />
+
+  </div>
+
+
+  <button
+    type="button"
+    class="btn-primary"
+    (click)="onDateFilter()">
+
+    <i class="fa fa-filter"></i>
+
+    Filter
+
+  </button>
+
+
+  @if (fromDate || toDate) {
+
+    <button
+      type="button"
+      class="clear-filter-btn"
+      (click)="clearDateFilter()">
+
+      <i class="fa fa-times"></i>
+
+      Clear
+
+    </button>
+
+  }
+
+</div>
 
 
   <!-- =====================================================
@@ -29,13 +123,14 @@
     [totalRecords]="totalRecords"
     [pageNumber]="pageNumber"
     [pageSize]="pageSize"
-
     (actionClick)="onActionClick($event)"
     (searchChange)="onSearch($event)"
     (pageChange)="onPageChange($event)"
-    (pageSizeChange)="onPageSizeChange($event)"
-  >
+    (pageSizeChange)="onPageSizeChange($event)">
   </app-data-table>
+
+</div>
+
 
 </div>
 
@@ -49,8 +144,6 @@
   <div class="invoice-overlay">
 
     <div class="invoice-modal">
-
-      <!-- MODAL HEADER -->
 
       <div class="invoice-modal-header">
 

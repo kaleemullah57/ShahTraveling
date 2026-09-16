@@ -69,6 +69,11 @@ export class forms {
 
   @Output() cancelForm = new EventEmitter<void>();
 
+@Output() formSubmit = new EventEmitter<any>();
+
+
+@Output() formReset = new EventEmitter<void>();
+
   @Output() fieldChange = new EventEmitter<{
     key: string;
     value: any;
@@ -112,29 +117,33 @@ export class forms {
   // FORM SUBMIT
   // =========================================================
 
-  onSubmit(): void {
+onSubmit(): void {
 
-    if (this.loading) {
-      return;
-    }
-
-    console.log(
-      '🚀 GLOBAL FORM MODEL:',
-      this.model
-    );
-
-    this.submitForm.emit({
-      ...this.model
-    });
-
+  if (this.loading) {
+    return;
   }
 
+  console.log(
+    '🚀 GLOBAL FORM MODEL:',
+    this.model
+  );
+
+  const value = {
+    ...this.model
+  };
+
+  // Existing projects/components
+  this.submitForm.emit(value);
+
+  // New/current components
+  this.formSubmit.emit(value);
+}
 
   // =========================================================
   // BUTTON CLICK
   // =========================================================
 
-  onButtonClick(button: FormButton): void {
+onButtonClick(button: FormButton): void {
 
   if (this.loading) {
     return;
@@ -151,7 +160,13 @@ export class forms {
       button.style === 'secondary'
     )
   ) {
+
+    // Existing components
     this.cancelForm.emit();
+
+    // New/current components
+    this.formReset.emit();
+
     return;
   }
 }

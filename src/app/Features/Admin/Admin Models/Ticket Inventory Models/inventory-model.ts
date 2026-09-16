@@ -75,3 +75,50 @@ export interface PurchasedInvoice {
   paymentReference: string | null;
   paymentRemarks: string | null;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Add Ticket To Inventory
+export interface AddTicketPurchaseRequest {
+  purchasedFrom: string;
+  purchaseReference: string;
+  invoiceDate: string;
+
+  airlineId: number;
+  fromAirportId: number;
+  toAirportId: number;
+
+  departureDateTime: string;
+  arrivalDateTime: string;
+
+  quantity: number;
+
+  purchasePrice: number;
+  sellingPrice: number;
+
+  checkedBaggageKg: number;
+  handBaggageKg: number;
+  personalItemKg: number;
+
+  validFrom: string;
+  validUntil: string;
+
+  paidAmount: number;
+  paymentMethodId: number;
+
+  paymentReference: string;
+  remarks: string;
+}
