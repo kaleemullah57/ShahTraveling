@@ -438,11 +438,13 @@ export class DestinationsComponent implements OnInit {
   formButtons: FormButton[] = [
     {
       label: 'Add Destination',
-      type: 'submit'
+      type: 'submit',
+      style:'primary'
     },
     {
       label: 'Cancel',
-      type: 'reset'
+      type: 'reset',
+      style:'secondary'
     }
   ];
   destinationModel: AddDestinationRequest = {
