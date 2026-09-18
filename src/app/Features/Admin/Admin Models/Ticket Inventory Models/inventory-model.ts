@@ -126,3 +126,33 @@ export interface AddTicketPurchaseRequest {
   paymentReference: string;
   remarks: string;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Update Inventory Payments Invoices
+export interface UpdatePurchasedInvoicePaymentRequest {
+  purchaseInvoiceId: number;
+  paymentAmount: number;
+  paymentDate: string;
+  paymentMethodId: number;
+  paymentReference: string;
+  remarks: string;
+}

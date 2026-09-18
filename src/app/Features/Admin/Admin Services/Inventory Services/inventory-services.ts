@@ -1,5 +1,5 @@
 import { inject, Injectable, Service } from '@angular/core';
-import { AddTicketPurchaseRequest, PurchasedInvoiceSearchRequest } from '../../Admin Models/Ticket Inventory Models/inventory-model';
+import { AddTicketPurchaseRequest, PurchasedInvoiceSearchRequest, UpdatePurchasedInvoicePaymentRequest } from '../../Admin Models/Ticket Inventory Models/inventory-model';
 import { ApiService } from '../../../../Core/Services/API Services/api-service';
 import { Observable } from 'rxjs';
 
@@ -25,6 +25,19 @@ export class InventoryServices {
     addTicketPurchase(request: AddTicketPurchaseRequest): Observable<any> {
         return this.api.post(
             'BranchAdmin/AddTicketPurchase',
+            request
+        );
+    }
+
+
+
+
+
+
+    // Update Inventory Payment Invoices
+    updatePurchasedInvoicePayment(request: UpdatePurchasedInvoicePaymentRequest) {
+        return this.api.post<any>(
+            `BranchAdmin/UpdatePurchasedInvoicePayment`,
             request
         );
     }

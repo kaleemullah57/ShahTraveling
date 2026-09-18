@@ -177,7 +177,7 @@
 
       @for (button of buttons; track button.label) {
 
-      <app-button [label]="button.label" [type]="button.type || 'button'" [style]="button.style || 'primary'"
+      <app-button [label]="button.label" [type]="button.type || 'button'" [variant]="button.style || 'primary'"
         [disabled]="isButtonDisabled(button)" [loading]="button.loading || (loading && button.type === 'submit')"
         (click)="onButtonClick(button)">
       </app-button>

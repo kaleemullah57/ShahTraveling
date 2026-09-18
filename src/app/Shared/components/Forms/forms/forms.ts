@@ -21,12 +21,13 @@ export interface FormField {
   | 'select'
   | 'checkbox'
   | 'date'
-  | 'file';
+  | 'file'
+  | 'datetime-local';
 
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
-
+  value?: any;
   options?: {
     label: string;
     value: any;

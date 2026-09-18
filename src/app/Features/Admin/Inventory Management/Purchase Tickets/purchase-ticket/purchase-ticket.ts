@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { AddTicketPurchaseRequest, PurchasedInvoice, PurchasedInvoiceSearchRequest } from '../../../Admin Models/Ticket Inventory Models/inventory-model';
+import { AddTicketPurchaseRequest, PurchasedInvoice, PurchasedInvoicePayment, PurchasedInvoiceSearchRequest, UpdatePurchasedInvoicePaymentRequest } from '../../../Admin Models/Ticket Inventory Models/inventory-model';
 import { InventoryServices } from '../../../Admin Services/Inventory Services/inventory-services';
 import { DataTable, TableAction, TableColumn } from '../../../../../Shared/components/DataTables/data-table/data-table';
 import { DatePipe, DecimalPipe } from '@angular/common';
@@ -8,6 +8,7 @@ import { NotificationService } from '../../../../../Core/Services/Notification S
 import { FormsModule } from '@angular/forms';
 import { FormField, forms, FormButton } from '../../../../../Shared/components/Forms/forms/forms';
 import { DropdownItem, DropdownResponse, GlobalDropdownService } from '../../../../../Core/Services/Dropdown Services/global-dropdown-service';
+import { Button } from '../../../../../Shared/components/button/button';
 
 
 @Component({
@@ -17,8 +18,9 @@ import { DropdownItem, DropdownResponse, GlobalDropdownService } from '../../../
     DecimalPipe,
     DataTable,
     FormsModule,
-    forms
-  ],
+    forms,
+    Button
+],
   templateUrl: './purchase-ticket.html',
   styleUrl: './purchase-ticket.scss',
 })
@@ -109,6 +111,11 @@ export class PurchaseTicket implements OnInit {
       label: 'View',
       icon: 'fa fa-eye',
       type: 'view'
+    },
+    {
+      label: 'Payment',
+      icon: 'fa fa-credit-card',
+      type: 'payment'
     }
   ];
 
@@ -261,6 +268,26 @@ export class PurchaseTicket implements OnInit {
       return;
     }
 
+    if (event.action?.type === 'payment') {
+
+      this.selectedInvoice = invoice;
+
+      if (!invoice.paymentHistory || invoice.paymentHistory.length === 0) {
+        this.notificationService.error(
+          'No payment history found for this invoice.'
+        );
+        return;
+      }
+
+      // Select latest payment
+      const payment =
+        invoice.paymentHistory[invoice.paymentHistory.length - 1];
+
+      this.openPaymentEditForm(payment);
+
+      return;
+    }
+
 
 
     if (event.action?.type === 'download') {
@@ -406,8 +433,8 @@ export class PurchaseTicket implements OnInit {
 
     // Load dropdowns only when form opens
     this.loadAirlines();
-     this.loadAirports();
-     this.loadPaymentMethods();
+    this.loadAirports();
+    this.loadPaymentMethods();
   }
 
   closeAddForm(): void {
@@ -584,98 +611,99 @@ export class PurchaseTicket implements OnInit {
 
 
   formButtons: FormButton[] = [
-    {
-      label: 'Cancel',
-      type: 'reset',
-      style: 'secondary'
-    },
+    
     {
       label: 'Add Ticket Purchase',
       type: 'submit',
       style: 'primary'
+    },
+    {
+      label: 'Cancel',
+      type: 'reset',
+      style: 'secondary'
     }
   ];
   submitTicketPurchase(formValue: any): void {
 
-  console.log('🔥 SUBMIT TICKET PURCHASE FIRED');
-  console.log('FORM VALUE:', formValue);
+    console.log('🔥 SUBMIT TICKET PURCHASE FIRED');
+    console.log('FORM VALUE:', formValue);
 
-  const request: AddTicketPurchaseRequest = {
-    purchasedFrom: formValue.purchasedFrom,
-    purchaseReference: formValue.purchaseReference,
-    invoiceDate: formValue.invoiceDate,
+    const request: AddTicketPurchaseRequest = {
+      purchasedFrom: formValue.purchasedFrom,
+      purchaseReference: formValue.purchaseReference,
+      invoiceDate: formValue.invoiceDate,
 
-    airlineId: Number(formValue.airlineId),
-    fromAirportId: Number(formValue.fromAirportId),
-    toAirportId: Number(formValue.toAirportId),
+      airlineId: Number(formValue.airlineId),
+      fromAirportId: Number(formValue.fromAirportId),
+      toAirportId: Number(formValue.toAirportId),
 
-    departureDateTime: formValue.departureDateTime,
-    arrivalDateTime: formValue.arrivalDateTime,
+      departureDateTime: formValue.departureDateTime,
+      arrivalDateTime: formValue.arrivalDateTime,
 
-    quantity: Number(formValue.quantity),
+      quantity: Number(formValue.quantity),
 
-    purchasePrice: Number(formValue.purchasePrice),
-    sellingPrice: Number(formValue.sellingPrice),
+      purchasePrice: Number(formValue.purchasePrice),
+      sellingPrice: Number(formValue.sellingPrice),
 
-    checkedBaggageKg: Number(formValue.checkedBaggageKg || 0),
-    handBaggageKg: Number(formValue.handBaggageKg || 0),
-    personalItemKg: Number(formValue.personalItemKg || 0),
+      checkedBaggageKg: Number(formValue.checkedBaggageKg || 0),
+      handBaggageKg: Number(formValue.handBaggageKg || 0),
+      personalItemKg: Number(formValue.personalItemKg || 0),
 
-    validFrom: formValue.validFrom,
-    validUntil: formValue.validUntil,
+      validFrom: formValue.validFrom,
+      validUntil: formValue.validUntil,
 
-    paidAmount: Number(formValue.paidAmount || 0),
-    paymentMethodId: Number(formValue.paymentMethodId),
+      paidAmount: Number(formValue.paidAmount || 0),
+      paymentMethodId: Number(formValue.paymentMethodId),
 
-    paymentReference: formValue.paymentReference || '',
-    remarks: formValue.remarks || ''
-  };
+      paymentReference: formValue.paymentReference || '',
+      remarks: formValue.remarks || ''
+    };
 
-  console.log('🔥 REQUEST:', request);
+    console.log('🔥 REQUEST:', request);
 
-  this.loading = true;
+    this.loading = true;
 
-  console.log('🔥 CALLING ADD TICKET API');
+    console.log('🔥 CALLING ADD TICKET API');
 
-  this.invoiceService.addTicketPurchase(request).subscribe({
-    next: (response: any) => {
+    this.invoiceService.addTicketPurchase(request).subscribe({
+      next: (response: any) => {
 
-      console.log('🔥 API RESPONSE:', response);
+        console.log('🔥 API RESPONSE:', response);
 
-      this.loading = false;
+        this.loading = false;
 
-      if (response?.success && response?.statusCode === 200) {
+        if (response?.success && response?.statusCode === 200) {
 
-        this.notificationService.success(
-          response.message || 'Ticket purchase added successfully.'
-        );
+          this.notificationService.success(
+            response.message || 'Ticket purchase added successfully.'
+          );
 
-        this.showAddForm = false;
+          this.showAddForm = false;
 
-        this.pageNumber = 1;
-        this.loadInvoices();
+          this.pageNumber = 1;
+          this.loadInvoices();
 
-      } else {
+        } else {
+
+          this.notificationService.error(
+            response?.message || 'Unable to add ticket purchase.'
+          );
+        }
+      },
+
+      error: (error) => {
+
+        console.error('🔥 API ERROR:', error);
+
+        this.loading = false;
 
         this.notificationService.error(
-          response?.message || 'Unable to add ticket purchase.'
+          error?.error?.message ||
+          'Failed to add ticket purchase.'
         );
       }
-    },
-
-    error: (error) => {
-
-      console.error('🔥 API ERROR:', error);
-
-      this.loading = false;
-
-      this.notificationService.error(
-        error?.error?.message ||
-        'Failed to add ticket purchase.'
-      );
-    }
-  });
-}
+    });
+  }
 
 
 
@@ -794,76 +822,77 @@ export class PurchaseTicket implements OnInit {
 
 
   // Get Airports DropDown
-airports: any[] = [];
-airportsLoading = false;
+  airports: any[] = [];
+  airportsLoading = false;
 
-loadAirports(): void {
+  loadAirports(): void {
 
-  this.airportsLoading = true;
+    this.airportsLoading = true;
 
-  this.globalDropdownService.getAirPortsDropDown().subscribe({
+    this.globalDropdownService.getAirPortsDropDown().subscribe({
 
-    next: (response: any) => {
+      next: (response: any) => {
 
-      if (response?.status && response?.data) {
+        if (response?.status && response?.data) {
 
-        this.airports = response.data.map((item: any) => ({
-          label: item.Text,
-          value: item.Value
-        }));
+          this.airports = response.data.map((item: any) => ({
+            label: item.Text,
+            value: item.Value
+          }));
 
-      } else {
+        } else {
+
+          this.airports = [];
+
+        }
+
+        this.airportsLoading = false;
+
+        // Correct method
+        this.updateAirportDropdowns();
+
+        this.cdr.detectChanges();
+
+        console.log('Airports:', this.airports);
+      },
+
+      error: (error) => {
+
+        console.error('Error loading airports:', error);
 
         this.airports = [];
+        this.airportsLoading = false;
 
+        this.cdr.detectChanges();
       }
+    });
+  }
 
-      this.airportsLoading = false;
 
-      // Correct method
-      this.updateAirportDropdowns();
+  updateAirportDropdowns(): void {
 
-      this.cdr.detectChanges();
+    const fromAirportField = this.ticketFormFields.find(
+      (field: FormField) => field.key === 'fromAirportId'
+    );
 
-      console.log('Airports:', this.airports);
-    },
+    const toAirportField = this.ticketFormFields.find(
+      (field: FormField) => field.key === 'toAirportId'
+    );
 
-    error: (error) => {
-
-      console.error('Error loading airports:', error);
-
-      this.airports = [];
-      this.airportsLoading = false;
-
-      this.cdr.detectChanges();
+    if (fromAirportField) {
+      fromAirportField.options = [...this.airports];
     }
-  });
-}
 
+    if (toAirportField) {
+      toAirportField.options = [...this.airports];
+    }
 
-updateAirportDropdowns(): void {
+    this.ticketFormFields = [...this.ticketFormFields];
 
-  const fromAirportField = this.ticketFormFields.find(
-    (field: FormField) => field.key === 'fromAirportId'
-  );
-
-  const toAirportField = this.ticketFormFields.find(
-    (field: FormField) => field.key === 'toAirportId'
-  );
-
-  if (fromAirportField) {
-    fromAirportField.options = [...this.airports];
+    console.log('From Airport Field:', fromAirportField);
+    console.log('To Airport Field:', toAirportField);
   }
 
-  if (toAirportField) {
-    toAirportField.options = [...this.airports];
-  }
-
-  this.ticketFormFields = [...this.ticketFormFields];
-
-  console.log('From Airport Field:', fromAirportField);
-  console.log('To Airport Field:', toAirportField);
-}
 
 
 
@@ -886,12 +915,11 @@ updateAirportDropdowns(): void {
 
 
 
+  // Payment Methods DropDown
+  paymentMethods: any[] = [];
+  paymentMethodsLoading = false;
 
-// Payment Methods DropDown
-paymentMethods: any[] = [];
-paymentMethodsLoading = false;
-
-loadPaymentMethods(): void {
+ loadPaymentMethods(onLoaded?: () => void): void {
 
   this.paymentMethodsLoading = true;
 
@@ -924,7 +952,6 @@ loadPaymentMethods(): void {
 
       }
 
-      // Important for shared form component
       this.ticketFormFields = [
         ...this.ticketFormFields
       ];
@@ -938,6 +965,8 @@ loadPaymentMethods(): void {
         this.paymentMethods
       );
 
+      // If edit form is waiting for payment methods
+      onLoaded?.();
     },
 
     error: (error) => {
@@ -952,8 +981,256 @@ loadPaymentMethods(): void {
       this.paymentMethodsLoading = false;
 
       this.cdr.detectChanges();
+
+      this.notificationService.error(
+        error?.error?.message ||
+        'Unable to load payment methods.'
+      );
     }
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Update Inventory Payment Invoices
+  selectedPaymentInvoice: PurchasedInvoice | null = null;
+  selectedPayment: PurchasedInvoicePayment | null = null;
+
+  showPaymentEditForm = false;
+  paymentSubmitting = false;
+
+  paymentEditFormFields: FormField[] = [];
+
+  paymentEditFormButtons: FormButton[] = [
+    
+    {
+      label: 'Update Payment',
+      type: 'submit',
+      style: 'primary'
+    },
+    {
+      label: 'Cancel',
+      type: 'reset',
+      style: 'secondary'
+    }
+  ];
+
+
+
+openPaymentEditForm(
+  payment: PurchasedInvoicePayment
+): void {
+
+  if (!this.selectedInvoice) {
+    return;
+  }
+
+  this.selectedPaymentInvoice =
+    this.selectedInvoice;
+
+  this.selectedPayment =
+    payment;
+
+  if (this.paymentMethods.length > 0) {
+
+    this.buildPaymentEditForm(payment);
+
+    return;
+  }
+
+  this.loadPaymentMethods(() => {
+
+    this.buildPaymentEditForm(payment);
+
+  });
+}
+
+
+ private buildPaymentEditForm(
+  payment: PurchasedInvoicePayment
+): void {
+
+  this.paymentEditFormFields = [
+    {
+      key: 'paymentAmount',
+      label: 'Payment Amount',
+      type: 'number',
+      placeholder: 'Enter payment amount',
+      required: true,
+      value: payment.paymentAmount
+    },
+
+    {
+      key: 'paymentDate',
+      label: 'Payment Date',
+      type: 'date',
+      required: true,
+      value: payment.paymentDate
+        ? payment.paymentDate.substring(0, 10)
+        : ''
+    },
+
+    {
+      key: 'paymentMethodId',
+      label: 'Payment Method',
+      type: 'select',
+      placeholder: 'Select payment method',
+      required: true,
+      options: [...this.paymentMethods],
+      value: payment.paymentMethodId
+    },
+
+    {
+      key: 'paymentReference',
+      label: 'Payment Reference',
+      type: 'text',
+      placeholder: 'Enter payment reference',
+      required: false,
+      value: payment.paymentReference || ''
+    },
+
+    {
+      key: 'remarks',
+      label: 'Remarks',
+      type: 'textarea',
+      placeholder: 'Enter payment remarks',
+      required: false,
+      value: payment.paymentRemarks || ''
+    }
+  ];
+
+  console.log('EDIT PAYMENT:', payment);
+  console.log('EDIT FORM FIELDS:', this.paymentEditFormFields);
+
+  this.showPaymentEditForm = true;
+
+  this.cdr.detectChanges();
+}
+
+
+
+
+  updatePayment(formData: any): void {
+
+    if (!this.selectedPaymentInvoice) {
+      this.notificationService.error(
+        'Invoice not selected.'
+      );
+      return;
+    }
+
+    const paymentAmount = Number(formData.paymentAmount);
+
+    if (!paymentAmount || paymentAmount <= 0) {
+      this.notificationService.error(
+        'Payment amount must be greater than zero.'
+      );
+      return;
+    }
+
+    const request: UpdatePurchasedInvoicePaymentRequest = {
+      purchaseInvoiceId:
+        this.selectedPaymentInvoice.purchaseInvoiceId,
+
+      paymentAmount: paymentAmount,
+
+      paymentDate:
+        formData.paymentDate,
+
+      paymentMethodId:
+        Number(formData.paymentMethodId),
+
+      paymentReference:
+        formData.paymentReference || '',
+
+      remarks:
+        formData.remarks || ''
+    };
+
+    console.log('UPDATE PAYMENT REQUEST:', request);
+
+    this.paymentSubmitting = true;
+
+    this.invoiceService
+      .updatePurchasedInvoicePayment(request)
+      .subscribe({
+
+        next: (response: any) => {
+
+          this.paymentSubmitting = false;
+
+          if (response?.success === true) {
+
+            this.notificationService.success(
+              response.message ||
+              'Payment updated successfully.'
+            );
+
+            this.showPaymentEditForm = false;
+            this.selectedPayment = null;
+            this.selectedPaymentInvoice = null;
+
+            this.loadInvoices();
+
+          } else {
+
+            this.notificationService.error(
+              response?.message ||
+              'Unable to update payment.'
+            );
+          }
+        },
+
+        error: (error: any) => {
+
+          this.paymentSubmitting = false;
+
+          console.error('Update Payment Error:', error);
+
+          this.notificationService.error(
+            error?.error?.message ||
+            'Unable to update payment.'
+          );
+        }
+      });
+  }
+
+
+  closePaymentEditForm(): void {
+    this.showPaymentEditForm = false;
+    this.selectedPayment = null;
+    this.selectedPaymentInvoice = null;
+  }
+
+
 }
 

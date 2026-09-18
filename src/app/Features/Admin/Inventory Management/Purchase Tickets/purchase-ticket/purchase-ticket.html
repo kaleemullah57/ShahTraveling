@@ -1,6 +1,6 @@
 <div class="page-container">
 
-  <button
+  <!-- <button
   type="button"
   class="btn-primary"
   (click)="openAddForm()">
@@ -23,24 +23,99 @@
 
 }
 
+ @if (showPaymentEditForm && selectedPaymentInvoice) {
+
+  <app-global-form
+    [fields]="paymentEditFormFields"
+    [buttons]="paymentEditFormButtons"
+    [title]="'Update Payment'"
+    (formSubmit)="updatePayment($event)"
+    (formReset)="closePaymentEditForm()">
+  </app-global-form>
+
+} -->
+
 
 
 
   <div class="page-container">
 
-  <div class="page-header">
+    <!-- =====================================================
+       ADD / EDIT FORM MODAL
+  ====================================================== -->
 
-    <div>
+    @if (showAddForm || (showPaymentEditForm && selectedPaymentInvoice)) {
 
-      <h2>
-        Purchase Invoices
-      </h2>
+    <div class="form-overlay">
 
-      <p>
-        Manage ticket purchase invoices and payments
-      </p>
+      <div class="form-modal">
+
+        @if (showAddForm) {
+
+        <app-global-form [fields]="ticketFormFields" [buttons]="formButtons" [title]="'Add Ticket Purchase'"
+          (formSubmit)="submitTicketPurchase($event)" (formReset)="closeAddForm()">
+        </app-global-form>
+
+        }
+
+        @if (showPaymentEditForm && selectedPaymentInvoice) {
+
+        <app-global-form [fields]="paymentEditFormFields" [buttons]="paymentEditFormButtons" [title]="'Update Payment'"
+          (formSubmit)="updatePayment($event)" (formReset)="closePaymentEditForm()">
+        </app-global-form>
+
+        }
+
+      </div>
 
     </div>
+
+    }
+
+
+    <!-- =====================================================
+       TABLE PAGE
+       Hidden while Add/Edit form is open
+  ====================================================== -->
+
+    @if (!showAddForm && !showPaymentEditForm) {
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
+  <div class="page-header">
+
+    <div class="page-header-content">
+
+      <div class="page-title-icon">
+        <i class="fa fa-file-invoice-dollar"></i>
+      </div>
+
+      <div class="page-title-text">
+
+        <h2>
+          Purchase Invoices
+        </h2>
+
+        <p>
+          Manage ticket purchase invoices and payments
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <app-button
+      label="Add Ticket Purchase"
+      type="button"
+      variant="primary"
+      size="medium"
+      icon="fa fa-plus"
+      iconPosition="left"
+      (clicked)="openAddForm()">
+    </app-button>
 
   </div>
 
@@ -51,64 +126,98 @@
 
   <div class="invoice-filters">
 
-  <div class="filter-field">
+    <div class="filter-header">
 
-    <label for="fromDate">
-      From Date
-    </label>
+      <div class="filter-title">
 
-    <input
-      id="fromDate"
-      type="date"
-      [(ngModel)]="filterFromDate"
-    />
+        <div class="filter-icon">
+          <i class="fa fa-filter"></i>
+        </div>
+
+        <div>
+          <h3>Filter Invoices</h3>
+          <span>Search invoices by date range</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="filter-content">
+
+      <div class="filter-field">
+
+        <label for="fromDate">
+          From Date
+        </label>
+
+        <div class="filter-input-wrapper">
+
+          <i class="fa fa-calendar"></i>
+
+          <input
+            id="fromDate"
+            type="date"
+            [(ngModel)]="filterFromDate" />
+
+        </div>
+
+      </div>
+
+
+      <div class="filter-field">
+
+        <label for="toDate">
+          To Date
+        </label>
+
+        <div class="filter-input-wrapper">
+
+          <i class="fa fa-calendar"></i>
+
+          <input
+            id="toDate"
+            type="date"
+            [(ngModel)]="filterToDate" />
+
+        </div>
+
+      </div>
+
+
+      <div class="filter-actions">
+
+        <app-button
+          label="Filter"
+          type="button"
+          variant="primary"
+          size="medium"
+          icon="fa fa-filter"
+          iconPosition="left"
+          (clicked)="onDateFilter()">
+        </app-button>
+
+
+        @if (fromDate || toDate) {
+
+          <app-button
+            label="Clear"
+            type="button"
+            variant="outline"
+            size="medium"
+            icon="fa fa-times"
+            iconPosition="left"
+            (clicked)="clearDateFilter()">
+          </app-button>
+
+        }
+
+      </div>
+
+    </div>
 
   </div>
-
-
-  <div class="filter-field">
-
-    <label for="toDate">
-      To Date
-    </label>
-
-    <input
-      id="toDate"
-      type="date"
-      [(ngModel)]="filterToDate"
-    />
-
-  </div>
-
-
-  <button
-    type="button"
-    class="btn-primary"
-    (click)="onDateFilter()">
-
-    <i class="fa fa-filter"></i>
-
-    Filter
-
-  </button>
-
-
-  @if (fromDate || toDate) {
-
-    <button
-      type="button"
-      class="clear-filter-btn"
-      (click)="clearDateFilter()">
-
-      <i class="fa fa-times"></i>
-
-      Clear
-
-    </button>
-
-  }
-
-</div>
 
 
   <!-- =====================================================
@@ -129,7 +238,9 @@
     (pageSizeChange)="onPageSizeChange($event)">
   </app-data-table>
 
-</div>
+}
+
+  </div>
 
 
 </div>
@@ -141,268 +252,224 @@
 
 @if (showInvoice && selectedInvoice) {
 
-  <div class="invoice-overlay">
+<div class="invoice-overlay">
 
-    <div class="invoice-modal">
+  <div class="invoice-modal">
 
-      <div class="invoice-modal-header">
+    <div class="invoice-modal-header">
 
-        <div>
+      <div>
 
-          <span class="preview-label">
-            INVOICE PREVIEW
-          </span>
+        <span class="preview-label">
+          INVOICE PREVIEW
+        </span>
 
-          <h3>
-            {{ selectedInvoice.invoiceNumber }}
-          </h3>
-
-        </div>
-
-
-        <button
-          type="button"
-          class="close-btn"
-          (click)="closeInvoice()">
-
-          <i class="fa fa-times"></i>
-
-        </button>
+        <h3>
+          {{ selectedInvoice.invoiceNumber }}
+        </h3>
 
       </div>
 
 
-      <!-- =================================================
+      <button type="button" class="close-btn" (click)="closeInvoice()">
+
+        <i class="fa fa-times"></i>
+
+      </button>
+
+    </div>
+
+
+    <!-- =================================================
            INVOICE
       ================================================== -->
 
-      <div class="invoice-paper">
+    <div class="invoice-paper">
 
-        <div class="invoice-header">
+      <div class="invoice-header">
 
-          <div class="agency-info">
+        <div class="agency-info">
 
-            <div class="agency-logo">
-              <i class="fa fa-plane"></i>
-            </div>
+          <div class="agency-logo">
+            <i class="fa fa-plane"></i>
+          </div>
 
-            <div>
+          <div>
 
-              <h1>
-                {{ selectedInvoice.branchName }}
-              </h1>
+            <h1>
+              {{ selectedInvoice.branchName }}
+            </h1>
 
-              <p>
-                Travel & Ticketing Services
-              </p>
+            <p>
+              Travel & Ticketing Services
+            </p>
 
-            </div>
+          </div>
+
+        </div>
+
+
+        <div class="invoice-title">
+
+          <span>INVOICE</span>
+
+          <strong>
+            {{ selectedInvoice.invoiceNumber }}
+          </strong>
+
+          <small>
+            {{ selectedInvoice.invoiceDate | date:'dd MMM yyyy' }}
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <div class="invoice-divider"></div>
+
+
+      <!-- PURCHASE INFORMATION -->
+
+      <div class="invoice-section">
+
+        <div class="section-title">
+
+          <i class="fa fa-file-invoice"></i>
+
+          Purchase Information
+
+        </div>
+
+
+        <div class="info-grid">
+
+          <div class="info-card">
+
+            <span class="info-label">
+              Purchased From
+            </span>
+
+            <strong>
+              {{ selectedInvoice.purchasedFrom }}
+            </strong>
 
           </div>
 
 
-          <div class="invoice-title">
+          <div class="info-card">
 
-            <span>INVOICE</span>
+            <span class="info-label">
+              Purchase Reference
+            </span>
 
             <strong>
-              {{ selectedInvoice.invoiceNumber }}
+              {{ selectedInvoice.purchaseReference || 'N/A' }}
+            </strong>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <span class="info-label">
+              Created By
+            </span>
+
+            <strong>
+              {{ selectedInvoice.createdBy }}
+            </strong>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <span class="info-label">
+              Inventory Status
+            </span>
+
+            <strong class="status-badge active">
+              {{ selectedInvoice.inventoryStatus }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FLIGHT DETAILS -->
+
+      <div class="invoice-section">
+
+        <div class="section-title">
+
+          <i class="fa fa-plane"></i>
+
+          Flight Details
+
+        </div>
+
+
+        <div class="flight-card">
+
+          <div class="airline-block">
+
+            <strong>
+              {{ selectedInvoice.airlineName }}
             </strong>
 
             <small>
-              {{ selectedInvoice.invoiceDate | date:'dd MMM yyyy' }}
+              Airline Code:
+              {{ selectedInvoice.airlineCode }}
             </small>
 
           </div>
 
-        </div>
 
+          <div class="route-block">
 
-        <div class="invoice-divider"></div>
+            <div class="airport">
 
-
-        <!-- PURCHASE INFORMATION -->
-
-        <div class="invoice-section">
-
-          <div class="section-title">
-
-            <i class="fa fa-file-invoice"></i>
-
-            Purchase Information
-
-          </div>
-
-
-          <div class="info-grid">
-
-            <div class="info-card">
-
-              <span class="info-label">
-                Purchased From
+              <span class="small-label">
+                Departure
               </span>
 
               <strong>
-                {{ selectedInvoice.purchasedFrom }}
-              </strong>
-
-            </div>
-
-
-            <div class="info-card">
-
-              <span class="info-label">
-                Purchase Reference
-              </span>
-
-              <strong>
-                {{ selectedInvoice.purchaseReference || 'N/A' }}
-              </strong>
-
-            </div>
-
-
-            <div class="info-card">
-
-              <span class="info-label">
-                Created By
-              </span>
-
-              <strong>
-                {{ selectedInvoice.createdBy }}
-              </strong>
-
-            </div>
-
-
-            <div class="info-card">
-
-              <span class="info-label">
-                Inventory Status
-              </span>
-
-              <strong class="status-badge active">
-                {{ selectedInvoice.inventoryStatus }}
-              </strong>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- FLIGHT DETAILS -->
-
-        <div class="invoice-section">
-
-          <div class="section-title">
-
-            <i class="fa fa-plane"></i>
-
-            Flight Details
-
-          </div>
-
-
-          <div class="flight-card">
-
-            <div class="airline-block">
-
-              <strong>
-                {{ selectedInvoice.airlineName }}
+                {{ selectedInvoice.fromAirport }}
               </strong>
 
               <small>
-                Airline Code:
-                {{ selectedInvoice.airlineCode }}
+                {{ selectedInvoice.departureDateTime
+                | date:'dd MMM yyyy, hh:mm a' }}
               </small>
 
             </div>
 
 
-            <div class="route-block">
+            <div class="route-line">
 
-              <div class="airport">
-
-                <span class="small-label">
-                  Departure
-                </span>
-
-                <strong>
-                  {{ selectedInvoice.fromAirport }}
-                </strong>
-
-                <small>
-                  {{ selectedInvoice.departureDateTime
-                    | date:'dd MMM yyyy, hh:mm a' }}
-                </small>
-
-              </div>
-
-
-              <div class="route-line">
-
-                <i class="fa fa-plane"></i>
-
-              </div>
-
-
-              <div class="airport destination">
-
-                <span class="small-label">
-                  Arrival
-                </span>
-
-                <strong>
-                  {{ selectedInvoice.toAirport }}
-                </strong>
-
-                <small>
-                  {{ selectedInvoice.arrivalDateTime
-                    | date:'dd MMM yyyy, hh:mm a' }}
-                </small>
-
-              </div>
+              <i class="fa fa-plane"></i>
 
             </div>
 
-          </div>
 
+            <div class="airport destination">
 
-          <div class="datetime-grid">
-
-            <div>
-
-              <span>Departure</span>
+              <span class="small-label">
+                Arrival
+              </span>
 
               <strong>
-                {{ selectedInvoice.departureDateTime
-                  | date:'dd MMM yyyy, hh:mm a' }}
+                {{ selectedInvoice.toAirport }}
               </strong>
 
-            </div>
-
-
-            <div>
-
-              <span>Arrival</span>
-
-              <strong>
+              <small>
                 {{ selectedInvoice.arrivalDateTime
-                  | date:'dd MMM yyyy, hh:mm a' }}
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>Ticket Quantity</span>
-
-              <strong>
-                {{ selectedInvoice.ticketQuantity }}
-              </strong>
+                | date:'dd MMM yyyy, hh:mm a' }}
+              </small>
 
             </div>
 
@@ -411,29 +478,266 @@
         </div>
 
 
-        <!-- TICKET INFORMATION -->
+        <div class="datetime-grid">
 
-        <div class="invoice-section">
+          <div>
 
-          <div class="section-title">
+            <span>Departure</span>
 
-            <i class="fa fa-ticket"></i>
-
-            Ticket Information
+            <strong>
+              {{ selectedInvoice.departureDateTime
+              | date:'dd MMM yyyy, hh:mm a' }}
+            </strong>
 
           </div>
 
 
-          <table class="invoice-table">
+          <div>
+
+            <span>Arrival</span>
+
+            <strong>
+              {{ selectedInvoice.arrivalDateTime
+              | date:'dd MMM yyyy, hh:mm a' }}
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <span>Ticket Quantity</span>
+
+            <strong>
+              {{ selectedInvoice.ticketQuantity }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- TICKET INFORMATION -->
+
+      <div class="invoice-section">
+
+        <div class="section-title">
+
+          <i class="fa fa-ticket"></i>
+
+          Ticket Information
+
+        </div>
+
+
+        <table class="invoice-table">
+
+          <thead>
+
+            <tr>
+
+              <th>Description</th>
+              <th>Qty</th>
+              <th>Unit Price</th>
+              <th>Amount</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr>
+
+              <td>
+
+                <strong>
+                  Air Ticket Inventory
+                </strong>
+
+                <small>
+                  {{ selectedInvoice.airlineName }}
+                  —
+                  {{ selectedInvoice.fromAirport }}
+                  to
+                  {{ selectedInvoice.toAirport }}
+                </small>
+
+              </td>
+
+
+              <td>
+                {{ selectedInvoice.ticketQuantity }}
+              </td>
+
+
+              <td>
+                {{ selectedInvoice.purchasePrice
+                | number:'1.2-2' }}
+              </td>
+
+
+              <td>
+                {{
+                selectedInvoice.ticketQuantity *
+                selectedInvoice.purchasePrice
+                | number:'1.2-2'
+                }}
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <!-- BAGGAGE -->
+
+      <div class="invoice-section">
+
+        <div class="section-title">
+
+          <i class="fa fa-suitcase"></i>
+
+          Baggage Allowance
+
+        </div>
+
+
+        <div class="baggage-grid">
+
+          <div>
+
+            <i class="fa fa-suitcase"></i>
+
+            <span>Checked</span>
+
+            <strong>
+              {{ selectedInvoice.checkedBaggageKg ?? 0 }} KG
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <i class="fa fa-briefcase"></i>
+
+            <span>Hand</span>
+
+            <strong>
+              {{ selectedInvoice.handBaggageKg ?? 0 }} KG
+            </strong>
+
+          </div>
+
+
+          <div>
+
+            <i class="fa fa-user"></i>
+
+            <span>Personal</span>
+
+            <strong>
+              {{ selectedInvoice.personalItemKg ?? 0 }} KG
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- VALIDITY -->
+
+      <div class="validity-box">
+
+        <div>
+
+          <span>Valid From</span>
+
+          <strong>
+            {{
+            selectedInvoice.validFrom
+            ? (selectedInvoice.validFrom
+            | date:'dd MMM yyyy, hh:mm a')
+            : 'N/A'
+            }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>Valid Until</span>
+
+          <strong>
+            {{ selectedInvoice.validUntil
+            | date:'dd MMM yyyy, hh:mm a' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================================================
+     PAYMENT HISTORY
+========================================================= -->
+
+      <div class="invoice-section payment-history-section">
+
+        <div class="section-title">
+
+          <i class="fa fa-credit-card"></i>
+
+          Payment History
+
+        </div>
+
+
+        @if (
+        selectedInvoice.paymentHistory &&
+        selectedInvoice.paymentHistory.length > 0
+        ) {
+
+        <div class="payment-history-table-wrapper">
+
+          <table class="invoice-table payment-history-table">
 
             <thead>
 
               <tr>
 
-                <th>Description</th>
-                <th>Qty</th>
-                <th>Unit Price</th>
-                <th>Amount</th>
+                <th>#</th>
+
+                <th>Payment Date</th>
+
+                <th>Payment Method</th>
+
+                <th>Reference</th>
+
+                <th>Remarks</th>
+
+                <th class="text-right">
+                  Payment
+                </th>
+
+                <th class="text-right">
+                  Paid After
+                </th>
+
+                <th class="text-right">
+                  Remaining
+                </th>
 
               </tr>
 
@@ -442,45 +746,78 @@
 
             <tbody>
 
+              @for (
+              payment of selectedInvoice.paymentHistory;
+              track payment.paymentDate + payment.paymentAmount;
+              let i = $index
+              ) {
+
               <tr>
 
                 <td>
+                  {{ i + 1 }}
+                </td>
+
+
+                <td>
+                  {{ payment.paymentDate | date:'dd MMM yyyy, hh:mm a' }}
+                </td>
+
+
+                <td>
+                  <strong>
+                    {{ payment.methodName || 'N/A' }}
+                  </strong>
+                </td>
+
+
+                <td>
+                  {{ payment.paymentReference || 'N/A' }}
+                </td>
+
+
+                <td>
+                  <span class="payment-remarks-cell">
+                    {{ payment.paymentRemarks || 'N/A' }}
+                  </span>
+                </td>
+
+
+                <!-- THIS PAYMENT -->
+
+                <td class="text-right">
 
                   <strong>
-                    Air Ticket Inventory
+                    {{ payment.paymentAmount | number:'1.2-2' }}
                   </strong>
 
-                  <small>
-                    {{ selectedInvoice.airlineName }}
-                    —
-                    {{ selectedInvoice.fromAirport }}
-                    to
-                    {{ selectedInvoice.toAirport }}
-                  </small>
+                </td>
+
+
+                <!-- TOTAL PAID AFTER THIS PAYMENT -->
+
+                <td class="text-right">
+
+                  <strong>
+                    {{ payment.paidAmount | number:'1.2-2' }}
+                  </strong>
 
                 </td>
 
 
-                <td>
-                  {{ selectedInvoice.ticketQuantity }}
-                </td>
+                <!-- REMAINING AFTER THIS PAYMENT -->
 
+                <td class="text-right">
 
-                <td>
-                  {{ selectedInvoice.purchasePrice
-                    | number:'1.2-2' }}
-                </td>
+                  <strong>
+                    {{ payment.remainingAmount | number:'1.2-2' }}
+                  </strong>
 
-
-                <td>
-                  {{
-                    selectedInvoice.ticketQuantity *
-                    selectedInvoice.purchasePrice
-                    | number:'1.2-2'
-                  }}
                 </td>
 
               </tr>
+
+              }
 
             </tbody>
 
@@ -488,343 +825,105 @@
 
         </div>
 
+        }
 
-        <!-- BAGGAGE -->
+        @else {
 
-        <div class="invoice-section">
+        <div class="no-payment-history">
 
-          <div class="section-title">
+          <i class="fa fa-info-circle"></i>
 
-            <i class="fa fa-suitcase"></i>
+          <span>
+            No payment history available.
+          </span>
 
-            Baggage Allowance
+        </div>
 
-          </div>
+        }
 
-
-          <div class="baggage-grid">
-
-            <div>
-
-              <i class="fa fa-suitcase"></i>
-
-              <span>Checked</span>
-
-              <strong>
-                {{ selectedInvoice.checkedBaggageKg ?? 0 }} KG
-              </strong>
-
-            </div>
+      </div>
 
 
-            <div>
+      <!-- PAYMENT STATUS -->
 
-              <i class="fa fa-briefcase"></i>
+      <div class="payment-status">
 
-              <span>Hand</span>
+        <span>Payment Status</span>
 
-              <strong>
-                {{ selectedInvoice.handBaggageKg ?? 0 }} KG
-              </strong>
+        <strong>
+          {{ selectedInvoice.paymentStatus }}
+        </strong>
 
-            </div>
+      </div>
 
 
-            <div>
+      <!-- FOOTER -->
 
-              <i class="fa fa-user"></i>
+      <div class="invoice-footer">
 
-              <span>Personal</span>
+        <div>
 
-              <strong>
-                {{ selectedInvoice.personalItemKg ?? 0 }} KG
-              </strong>
+          <strong>
+            Thank you for your business
+          </strong>
 
-            </div>
-
-          </div>
+          <p>
+            This document represents the ticket purchase
+            and payment information recorded in our system.
+          </p>
 
         </div>
 
 
-        <!-- VALIDITY -->
+        <div class="footer-reference">
 
-        <div class="validity-box">
+          <span>Invoice</span>
 
-          <div>
-
-            <span>Valid From</span>
-
-            <strong>
-              {{
-                selectedInvoice.validFrom
-                  ? (selectedInvoice.validFrom
-                    | date:'dd MMM yyyy, hh:mm a')
-                  : 'N/A'
-              }}
-            </strong>
-
-          </div>
-
-
-          <div>
-
-            <span>Valid Until</span>
-
-            <strong>
-              {{ selectedInvoice.validUntil
-                | date:'dd MMM yyyy, hh:mm a' }}
-            </strong>
-
-          </div>
+          <strong>
+            {{ selectedInvoice.invoiceNumber }}
+          </strong>
 
         </div>
 
+      </div>
 
-       <!-- =========================================================
-     PAYMENT HISTORY
-========================================================= -->
+    </div>
 
-<div class="invoice-section payment-history-section">
 
-  <div class="section-title">
+    <!-- ACTIONS -->
 
-    <i class="fa fa-credit-card"></i>
+    <div class="invoice-actions">
 
-    Payment History
+      <button type="button" class="btn-primary" (click)="printInvoice()">
+
+        <i class="fa fa-print"></i>
+
+        Print Invoice
+
+      </button>
+
+
+      <button type="button" class="btn-primary" (click)="downloadInvoicePdf()">
+
+        <i class="fa fa-file-pdf"></i>
+
+        Download PDF
+
+      </button>
+
+
+      <button type="button" class="btn-secondary" (click)="closeInvoice()">
+
+        <i class="fa fa-times"></i>
+
+        Close
+
+      </button>
+
+    </div>
 
   </div>
-
-
-  @if (
-    selectedInvoice.paymentHistory &&
-    selectedInvoice.paymentHistory.length > 0
-  ) {
-
-    <div class="payment-history-table-wrapper">
-
-      <table class="invoice-table payment-history-table">
-
-  <thead>
-
-    <tr>
-
-      <th>#</th>
-
-      <th>Payment Date</th>
-
-      <th>Payment Method</th>
-
-      <th>Reference</th>
-
-      <th>Remarks</th>
-
-      <th class="text-right">
-        Payment
-      </th>
-
-      <th class="text-right">
-        Paid After
-      </th>
-
-      <th class="text-right">
-        Remaining
-      </th>
-
-    </tr>
-
-  </thead>
-
-
-  <tbody>
-
-    @for (
-      payment of selectedInvoice.paymentHistory;
-      track payment.paymentDate + payment.paymentAmount;
-      let i = $index
-    ) {
-
-      <tr>
-
-        <td>
-          {{ i + 1 }}
-        </td>
-
-
-        <td>
-          {{ payment.paymentDate | date:'dd MMM yyyy, hh:mm a' }}
-        </td>
-
-
-        <td>
-          <strong>
-            {{ payment.methodName || 'N/A' }}
-          </strong>
-        </td>
-
-
-        <td>
-          {{ payment.paymentReference || 'N/A' }}
-        </td>
-
-
-        <td>
-          <span class="payment-remarks-cell">
-            {{ payment.paymentRemarks || 'N/A' }}
-          </span>
-        </td>
-
-
-        <!-- THIS PAYMENT -->
-
-        <td class="text-right">
-
-          <strong>
-            {{ payment.paymentAmount | number:'1.2-2' }}
-          </strong>
-
-        </td>
-
-
-        <!-- TOTAL PAID AFTER THIS PAYMENT -->
-
-        <td class="text-right">
-
-          <strong>
-            {{ payment.paidAmount | number:'1.2-2' }}
-          </strong>
-
-        </td>
-
-
-        <!-- REMAINING AFTER THIS PAYMENT -->
-
-        <td class="text-right">
-
-          <strong>
-            {{ payment.remainingAmount | number:'1.2-2' }}
-          </strong>
-
-        </td>
-
-      </tr>
-
-    }
-
-  </tbody>
-
-</table>
-
-    </div>
-
-  }
-
-  @else {
-
-    <div class="no-payment-history">
-
-      <i class="fa fa-info-circle"></i>
-
-      <span>
-        No payment history available.
-      </span>
-
-    </div>
-
-  }
 
 </div>
-
-
-        <!-- PAYMENT STATUS -->
-
-        <div class="payment-status">
-
-          <span>Payment Status</span>
-
-          <strong>
-            {{ selectedInvoice.paymentStatus }}
-          </strong>
-
-        </div>
-
-
-        <!-- FOOTER -->
-
-        <div class="invoice-footer">
-
-          <div>
-
-            <strong>
-              Thank you for your business
-            </strong>
-
-            <p>
-              This document represents the ticket purchase
-              and payment information recorded in our system.
-            </p>
-
-          </div>
-
-
-          <div class="footer-reference">
-
-            <span>Invoice</span>
-
-            <strong>
-              {{ selectedInvoice.invoiceNumber }}
-            </strong>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- ACTIONS -->
-
-      <div class="invoice-actions">
-
-        <button
-          type="button"
-          class="btn-primary"
-          (click)="printInvoice()">
-
-          <i class="fa fa-print"></i>
-
-          Print Invoice
-
-        </button>
-
-
-        <button
-          type="button"
-          class="btn-primary"
-          (click)="downloadInvoicePdf()">
-
-          <i class="fa fa-file-pdf"></i>
-
-          Download PDF
-
-        </button>
-
-
-        <button
-          type="button"
-          class="btn-secondary"
-          (click)="closeInvoice()">
-
-          <i class="fa fa-times"></i>
-
-          Close
-
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
 
 }
