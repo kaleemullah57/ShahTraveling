@@ -13,6 +13,17 @@ export interface PurchasedInvoiceSearchRequest {
   toDate: string | null;
 }
 
+export interface PurchasedInvoicePayment {
+  paymentAmount: number;
+  paymentDate: string;
+  paymentMethodId: number | null;
+  methodName: string | null;
+  paymentReference: string | null;
+  paymentRemarks: string | null;
+  paidAmount: number;
+  remainingAmount: number;
+}
+
 export interface PurchasedInvoice {
 
   purchaseInvoiceId: number;
@@ -23,6 +34,7 @@ export interface PurchasedInvoice {
 
   purchasedFrom: string;
   purchaseReference: string | null;
+
   invoiceDate: string;
 
   subTotal: number;
@@ -66,16 +78,8 @@ export interface PurchasedInvoice {
   validFrom: string | null;
   validUntil: string;
 
-  payable_Amount: number;
-  paymentDate: string | null;
-
-  paymentMethodId: number | null;
-  methodName: string | null;
-
-  paymentReference: string | null;
-  paymentRemarks: string | null;
+  paymentHistory: PurchasedInvoicePayment[];
 }
-
 
 
 

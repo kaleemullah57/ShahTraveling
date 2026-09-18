@@ -20,13 +20,10 @@ export class DownloadpdfService {
   constructor(
     private appRef: ApplicationRef,
     private environmentInjector: EnvironmentInjector
-  ) {}
+  ) { }
 
 
-  // =========================================================
-  // DOWNLOAD INVOICE
-  // =========================================================
-
+  
   async downloadInvoice(
     invoice: PurchasedInvoice
   ): Promise<void> {
@@ -35,7 +32,7 @@ export class DownloadpdfService {
       throw new Error('Invoice data is required.');
     }
 
-    // Create global PDF component dynamically
+  
     const componentRef = createComponent(
       Downloadpdf,
       {
@@ -43,13 +40,11 @@ export class DownloadpdfService {
       }
     );
 
-    // Pass invoice to @Input()
     componentRef.setInput(
       'invoice',
       invoice
     );
 
-    // Attach Angular component
     this.appRef.attachView(
       componentRef.hostView
     );
@@ -57,10 +52,8 @@ export class DownloadpdfService {
     const hostElement =
       componentRef.location.nativeElement as HTMLElement;
 
-    // =========================================================
-    // HIDE PDF TEMPLATE FROM USER
-    // =========================================================
 
+  
     hostElement.style.position = 'fixed';
     hostElement.style.left = '-10000px';
     hostElement.style.top = '0';
@@ -71,15 +64,18 @@ export class DownloadpdfService {
       hostElement
     );
 
-    // Give Angular time to render
+
+  
     await new Promise(resolve =>
       setTimeout(resolve, 200)
     );
+
 
     const element =
       hostElement.querySelector(
         '.pdf-document'
       ) as HTMLElement;
+
 
     if (!element) {
 
@@ -94,6 +90,7 @@ export class DownloadpdfService {
       );
     }
 
+
     try {
 
       await this.downloadElement(
@@ -103,10 +100,7 @@ export class DownloadpdfService {
 
     } finally {
 
-      // =======================================================
-      // CLEANUP DYNAMIC COMPONENT
-      // =======================================================
-
+  
       this.appRef.detachView(
         componentRef.hostView
       );
@@ -118,120 +112,398 @@ export class DownloadpdfService {
   }
 
 
-  // =========================================================
-  // GENERATE PDF FROM HTML ELEMENT
-  // =========================================================
-
   async downloadElement(
     element: HTMLElement,
     fileName: string
   ): Promise<void> {
 
     if (!element) {
+      throw new Error('PDF element not found.');
+    }
+
+
+
+    const header =
+      element.querySelector(
+        '.pdf-header'
+      ) as HTMLElement;
+
+
+    if (!header) {
       throw new Error(
-        'PDF element not found.'
+        'PDF header not found.'
       );
     }
 
-    const canvas = await html2canvas(
-      element,
-      {
-        scale: 3,
-        useCORS: true,
-        allowTaint: false,
-        backgroundColor: '#ffffff',
-        logging: false,
 
-        width: element.scrollWidth,
-        height: element.scrollHeight,
 
-        windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight
-      }
-    );
+    const invoiceCanvas =
+      await html2canvas(
+        element,
+        {
+          scale: 3,
+
+          useCORS: true,
+
+          allowTaint: false,
+
+          backgroundColor: '#ffffff',
+
+          logging: false,
+
+          width: element.scrollWidth,
+
+          height: element.scrollHeight,
+
+          windowWidth: element.scrollWidth,
+
+          windowHeight: element.scrollHeight
+        }
+      );
+
+
+
+    const headerCanvas =
+      await html2canvas(
+        header,
+        {
+          scale: 3,
+
+          useCORS: true,
+
+          allowTaint: false,
+
+          backgroundColor: '#ffffff',
+
+          logging: false,
+
+          width: header.scrollWidth,
+
+          height: header.scrollHeight,
+
+          windowWidth: element.scrollWidth,
+
+          windowHeight: element.scrollHeight
+        }
+      );
 
 
     const pdf = new jsPDF({
       orientation: 'portrait',
+
       unit: 'mm',
+
       format: 'a4'
     });
 
 
     const pageWidth = 210;
+
     const pageHeight = 297;
 
     const margin = 8;
 
+
     const pdfWidth =
-      pageWidth - (margin * 2);
-
-    const pdfContentHeight =
-      pageHeight - (margin * 2);
+      pageWidth -
+      (margin * 2);
 
 
-    const imageHeight =
-      (canvas.height * pdfWidth) /
-      canvas.width;
+    const pdfHeight =
+      pageHeight -
+      (margin * 2);
 
 
-    const imageData =
-      canvas.toDataURL('image/png');
+
+    const headerHeight =
+      (
+        headerCanvas.height *
+        pdfWidth
+      ) /
+      headerCanvas.width;
 
 
-    let heightLeft =
-      imageHeight;
-
-    let position =
-      margin;
+    const availableContentHeight =
+      pdfHeight -
+      headerHeight;
 
 
-    // =========================================================
-    // FIRST PAGE
-    // =========================================================
 
-    pdf.addImage(
-      imageData,
-      'PNG',
-      margin,
-      position,
-      pdfWidth,
-      imageHeight
-    );
-
-    heightLeft -=
-      pdfContentHeight;
-
-
-    // =========================================================
-    // ADDITIONAL PAGES
-    // =========================================================
-
-    while (heightLeft > 0) {
-
-      position =
-        margin -
-        (imageHeight - heightLeft);
-
-      pdf.addPage();
-
-      pdf.addImage(
-        imageData,
-        'PNG',
-        margin,
-        position,
-        pdfWidth,
-        imageHeight
+    const headerSourceHeight =
+      Math.round(
+        (
+          headerHeight *
+          invoiceCanvas.width
+        ) /
+        pdfWidth
       );
 
-      heightLeft -=
-        pdfContentHeight;
+
+
+    if (
+      headerSourceHeight <= 0 ||
+      headerSourceHeight >= invoiceCanvas.height
+    ) {
+
+      throw new Error(
+        'Invalid PDF header height.'
+      );
     }
 
 
+    const contentSourceHeight =
+      invoiceCanvas.height -
+      headerSourceHeight;
+
+    const contentCanvas =
+      document.createElement('canvas');
+
+
+    contentCanvas.width =
+      invoiceCanvas.width;
+
+
+    contentCanvas.height =
+      contentSourceHeight;
+
+
+    const contentContext =
+      contentCanvas.getContext('2d');
+
+
+    if (!contentContext) {
+
+      throw new Error(
+        'Unable to create PDF canvas context.'
+      );
+    }
+
+
+
+    contentContext.fillStyle =
+      '#ffffff';
+
+
+    contentContext.fillRect(
+      0,
+      0,
+      contentCanvas.width,
+      contentCanvas.height
+    );
+
+
+    contentContext.drawImage(
+
+      invoiceCanvas,
+
+      0,
+      headerSourceHeight,
+
+      invoiceCanvas.width,
+      contentSourceHeight,
+
+      0,
+      0,
+
+      contentCanvas.width,
+      contentCanvas.height
+    );
+
+
+    const totalContentHeight =
+      (
+        contentCanvas.height *
+        pdfWidth
+      ) /
+      contentCanvas.width;
+
+
+
+    const contentSourcePageHeight =
+      Math.floor(
+        (
+          availableContentHeight *
+          contentCanvas.width
+        ) /
+        pdfWidth
+      );
+
+
+    const headerImage =
+      headerCanvas.toDataURL(
+        'image/png'
+      );
+
+
     // =========================================================
-    // SAVE
+    // CALCULATE NUMBER OF PAGES
     // =========================================================
+
+    const totalPages =
+      Math.ceil(
+        totalContentHeight /
+        availableContentHeight
+      );
+
+
+    // =========================================================
+    // CREATE EVERY PAGE
+    // =========================================================
+
+    for (
+      let pageIndex = 0;
+      pageIndex < totalPages;
+      pageIndex++
+    ) {
+
+      if (pageIndex > 0) {
+
+        pdf.addPage();
+
+      }
+
+
+      // =======================================================
+      // ADD SAME HEADER
+      //
+      // IMPORTANT:
+      // Header is added FIRST.
+      // Content is cropped and added separately.
+      //
+      // Therefore content can NEVER cover the header.
+      // =======================================================
+
+      pdf.addImage(
+
+        headerImage,
+
+        'PNG',
+
+        margin,
+
+        margin,
+
+        pdfWidth,
+
+        headerHeight
+      );
+
+
+      const sourceY =
+        pageIndex *
+        contentSourcePageHeight;
+
+
+      const remainingSourceHeight =
+        contentCanvas.height -
+        sourceY;
+
+
+      const currentSourceHeight =
+        Math.min(
+          contentSourcePageHeight,
+          remainingSourceHeight
+        );
+
+      const currentPdfHeight =
+        (
+          currentSourceHeight *
+          pdfWidth
+        ) /
+        contentCanvas.width;
+
+
+      // =======================================================
+      // CREATE PAGE CONTENT CANVAS
+      //
+      // This is the important part.
+      //
+      // We DON'T put the complete content image on the page.
+      //
+      // We crop only the section belonging to this page.
+      // =======================================================
+
+      const pageCanvas =
+        document.createElement('canvas');
+
+
+      pageCanvas.width =
+        contentCanvas.width;
+
+
+      pageCanvas.height =
+        currentSourceHeight;
+
+
+      const pageContext =
+        pageCanvas.getContext('2d');
+
+
+      if (!pageContext) {
+
+        throw new Error(
+          'Unable to create page canvas context.'
+        );
+      }
+
+
+
+      pageContext.fillStyle =
+        '#ffffff';
+
+
+      pageContext.fillRect(
+        0,
+        0,
+
+        pageCanvas.width,
+        pageCanvas.height
+      );
+
+
+      pageContext.drawImage(
+
+        contentCanvas,
+
+        0,
+        sourceY,
+
+        contentCanvas.width,
+        currentSourceHeight,
+
+        0,
+        0,
+
+        pageCanvas.width,
+        currentSourceHeight
+      );
+
+
+      const pageImage =
+        pageCanvas.toDataURL(
+          'image/png'
+        );
+
+
+      // =======================================================
+      // ADD CONTENT BELOW HEADER
+      // =======================================================
+
+      pdf.addImage(
+
+        pageImage,
+
+        'PNG',
+
+        margin,
+
+        margin + headerHeight,
+
+        pdfWidth,
+
+        currentPdfHeight
+      );
+    }
 
     pdf.save(fileName);
   }

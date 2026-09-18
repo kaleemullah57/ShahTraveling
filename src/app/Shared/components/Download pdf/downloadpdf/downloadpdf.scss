@@ -760,4 +760,113 @@ tbody td small {
 
     color: #0f6045;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   PDF / PRINT PAGINATION
+========================================================= */
+
+@media print {
+
+    .pdf-document {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    /*
+       Repeat the invoice header when the invoice
+       continues onto another printed page.
+    */
+    .pdf-header {
+        display: table-header-group;
+    }
+
+
+    /*
+       Prevent individual invoice sections from being
+       unnecessarily split between pages.
+    */
+    .section,
+    .validity,
+    .payment-status,
+    .pdf-footer {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+
+    /*
+       Payment history can be long, so allow the table
+       itself to continue naturally onto another page.
+    */
+    .payment-history-table {
+        break-inside: auto;
+        page-break-inside: auto;
+    }
+
+
+    .payment-history-table thead {
+        display: table-header-group;
+    }
+
+
+    .payment-history-table tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+
+    /*
+       Don't split these larger blocks when possible.
+    */
+    .payment-summary,
+    .flight-box,
+    .baggage-grid {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+
+    /*
+       Footer should stay together.
+    */
+    .pdf-footer {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+}
  

@@ -581,146 +581,159 @@
         </div>
 
 
-        <!-- PAYMENT + TOTALS -->
+       <!-- =========================================================
+     PAYMENT HISTORY
+========================================================= -->
 
-        <div class="bottom-section">
+<div class="invoice-section payment-history-section">
 
-          <div class="payment-details">
+  <div class="section-title">
 
-            <div class="section-title">
+    <i class="fa fa-credit-card"></i>
 
-              <i class="fa fa-credit-card"></i>
+    Payment History
 
-              Payment Information
-
-            </div>
-
-
-            <div class="payment-row">
-
-              <span>Payment Method</span>
-
-              <strong>
-                {{ selectedInvoice.methodName || 'N/A' }}
-              </strong>
-
-            </div>
+  </div>
 
 
-            <div class="payment-row">
+  @if (
+    selectedInvoice.paymentHistory &&
+    selectedInvoice.paymentHistory.length > 0
+  ) {
 
-              <span>Payment Date</span>
+    <div class="payment-history-table-wrapper">
 
-              <strong>
-                {{
-                  selectedInvoice.paymentDate
-                    ? (selectedInvoice.paymentDate
-                      | date:'dd MMM yyyy')
-                    : 'N/A'
-                }}
-              </strong>
+      <table class="invoice-table payment-history-table">
 
-            </div>
+  <thead>
 
+    <tr>
 
-            <div class="payment-row">
+      <th>#</th>
 
-              <span>Payment Reference</span>
+      <th>Payment Date</th>
 
-              <strong>
-                {{ selectedInvoice.paymentReference || 'N/A' }}
-              </strong>
+      <th>Payment Method</th>
 
-            </div>
+      <th>Reference</th>
 
+      <th>Remarks</th>
 
-            @if (selectedInvoice.paymentRemarks) {
+      <th class="text-right">
+        Payment
+      </th>
 
-              <div class="payment-remarks">
+      <th class="text-right">
+        Paid After
+      </th>
 
-                <span>Remarks</span>
+      <th class="text-right">
+        Remaining
+      </th>
 
-                <p>
-                  {{ selectedInvoice.paymentRemarks }}
-                </p>
+    </tr>
 
-              </div>
-
-            }
-
-          </div>
+  </thead>
 
 
-          <div class="totals">
+  <tbody>
 
-            <div>
+    @for (
+      payment of selectedInvoice.paymentHistory;
+      track payment.paymentDate + payment.paymentAmount;
+      let i = $index
+    ) {
 
-              <span>Sub Total</span>
+      <tr>
 
-              <strong>
-                {{ selectedInvoice.subTotal | number:'1.2-2' }}
-              </strong>
-
-            </div>
-
-
-            <div>
-
-              <span>Discount</span>
-
-              <strong>
-                {{ selectedInvoice.discount | number:'1.2-2' }}
-              </strong>
-
-            </div>
+        <td>
+          {{ i + 1 }}
+        </td>
 
 
-            <div>
-
-              <span>Tax</span>
-
-              <strong>
-                {{ selectedInvoice.tax | number:'1.2-2' }}
-              </strong>
-
-            </div>
+        <td>
+          {{ payment.paymentDate | date:'dd MMM yyyy, hh:mm a' }}
+        </td>
 
 
-            <div class="grand-total">
-
-              <span>Grand Total</span>
-
-              <strong>
-                {{ selectedInvoice.grandTotal | number:'1.2-2' }}
-              </strong>
-
-            </div>
+        <td>
+          <strong>
+            {{ payment.methodName || 'N/A' }}
+          </strong>
+        </td>
 
 
-            <div class="paid">
-
-              <span>Paid</span>
-
-              <strong>
-                {{ selectedInvoice.paidAmount | number:'1.2-2' }}
-              </strong>
-
-            </div>
+        <td>
+          {{ payment.paymentReference || 'N/A' }}
+        </td>
 
 
-            <div class="remaining">
+        <td>
+          <span class="payment-remarks-cell">
+            {{ payment.paymentRemarks || 'N/A' }}
+          </span>
+        </td>
 
-              <span>Remaining</span>
 
-              <strong>
-                {{ selectedInvoice.remainingAmount | number:'1.2-2' }}
-              </strong>
+        <!-- THIS PAYMENT -->
 
-            </div>
+        <td class="text-right">
 
-          </div>
+          <strong>
+            {{ payment.paymentAmount | number:'1.2-2' }}
+          </strong>
 
-        </div>
+        </td>
+
+
+        <!-- TOTAL PAID AFTER THIS PAYMENT -->
+
+        <td class="text-right">
+
+          <strong>
+            {{ payment.paidAmount | number:'1.2-2' }}
+          </strong>
+
+        </td>
+
+
+        <!-- REMAINING AFTER THIS PAYMENT -->
+
+        <td class="text-right">
+
+          <strong>
+            {{ payment.remainingAmount | number:'1.2-2' }}
+          </strong>
+
+        </td>
+
+      </tr>
+
+    }
+
+  </tbody>
+
+</table>
+
+    </div>
+
+  }
+
+  @else {
+
+    <div class="no-payment-history">
+
+      <i class="fa fa-info-circle"></i>
+
+      <span>
+        No payment history available.
+      </span>
+
+    </div>
+
+  }
+
+</div>
 
 
         <!-- PAYMENT STATUS -->
