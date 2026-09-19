@@ -17,7 +17,7 @@ export interface TableColumn {
 }
 
 export interface TableAction {
-  type: 'view' | 'edit' | 'delete'| 'download' | 'payment';
+  type: 'view' | 'edit' | 'delete'| 'download' | 'payment' | 'share';
   label?: string;
   icon?: string;
 }

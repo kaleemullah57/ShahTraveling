@@ -45,7 +45,7 @@ export interface FormButton {
 @Component({
   selector: 'app-global-form',
   standalone: true,
-  imports: [FormsModule,Button],
+  imports: [FormsModule, Button],
   templateUrl: './forms.html',
   styleUrl: './forms.scss'
 })
@@ -67,14 +67,10 @@ export class forms {
   // =========================================================
 
   @Output() submitForm = new EventEmitter<any>();
-
   @Output() cancelForm = new EventEmitter<void>();
-
-@Output() formSubmit = new EventEmitter<any>();
-
-
-@Output() formReset = new EventEmitter<void>();
-
+  @Output() formSubmit = new EventEmitter<any>();
+  @Output() formCancel = new EventEmitter<void>();
+  @Output() formReset = new EventEmitter<void>();
   @Output() fieldChange = new EventEmitter<{
     key: string;
     value: any;
@@ -118,59 +114,58 @@ export class forms {
   // FORM SUBMIT
   // =========================================================
 
-onSubmit(): void {
+  onSubmit(): void {
 
-  if (this.loading) {
-    return;
+    if (this.loading) {
+      return;
+    }
+
+    console.log(
+      '🚀 GLOBAL FORM MODEL:',
+      this.model
+    );
+
+    const value = {
+      ...this.model
+    };
+
+    // Existing projects/components
+    this.submitForm.emit(value);
+
+    // New/current components
+    this.formSubmit.emit(value);
   }
-
-  console.log(
-    '🚀 GLOBAL FORM MODEL:',
-    this.model
-  );
-
-  const value = {
-    ...this.model
-  };
-
-  // Existing projects/components
-  this.submitForm.emit(value);
-
-  // New/current components
-  this.formSubmit.emit(value);
-}
 
   // =========================================================
   // BUTTON CLICK
   // =========================================================
 
-onButtonClick(button: FormButton): void {
+  onButtonClick(button: FormButton): void {
 
-  if (this.loading) {
-    return;
+    if (this.loading) {
+      return;
+    }
+
+    if (button.disabled) {
+      return;
+    }
+
+    if (
+      button.type === 'reset' ||
+      (
+        button.type === 'button' &&
+        button.style === 'secondary'
+      )
+    ) {
+
+      // Existing components
+      this.cancelForm.emit();
+      this.formCancel.emit();
+      this.formReset.emit();
+
+      return;
+    }
   }
-
-  if (button.disabled) {
-    return;
-  }
-
-  if (
-    button.type === 'reset' ||
-    (
-      button.type === 'button' &&
-      button.style === 'secondary'
-    )
-  ) {
-
-    // Existing components
-    this.cancelForm.emit();
-
-    // New/current components
-    this.formReset.emit();
-
-    return;
-  }
-}
 
   // =========================================================
   // FIELD DISABLED
@@ -326,12 +321,12 @@ onButtonClick(button: FormButton): void {
 
 
   isOptionSelected(
-  fieldKey: string,
-  optionValue: any
-): boolean {
+    fieldKey: string,
+    optionValue: any
+  ): boolean {
 
-  const currentValue = this.getValue(fieldKey);
+    const currentValue = this.getValue(fieldKey);
 
-  return Number(currentValue) === Number(optionValue);
-}
+    return Number(currentValue) === Number(optionValue);
+  }
 }

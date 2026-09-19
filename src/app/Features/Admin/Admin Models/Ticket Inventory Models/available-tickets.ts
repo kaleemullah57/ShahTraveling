@@ -22,6 +22,12 @@ export interface AvailableTicketModel {
   arrivalDateTime?: string | null;
 
   quantity: number;
+  sharedQuantity: number | 0;
+  soldQuantity:number | 0;
+  remainingInventory:number | 0;
+  availableToCustomer:number | 0;
+  availableToShare:number | 0;
+
 
   purchasePrice: number;
   sellingPrice: number;
@@ -63,15 +69,21 @@ export interface ApiResponse<T> {
 
 
 
-
-
-
-
-
-
-
 // Update Ticket Selling Price
 export interface UpdateTicketSellingPriceRequest {
   purchaseInvoiceItemId: number;
   sellingPrice: number;
+}
+
+
+
+
+
+
+
+
+// Share Tickets To Customers
+export interface ShareTicketsRequest {
+  purchaseInvoiceItemId: number;
+  quantity: number;
 }

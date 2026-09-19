@@ -2,7 +2,7 @@ import { inject, Injectable, Service } from '@angular/core';
 import { AddTicketPurchaseRequest, PurchasedInvoiceSearchRequest, UpdatePurchasedInvoicePaymentRequest } from '../../Admin Models/Ticket Inventory Models/inventory-model';
 import { ApiService } from '../../../../Core/Services/API Services/api-service';
 import { Observable } from 'rxjs';
-import { ApiResponse, AvailableTicketModel, AvailableTicketsRequest, UpdateTicketSellingPriceRequest } from '../../Admin Models/Ticket Inventory Models/available-tickets';
+import { ApiResponse, AvailableTicketModel, AvailableTicketsRequest, ShareTicketsRequest, UpdateTicketSellingPriceRequest } from '../../Admin Models/Ticket Inventory Models/available-tickets';
 
 @Injectable({
     providedIn: 'root'
@@ -76,6 +76,23 @@ export class InventoryServices {
     ): Observable<ApiResponse<any>> {
         return this.api.put<ApiResponse<any>>(
             'BranchAdmin/UpdateTicketSellingPrice',
+            request
+        );
+    }
+
+
+
+
+
+
+
+    // Share Tickets To Customers
+    shareTicketsToCustomers(
+        request: ShareTicketsRequest
+    ): Observable<ApiResponse<any>> {
+
+        return this.api.post<ApiResponse<any>>(
+            'BranchAdmin/ShareTicketsToCustomers',
             request
         );
     }

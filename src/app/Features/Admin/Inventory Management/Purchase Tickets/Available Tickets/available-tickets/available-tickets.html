@@ -77,24 +77,30 @@
 
 
     @if (showSellingPriceForm) {
-  <div class="modal-overlay" (click)="closeSellingPriceForm()">
+    <div class="modal-overlay" (click)="closeSellingPriceForm()">
 
-    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-container" (click)="$event.stopPropagation()">
 
-      <app-global-form
-        [fields]="sellingPriceFormFields"
-        [buttons]="sellingPriceFormButtons"
-        [model]="sellingPriceFormModel"
-        [title]="'Set Selling Price'"
-        [loading]="loading"
-        (formSubmit)="updateSellingPrice($event)"
-        (cancelForm)="closeSellingPriceForm()">
-      </app-global-form>
+            <app-global-form [fields]="sellingPriceFormFields" [buttons]="sellingPriceFormButtons"
+                [model]="sellingPriceFormModel" [title]="'Set Selling Price'" [loading]="loading"
+                (formSubmit)="updateSellingPrice($event)" (cancelForm)="closeSellingPriceForm()">
+            </app-global-form>
+
+        </div>
 
     </div>
+    }
 
-  </div>
-}
+
+
+
+    @if (showShareForm && selectedTicket) {
+
+    <app-global-form [fields]="shareFormFields" [buttons]="shareFormButtons" [title]="'Share Tickets'"
+        (formSubmit)="shareTickets($event)" (formCancel)="cancelShare()">
+    </app-global-form>
+
+    }
 </div>
 
 
@@ -241,9 +247,44 @@
                 <div class="details-grid">
 
                     <div class="detail-item">
-                        <span>Available Quantity</span>
+                        <span>Total Quantity</span>
                         <strong>
-                            {{ selectedTicket.quantity }}
+                            {{ selectedTicket.quantity || 0 }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Shared Quantity</span>
+                        <strong>
+                            {{ selectedTicket.sharedQuantity || 0 }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span> Sold Quantity</span>
+                        <strong>
+                            {{ selectedTicket.soldQuantity || 0 }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Remaining In Inventory</span>
+                        <strong>
+                            {{ selectedTicket.remainingInventory || 0 }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Available To Customers</span>
+                        <strong>
+                            {{ selectedTicket.availableToCustomer || 0 }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Available To Share</span>
+                        <strong>
+                            {{ selectedTicket.availableToShare || 0}}
                         </strong>
                     </div>
 
