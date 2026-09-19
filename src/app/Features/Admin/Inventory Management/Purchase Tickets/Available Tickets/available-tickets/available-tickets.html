@@ -1,112 +1,100 @@
 <div class="page-container">
 
-  <div class="page-header">
-    <div>
-      <h2>Available Tickets</h2>
-      <p>Tickets currently available for sale</p>
+    <div class="page-header">
+        <div>
+            <h2>Available Tickets</h2>
+            <p>Tickets currently available for sale</p>
+        </div>
     </div>
+
+
+    <!-- Filters -->
+    <div class="filter-card">
+
+        <!-- Row 1 -->
+        <div class="filter-row">
+
+            <!-- Search -->
+            <div class="filter-field">
+                <label>Search</label>
+                <input type="text" [(ngModel)]="search" placeholder="Airline, airport, country..."
+                    (keyup.enter)="applyFilters()" />
+            </div>
+
+            <!-- From Date -->
+            <div class="filter-field">
+                <label>From Date</label>
+                <input type="date" [(ngModel)]="fromDate" />
+            </div>
+
+            <!-- To Date -->
+            <div class="filter-field">
+                <label>To Date</label>
+                <input type="date" [(ngModel)]="toDate" />
+            </div>
+
+        </div>
+
+
+        <!-- Row 2 -->
+        <div class="filter-row">
+
+            <!-- Min Selling Price -->
+            <div class="filter-field">
+                <label>Min Selling Price</label>
+                <input type="number" [(ngModel)]="fromSellingPrice" placeholder="Min price" min="0" />
+            </div>
+
+            <!-- Max Selling Price -->
+            <div class="filter-field">
+                <label>Max Selling Price</label>
+                <input type="number" [(ngModel)]="toSellingPrice" placeholder="Max price" min="0" />
+            </div>
+
+            <!-- Buttons -->
+            <div class="filter-actions">
+
+                <app-button label="Search" type="button" (click)="applyFilters()">
+                </app-button>
+
+                <app-button label="Clear" type="button" (click)="clearFilters()">
+                </app-button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Table -->
+    <app-data-table [columns]="columns" [data]="tickets" [loading]="loading" [totalRecords]="totalRecords"
+        [pageNumber]="pageNumber" [pageSize]="pageSize" [actions]="actions" [showActions]="true"
+        (actionClick)="onActionClick($event)" (pageChange)="onPageChange($event)">
+    </app-data-table>
+
+
+
+
+    @if (showSellingPriceForm) {
+  <div class="modal-overlay" (click)="closeSellingPriceForm()">
+
+    <div class="modal-container" (click)="$event.stopPropagation()">
+
+      <app-global-form
+        [fields]="sellingPriceFormFields"
+        [buttons]="sellingPriceFormButtons"
+        [model]="sellingPriceFormModel"
+        [title]="'Set Selling Price'"
+        [loading]="loading"
+        (formSubmit)="updateSellingPrice($event)"
+        (cancelForm)="closeSellingPriceForm()">
+      </app-global-form>
+
+    </div>
+
   </div>
-
-
-  <!-- Filters -->
-  <div class="filter-card">
-
-    <!-- Row 1 -->
-    <div class="filter-row">
-
-      <!-- Search -->
-      <div class="filter-field">
-        <label>Search</label>
-        <input
-          type="text"
-          [(ngModel)]="search"
-          placeholder="Airline, airport, country..."
-          (keyup.enter)="applyFilters()"
-        />
-      </div>
-
-      <!-- From Date -->
-      <div class="filter-field">
-        <label>From Date</label>
-        <input
-          type="date"
-          [(ngModel)]="fromDate"
-        />
-      </div>
-
-      <!-- To Date -->
-      <div class="filter-field">
-        <label>To Date</label>
-        <input
-          type="date"
-          [(ngModel)]="toDate"
-        />
-      </div>
-
-    </div>
-
-
-    <!-- Row 2 -->
-    <div class="filter-row">
-
-      <!-- Min Selling Price -->
-      <div class="filter-field">
-        <label>Min Selling Price</label>
-        <input
-          type="number"
-          [(ngModel)]="fromSellingPrice"
-          placeholder="Min price"
-          min="0"
-        />
-      </div>
-
-      <!-- Max Selling Price -->
-      <div class="filter-field">
-        <label>Max Selling Price</label>
-        <input
-          type="number"
-          [(ngModel)]="toSellingPrice"
-          placeholder="Max price"
-          min="0"
-        />
-      </div>
-
-      <!-- Buttons -->
-      <div class="filter-actions">
-
-        <app-button
-          label="Search"
-          type="button"
-          (click)="applyFilters()">
-        </app-button>
-
-        <app-button
-          label="Clear"
-          type="button"
-          (click)="clearFilters()">
-        </app-button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <!-- Table -->
-<app-data-table
-  [columns]="columns"
-  [data]="tickets"
-  [loading]="loading"
-  [totalRecords]="totalRecords"
-  [pageNumber]="pageNumber"
-  [pageSize]="pageSize"
-  [actions]="actions"
-  [showActions]="true"
-  (actionClick)="onActionClick($event)"
-  (pageChange)="onPageChange($event)">
-</app-data-table>
-
+}
 </div>
 
 
@@ -129,214 +117,206 @@
 
 @if (showViewModal && selectedTicket) {
 
-  <div class="modal-overlay" (click)="closeViewModal()">
+<div class="modal-overlay" (click)="closeViewModal()">
 
-    <div
-      class="ticket-modal"
-      (click)="$event.stopPropagation()">
+    <div class="ticket-modal" (click)="$event.stopPropagation()">
 
-      <div class="modal-header">
+        <div class="modal-header">
 
-        <div>
-          <h3>Ticket Details</h3>
-          <p>Complete available ticket information</p>
-        </div>
-
-        <button
-          type="button"
-          class="close-button"
-          (click)="closeViewModal()">
-
-          <i class="fa fa-times"></i>
-
-        </button>
-
-      </div>
-
-
-      <div class="modal-body">
-
-        <!-- Route -->
-        <div class="section">
-
-          <h4>Flight Information</h4>
-
-          <div class="details-grid">
-
-            <div class="detail-item">
-              <span>Airline</span>
-              <strong>
-                {{ selectedTicket.airlineName }}
-              </strong>
+            <div>
+                <h3>Ticket Details</h3>
+                <p>Complete available ticket information</p>
             </div>
 
-            <div class="detail-item">
-              <span>Airline Code</span>
-              <strong>
-                {{ selectedTicket.airlineCode }}
-              </strong>
-            </div>
+            <button type="button" class="close-button" (click)="closeViewModal()">
 
-            <div class="detail-item">
-              <span>From Country</span>
-              <strong>
-                {{ selectedTicket.fromCountry }}
-              </strong>
-            </div>
+                <i class="fa fa-times"></i>
 
-            <div class="detail-item">
-              <span>From Airport</span>
-              <strong>
-                {{ selectedTicket.fromAirport }}
-              </strong>
-            </div>
-
-            <div class="detail-item">
-              <span>To Country</span>
-              <strong>
-                {{ selectedTicket.toCountry }}
-              </strong>
-            </div>
-
-            <div class="detail-item">
-              <span>To Airport</span>
-              <strong>
-                {{ selectedTicket.toAirport }}
-              </strong>
-            </div>
-
-          </div>
+            </button>
 
         </div>
 
 
-        <!-- Schedule -->
-        <div class="section">
+        <div class="modal-body">
 
-          <h4>Schedule</h4>
+            <!-- Route -->
+            <div class="section">
 
-          <div class="details-grid">
+                <h4>Flight Information</h4>
 
-            <div class="detail-item">
-              <span>Departure</span>
-              <strong>
-                {{ selectedTicket.departureDateTime | date:'dd MMM yyyy, hh:mm a' }}
-              </strong>
+                <div class="details-grid">
+
+                    <div class="detail-item">
+                        <span>Airline</span>
+                        <strong>
+                            {{ selectedTicket.airlineName }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Airline Code</span>
+                        <strong>
+                            {{ selectedTicket.airlineCode }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>From Country</span>
+                        <strong>
+                            {{ selectedTicket.fromCountry }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>From Airport</span>
+                        <strong>
+                            {{ selectedTicket.fromAirport }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>To Country</span>
+                        <strong>
+                            {{ selectedTicket.toCountry }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>To Airport</span>
+                        <strong>
+                            {{ selectedTicket.toAirport }}
+                        </strong>
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="detail-item">
-              <span>Arrival</span>
-              <strong>
-                {{ selectedTicket.arrivalDateTime | date:'dd MMM yyyy, hh:mm a' }}
-              </strong>
+
+            <!-- Schedule -->
+            <div class="section">
+
+                <h4>Schedule</h4>
+
+                <div class="details-grid">
+
+                    <div class="detail-item">
+                        <span>Departure</span>
+                        <strong>
+                            {{ selectedTicket.departureDateTime | date:'dd MMM yyyy, hh:mm a' }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Arrival</span>
+                        <strong>
+                            {{ selectedTicket.arrivalDateTime | date:'dd MMM yyyy, hh:mm a' }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Valid From</span>
+                        <strong>
+                            {{ selectedTicket.validFrom | date:'dd MMM yyyy' }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Valid Until</span>
+                        <strong>
+                            {{ selectedTicket.validUntil | date:'dd MMM yyyy' }}
+                        </strong>
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="detail-item">
-              <span>Valid From</span>
-              <strong>
-                {{ selectedTicket.validFrom | date:'dd MMM yyyy' }}
-              </strong>
+
+            <!-- Inventory -->
+            <div class="section">
+
+                <h4>Inventory & Pricing</h4>
+
+                <div class="details-grid">
+
+                    <div class="detail-item">
+                        <span>Available Quantity</span>
+                        <strong>
+                            {{ selectedTicket.quantity }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Purchase Price</span>
+                        <strong>
+                            {{ selectedTicket.purchasePrice | number:'1.2-2' }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Selling Price</span>
+                        <strong>
+                            {{ selectedTicket.sellingPrice | number:'1.2-2' }}
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Branch</span>
+                        <strong>
+                            {{ selectedTicket.branchName }}
+                        </strong>
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="detail-item">
-              <span>Valid Until</span>
-              <strong>
-                {{ selectedTicket.validUntil | date:'dd MMM yyyy' }}
-              </strong>
-            </div>
 
-          </div>
+            <!-- Baggage -->
+            <div class="section">
+
+                <h4>Baggage Allowance</h4>
+
+                <div class="details-grid">
+
+                    <div class="detail-item">
+                        <span>Checked Baggage</span>
+                        <strong>
+                            {{ selectedTicket.checkedBaggageKg ?? 0 }} KG
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Hand Baggage</span>
+                        <strong>
+                            {{ selectedTicket.handBaggageKg ?? 0 }} KG
+                        </strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Personal Item</span>
+                        <strong>
+                            {{ selectedTicket.personalItemKg ?? 0 }} KG
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
 
-        <!-- Inventory -->
-        <div class="section">
+        <div class="modal-footer">
 
-          <h4>Inventory & Pricing</h4>
-
-          <div class="details-grid">
-
-            <div class="detail-item">
-              <span>Available Quantity</span>
-              <strong>
-                {{ selectedTicket.quantity }}
-              </strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Purchase Price</span>
-              <strong>
-                {{ selectedTicket.purchasePrice | number:'1.2-2' }}
-              </strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Selling Price</span>
-              <strong>
-                {{ selectedTicket.sellingPrice | number:'1.2-2' }}
-              </strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Branch</span>
-              <strong>
-                {{ selectedTicket.branchName }}
-              </strong>
-            </div>
-
-          </div>
+            <app-button label="Close" type="button" (click)="closeViewModal()">
+            </app-button>
 
         </div>
-
-
-        <!-- Baggage -->
-        <div class="section">
-
-          <h4>Baggage Allowance</h4>
-
-          <div class="details-grid">
-
-            <div class="detail-item">
-              <span>Checked Baggage</span>
-              <strong>
-                {{ selectedTicket.checkedBaggageKg ?? 0 }} KG
-              </strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Hand Baggage</span>
-              <strong>
-                {{ selectedTicket.handBaggageKg ?? 0 }} KG
-              </strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Personal Item</span>
-              <strong>
-                {{ selectedTicket.personalItemKg ?? 0 }} KG
-              </strong>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="modal-footer">
-
-        <app-button
-          label="Close"
-          type="button"
-          (click)="closeViewModal()">
-        </app-button>
-
-      </div>
 
     </div>
 
-  </div>
+</div>
 
 }

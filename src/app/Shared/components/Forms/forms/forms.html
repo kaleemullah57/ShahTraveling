@@ -1,192 +1,242 @@
-<div class="global-form">
+<!-- =======================================================
+     GLOBAL FORM MODAL
+     ======================================================= -->
 
-  <!-- =======================================================
-       FORM TITLE
-       ======================================================= -->
+<div class="global-form-overlay">
 
-  @if (title) {
+  <div
+    class="global-form-modal"
+    (click)="$event.stopPropagation()"
+  >
 
-  <div class="form-header">
-    <h2>{{ title }}</h2>
-  </div>
+    <div class="global-form">
 
-  }
+      <!-- =======================================================
+           FORM TITLE
+           ======================================================= -->
 
+      @if (title) {
 
-  <!-- =======================================================
-       FORM
-       ======================================================= -->
-
-  <form (ngSubmit)="onSubmit()" novalidate>
-
-    <!-- =====================================================
-         FORM GRID
-         ===================================================== -->
-
-    <div class="form-grid">
-
-      @for (field of fields; track field.key) {
-
-      <div class="form-group">
-
-        <!-- =================================================
-               LABEL
-               ================================================= -->
-
-        <label [for]="'field-' + field.key">
-
-          {{ field.label }}
-
-          @if (field.required) {
-          <span class="required">*</span>
-          }
-
-        </label>
-
-
-        <!-- =================================================
-               TEXT / NUMBER / EMAIL / PASSWORD / DATE
-               ================================================= -->
-
-        @if (
-        field.type === 'text' ||
-        field.type === 'number' ||
-        field.type === 'email' ||
-        field.type === 'password' ||
-        field.type === 'date'
-        ) {
-
-        <input [id]="'field-' + field.key" [type]="field.type" [value]="getValue(field.key) ?? ''"
-          [placeholder]="field.placeholder || ''" [disabled]="isFieldDisabled(field)"
-          [required]="field.required || false" (input)="
-    setValue(
-      field.key,
-      convertValue(
-        field.type,
-        $any($event.target).value
-      )
-    )
-  " />
-
-        }
-
-
-        <!-- =================================================
-               TEXTAREA
-               ================================================= -->
-
-        @else if (field.type === 'textarea') {
-
-        <textarea [id]="'field-' + field.key" [placeholder]="field.placeholder || ''"
-          [disabled]="isFieldDisabled(field)" [required]="field.required || false" (input)="
-                setValue(
-                  field.key,
-                  $any($event.target).value
-                )
-              ">{{ getValue(field.key) }}</textarea>
-
-        }
-
-
-        <!-- =================================================
-               SELECT / DROPDOWN
-               ================================================= -->
-
-        @else if (field.type === 'select') {
-
-        <select [id]="'field-' + field.key" [value]="getValue(field.key)" [disabled]="isFieldDisabled(field)"
-          [required]="field.required || false" (change)="
-      onSelectChange(
-        field.key,
-        $any($event.target).value
-      )
-    ">
-          <option value="">
-            Select {{ field.label }}
-          </option>
-
-          @for (
-          option of field.options ?? [];
-          track option.value
-          ) {
-
-          <option [value]="option.value" [selected]="isOptionSelected(field.key, option.value)">
-            {{ option.label }}
-          </option>
-
-          }
-
-        </select>
-
-        }
-
-
-        <!-- =================================================
-               CHECKBOX
-               ================================================= -->
-
-        @else if (field.type === 'checkbox') {
-
-        <label class="checkbox-wrapper">
-
-          <input type="checkbox" [checked]="!!getValue(field.key)" [disabled]="isFieldDisabled(field)" (change)="
-                  setValue(
-                    field.key,
-                    $any($event.target).checked
-                  )
-                " />
-
-          <span>
-            {{ field.placeholder || field.label }}
-          </span>
-
-        </label>
-
-        }
-
-
-        <!-- =================================================
-               FILE
-               ================================================= -->
-
-        @else if (field.type === 'file') {
-
-        <input [id]="'field-' + field.key" type="file" multiple accept="image/*" [disabled]="isFieldDisabled(field)"
-          [required]="field.required || false" (change)="
-                onFileChange(
-                  $event,
-                  field.key
-                )
-              " />
-
-        }
-
+      <div class="form-header">
+        <h2>{{ title }}</h2>
       </div>
 
       }
 
+
+      <!-- =======================================================
+           FORM
+           ======================================================= -->
+
+      <form (ngSubmit)="onSubmit()" novalidate>
+
+        <!-- =====================================================
+             FORM GRID
+             ===================================================== -->
+
+        <div class="form-grid">
+
+          @for (field of fields; track field.key) {
+
+          <div class="form-group">
+
+            <!-- =================================================
+                 LABEL
+                 ================================================= -->
+
+            <label [for]="'field-' + field.key">
+
+              {{ field.label }}
+
+              @if (field.required) {
+              <span class="required">*</span>
+              }
+
+            </label>
+
+
+            <!-- =================================================
+                 TEXT / NUMBER / EMAIL / PASSWORD / DATE
+                 ================================================= -->
+
+            @if (
+            field.type === 'text' ||
+            field.type === 'number' ||
+            field.type === 'email' ||
+            field.type === 'password' ||
+            field.type === 'date'
+            ) {
+
+            <input
+              [id]="'field-' + field.key"
+              [type]="field.type"
+              [value]="getValue(field.key) ?? ''"
+              [placeholder]="field.placeholder || ''"
+              [disabled]="isFieldDisabled(field)"
+              [required]="field.required || false"
+              (input)="
+                setValue(
+                  field.key,
+                  convertValue(
+                    field.type,
+                    $any($event.target).value
+                  )
+                )
+              "
+            />
+
+            }
+
+
+            <!-- =================================================
+                 TEXTAREA
+                 ================================================= -->
+
+            @else if (field.type === 'textarea') {
+
+            <textarea
+              [id]="'field-' + field.key"
+              [placeholder]="field.placeholder || ''"
+              [disabled]="isFieldDisabled(field)"
+              [required]="field.required || false"
+              (input)="
+                setValue(
+                  field.key,
+                  $any($event.target).value
+                )
+              "
+            >{{ getValue(field.key) }}</textarea>
+
+            }
+
+
+            <!-- =================================================
+                 SELECT / DROPDOWN
+                 ================================================= -->
+
+            @else if (field.type === 'select') {
+
+            <select
+              [id]="'field-' + field.key"
+              [value]="getValue(field.key)"
+              [disabled]="isFieldDisabled(field)"
+              [required]="field.required || false"
+              (change)="
+                onSelectChange(
+                  field.key,
+                  $any($event.target).value
+                )
+              "
+            >
+
+              <option value="">
+                Select {{ field.label }}
+              </option>
+
+              @for (
+              option of field.options ?? [];
+              track option.value
+              ) {
+
+              <option
+                [value]="option.value"
+                [selected]="isOptionSelected(field.key, option.value)"
+              >
+                {{ option.label }}
+              </option>
+
+              }
+
+            </select>
+
+            }
+
+
+            <!-- =================================================
+                 CHECKBOX
+                 ================================================= -->
+
+            @else if (field.type === 'checkbox') {
+
+            <label class="checkbox-wrapper">
+
+              <input
+                type="checkbox"
+                [checked]="!!getValue(field.key)"
+                [disabled]="isFieldDisabled(field)"
+                (change)="
+                  setValue(
+                    field.key,
+                    $any($event.target).checked
+                  )
+                "
+              />
+
+              <span>
+                {{ field.placeholder || field.label }}
+              </span>
+
+            </label>
+
+            }
+
+
+            <!-- =================================================
+                 FILE
+                 ================================================= -->
+
+            @else if (field.type === 'file') {
+
+            <input
+              [id]="'field-' + field.key"
+              type="file"
+              multiple
+              accept="image/*"
+              [disabled]="isFieldDisabled(field)"
+              [required]="field.required || false"
+              (change)="
+                onFileChange(
+                  $event,
+                  field.key
+                )
+              "
+            />
+
+            }
+
+          </div>
+
+          }
+
+        </div>
+
+
+        <!-- =====================================================
+             FORM ACTIONS
+             ===================================================== -->
+
+        <div class="form-actions">
+
+          @for (button of buttons; track button.label) {
+
+          <app-button
+            [label]="button.label"
+            [type]="button.type || 'button'"
+            [variant]="button.style || 'primary'"
+            [disabled]="isButtonDisabled(button)"
+            [loading]="button.loading || (loading && button.type === 'submit')"
+            (click)="onButtonClick(button)"
+          >
+          </app-button>
+
+          }
+
+        </div>
+
+      </form>
+
     </div>
 
-
-    <!-- =====================================================
-         FORM ACTIONS
-         ===================================================== -->
-
-
-    <div class="form-actions">
-
-      @for (button of buttons; track button.label) {
-
-      <app-button [label]="button.label" [type]="button.type || 'button'" [variant]="button.style || 'primary'"
-        [disabled]="isButtonDisabled(button)" [loading]="button.loading || (loading && button.type === 'submit')"
-        (click)="onButtonClick(button)">
-      </app-button>
-
-      }
-
-
-    </div>
-
-  </form>
+  </div>
 
 </div>

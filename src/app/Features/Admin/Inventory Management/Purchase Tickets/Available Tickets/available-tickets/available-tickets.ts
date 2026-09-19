@@ -7,12 +7,14 @@ import {
 } from '@angular/core';
 
 import { DataTable, TableAction } from '../../../../../../Shared/components/DataTables/data-table/data-table';
-import { AvailableTicketModel,AvailableTicketsRequest } from '../../../../Admin Models/Ticket Inventory Models/available-tickets';
+import { AvailableTicketModel,AvailableTicketsRequest, UpdateTicketSellingPriceRequest } from '../../../../Admin Models/Ticket Inventory Models/available-tickets';
 
 import { InventoryServices } from '../../../../Admin Services/Inventory Services/inventory-services';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Button } from '../../../../../../Shared/components/button/button';
+import { FormButton, FormField, forms } from '../../../../../../Shared/components/Forms/forms/forms';
+import { NotificationService } from '../../../../../../Core/Services/Notification Services/notification-service';
 
 @Component({
   selector: 'app-available-tickets',
@@ -21,7 +23,8 @@ import { Button } from '../../../../../../Shared/components/button/button';
     CommonModule,
     DataTable,
     FormsModule,
-    Button
+    Button,
+    forms
 ],
   templateUrl: './available-tickets.html',
   styleUrl: './available-tickets.scss'
@@ -29,6 +32,7 @@ import { Button } from '../../../../../../Shared/components/button/button';
 export class AvailableTickets implements OnInit {
 
   private InventoryServices = inject(InventoryServices);
+  private notificationService = inject(NotificationService)
   private cdr = inject(ChangeDetectorRef);
 
   tickets: AvailableTicketModel[] = [];
@@ -65,6 +69,11 @@ actions: TableAction[] = [
     type: 'view',
     label: 'View',
     icon: 'fa fa-eye'
+  },
+  {
+    type: 'edit',
+    label: 'Set Price',
+    icon: 'fa fa-tag'
   }
 ];
 
@@ -209,6 +218,11 @@ onActionClick(event: { action: TableAction; row: AvailableTicketModel }): void {
 
     this.cdr.detectChanges();
   }
+
+
+  if (event.action.type === 'edit') {
+    this.openSellingPriceForm(event.row);
+  }
 }
 closeViewModal(): void {
 
@@ -217,4 +231,107 @@ closeViewModal(): void {
 
 }
 
+
+
+
+
+
+
+
+// Update ticket Selling Price
+sellingPriceFormFields: FormField[] = [
+  {
+    key: 'sellingPrice',
+    label: 'Selling Price',
+    type: 'number',
+    placeholder: 'Enter selling price',
+    required: true
+  }
+];
+
+sellingPriceFormButtons: FormButton[] = [
+  {
+    label: 'Update Price',
+    type: 'submit'
+  },
+  {
+    label: 'Cancel',
+    type: 'button',
+    style: 'secondary'
+  }
+];
+
+showSellingPriceForm = false;
+selectedPriceTicket: AvailableTicketModel | null = null;
+sellingPriceFormModel: any = {};
+
+openSellingPriceForm(ticket: AvailableTicketModel): void {
+
+  this.selectedPriceTicket = ticket;
+
+  this.sellingPriceFormModel = {
+    sellingPrice: ticket.sellingPrice
+  };
+
+  this.showSellingPriceForm = true;
+
+  this.cdr.detectChanges();
+}
+
+closeSellingPriceForm(): void {
+  this.showSellingPriceForm = false;
+  this.selectedPriceTicket = null;
+  this.sellingPriceFormModel = {};
+}
+
+updateSellingPrice(formData: any): void {
+
+  if (!this.selectedPriceTicket) {
+    return;
+  }
+
+  const sellingPrice = Number(formData.sellingPrice);
+
+  if (!sellingPrice || sellingPrice <= 0) {
+    return;
+  }
+
+  const request: UpdateTicketSellingPriceRequest = {
+    purchaseInvoiceItemId:
+      this.selectedPriceTicket.purchaseInvoiceItemId,
+    sellingPrice: sellingPrice
+  };
+
+  this.loading = true;
+
+  this.InventoryServices
+    .updateTicketSellingPrice(request)
+    .subscribe({
+      next: (response) => {
+
+        if (response.status) {
+
+          this.notificationService.success(response.message);          
+          this.showSellingPriceForm = false;
+          this.selectedPriceTicket = null;
+
+          this.loadAvailableTickets();
+        }
+
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Update Selling Price Error:',
+          error
+        );
+
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
+}
 }

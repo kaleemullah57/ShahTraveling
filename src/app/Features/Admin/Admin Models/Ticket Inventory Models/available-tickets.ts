@@ -56,3 +56,22 @@ export interface ApiResponse<T> {
   data: T;
   success: boolean;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Update Ticket Selling Price
+export interface UpdateTicketSellingPriceRequest {
+  purchaseInvoiceItemId: number;
+  sellingPrice: number;
+}

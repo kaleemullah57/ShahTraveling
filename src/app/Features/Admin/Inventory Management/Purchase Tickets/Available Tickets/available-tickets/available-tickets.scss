@@ -242,3 +242,104 @@
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MODAL OVERLAY
+   ========================================================= */
+
+// .modal-overlay {
+//   position: fixed;
+//   inset: 0;
+
+//   /* Dark + blur background */
+//   background: rgba(0, 0, 0, 0.35);
+
+//   backdrop-filter: blur(6px);
+//   -webkit-backdrop-filter: blur(6px);
+
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+
+//   z-index: 9999;
+//   padding: 20px;
+
+//   animation: fadeIn 0.2s ease;
+// }
+
+
+// /* =========================================================
+//    MODAL CONTAINER
+//    ========================================================= */
+
+// .modal-container {
+//   width: 100%;
+//   max-width: 550px;
+
+//   max-height: 90vh;
+//   overflow-y: auto;
+
+//   background: #fff;
+
+//   border-radius: 12px;
+
+//   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+
+//   animation: modalSlideIn 0.2s ease;
+// }
+
+
+// /* =========================================================
+//    ANIMATION
+//    ========================================================= */
+
+// @keyframes fadeIn {
+//   from {
+//     opacity: 0;
+//   }
+
+//   to {
+//     opacity: 1;
+//   }
+// }
+
+// @keyframes modalSlideIn {
+//   from {
+//     opacity: 0;
+//     transform: translateY(-20px) scale(0.98);
+//   }
+
+//   to {
+//     opacity: 1;
+//     transform: translateY(0) scale(1);
+//   }
+// }
+
+
+// /* =========================================================
+//    MOBILE
+//    ========================================================= */
+
+// @media (max-width: 600px) {
+
+//   .modal-overlay {
+//     padding: 12px;
+//   }
+
+//   .modal-container {
+//     max-width: 100%;
+//   }
+
+// }
