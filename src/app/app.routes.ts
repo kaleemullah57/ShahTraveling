@@ -10,6 +10,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./Features/home/home').then(m => m.Home)
   },
+  {
+    path: 'SharedTickets',
+    loadComponent: () =>
+      import('./Features/Shared Tickets/shared-tickets/shared-tickets').then(m => m.SharedTickets)
+  },
 
   {
     path: 'destinations',

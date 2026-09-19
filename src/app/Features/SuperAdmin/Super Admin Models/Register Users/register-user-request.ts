@@ -2,7 +2,7 @@ export interface RegisterUserRequest {
     userName: string;
     email: string;
     password: string;
-    branchId: number;
+    branchId: number | null;
     userTypeId: number;
 }
 

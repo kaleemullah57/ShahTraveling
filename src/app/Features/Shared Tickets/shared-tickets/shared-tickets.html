@@ -1,0 +1,107 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <h2>Available Tickets</h2>
+  </div>
+
+
+  <!-- Filters -->
+  <div class="filters">
+
+    <!-- Search -->
+    <div class="filter-item">
+      <label>Search</label>
+
+      <input
+        type="text"
+        [(ngModel)]="search"
+        placeholder="Airline, airport..."
+        (keyup.enter)="applyFilters()"
+      />
+    </div>
+
+
+    <!-- From Date -->
+    <div class="filter-item">
+      <label>From Date</label>
+
+      <input
+        type="date"
+        [(ngModel)]="fromDate"
+      />
+    </div>
+
+
+    <!-- To Date -->
+    <div class="filter-item">
+      <label>To Date</label>
+
+      <input
+        type="date"
+        [(ngModel)]="toDate"
+      />
+    </div>
+
+
+    <!-- Minimum Price -->
+    <div class="filter-item">
+      <label>Min Price</label>
+
+      <input
+        type="number"
+        [(ngModel)]="fromSellingPrice"
+        placeholder="Min price"
+      />
+    </div>
+
+
+    <!-- Maximum Price -->
+    <div class="filter-item">
+      <label>Max Price</label>
+
+      <input
+        type="number"
+        [(ngModel)]="toSellingPrice"
+        placeholder="Max price"
+      />
+    </div>
+
+
+    <!-- Buttons -->
+    <div class="filter-actions">
+
+      <button
+        type="button"
+        (click)="applyFilters()"
+      >
+        <i class="fa fa-search"></i>
+        Search
+      </button>
+
+      <button
+        type="button"
+        (click)="clearFilters()"
+      >
+        <i class="fa fa-refresh"></i>
+        Clear
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- Global Data Table -->
+  <app-data-table
+    [columns]="columns"
+    [data]="tickets"
+    [loading]="loading"
+    [totalRecords]="totalRecords"
+    [pageNumber]="pageNumber"
+    [pageSize]="pageSize"
+    [actions]="actions"
+    [showActions]="false"
+    (pageChange)="onPageChange($event)">
+  </app-data-table>
+
+</div>

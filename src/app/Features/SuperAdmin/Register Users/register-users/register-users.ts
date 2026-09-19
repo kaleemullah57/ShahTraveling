@@ -18,9 +18,9 @@ import { TableColumn, DataTable } from '../../../../Shared/components/DataTables
 export class RegisterUsers implements OnInit {
 
 
-ngOnInit(): void {
-  this.loadUsers();
-}
+  ngOnInit(): void {
+    this.loadUsers();
+  }
 
   saving = false;
 
@@ -30,7 +30,7 @@ ngOnInit(): void {
     userName: '',
     email: '',
     password: '',
-    branchId: 0,
+    branchId: null,
     userTypeId: 0
   };
 
@@ -130,7 +130,7 @@ ngOnInit(): void {
       userName: '',
       email: '',
       password: '',
-      branchId: 0,
+      branchId: null,
       userTypeId: 0
     };
 
@@ -216,7 +216,7 @@ ngOnInit(): void {
 
 
 
-  
+
   loadUserTypes(): void {
 
     this.globalDropdownService
@@ -409,16 +409,13 @@ ngOnInit(): void {
       return;
     }
 
+if (request.userTypeId === 2 && (!request.branchId || request.branchId <= 0)) {
+  this.notificationService.error(
+    'Please select a branch.'
+  );
 
-    if (request.branchId <= 0) {
-
-      this.notificationService.error(
-        'Please select a branch.'
-      );
-
-      return;
-    }
-
+  return;
+}
 
     if (
       request.userTypeId !== 2 &&
@@ -467,7 +464,7 @@ ngOnInit(): void {
               userName: '',
               email: '',
               password: '',
-              branchId: 0,
+              branchId: null,
               userTypeId: 0
             };
 
@@ -577,7 +574,7 @@ ngOnInit(): void {
       key: 'isActive',
       label: 'Status',
       type: 'status'
-      
+
     },
     {
       key: 'createdOn',
@@ -628,9 +625,9 @@ ngOnInit(): void {
           ) {
 
             this.users = (response.data ?? []).map((user: any) => ({
-  ...user,
-  isActive: user.isActive ? 'Active' : 'Inactive'
-}));
+              ...user,
+              isActive: user.isActive ? 'Active' : 'Inactive'
+            }));
 
             this.totalRecords =
               Number(
