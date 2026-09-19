@@ -139,6 +139,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./Features/Admin/Inventory Management/Purchase Tickets/purchase-ticket/purchase-ticket')
             .then(m => m.PurchaseTicket)
+      },
+      {
+        path: 'AvailableTickets',
+        loadComponent: () =>
+          import('./Features/Admin/Inventory Management/Purchase Tickets/Available Tickets/available-tickets/available-tickets')
+            .then(m => m.AvailableTickets)
       }
     ]
   }

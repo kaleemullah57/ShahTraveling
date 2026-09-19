@@ -96,9 +96,9 @@ export class PurchaseTicket implements OnInit {
     },
 
     {
-      key: 'paymentStatus',
-      label: 'Payment Status',
-      type: 'status',
+      key: 'validUntil',
+      label: 'validUntil',
+      type: 'text',
       sortable: true
     }
 
