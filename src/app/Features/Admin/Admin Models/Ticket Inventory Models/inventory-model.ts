@@ -78,6 +78,9 @@ export interface PurchasedInvoice {
   validFrom: string | null;
   validUntil: string;
 
+  ticketTypeId: number | null;
+  ticketTypeName: string; 
+
   paymentHistory: PurchasedInvoicePayment[];
 }
 
@@ -109,6 +112,8 @@ export interface AddTicketPurchaseRequest {
   arrivalDateTime: string;
 
   quantity: number;
+
+  ticketTypeId : number;
 
   purchasePrice: number;
   sellingPrice: number;

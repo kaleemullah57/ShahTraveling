@@ -52,6 +52,8 @@ export interface AvailableTicketModel {
   toCountry?: string | null;
 
   createdDate?: string | null;
+
+  ticketTypeName : string;
 }
 
 

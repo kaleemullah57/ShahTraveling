@@ -59,9 +59,10 @@ export class SharedTickets implements OnInit, OnDestroy {
     { key: 'fromAirport', label: 'From' },
     { key: 'toAirport', label: 'To' },
     { key: 'departureDateTime', label: 'Departure' },
-    { key: 'arrivalDateTime', label: 'Arrival' },
+    { key: 'ticketTypeName', label: 'Ticket Type' },
+    // { key: 'arrivalDateTime', label: 'Arrival' },
     { key: 'availableQuantity', label: 'Available' },
-    { key: 'sellingPrice', label: 'Selling Price' },
+    // { key: 'sellingPrice', label: 'Selling Price' },
     { key: 'validUntil', label: 'Valid Until' }
   ];
 

@@ -20,7 +20,7 @@ import { Button } from '../../../../../Shared/components/button/button';
     FormsModule,
     forms,
     Button
-],
+  ],
   templateUrl: './purchase-ticket.html',
   styleUrl: './purchase-ticket.scss',
 })
@@ -366,10 +366,6 @@ export class PurchaseTicket implements OnInit {
 
   viewInvoice(invoice: PurchasedInvoice): void {
 
-    console.log(
-      'View invoice:',
-      invoice.purchaseInvoiceId
-    );
 
   }
 
@@ -435,6 +431,7 @@ export class PurchaseTicket implements OnInit {
     this.loadAirlines();
     this.loadAirports();
     this.loadPaymentMethods();
+    this.loadTicketTypes();
   }
 
   closeAddForm(): void {
@@ -516,6 +513,15 @@ export class PurchaseTicket implements OnInit {
       type: 'number',
       placeholder: 'Enter quantity',
       required: true
+    },
+
+    {
+      key: 'ticketTypeId',
+      label: 'Ticket Type',
+      type: 'select',
+      placeholder: 'Select Ticket Type',
+      required: true,
+      options: []
     },
 
     {
@@ -611,7 +617,7 @@ export class PurchaseTicket implements OnInit {
 
 
   formButtons: FormButton[] = [
-    
+
     {
       label: 'Add Ticket Purchase',
       type: 'submit',
@@ -641,6 +647,8 @@ export class PurchaseTicket implements OnInit {
       arrivalDateTime: formValue.arrivalDateTime,
 
       quantity: Number(formValue.quantity),
+
+      ticketTypeId: Number(formValue.ticketTypeId),
 
       purchasePrice: Number(formValue.purchasePrice),
       sellingPrice: Number(formValue.sellingPrice),
@@ -725,7 +733,6 @@ export class PurchaseTicket implements OnInit {
 
 
   // Load Airliens Dropdown
-  // Load Airlines Dropdown
   airlines: any[] = [];
   airlinesLoading = false;
 
@@ -889,8 +896,6 @@ export class PurchaseTicket implements OnInit {
 
     this.ticketFormFields = [...this.ticketFormFields];
 
-    console.log('From Airport Field:', fromAirportField);
-    console.log('To Airport Field:', toAirportField);
   }
 
 
@@ -919,79 +924,151 @@ export class PurchaseTicket implements OnInit {
   paymentMethods: any[] = [];
   paymentMethodsLoading = false;
 
- loadPaymentMethods(onLoaded?: () => void): void {
+  loadPaymentMethods(onLoaded?: () => void): void {
 
-  this.paymentMethodsLoading = true;
+    this.paymentMethodsLoading = true;
 
-  this.globalDropdownService.getPaymentMethodsDropDown().subscribe({
+    this.globalDropdownService.getPaymentMethodsDropDown().subscribe({
 
-    next: (response: any) => {
+      next: (response: any) => {
 
-      if (response?.status && response?.data) {
+        if (response?.status && response?.data) {
 
-        this.paymentMethods = response.data.map((item: any) => ({
-          label: item.Text,
-          value: item.Value
-        }));
+          this.paymentMethods = response.data.map((item: any) => ({
+            label: item.Text,
+            value: item.Value
+          }));
 
-      } else {
+        } else {
+
+          this.paymentMethods = [];
+
+        }
+
+        const paymentMethodField = this.ticketFormFields.find(
+          (field: FormField) => field.key === 'paymentMethodId'
+        );
+
+        if (paymentMethodField) {
+
+          paymentMethodField.options = [
+            ...this.paymentMethods
+          ];
+
+        }
+
+        this.ticketFormFields = [
+          ...this.ticketFormFields
+        ];
+
+        this.paymentMethodsLoading = false;
+
+        this.cdr.detectChanges();
+
+        console.log(
+          'Payment Methods:',
+          this.paymentMethods
+        );
+
+        // If edit form is waiting for payment methods
+        onLoaded?.();
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Error loading payment methods:',
+          error
+        );
 
         this.paymentMethods = [];
 
+        this.paymentMethodsLoading = false;
+
+        this.cdr.detectChanges();
+
+        this.notificationService.error(
+          error?.error?.message ||
+          'Unable to load payment methods.'
+        );
       }
+    });
+  }
 
-      const paymentMethodField = this.ticketFormFields.find(
-        (field: FormField) => field.key === 'paymentMethodId'
-      );
 
-      if (paymentMethodField) {
 
-        paymentMethodField.options = [
-          ...this.paymentMethods
+
+  // Load Ticket Types Dropdown
+  ticketTypes: any[] = [];
+  ticketTypesLoading = false;
+  // Load Ticket Types Dropdown
+  loadTicketTypes(): void {
+
+    this.ticketTypesLoading = true;
+
+    this.globalDropdownService.getTicketTypesDropDown().subscribe({
+
+      next: (response: any) => {
+
+        if (response?.status && response?.data) {
+
+          this.ticketTypes = response.data.map((item: any) => ({
+            label: item.Text,
+            value: item.Value
+          }));
+
+        } else {
+
+          this.ticketTypes = [];
+
+        }
+
+        const ticketTypeField = this.ticketFormFields.find(
+          (field: FormField) => field.key === 'ticketTypeId'
+        );
+
+        if (ticketTypeField) {
+
+          ticketTypeField.options = [
+            ...this.ticketTypes
+          ];
+
+        }
+
+        this.ticketFormFields = [
+          ...this.ticketFormFields
         ];
 
+        this.ticketTypesLoading = false;
+
+        this.cdr.detectChanges();
+
+        console.log(
+          'Ticket Types:',
+          this.ticketTypes
+        );
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Error loading ticket types:',
+          error
+        );
+
+        this.ticketTypes = [];
+
+        this.ticketTypesLoading = false;
+
+        this.cdr.detectChanges();
+
+        this.notificationService.error(
+          error?.error?.message ||
+          'Unable to load ticket types.'
+        );
       }
-
-      this.ticketFormFields = [
-        ...this.ticketFormFields
-      ];
-
-      this.paymentMethodsLoading = false;
-
-      this.cdr.detectChanges();
-
-      console.log(
-        'Payment Methods:',
-        this.paymentMethods
-      );
-
-      // If edit form is waiting for payment methods
-      onLoaded?.();
-    },
-
-    error: (error) => {
-
-      console.error(
-        'Error loading payment methods:',
-        error
-      );
-
-      this.paymentMethods = [];
-
-      this.paymentMethodsLoading = false;
-
-      this.cdr.detectChanges();
-
-      this.notificationService.error(
-        error?.error?.message ||
-        'Unable to load payment methods.'
-      );
-    }
-  });
-}
-
-
-
+    });
+  }
 
 
 
@@ -1031,7 +1108,7 @@ export class PurchaseTicket implements OnInit {
   paymentEditFormFields: FormField[] = [];
 
   paymentEditFormButtons: FormButton[] = [
-    
+
     {
       label: 'Update Payment',
       type: 'submit',
@@ -1046,95 +1123,95 @@ export class PurchaseTicket implements OnInit {
 
 
 
-openPaymentEditForm(
-  payment: PurchasedInvoicePayment
-): void {
+  openPaymentEditForm(
+    payment: PurchasedInvoicePayment
+  ): void {
 
-  if (!this.selectedInvoice) {
-    return;
-  }
-
-  this.selectedPaymentInvoice =
-    this.selectedInvoice;
-
-  this.selectedPayment =
-    payment;
-
-  if (this.paymentMethods.length > 0) {
-
-    this.buildPaymentEditForm(payment);
-
-    return;
-  }
-
-  this.loadPaymentMethods(() => {
-
-    this.buildPaymentEditForm(payment);
-
-  });
-}
-
-
- private buildPaymentEditForm(
-  payment: PurchasedInvoicePayment
-): void {
-
-  this.paymentEditFormFields = [
-    {
-      key: 'paymentAmount',
-      label: 'Payment Amount',
-      type: 'number',
-      placeholder: 'Enter payment amount',
-      required: true,
-      value: payment.paymentAmount
-    },
-
-    {
-      key: 'paymentDate',
-      label: 'Payment Date',
-      type: 'date',
-      required: true,
-      value: payment.paymentDate
-        ? payment.paymentDate.substring(0, 10)
-        : ''
-    },
-
-    {
-      key: 'paymentMethodId',
-      label: 'Payment Method',
-      type: 'select',
-      placeholder: 'Select payment method',
-      required: true,
-      options: [...this.paymentMethods],
-      value: payment.paymentMethodId
-    },
-
-    {
-      key: 'paymentReference',
-      label: 'Payment Reference',
-      type: 'text',
-      placeholder: 'Enter payment reference',
-      required: false,
-      value: payment.paymentReference || ''
-    },
-
-    {
-      key: 'remarks',
-      label: 'Remarks',
-      type: 'textarea',
-      placeholder: 'Enter payment remarks',
-      required: false,
-      value: payment.paymentRemarks || ''
+    if (!this.selectedInvoice) {
+      return;
     }
-  ];
 
-  console.log('EDIT PAYMENT:', payment);
-  console.log('EDIT FORM FIELDS:', this.paymentEditFormFields);
+    this.selectedPaymentInvoice =
+      this.selectedInvoice;
 
-  this.showPaymentEditForm = true;
+    this.selectedPayment =
+      payment;
 
-  this.cdr.detectChanges();
-}
+    if (this.paymentMethods.length > 0) {
+
+      this.buildPaymentEditForm(payment);
+
+      return;
+    }
+
+    this.loadPaymentMethods(() => {
+
+      this.buildPaymentEditForm(payment);
+
+    });
+  }
+
+
+  private buildPaymentEditForm(
+    payment: PurchasedInvoicePayment
+  ): void {
+
+    this.paymentEditFormFields = [
+      {
+        key: 'paymentAmount',
+        label: 'Payment Amount',
+        type: 'number',
+        placeholder: 'Enter payment amount',
+        required: true,
+        value: payment.paymentAmount
+      },
+
+      {
+        key: 'paymentDate',
+        label: 'Payment Date',
+        type: 'date',
+        required: true,
+        value: payment.paymentDate
+          ? payment.paymentDate.substring(0, 10)
+          : ''
+      },
+
+      {
+        key: 'paymentMethodId',
+        label: 'Payment Method',
+        type: 'select',
+        placeholder: 'Select payment method',
+        required: true,
+        options: [...this.paymentMethods],
+        value: payment.paymentMethodId
+      },
+
+      {
+        key: 'paymentReference',
+        label: 'Payment Reference',
+        type: 'text',
+        placeholder: 'Enter payment reference',
+        required: false,
+        value: payment.paymentReference || ''
+      },
+
+      {
+        key: 'remarks',
+        label: 'Remarks',
+        type: 'textarea',
+        placeholder: 'Enter payment remarks',
+        required: false,
+        value: payment.paymentRemarks || ''
+      }
+    ];
+
+    console.log('EDIT PAYMENT:', payment);
+    console.log('EDIT FORM FIELDS:', this.paymentEditFormFields);
+
+    this.showPaymentEditForm = true;
+
+    this.cdr.detectChanges();
+  }
 
 
 

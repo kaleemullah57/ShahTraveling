@@ -19,6 +19,8 @@ export interface SharedTicketModel {
   branchName: string;
   createdDate: string;
   createdBy: string;
+  ticketTypeId:number | null,
+  ticketTypeName : string | null;
 }
 
 export interface SharedTicketsRequest {

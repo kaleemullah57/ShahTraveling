@@ -354,17 +354,21 @@
               {{ selectedInvoice.purchasedFrom }}
             </strong>
 
+             <strong style="color: darkcyan ;">
+              ( {{ selectedInvoice.ticketTypeName }} )
+            </strong>
+
           </div>
 
 
           <div class="info-card">
 
             <span class="info-label">
-              Purchase Reference
+              Purchase Reference 
             </span>
 
             <strong>
-              {{ selectedInvoice.purchaseReference || 'N/A' }}
+              {{ selectedInvoice.purchaseReference || 'N/A' }} 
             </strong>
 
           </div>

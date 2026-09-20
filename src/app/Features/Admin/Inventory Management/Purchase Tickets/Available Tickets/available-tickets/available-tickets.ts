@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  OnDestroy,
   OnInit
 } from '@angular/core';
 
@@ -15,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { Button } from '../../../../../../Shared/components/button/button';
 import { FormButton, FormField, forms } from '../../../../../../Shared/components/Forms/forms/forms';
 import { NotificationService } from '../../../../../../Core/Services/Notification Services/notification-service';
-
+import { TicketRealtimeService } from '../../../../../../Shared/components/TicketRealtimeService/ticket-realtime-service';
 @Component({
   selector: 'app-available-tickets',
   standalone: true,
@@ -29,10 +30,11 @@ import { NotificationService } from '../../../../../../Core/Services/Notificatio
   templateUrl: './available-tickets.html',
   styleUrl: './available-tickets.scss'
 })
-export class AvailableTickets implements OnInit {
+export class AvailableTickets implements OnInit, OnDestroy {
 
   private InventoryServices = inject(InventoryServices);
   private notificationService = inject(NotificationService)
+  private realtimenotificationservice = inject(TicketRealtimeService)
   private cdr = inject(ChangeDetectorRef);
 
   tickets: AvailableTicketModel[] = [];
@@ -60,8 +62,10 @@ export class AvailableTickets implements OnInit {
     { key: 'departureDateTime', label: 'Departure' },
     { key: 'arrivalDateTime', label: 'Arrival' },
     { key: 'quantity', label: 'Available' },
+    { key: 'availableToCustomers', label: 'Available' },
     { key: 'sellingPrice', label: 'Selling Price' },
-    { key: 'validUntil', label: 'Valid Until' }
+    { key: 'validUntil', label: 'Valid Until' },
+    { key: 'ticketTypeName', label: 'Ticket Type' }
   ];
 
   actions: TableAction[] = [
@@ -84,53 +88,58 @@ export class AvailableTickets implements OnInit {
 
 
   ngOnInit(): void {
+
     this.loadAvailableTickets();
+
+    this.realtimenotificationservice.startConnection();
+
+    this.realtimenotificationservice.ticketUpdated$
+      .subscribe((event) => {
+
+
+        this.loadAvailableTickets();
+      });
+  }
+  ngOnDestroy(): void {
+    this.realtimenotificationservice.stopConnection();
   }
 
-
   loadAvailableTickets(): void {
-
     this.loading = true;
 
     const request: AvailableTicketsRequest = {
       search: this.search?.trim() || undefined,
-
       pageNumber: this.pageNumber,
-
       pageSize: this.pageSize,
-
       fromDate: this.fromDate,
-
       toDate: this.toDate,
-
       fromSellingPrice: this.fromSellingPrice,
-
       toSellingPrice: this.toSellingPrice
-
     };
-
 
     this.InventoryServices
       .getAvailableTickets(request)
       .subscribe({
-
         next: (response) => {
           if (response.status && response.data) {
 
-            this.tickets = response.data;
+
+            const ticket = response.data.find(
+              (x: AvailableTicketModel) =>
+                x.purchaseInvoiceItemId === 2
+            );
+
+            this.tickets = [...response.data];
 
             this.totalRecords = response.data.length;
 
           } else {
 
             this.tickets = [];
-
             this.totalRecords = 0;
-
           }
 
           this.loading = false;
-
           this.cdr.detectChanges();
         },
 
@@ -142,14 +151,11 @@ export class AvailableTickets implements OnInit {
           );
 
           this.tickets = [];
-
           this.totalRecords = 0;
-
           this.loading = false;
 
           this.cdr.detectChanges();
         }
-
       });
   }
 
@@ -206,25 +212,42 @@ export class AvailableTickets implements OnInit {
   selectedTicket: AvailableTicketModel | null = null;
   showViewModal = false;
 
-  onActionClick(event: { action: TableAction; row: AvailableTicketModel }): void {
+  onActionClick(
+    event: {
+      action: TableAction;
+      row: AvailableTicketModel;
+    }
+  ): void {
+
     if (event.action.type === 'view') {
-      this.selectedTicket = event.row;
+
+      const latestTicket = this.tickets.find(
+        ticket =>
+          ticket.purchaseInvoiceItemId ===
+          event.row.purchaseInvoiceItemId
+      );
+
+      if (!latestTicket) {
+        return;
+      }
+
+      this.selectedTicket = { ...latestTicket };
+
       this.showViewModal = true;
 
       this.cdr.detectChanges();
-    }
 
+      return;
+    }
 
     if (event.action.type === 'edit') {
       this.openSellingPriceForm(event.row);
+      return;
     }
 
-
-    if (event.action.type == 'share') {
-
-      const ticket = event.row;
-
-      this.openShareDialog(ticket);
+    if (event.action.type === 'share') {
+      this.openShareDialog(event.row);
+      return;
     }
   }
   closeViewModal(): void {
@@ -411,7 +434,7 @@ export class AvailableTickets implements OnInit {
   }
 
 
-  
+
 
 
   shareTickets(formData: any): void {

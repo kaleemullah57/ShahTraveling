@@ -117,4 +117,14 @@ export class GlobalDropdownService {
     getPaymentMethodsDropDown(): Observable<any> {
         return this.apiService.get('DropDown/GetPaymentMethodsDropDown');
     }
+
+
+
+
+    // Ticket Types DropDown
+    getTicketTypesDropDown(): Observable<any> {
+        return this.apiService.get<any>(
+            `DropDown/GetTicketTypesDropDown`
+        );
+    }
 }
