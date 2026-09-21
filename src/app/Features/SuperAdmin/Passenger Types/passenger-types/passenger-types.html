@@ -1,0 +1,57 @@
+<div class="page-container">
+
+  <div class="page-header">
+
+    <div>
+      <h2>Passenger Types</h2>
+      <p>Manage passenger types</p>
+    </div>
+
+    <app-button
+      label="Add Passenger Type"
+      icon="add"
+      (click)="openAddForm()">
+    </app-button>
+
+  </div>
+
+
+  <div class="table-card">
+
+    <app-data-table
+      [columns]="columns"
+      [data]="passengerTypes"
+      [actions]="actions"
+      [loading]="loading"
+      (actionClick)="actionClick($event)">
+    </app-data-table>
+
+  </div>
+
+
+  <!-- GLOBAL FORM -->
+
+  <app-global-form
+    *ngIf="showForm"
+
+    [title]="
+      isEditMode
+        ? 'Update Passenger Type'
+        : 'Add Passenger Type'
+    "
+
+    [fields]="formFields"
+
+    [model]="formData"
+
+    [buttons]="formButtons"
+
+    [loading]="saving"
+
+    (submitForm)="submitForm($event)"
+
+    (cancelForm)="closeForm()">
+
+  </app-global-form>
+
+</div>

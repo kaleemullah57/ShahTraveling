@@ -109,6 +109,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./Features/SuperAdmin/Services/services/services')
             .then(m => m.Services)
+      },
+      {
+        path: 'passengerTypes',
+        loadComponent: () =>
+          import('./Features/SuperAdmin/Passenger Types/passenger-types/passenger-types')
+            .then(m => m.PassengerTypes)
       }
     ]
     },

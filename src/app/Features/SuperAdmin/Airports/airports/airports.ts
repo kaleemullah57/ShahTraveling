@@ -1141,9 +1141,6 @@ actions: TableAction[] = [
 ];
 
 onActionClick(event: any): void {
-
-  console.log('AIRPORT ACTION:', event);
-
   const actionType = event?.action?.type;
   const airport = event?.row;
 
@@ -1226,13 +1223,9 @@ cancelDeleteAirport(): void {
 
 deleteAirport(airport: any): void {
 
-  console.log('deleteAirport() called:', airport);
-
   const airportId = Number(
     airport?.airportId
   );
-
-  console.log('Airport ID:', airportId);
 
   if (!airportId) {
 
@@ -1250,41 +1243,20 @@ deleteAirport(airport: any): void {
 
   this.showDeleteConfirmation = true;
 
-  console.log(
-    'Popup should open:',
-    this.showDeleteConfirmation
-  );
-
   this.cdr.detectChanges();
 }
 
 
 confirmDeleteAirport(): void {
 
-  console.log(
-    'CONFIRM DELETE CALLED:',
-    this.selectedDeleteAirportId
-  );
-
   if (
     !this.selectedDeleteAirportId ||
     this.deleting
   ) {
-    console.log(
-      'DELETE STOPPED:',
-      this.selectedDeleteAirportId,
-      this.deleting
-    );
-
     return;
   }
 
   this.deleting = true;
-
-  console.log(
-    'CALLING DELETE API:',
-    this.selectedDeleteAirportId
-  );
 
   this.airportService
     .deleteAirport(
@@ -1293,12 +1265,6 @@ confirmDeleteAirport(): void {
     .subscribe({
 
       next: (response: any) => {
-
-        console.log(
-          'DELETE API RESPONSE:',
-          response
-        );
-
         this.deleting = false;
 
         if (

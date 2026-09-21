@@ -36,9 +36,6 @@ export class PostType implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly notificationService = inject(NotificationService);
 
-  // ============================================
-  // DATA
-  // ============================================
 
   travelTypes: PostTypeModel[] = [];
 
@@ -53,9 +50,6 @@ export class PostType implements OnInit {
   totalRecords = 0;
 
 
-  // ============================================
-  // COLUMNS
-  // ============================================
 
   columns: TableColumn[] = [
 
@@ -86,10 +80,6 @@ export class PostType implements OnInit {
   ];
 
 
-  // ============================================
-  // INIT
-  // ============================================
-
   ngOnInit(): void {
 
     this.getTravelTypes();
@@ -97,9 +87,6 @@ export class PostType implements OnInit {
   }
 
 
-  // ============================================
-  // GET TRAVEL TYPES
-  // ============================================
 
   getTravelTypes(): void {
 
@@ -167,10 +154,6 @@ export class PostType implements OnInit {
   }
 
 
-  // ============================================
-  // SEARCH
-  // ============================================
-
   onSearch(searchValue: string): void {
 
     this.search = searchValue;
@@ -182,9 +165,6 @@ export class PostType implements OnInit {
   }
 
 
-  // ============================================
-  // PAGE CHANGE
-  // ============================================
 
   onPageChange(page: number): void {
 
@@ -195,9 +175,6 @@ export class PostType implements OnInit {
   }
 
 
-  // ============================================
-  // PAGE SIZE CHANGE
-  // ============================================
 
   onPageSizeChange(size: number): void {
 
