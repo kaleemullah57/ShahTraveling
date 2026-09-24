@@ -141,32 +141,32 @@ export const routes: Routes = [
     path: 'AdminDashboard',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./Features/Admin/admin-dashboard/admin-dashboard')
+      import('./Features/Branch Admin Section/admin-dashboard/admin-dashboard')
         .then(m => m.AdminDashboard),
 
     children: [
       {
         path: 'Destinations',
         loadComponent: () =>
-          import('./Features/Admin/Destinations/destinations/destinations')
+          import('./Features/Branch Admin Section/Destinations/destinations/destinations')
             .then(m => m.DestinationsComponent)
       },
       {
         path: 'BranchService',
         loadComponent: () =>
-          import('./Features/Admin/Services/branch-services/branch-services')
+          import('./Features/Branch Admin Section/Services/branch-services/branch-services')
             .then(m => m.BranchServices)
       },
       {
         path: 'Inventory',
         loadComponent: () =>
-          import('./Features/Admin/Inventory Management/Purchase Tickets/purchase-ticket/purchase-ticket')
+          import('./Features/Branch Admin Section/Inventory Management/Purchase Tickets/purchase-ticket/purchase-ticket')
             .then(m => m.PurchaseTicket)
       },
       {
         path: 'AvailableTickets',
         loadComponent: () =>
-          import('./Features/Admin/Inventory Management/Purchase Tickets/Available Tickets/available-tickets/available-tickets')
+          import('./Features/Branch Admin Section/Inventory Management/Purchase Tickets/Available Tickets/available-tickets/available-tickets')
             .then(m => m.AvailableTickets)
       }
     ]

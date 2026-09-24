@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { Button } from "../../Shared/components/button/button";
 import { GlobalCard } from "../../Shared/components/Card/global-card/global-card";
 import { PublicBranchServices } from "../../Core/Services/public Services/Public BranchServicess/public-branch-services";
-import { BranchServices } from "../Admin/Services/branch-services/branch-services";
+import { BranchServices } from "../Branch Admin Section/Services/branch-services/branch-services";
 import { BranchService } from "../../Core/Models/BranchServices Model/branch-services-model";
 import { GetBranchServicesRequest } from "../../Core/Models/BranchServices Model/branch-services-model";
 @Component({

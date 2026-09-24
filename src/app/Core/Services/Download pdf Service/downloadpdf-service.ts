@@ -8,7 +8,7 @@ import {
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-import { PurchasedInvoice } from '../../../Features/Admin/Admin Models/Ticket Inventory Models/inventory-model';
+import { PurchasedInvoice } from '../../../Features/Branch Admin Section/Admin Models/Ticket Inventory Models/inventory-model';
 
 import { Downloadpdf } from '../../../Shared/components/Download pdf/downloadpdf/downloadpdf';
 
