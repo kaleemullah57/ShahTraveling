@@ -167,6 +167,74 @@
 
         </div>
 
+        <!-- FLIGHT STOPS -->
+
+@if (invoice.stops && invoice.stops.length > 0) {
+
+    <div class="flight-stops">
+
+        <h3>
+            <i class="fa fa-map-marker-alt"></i>
+            Flight Stops
+        </h3>
+
+        <div class="stops-list">
+
+            @for (
+                stop of invoice.stops;
+                track stop.stopNumber
+            ) {
+
+                <div class="stop-item">
+
+                    <div class="stop-number">
+                        {{ stop.stopNumber }}
+                    </div>
+
+                    <div class="stop-details">
+
+                        <strong>
+                            {{ stop.stopAirport }}
+                        </strong>
+
+                        <div class="stop-times">
+
+                            <div>
+                                <label>Arrival</label>
+
+                                <span>
+                                    {{
+                                        stop.arrivalDateTime
+                                        | date:'dd MMM yyyy, hh:mm a'
+                                    }}
+                                </span>
+                            </div>
+
+                            <div>
+                                <label>Departure</label>
+
+                                <span>
+                                    {{
+                                        stop.departureDateTime
+                                        | date:'dd MMM yyyy, hh:mm a'
+                                    }}
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+}
+
     </section>
 
 

@@ -1469,3 +1469,645 @@
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ============================================================
+   ADD TICKET PURCHASE
+============================================================ */
+
+.form-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(5px);
+}
+
+
+/* ============================================================
+   MAIN MODAL
+============================================================ */
+
+.form-modal {
+  width: 100%;
+  max-width: 1000px;
+  max-height: 92vh;
+
+  overflow-y: auto;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.20);
+
+  animation: ticketModalIn 0.2s ease-out;
+}
+
+
+@keyframes ticketModalIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* ============================================================
+   TICKET FORM HEADER
+============================================================ */
+
+.ticket-form-header {
+  padding: 24px 28px 18px;
+
+  border-bottom: 1px solid #e8ecef;
+
+  background: #ffffff;
+}
+
+
+.ticket-form-header h2 {
+  margin: 0;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  color: #17352d;
+}
+
+
+.ticket-form-header p {
+  margin: 6px 0 0;
+
+  font-size: 14px;
+
+  color: #6b7773;
+}
+
+
+/* ============================================================
+   FLIGHT CONFIGURATION
+============================================================ */
+
+.flight-configuration {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+
+  padding: 22px 28px;
+
+  background: #f7faf9;
+
+  border-bottom: 1px solid #e6ebe9;
+}
+
+
+/* ============================================================
+   CONFIG FIELD
+============================================================ */
+
+.config-field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.config-field label {
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #263b35;
+}
+
+
+.config-field .required {
+  margin-left: 3px;
+
+  color: #dc3545;
+}
+
+
+.config-field select {
+  width: 100%;
+
+  height: 44px;
+
+  padding: 0 13px;
+
+  border: 1px solid #d5dedb;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #263b35;
+
+  font-size: 14px;
+
+  outline: none;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.config-field select:hover {
+  border-color: #0f6045;
+}
+
+
+.config-field select:focus {
+  border-color: #0f6045;
+
+  box-shadow:
+    0 0 0 3px rgba(15, 96, 69, 0.10);
+}
+
+
+.config-field select:disabled {
+  background: #f1f3f2;
+
+  cursor: not-allowed;
+
+  opacity: 0.7;
+}
+
+
+/* ============================================================
+   SELECTION MESSAGE
+============================================================ */
+
+.ticket-selection-message {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin: 24px 28px;
+
+  padding: 16px 18px;
+
+  border: 1px solid #dce9e4;
+
+  border-radius: 10px;
+
+  background: #f5faf8;
+
+  color: #34564c;
+}
+
+
+.ticket-selection-message > i {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  background: #e2f0eb;
+
+  color: #0f6045;
+
+  font-size: 15px;
+}
+
+
+.ticket-selection-message div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.ticket-selection-message strong {
+  font-size: 14px;
+
+  color: #24463d;
+}
+
+
+.ticket-selection-message span {
+  font-size: 13px;
+
+  color: #6b7773;
+}
+
+
+/* ============================================================
+   STOPS SECTION
+============================================================ */
+
+.ticket-stops-section {
+  margin-top: 24px;
+
+  padding: 20px;
+
+  border: 1px solid #e0e7e4;
+
+  border-radius: 12px;
+
+  background: #f9fbfa;
+}
+
+
+/* ============================================================
+   STOPS HEADER
+============================================================ */
+
+.stops-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 18px;
+}
+
+
+.stops-header h3 {
+  margin: 0;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+  color: #17352d;
+}
+
+
+.stops-header p {
+  margin: 4px 0 0;
+
+  font-size: 13px;
+
+  color: #71807b;
+}
+
+
+/* ============================================================
+   STOP CARD
+============================================================ */
+
+.stop-card {
+  margin-bottom: 14px;
+
+  padding: 16px;
+
+  border: 1px solid #e0e7e4;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+}
+
+
+.stop-card:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ============================================================
+   STOP CARD HEADER
+============================================================ */
+
+.stop-card-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 15px;
+
+  padding-bottom: 12px;
+
+  border-bottom: 1px solid #edf0ef;
+}
+
+
+.stop-card-header strong {
+  display: block;
+
+  font-size: 14px;
+
+  color: #24463d;
+}
+
+
+/* ============================================================
+   REMOVE STOP
+============================================================ */
+
+.remove-stop-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 7px 11px;
+
+  border: 1px solid #e1b9bd;
+
+  border-radius: 7px;
+
+  background: #fff7f7;
+
+  color: #b02a37;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+
+.remove-stop-btn:hover {
+  background: #fdeaea;
+
+  border-color: #d99ba1;
+}
+
+
+/* ============================================================
+   STOP FIELDS
+============================================================ */
+
+.stop-fields {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 15px;
+}
+
+
+.stop-field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.stop-field label {
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: #344942;
+}
+
+
+.stop-field label .required {
+  margin-left: 3px;
+
+  color: #dc3545;
+}
+
+
+.stop-field input,
+.stop-field select {
+  width: 100%;
+
+  height: 42px;
+
+  box-sizing: border-box;
+
+  padding: 0 11px;
+
+  border: 1px solid #d5dedb;
+
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #263b35;
+
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.stop-field input:focus,
+.stop-field select:focus {
+  border-color: #0f6045;
+
+  box-shadow:
+    0 0 0 3px rgba(15, 96, 69, 0.08);
+}
+
+
+/* ============================================================
+   GLOBAL FORM EMBEDDED AREA
+============================================================ */
+
+/*
+   The global form is being used inside our ticket modal.
+   Remove its own overlay/modal spacing in embedded mode.
+*/
+
+.form-modal app-global-form {
+  display: block;
+
+  width: 100%;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 768px) {
+
+  .form-overlay {
+    padding: 10px;
+  }
+
+
+  .form-modal {
+    max-height: 96vh;
+
+    border-radius: 12px;
+  }
+
+
+  .ticket-form-header {
+    padding: 20px;
+  }
+
+
+  .flight-configuration {
+    grid-template-columns: 1fr;
+
+    padding: 18px 20px;
+  }
+
+
+  .ticket-selection-message {
+    margin: 20px;
+  }
+
+
+  .ticket-stops-section {
+    margin: 18px;
+
+    padding: 15px;
+  }
+
+
+  .stop-fields {
+    grid-template-columns: 1fr;
+  }
+
+
+  .stops-header {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+.flight-stops {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f9fafb;
+}
+
+.stops-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.stops-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stop-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.stop-number {
+  min-width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #0F6045;
+  color: #fff;
+  font-weight: 600;
+}
+
+.stop-details {
+  flex: 1;
+}
+
+.stop-details > strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.stop-times {
+  display: flex;
+  gap: 35px;
+  flex-wrap: wrap;
+}
+
+.stop-times div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.stop-times span {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.stop-times strong {
+  font-size: 13px;
+}

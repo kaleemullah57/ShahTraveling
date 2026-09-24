@@ -1,42 +1,5 @@
 <div class="page-container">
 
-  <!-- <button
-  type="button"
-  class="btn-primary"
-  (click)="openAddForm()">
-  <i class="fa fa-plus"></i>
-  Add Ticket Purchase
-</button>
-
-@if (showAddForm) {
-
-
-  <app-global-form
-    [fields]="ticketFormFields"
-    [buttons]="formButtons"
-    [title]="'Add Ticket Purchase'"
-    (formSubmit)="submitTicketPurchase($event)"
-    (formReset)="closeAddForm()">
-  </app-global-form>
-
-
-
-}
-
- @if (showPaymentEditForm && selectedPaymentInvoice) {
-
-  <app-global-form
-    [fields]="paymentEditFormFields"
-    [buttons]="paymentEditFormButtons"
-    [title]="'Update Payment'"
-    (formSubmit)="updatePayment($event)"
-    (formReset)="closePaymentEditForm()">
-  </app-global-form>
-
-} -->
-
-
-
 
   <div class="page-container">
 
@@ -44,24 +7,288 @@
        ADD / EDIT FORM MODAL
   ====================================================== -->
 
-    @if (showAddForm || (showPaymentEditForm && selectedPaymentInvoice)) {
+    @if (showAddForm) {
 
     <div class="form-overlay">
 
       <div class="form-modal">
 
-        @if (showAddForm) {
+        <!-- HEADER -->
 
-        <app-global-form [fields]="ticketFormFields" [buttons]="formButtons" [title]="'Add Ticket Purchase'"
-          (formSubmit)="submitTicketPurchase($event)" (formReset)="closeAddForm()">
-        </app-global-form>
+        <div class="ticket-form-header">
+
+          <div>
+
+            <h2>
+              Add Ticket Purchase
+            </h2>
+
+            <p>
+              Select flight type and route type to continue
+            </p>
+
+          </div>
+
+          <button type="button" class="ticket-close-btn" (click)="closeAddForm()">
+            <i class="fa fa-times"></i>
+          </button>
+
+        </div>
+
+
+        <!-- =================================================
+             FLIGHT CONFIGURATION
+        ================================================== -->
+
+        <div class="flight-configuration">
+
+          <!-- FLIGHT TYPE -->
+
+          <div class="config-field">
+
+            <label>
+              Flight Type
+              <span class="required">*</span>
+            </label>
+
+            <select [value]="flightJourneyTypeId ?? ''" [disabled]="flightTypesLoading" (change)="
+                onFlightJourneyTypeChange(
+                  $any($event.target).value
+                )
+              ">
+
+              <option value="">
+                Select Flight Type
+              </option>
+
+              @for (
+              type of flightTypes;
+              track type.value
+              ) {
+
+              <option [value]="type.value">
+                {{ type.label }}
+              </option>
+
+              }
+
+            </select>
+
+          </div>
+
+
+          <!-- FLIGHT ROUTE TYPE -->
+
+          <div class="config-field">
+
+            <label>
+              Flight Route Type
+              <span class="required">*</span>
+            </label>
+
+            <select [value]="flightRouteTypeId ?? ''" [disabled]="flightRouteTypesLoading" (change)="
+                onFlightRouteTypeChange(
+                  $any($event.target).value
+                )
+              ">
+
+              <option value="">
+                Select Flight Route Type
+              </option>
+
+              @for (
+              type of flightRouteTypes;
+              track type.value
+              ) {
+
+              <option [value]="type.value">
+                {{ type.label }}
+              </option>
+
+              }
+
+            </select>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             WAITING MESSAGE
+        ================================================== -->
+
+        @if (!canShowTicketFields) {
+
+        <div class="ticket-selection-message">
+
+          <i class="fa fa-plane"></i>
+
+          <div>
+
+            <strong>
+              Select Flight Configuration
+            </strong>
+
+            <span>
+              Please select both Flight Type and
+              Flight Route Type to continue.
+            </span>
+
+          </div>
+
+        </div>
 
         }
 
-        @if (showPaymentEditForm && selectedPaymentInvoice) {
 
-        <app-global-form [fields]="paymentEditFormFields" [buttons]="paymentEditFormButtons" [title]="'Update Payment'"
-          (formSubmit)="updatePayment($event)" (formReset)="closePaymentEditForm()">
+        <!-- =================================================
+             MAIN TICKET FORM
+        ================================================== -->
+
+        @if (canShowTicketFields) {
+
+        <app-global-form [embedded]="true" [fields]="ticketFormFields" [buttons]="formButtons" [loading]="loading"
+          title="" (formSubmit)="submitTicketPurchase($event)" (formReset)="closeAddForm()">
+
+          <!-- =================================================
+                 FLIGHT STOPS
+            ================================================== -->
+
+          @if (stops.length > 0) {
+
+          <div class="ticket-stops-section">
+
+            <div class="stops-header">
+
+              <div>
+
+                <h3>
+                  Flight Stops
+                </h3>
+
+                <p>
+                  Configure intermediate airports
+                </p>
+
+              </div>
+
+
+              @if (flightRouteTypeId === 4) {
+
+              <app-button label="Add Stop" type="button" variant="primary" (clicked)="addStop()">
+              </app-button>
+
+              }
+
+            </div>
+
+
+            <!-- STOP LIST -->
+
+            @for (
+            stop of stops;
+            track stop.stopNumber;
+            let i = $index
+            ) {
+
+            <div class="stop-card">
+
+              <div class="stop-card-header">
+
+                <strong>
+                  Stop {{ stop.stopNumber }}
+                </strong>
+
+
+                @if (
+                flightRouteTypeId === 4 &&
+                stops.length > 2
+                ) {
+
+                <button type="button" class="remove-stop-btn" (click)="removeStop(i)">
+
+                  <i class="fa fa-trash"></i>
+
+                  Remove
+
+                </button>
+
+                }
+
+              </div>
+
+
+              <div class="stop-fields">
+
+                <!-- STOP AIRPORT -->
+
+                <div class="stop-field">
+
+                  <label>
+                    Stop Airport
+                    <span class="required">*</span>
+                  </label>
+
+                  <select [(ngModel)]="stop.airportId" [name]="'stopAirport_' + i">
+
+                    <option [ngValue]="0">
+                      Select Airport
+                    </option>
+
+                    @for (
+                    airport of airports;
+                    track airport.value
+                    ) {
+
+                    <option [ngValue]="airport.value">
+                      {{ airport.label }}
+                    </option>
+
+                    }
+
+                  </select>
+
+                </div>
+
+
+                <!-- ARRIVAL -->
+
+                <div class="stop-field">
+
+                  <label>
+                    Arrival Date & Time
+                    <span class="required">*</span>
+                  </label>
+
+                  <input type="datetime-local" [(ngModel)]="stop.arrivalDateTime" [name]="'stopArrival_' + i" />
+
+                </div>
+
+
+                <!-- DEPARTURE -->
+
+                <div class="stop-field">
+
+                  <label>
+                    Departure Date & Time
+                    <span class="required">*</span>
+                  </label>
+
+                  <input type="datetime-local" [(ngModel)]="stop.departureDateTime" [name]="'stopDeparture_' + i" />
+
+                </div>
+
+              </div>
+
+            </div>
+
+            }
+
+          </div>
+
+          }
+
         </app-global-form>
 
         }
@@ -73,172 +300,163 @@
     }
 
 
-    <!-- =====================================================
-       TABLE PAGE
-       Hidden while Add/Edit form is open
-  ====================================================== -->
+    @if (showPaymentEditForm) {
+
+    <div class="form-overlay">
+
+      <div class="form-modal">
+
+        <div class="ticket-form-header">
+
+          <div>
+            <h2>Edit Payment</h2>
+            <p>Update payment information</p>
+          </div>
+
+          <button type="button" class="ticket-close-btn" (click)="closePaymentEditForm()">
+            <i class="fa fa-times"></i>
+          </button>
+
+        </div>
+
+        <app-global-form [embedded]="true" [fields]="paymentEditFormFields" [buttons]="formButtons"
+          [loading]="paymentSubmitting" title="" (formSubmit)="updatePayment($event)"
+          (formReset)="closePaymentEditForm()">
+        </app-global-form>
+
+      </div>
+
+    </div>
+
+    }
+
 
     @if (!showAddForm && !showPaymentEditForm) {
 
-  <!-- =====================================================
-       PAGE HEADER
-  ====================================================== -->
 
-  <div class="page-header">
+    <div class="page-header">
 
-    <div class="page-header-content">
+      <div class="page-header-content">
 
-      <div class="page-title-icon">
-        <i class="fa fa-file-invoice-dollar"></i>
+        <div class="page-title-icon">
+          <i class="fa fa-file-invoice-dollar"></i>
+        </div>
+
+        <div class="page-title-text">
+
+          <h2>
+            Purchase Invoices
+          </h2>
+
+          <p>
+            Manage ticket purchase invoices and payments
+          </p>
+
+        </div>
+
       </div>
 
-      <div class="page-title-text">
 
-        <h2>
-          Purchase Invoices
-        </h2>
-
-        <p>
-          Manage ticket purchase invoices and payments
-        </p>
-
-      </div>
+      <app-button label="Add Ticket Purchase" type="button" variant="primary" size="medium" icon="fa fa-plus"
+        iconPosition="left" (clicked)="openAddForm()">
+      </app-button>
 
     </div>
 
 
-    <app-button
-      label="Add Ticket Purchase"
-      type="button"
-      variant="primary"
-      size="medium"
-      icon="fa fa-plus"
-      iconPosition="left"
-      (clicked)="openAddForm()">
-    </app-button>
-
-  </div>
-
-
-  <!-- =====================================================
+    <!-- =====================================================
        DATE FILTER
   ====================================================== -->
 
-  <div class="invoice-filters">
+    <div class="invoice-filters">
 
-    <div class="filter-header">
+      <div class="filter-header">
 
-      <div class="filter-title">
+        <div class="filter-title">
 
-        <div class="filter-icon">
-          <i class="fa fa-filter"></i>
-        </div>
+          <div class="filter-icon">
+            <i class="fa fa-filter"></i>
+          </div>
 
-        <div>
-          <h3>Filter Invoices</h3>
-          <span>Search invoices by date range</span>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="filter-content">
-
-      <div class="filter-field">
-
-        <label for="fromDate">
-          From Date
-        </label>
-
-        <div class="filter-input-wrapper">
-
-          <i class="fa fa-calendar"></i>
-
-          <input
-            id="fromDate"
-            type="date"
-            [(ngModel)]="filterFromDate" />
+          <div>
+            <h3>Filter Invoices</h3>
+            <span>Search invoices by date range</span>
+          </div>
 
         </div>
 
       </div>
 
 
-      <div class="filter-field">
+      <div class="filter-content">
 
-        <label for="toDate">
-          To Date
-        </label>
+        <div class="filter-field">
 
-        <div class="filter-input-wrapper">
+          <label for="fromDate">
+            From Date
+          </label>
 
-          <i class="fa fa-calendar"></i>
+          <div class="filter-input-wrapper">
 
-          <input
-            id="toDate"
-            type="date"
-            [(ngModel)]="filterToDate" />
+            <i class="fa fa-calendar"></i>
+
+            <input id="fromDate" type="date" [(ngModel)]="filterFromDate" />
+
+          </div>
 
         </div>
 
-      </div>
+
+        <div class="filter-field">
+
+          <label for="toDate">
+            To Date
+          </label>
+
+          <div class="filter-input-wrapper">
+
+            <i class="fa fa-calendar"></i>
+
+            <input id="toDate" type="date" [(ngModel)]="filterToDate" />
+
+          </div>
+
+        </div>
 
 
-      <div class="filter-actions">
+        <div class="filter-actions">
 
-        <app-button
-          label="Filter"
-          type="button"
-          variant="primary"
-          size="medium"
-          icon="fa fa-filter"
-          iconPosition="left"
-          (clicked)="onDateFilter()">
-        </app-button>
+          <app-button label="Filter" type="button" variant="primary" size="medium" icon="fa fa-filter"
+            iconPosition="left" (clicked)="onDateFilter()">
+          </app-button>
 
 
-        @if (fromDate || toDate) {
+          @if (fromDate || toDate) {
 
-          <app-button
-            label="Clear"
-            type="button"
-            variant="outline"
-            size="medium"
-            icon="fa fa-times"
-            iconPosition="left"
+          <app-button label="Clear" type="button" variant="outline" size="medium" icon="fa fa-times" iconPosition="left"
             (clicked)="clearDateFilter()">
           </app-button>
 
-        }
+          }
+
+        </div>
 
       </div>
 
     </div>
 
-  </div>
 
-
-  <!-- =====================================================
+    <!-- =====================================================
        GLOBAL DATA TABLE
   ====================================================== -->
 
-  <app-data-table
-    [columns]="columns"
-    [data]="invoices"
-    [actions]="actions"
-    [loading]="loading"
-    [totalRecords]="totalRecords"
-    [pageNumber]="pageNumber"
-    [pageSize]="pageSize"
-    (actionClick)="onActionClick($event)"
-    (searchChange)="onSearch($event)"
-    (pageChange)="onPageChange($event)"
-    (pageSizeChange)="onPageSizeChange($event)">
-  </app-data-table>
+    <app-data-table [columns]="columns" [data]="invoices" [actions]="actions" [loading]="loading"
+      [totalRecords]="totalRecords" [pageNumber]="pageNumber" [pageSize]="pageSize"
+      (actionClick)="onActionClick($event)" (searchChange)="onSearch($event)" (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)">
+    </app-data-table>
 
-}
+    }
 
   </div>
 
@@ -354,7 +572,7 @@
               {{ selectedInvoice.purchasedFrom }}
             </strong>
 
-             <strong style="color: darkcyan ;">
+            <strong style="color: darkcyan ;">
               ( {{ selectedInvoice.ticketTypeName }} )
             </strong>
 
@@ -364,11 +582,11 @@
           <div class="info-card">
 
             <span class="info-label">
-              Purchase Reference 
+              Purchase Reference
             </span>
 
             <strong>
-              {{ selectedInvoice.purchaseReference || 'N/A' }} 
+              {{ selectedInvoice.purchaseReference || 'N/A' }}
             </strong>
 
           </div>
@@ -481,6 +699,90 @@
 
         </div>
 
+         @if (selectedInvoice.stops && selectedInvoice.stops.length > 0) {
+
+    <div class="flight-stops">
+
+      <div class="stops-title">
+
+        <i class="fa fa-map-marker-alt"></i>
+
+        <span>
+          Flight Stops
+        </span>
+
+      </div>
+
+
+      <div class="stops-list">
+
+        @for (
+          stop of selectedInvoice.stops;
+          track stop.stopNumber
+        ) {
+
+          <div class="stop-item">
+
+            <div class="stop-number">
+              {{ stop.stopNumber }}
+            </div>
+
+
+            <div class="stop-details">
+
+              <strong>
+                {{ stop.stopAirport }}
+              </strong>
+
+
+              <div class="stop-times">
+
+                <div>
+
+                  <span>
+                    Arrival
+                  </span>
+
+                  <strong>
+                    {{
+                      stop.arrivalDateTime
+                      | date:'dd MMM yyyy, hh:mm a'
+                    }}
+                  </strong>
+
+                </div>
+
+
+                <div>
+
+                  <span>
+                    Departure
+                  </span>
+
+                  <strong>
+                    {{
+                      stop.departureDateTime
+                      | date:'dd MMM yyyy, hh:mm a'
+                    }}
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+  }
+
+
 
         <div class="datetime-grid">
 
@@ -521,6 +823,8 @@
         </div>
 
       </div>
+
+      
 
 
       <!-- TICKET INFORMATION -->

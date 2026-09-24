@@ -7,6 +7,7 @@ import {
 
 import { FormsModule } from '@angular/forms';
 import { Button } from '../../button/button';
+import { CommonModule } from '@angular/common';
 
 export interface FormField {
   key: string;
@@ -45,7 +46,7 @@ export interface FormButton {
 @Component({
   selector: 'app-global-form',
   standalone: true,
-  imports: [FormsModule, Button],
+  imports: [FormsModule, Button, CommonModule],
   templateUrl: './forms.html',
   styleUrl: './forms.scss'
 })
@@ -60,7 +61,7 @@ export class forms {
   @Input() title = '';
 
   @Input() loading = false;
-
+  @Input() embedded = false;
 
   // =========================================================
   // OUTPUTS
@@ -71,6 +72,7 @@ export class forms {
   @Output() formSubmit = new EventEmitter<any>();
   @Output() formCancel = new EventEmitter<void>();
   @Output() formReset = new EventEmitter<void>();
+  @Output() formValueChange = new EventEmitter<any>();
   @Output() fieldChange = new EventEmitter<{
     key: string;
     value: any;
@@ -268,21 +270,6 @@ export class forms {
     value: any
   ): void {
 
-    console.log(
-      '🔽 SELECT CHANGE'
-    );
-
-    console.log(
-      'Key:',
-      key
-    );
-
-    console.log(
-      'Raw Value:',
-      value
-    );
-
-
     // Empty option
     if (
       value === '' ||
@@ -294,6 +281,11 @@ export class forms {
         key,
         null
       );
+
+      this.formValueChange.emit({
+        key: key,
+        value: null
+      });
 
       return;
     }
@@ -315,6 +307,12 @@ export class forms {
       numericValue
     );
 
+
+    // Notify parent component
+    this.formValueChange.emit({
+      key: key,
+      value: numericValue
+    });
 
   }
 

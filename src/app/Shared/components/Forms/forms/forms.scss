@@ -116,9 +116,53 @@
 
 
 
+.global-form-overlay.embedded {
+  position: static;
+  width: 100%;
+  height: auto;
 
+  display: block;
 
+  padding: 0;
 
+  background: transparent;
+
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+
+  z-index: auto;
+
+  animation: none;
+}
+
+.global-form-modal.embedded-modal {
+  width: 100%;
+  max-width: none;
+
+  max-height: none;
+
+  overflow: visible;
+
+  background: transparent;
+
+  border-radius: 0;
+
+  box-shadow: none;
+
+  animation: none;
+}
+
+.global-form-modal.embedded-modal .global-form {
+  width: 100%;
+
+  padding: 24px 28px;
+
+  background: #fff;
+
+  border: none;
+
+  border-radius: 0;
+}
 
 
 

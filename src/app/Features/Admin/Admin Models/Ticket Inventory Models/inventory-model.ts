@@ -1,4 +1,4 @@
-export interface InventoryModel {}
+export interface InventoryModel { }
 
 
 
@@ -79,9 +79,20 @@ export interface PurchasedInvoice {
   validUntil: string;
 
   ticketTypeId: number | null;
-  ticketTypeName: string; 
+  ticketTypeName: string;
+
+  flightJourneyTypeId: number | null;
+  flightRouteTypeId: number | null;
 
   paymentHistory: PurchasedInvoicePayment[];
+  stops: PurchasedInvoiceStop[];
+}
+
+export interface PurchasedInvoiceStop {
+  stopNumber: number;
+  stopAirport: string;
+  arrivalDateTime: string | null;
+  departureDateTime: string | null;
 }
 
 
@@ -108,15 +119,20 @@ export interface AddTicketPurchaseRequest {
   fromAirportId: number;
   toAirportId: number;
 
+  flightJourneyTypeId: number | null;
+  flightRouteTypeId: number | null;
+
+  stops: TicketPurchaseStop[];
+
   departureDateTime: string;
   arrivalDateTime: string;
 
   quantity: number;
 
-  ticketTypeId : number;
+  ticketTypeId: number;
 
   purchasePrice: number;
-  sellingPrice: number;
+  sellingPrice: number | null;
 
   checkedBaggageKg: number;
   handBaggageKg: number;
@@ -126,10 +142,19 @@ export interface AddTicketPurchaseRequest {
   validUntil: string;
 
   paidAmount: number;
-  paymentMethodId: number;
+  paymentMethodId: number | null;
 
   paymentReference: string;
   remarks: string;
+  
+}
+
+
+export interface TicketPurchaseStop {
+  stopNumber: number;
+  airportId: number;
+  arrivalDateTime: string;
+  departureDateTime: string;
 }
 
 

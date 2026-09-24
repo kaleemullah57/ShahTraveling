@@ -127,4 +127,14 @@ export class GlobalDropdownService {
             `DropDown/GetTicketTypesDropDown`
         );
     }
+
+
+    getFlightTypesDropDown(): Observable<any> {
+        return this.apiService.get('DropDown/GetFlightTypesDropDown');
+    }
+
+
+    getFlightRouteTypesDropDown(): Observable<any> {
+        return this.apiService.get('DropDown/GetFlightRouteTypesDropDown');
+    }
 }

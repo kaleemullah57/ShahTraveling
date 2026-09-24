@@ -54,8 +54,14 @@ export interface AvailableTicketModel {
   createdDate?: string | null;
 
   ticketTypeName : string;
+   stops: GetAvailablePurchaseInvoiceStop[];
 }
-
+export interface GetAvailablePurchaseInvoiceStop {
+  stopNumber: number;
+  stopAirport: string;
+  arrivalDateTime: string | null;
+  departureDateTime: string | null;
+}
 
 export interface ApiResponse<T> {
   status: boolean;

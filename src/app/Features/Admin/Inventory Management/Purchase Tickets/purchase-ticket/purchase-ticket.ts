@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { AddTicketPurchaseRequest, PurchasedInvoice, PurchasedInvoicePayment, PurchasedInvoiceSearchRequest, UpdatePurchasedInvoicePaymentRequest } from '../../../Admin Models/Ticket Inventory Models/inventory-model';
+import { AddTicketPurchaseRequest, PurchasedInvoice, PurchasedInvoicePayment, PurchasedInvoiceSearchRequest, TicketPurchaseStop, UpdatePurchasedInvoicePaymentRequest } from '../../../Admin Models/Ticket Inventory Models/inventory-model';
 import { InventoryServices } from '../../../Admin Services/Inventory Services/inventory-services';
 import { DataTable, TableAction, TableColumn } from '../../../../../Shared/components/DataTables/data-table/data-table';
 import { DatePipe, DecimalPipe } from '@angular/common';
@@ -176,11 +176,6 @@ export class PurchaseTicket implements OnInit {
 
         error: (error) => {
 
-          console.error(
-            'Error loading purchased invoices:',
-            error
-          );
-
           this.invoices = [];
 
           this.totalRecords = 0;
@@ -303,11 +298,6 @@ export class PurchaseTicket implements OnInit {
         })
         .catch(error => {
 
-          console.error(
-            'PDF generation failed:',
-            error
-          );
-
           this.notificationService.error(
             `Failed to download invoice ${invoice.invoiceNumber}.`
           );
@@ -340,11 +330,6 @@ export class PurchaseTicket implements OnInit {
       );
 
     } catch (error) {
-
-      console.error(
-        'PDF generation failed:',
-        error
-      );
 
       this.notificationService.error(
         `Failed to download invoice ${invoice.invoiceNumber}.`
@@ -417,302 +402,882 @@ export class PurchaseTicket implements OnInit {
 
 
 
+// ============================================================
+// ADD TICKETS TO INVENTORY
+// ============================================================
+
+stops: TicketPurchaseStop[] = [];
+
+showAddForm = false;
 
 
+// ============================================================
+// FLIGHT CONFIGURATION
+// ============================================================
+
+flightJourneyTypeId: number | null = null;
+
+flightRouteTypeId: number | null = null;
 
 
-  // Add Tickets To Inventory
-  showAddForm = false;
-  openAddForm(): void {
+// ============================================================
+// DROPDOWNS
+// ============================================================
 
-    this.showAddForm = true;
+flightTypes: any[] = [];
 
-    // Load dropdowns only when form opens
-    this.loadAirlines();
-    this.loadAirports();
-    this.loadPaymentMethods();
-    this.loadTicketTypes();
+flightRouteTypes: any[] = [];
+
+flightTypesLoading = false;
+
+flightRouteTypesLoading = false;
+
+
+// ============================================================
+// OPEN ADD FORM
+// ============================================================
+
+openAddForm(): void {
+  this.showAddForm = true;
+
+  this.flightJourneyTypeId = null;
+  this.flightRouteTypeId = null;
+  this.stops = [];
+
+  this.loadAirlines();
+  this.loadAirports();
+  this.loadPaymentMethods();
+  this.loadTicketTypes();
+
+  this.loadFlightTypes();
+  this.loadFlightRouteTypes();
+
+  this.cdr.detectChanges();
+}
+
+
+// ============================================================
+// CLOSE ADD FORM
+// ============================================================
+
+closeAddForm(): void {
+
+  this.showAddForm = false;
+
+  this.flightJourneyTypeId = null;
+
+  this.flightRouteTypeId = null;
+
+  this.stops = [];
+
+  this.cdr.detectChanges();
+}
+
+
+// ============================================================
+// SHOW MAIN FORM ONLY AFTER BOTH ARE SELECTED
+// ============================================================
+
+get canShowTicketFields(): boolean {
+
+  return (
+    this.flightJourneyTypeId !== null &&
+    this.flightRouteTypeId !== null
+  );
+}
+
+
+// ============================================================
+// FLIGHT JOURNEY TYPE CHANGE
+// ============================================================
+
+onFlightJourneyTypeChange(value: any): void {
+
+  if (
+    value === '' ||
+    value === null ||
+    value === undefined
+  ) {
+
+    this.flightJourneyTypeId = null;
+
+    return;
   }
 
-  closeAddForm(): void {
-    this.showAddForm = false;
+  this.flightJourneyTypeId = Number(value);
+
+
+  this.cdr.detectChanges();
+}
+
+
+// ============================================================
+// FLIGHT ROUTE TYPE CHANGE
+// ============================================================
+
+onFlightRouteTypeChange(value: any): void {
+
+  if (
+    value === '' ||
+    value === null ||
+    value === undefined
+  ) {
+
+    this.flightRouteTypeId = null;
+
+    this.stops = [];
+
+    return;
   }
 
-  ticketFormFields: FormField[] = [
+  this.flightRouteTypeId = Number(value);
 
-    {
-      key: 'purchasedFrom',
-      label: 'Purchased From',
-      type: 'text',
-      placeholder: 'Enter supplier / airline',
-      required: true
-    },
+  this.handleRouteTypeChange(
+    this.flightRouteTypeId
+  );
 
-    {
-      key: 'purchaseReference',
-      label: 'Purchase Reference',
-      type: 'text',
-      placeholder: 'Enter purchase reference',
-      required: false
-    },
-
-    {
-      key: 'invoiceDate',
-      label: 'Invoice Date',
-      type: 'date',
-      required: true
-    },
-
-    // Airline
-    {
-      key: 'airlineId',
-      label: 'Airline',
-      type: 'select',
-      placeholder: 'Select airline',
-      required: true,
-      options: []
-    },
-
-    // From Airport
-    {
-      key: 'fromAirportId',
-      label: 'From Airport',
-      type: 'select',
-      placeholder: 'Select departure airport',
-      required: true,
-      options: []
-    },
-
-    // To Airport
-    {
-      key: 'toAirportId',
-      label: 'To Airport',
-      type: 'select',
-      placeholder: 'Select arrival airport',
-      required: true,
-      options: []
-    },
-
-    {
-      key: 'departureDateTime',
-      label: 'Departure',
-      type: 'date',
-      required: true
-    },
-
-    {
-      key: 'arrivalDateTime',
-      label: 'Arrival',
-      type: 'date',
-      required: true
-    },
-
-    {
-      key: 'quantity',
-      label: 'Quantity',
-      type: 'number',
-      placeholder: 'Enter quantity',
-      required: true
-    },
-
-    {
-      key: 'ticketTypeId',
-      label: 'Ticket Type',
-      type: 'select',
-      placeholder: 'Select Ticket Type',
-      required: true,
-      options: []
-    },
-
-    {
-      key: 'purchasePrice',
-      label: 'Purchase Price',
-      type: 'number',
-      placeholder: 'Enter purchase price',
-      required: true
-    },
-
-    {
-      key: 'sellingPrice',
-      label: 'Selling Price',
-      type: 'number',
-      placeholder: 'Enter selling price',
-      required: true
-    },
-
-    {
-      key: 'checkedBaggageKg',
-      label: 'Checked Baggage (KG)',
-      type: 'number',
-      placeholder: '0',
-      required: false
-    },
-
-    {
-      key: 'handBaggageKg',
-      label: 'Hand Baggage (KG)',
-      type: 'number',
-      placeholder: '0',
-      required: false
-    },
-
-    {
-      key: 'personalItemKg',
-      label: 'Personal Item (KG)',
-      type: 'number',
-      placeholder: '0',
-      required: false
-    },
-
-    {
-      key: 'validFrom',
-      label: 'Valid From',
-      type: 'date',
-      required: true
-    },
-
-    {
-      key: 'validUntil',
-      label: 'Valid Until',
-      type: 'date',
-      required: true
-    },
-
-    {
-      key: 'paidAmount',
-      label: 'Paid Amount',
-      type: 'number',
-      placeholder: 'Enter paid amount',
-      required: true
-    },
-
-    // Payment Method
-    {
-      key: 'paymentMethodId',
-      label: 'Payment Method',
-      type: 'select',
-      placeholder: 'Select payment method',
-      required: true,
-      options: []
-    },
-
-    {
-      key: 'paymentReference',
-      label: 'Payment Reference',
-      type: 'text',
-      placeholder: 'Enter payment reference',
-      required: false
-    },
-
-    {
-      key: 'remarks',
-      label: 'Remarks',
-      type: 'textarea',
-      placeholder: 'Enter remarks',
-      required: false
-    }
-
-  ];
+  this.cdr.detectChanges();
+}
 
 
+// ============================================================
+// CREATE STOP
+// ============================================================
 
-  formButtons: FormButton[] = [
+createStop(
+  stopNumber: number
+): TicketPurchaseStop {
 
-    {
-      label: 'Add Ticket Purchase',
-      type: 'submit',
-      style: 'primary'
-    },
-    {
-      label: 'Cancel',
-      type: 'reset',
-      style: 'secondary'
-    }
-  ];
-  submitTicketPurchase(formValue: any): void {
+  return {
 
-    console.log('🔥 SUBMIT TICKET PURCHASE FIRED');
-    console.log('FORM VALUE:', formValue);
+    stopNumber: stopNumber,
 
-    const request: AddTicketPurchaseRequest = {
-      purchasedFrom: formValue.purchasedFrom,
-      purchaseReference: formValue.purchaseReference,
-      invoiceDate: formValue.invoiceDate,
+    airportId: 0,
 
-      airlineId: Number(formValue.airlineId),
-      fromAirportId: Number(formValue.fromAirportId),
-      toAirportId: Number(formValue.toAirportId),
+    arrivalDateTime: '',
 
-      departureDateTime: formValue.departureDateTime,
-      arrivalDateTime: formValue.arrivalDateTime,
+    departureDateTime: ''
 
-      quantity: Number(formValue.quantity),
+  };
+}
 
-      ticketTypeId: Number(formValue.ticketTypeId),
 
-      purchasePrice: Number(formValue.purchasePrice),
-      sellingPrice: Number(formValue.sellingPrice),
+// ============================================================
+// HANDLE ROUTE TYPE
+//
+// 1 = Direct
+// 2 = One Stop
+// 3 = Two Stops
+// 4 = Multiple Stops
+// ============================================================
 
-      checkedBaggageKg: Number(formValue.checkedBaggageKg || 0),
-      handBaggageKg: Number(formValue.handBaggageKg || 0),
-      personalItemKg: Number(formValue.personalItemKg || 0),
+handleRouteTypeChange(
+  routeTypeId: number
+): void {
 
-      validFrom: formValue.validFrom,
-      validUntil: formValue.validUntil,
+  switch (routeTypeId) {
 
-      paidAmount: Number(formValue.paidAmount || 0),
-      paymentMethodId: Number(formValue.paymentMethodId),
+    // --------------------------------------------------------
+    // DIRECT
+    // --------------------------------------------------------
 
-      paymentReference: formValue.paymentReference || '',
-      remarks: formValue.remarks || ''
-    };
+    case 1:
 
-    console.log('🔥 REQUEST:', request);
+      this.stops = [];
 
-    this.loading = true;
+      break;
 
-    console.log('🔥 CALLING ADD TICKET API');
 
-    this.invoiceService.addTicketPurchase(request).subscribe({
+    // --------------------------------------------------------
+    // ONE STOP
+    // --------------------------------------------------------
+
+    case 2:
+
+      this.stops = [
+
+        this.createStop(1)
+
+      ];
+
+      break;
+
+
+    // --------------------------------------------------------
+    // TWO STOPS
+    // --------------------------------------------------------
+
+    case 3:
+
+      this.stops = [
+
+        this.createStop(1),
+
+        this.createStop(2)
+
+      ];
+
+      break;
+
+
+    // --------------------------------------------------------
+    // MULTIPLE STOPS
+    // Minimum 2
+    // --------------------------------------------------------
+
+    case 4:
+
+      this.stops = [
+
+        this.createStop(1),
+
+        this.createStop(2)
+
+      ];
+
+      break;
+
+
+    // --------------------------------------------------------
+    // INVALID
+    // --------------------------------------------------------
+
+    default:
+
+      this.stops = [];
+
+      break;
+  }
+
+
+  this.cdr.detectChanges();
+}
+
+
+// ============================================================
+// ADD STOP
+// Only Multiple Stops
+// ============================================================
+
+addStop(): void {
+
+  if (this.flightRouteTypeId !== 4) {
+
+    return;
+  }
+
+  const nextStopNumber =
+    this.stops.length + 1;
+
+  this.stops.push(
+    this.createStop(nextStopNumber)
+  );
+
+  this.cdr.detectChanges();
+}
+
+
+// ============================================================
+// REMOVE STOP
+// Only Multiple Stops
+// Minimum 2 stops
+// ============================================================
+
+removeStop(index: number): void {
+
+  if (this.flightRouteTypeId !== 4) {
+
+    return;
+  }
+
+  if (this.stops.length <= 2) {
+
+    return;
+  }
+
+  this.stops.splice(index, 1);
+
+  this.stops =
+    this.stops.map(
+      (stop, i) => ({
+
+        ...stop,
+
+        stopNumber: i + 1
+
+      })
+    );
+
+  this.cdr.detectChanges();
+}
+
+
+
+
+
+
+
+
+// ============================================================
+// TICKET FORM FIELDS
+// IMPORTANT:
+// flightJourneyTypeId and flightRouteTypeId are NOT HERE.
+// They are selected in the header.
+// ============================================================
+
+ticketFormFields: FormField[] = [
+
+  {
+    key: 'purchasedFrom',
+    label: 'Purchased From',
+    type: 'text',
+    placeholder: 'Enter supplier / airline',
+    required: true
+  },
+
+  {
+    key: 'purchaseReference',
+    label: 'Purchase Reference',
+    type: 'text',
+    placeholder: 'Enter purchase reference',
+    required: false
+  },
+
+  {
+    key: 'invoiceDate',
+    label: 'Invoice Date',
+     type: 'datetime-local',
+    required: true
+  },
+
+  {
+    key: 'airlineId',
+    label: 'Airline',
+    type: 'select',
+    placeholder: 'Select airline',
+    required: true,
+    options: []
+  },
+
+  {
+    key: 'fromAirportId',
+    label: 'From Airport',
+    type: 'select',
+    placeholder: 'Select departure airport',
+    required: true,
+    options: []
+  },
+
+  {
+    key: 'toAirportId',
+    label: 'To Airport',
+    type: 'select',
+    placeholder: 'Select arrival airport',
+    required: true,
+    options: []
+  },
+
+  {
+    key: 'departureDateTime',
+    label: 'Departure',
+     type: 'datetime-local',
+    required: true
+  },
+
+  {
+    key: 'arrivalDateTime',
+    label: 'Arrival',
+     type: 'datetime-local',
+    required: true
+  },
+
+  {
+    key: 'quantity',
+    label: 'Quantity',
+    type: 'number',
+    placeholder: 'Enter quantity',
+    required: true
+  },
+
+  {
+    key: 'ticketTypeId',
+    label: 'Ticket Type',
+    type: 'select',
+    placeholder: 'Select Ticket Type',
+    required: true,
+    options: []
+  },
+
+  {
+    key: 'purchasePrice',
+    label: 'Purchase Price',
+    type: 'number',
+    placeholder: 'Enter purchase price',
+    required: true
+  },
+
+  {
+    key: 'sellingPrice',
+    label: 'Selling Price',
+    type: 'number',
+    placeholder: 'Enter selling price',
+    required: false
+  },
+
+  {
+    key: 'checkedBaggageKg',
+    label: 'Checked Baggage (KG)',
+    type: 'number',
+    placeholder: '0',
+    required: false
+  },
+
+  {
+    key: 'handBaggageKg',
+    label: 'Hand Baggage (KG)',
+    type: 'number',
+    placeholder: '0',
+    required: false
+  },
+
+  {
+    key: 'personalItemKg',
+    label: 'Personal Item (KG)',
+    type: 'number',
+    placeholder: '0',
+    required: false
+  },
+
+  {
+    key: 'validFrom',
+    label: 'Valid From',
+     type: 'datetime-local',
+    required: true
+  },
+
+  {
+    key: 'validUntil',
+    label: 'Valid Until',
+     type: 'datetime-local',
+    required: true
+  },
+
+  {
+    key: 'paidAmount',
+    label: 'Paid Amount',
+    type: 'number',
+    placeholder: 'Enter paid amount',
+    required: true
+  },
+
+  {
+    key: 'paymentMethodId',
+    label: 'Payment Method',
+    type: 'select',
+    placeholder: 'Select payment method',
+    required: true,
+    options: []
+  },
+
+  {
+    key: 'paymentReference',
+    label: 'Payment Reference',
+    type: 'text',
+    placeholder: 'Enter payment reference',
+    required: false
+  },
+
+  {
+    key: 'remarks',
+    label: 'Remarks',
+    type: 'textarea',
+    placeholder: 'Enter remarks',
+    required: false
+  }
+
+];
+
+
+// ============================================================
+// FORM BUTTONS
+// ============================================================
+
+formButtons: FormButton[] = [
+
+  {
+    label: 'Add Ticket Purchase',
+    type: 'submit',
+    style: 'primary'
+  },
+
+  {
+    label: 'Cancel',
+    type: 'reset',
+    style: 'secondary'
+  }
+
+];
+
+
+// ============================================================
+// SUBMIT
+// ============================================================
+
+submitTicketPurchase(
+  formValue: any
+): void {
+  if (
+    this.flightJourneyTypeId === null
+  ) {
+
+    this.notificationService.error(
+      'Please select Flight Type.'
+    );
+
+    return;
+  }
+
+
+  if (
+    this.flightRouteTypeId === null
+  ) {
+
+    this.notificationService.error(
+      'Please select Flight Route Type.'
+    );
+
+    return;
+  }
+
+
+  // ========================================================
+  // VALIDATE STOPS
+  // ========================================================
+
+  if (!this.validateStops()) {
+
+    return;
+  }
+
+
+  // ========================================================
+  // BUILD REQUEST
+  // ========================================================
+
+  const request: AddTicketPurchaseRequest = {
+
+    purchasedFrom:
+      formValue.purchasedFrom,
+
+    purchaseReference:
+      formValue.purchaseReference || '',
+
+    invoiceDate:
+      formValue.invoiceDate,
+
+    ticketTypeId:
+      Number(formValue.ticketTypeId),
+
+    airlineId:
+      Number(formValue.airlineId),
+
+    fromAirportId:
+      Number(formValue.fromAirportId),
+
+    toAirportId:
+      Number(formValue.toAirportId),
+
+
+    // IMPORTANT
+    // These come from header
+    flightJourneyTypeId:
+      this.flightJourneyTypeId,
+
+    flightRouteTypeId:
+      this.flightRouteTypeId,
+
+
+    // IMPORTANT
+    stops:
+      this.stops.map(
+        stop => ({
+
+          stopNumber:
+            stop.stopNumber,
+
+          airportId:
+            Number(stop.airportId),
+
+          arrivalDateTime:
+            stop.arrivalDateTime,
+
+          departureDateTime:
+            stop.departureDateTime
+
+        })
+      ),
+
+
+    departureDateTime:
+      formValue.departureDateTime,
+
+    arrivalDateTime:
+      formValue.arrivalDateTime,
+
+    quantity:
+      Number(formValue.quantity),
+
+    purchasePrice:
+      Number(formValue.purchasePrice),
+
+    sellingPrice:
+      formValue.sellingPrice !== null &&
+      formValue.sellingPrice !== ''
+        ? Number(formValue.sellingPrice)
+        : null,
+
+    checkedBaggageKg:
+      Number(
+        formValue.checkedBaggageKg || 0
+      ),
+
+    handBaggageKg:
+      Number(
+        formValue.handBaggageKg || 0
+      ),
+
+    personalItemKg:
+      Number(
+        formValue.personalItemKg || 0
+      ),
+
+    validFrom:
+      formValue.validFrom,
+
+    validUntil:
+      formValue.validUntil,
+
+    paidAmount:
+      Number(
+        formValue.paidAmount || 0
+      ),
+
+    paymentMethodId:
+      formValue.paymentMethodId
+        ? Number(formValue.paymentMethodId)
+        : null,
+
+    paymentReference:
+      formValue.paymentReference || '',
+
+    remarks:
+      formValue.remarks || ''
+
+  };
+
+
+
+  // ========================================================
+  // API CALL
+  // ========================================================
+
+  this.loading = true;
+
+  this.invoiceService
+    .addTicketPurchase(request)
+    .subscribe({
+
       next: (response: any) => {
-
-        console.log('🔥 API RESPONSE:', response);
 
         this.loading = false;
 
-        if (response?.success && response?.statusCode === 200) {
+
+        if (
+          response?.success &&
+          response?.statusCode === 200
+        ) {
 
           this.notificationService.success(
-            response.message || 'Ticket purchase added successfully.'
+            response.message ||
+            'Ticket purchase added successfully.'
           );
 
           this.showAddForm = false;
 
+          this.flightJourneyTypeId = null;
+
+          this.flightRouteTypeId = null;
+
+          this.stops = [];
+
           this.pageNumber = 1;
+
           this.loadInvoices();
 
-        } else {
+        }
+        else {
 
           this.notificationService.error(
-            response?.message || 'Unable to add ticket purchase.'
+            response?.message ||
+            'Unable to add ticket purchase.'
           );
+
         }
+
       },
 
-      error: (error) => {
+error: (error) => {
 
-        console.error('🔥 API ERROR:', error);
+  this.loading = false;
+  this.showAddForm = true;
 
-        this.loading = false;
+  const message =
+    error?.error?.message ||
+    error?.message ||
+    'Failed to add ticket purchase.';
 
-        this.notificationService.error(
-          error?.error?.message ||
-          'Failed to add ticket purchase.'
-        );
-      }
+  this.notificationService.error(message);
+
+  this.cdr.detectChanges();
+}
+
     });
+}
+
+
+// ============================================================
+// VALIDATE STOPS
+// ============================================================
+
+validateStops(): boolean {
+
+  // ----------------------------------------------------------
+  // DIRECT
+  // ----------------------------------------------------------
+
+  if (
+    this.flightRouteTypeId === 1
+  ) {
+
+    if (this.stops.length !== 0) {
+
+      this.notificationService.error(
+        'Direct flight cannot have stops.'
+      );
+
+      return false;
+    }
+
+    return true;
   }
 
+
+  // ----------------------------------------------------------
+  // ONE STOP
+  // ----------------------------------------------------------
+
+  if (
+    this.flightRouteTypeId === 2
+  ) {
+
+    if (this.stops.length !== 1) {
+
+      this.notificationService.error(
+        'One Stop flight must have exactly one stop.'
+      );
+
+      return false;
+    }
+  }
+
+
+  // ----------------------------------------------------------
+  // TWO STOPS
+  // ----------------------------------------------------------
+
+  if (
+    this.flightRouteTypeId === 3
+  ) {
+
+    if (this.stops.length !== 2) {
+
+      this.notificationService.error(
+        'Two Stops flight must have exactly two stops.'
+      );
+
+      return false;
+    }
+  }
+
+
+  // ----------------------------------------------------------
+  // MULTIPLE STOPS
+  // ----------------------------------------------------------
+
+  if (
+    this.flightRouteTypeId === 4
+  ) {
+
+    if (this.stops.length < 2) {
+
+      this.notificationService.error(
+        'Multiple Stops flight must have at least two stops.'
+      );
+
+      return false;
+    }
+  }
+
+
+  // ----------------------------------------------------------
+  // VALIDATE EACH STOP
+  // ----------------------------------------------------------
+
+  for (
+    const stop of this.stops
+  ) {
+
+    if (
+      !stop.airportId ||
+      stop.airportId <= 0
+    ) {
+
+      this.notificationService.error(
+        `Please select airport for Stop ${stop.stopNumber}.`
+      );
+
+      return false;
+    }
+
+
+    if (
+      !stop.arrivalDateTime
+    ) {
+
+      this.notificationService.error(
+        `Please select arrival date/time for Stop ${stop.stopNumber}.`
+      );
+
+      return false;
+    }
+
+
+    if (
+      !stop.departureDateTime
+    ) {
+
+      this.notificationService.error(
+        `Please select departure date/time for Stop ${stop.stopNumber}.`
+      );
+
+      return false;
+    }
+
+  }
+
+
+  return true;
+}
 
 
 
@@ -774,14 +1339,9 @@ export class PurchaseTicket implements OnInit {
 
         this.cdr.detectChanges();
 
-        console.log('Ticket form fields:', this.ticketFormFields);
-
       },
 
       error: (error) => {
-
-        console.error('Error loading airlines:', error);
-
         this.airlines = [];
         this.airlinesLoading = false;
 
@@ -800,11 +1360,6 @@ export class PurchaseTicket implements OnInit {
     if (airlineField) {
 
       airlineField.options = this.airlines;
-
-      console.log(
-        'Airline field options:',
-        airlineField.options
-      );
     }
   }
 
@@ -855,17 +1410,12 @@ export class PurchaseTicket implements OnInit {
 
         this.airportsLoading = false;
 
-        // Correct method
         this.updateAirportDropdowns();
 
         this.cdr.detectChanges();
-
-        console.log('Airports:', this.airports);
       },
 
       error: (error) => {
-
-        console.error('Error loading airports:', error);
 
         this.airports = [];
         this.airportsLoading = false;
@@ -874,7 +1424,6 @@ export class PurchaseTicket implements OnInit {
       }
     });
   }
-
 
   updateAirportDropdowns(): void {
 
@@ -895,10 +1444,7 @@ export class PurchaseTicket implements OnInit {
     }
 
     this.ticketFormFields = [...this.ticketFormFields];
-
   }
-
-
 
 
 
@@ -965,21 +1511,11 @@ export class PurchaseTicket implements OnInit {
 
         this.cdr.detectChanges();
 
-        console.log(
-          'Payment Methods:',
-          this.paymentMethods
-        );
-
         // If edit form is waiting for payment methods
         onLoaded?.();
       },
 
       error: (error) => {
-
-        console.error(
-          'Error loading payment methods:',
-          error
-        );
 
         this.paymentMethods = [];
 
@@ -1042,19 +1578,9 @@ export class PurchaseTicket implements OnInit {
         this.ticketTypesLoading = false;
 
         this.cdr.detectChanges();
-
-        console.log(
-          'Ticket Types:',
-          this.ticketTypes
-        );
       },
 
       error: (error) => {
-
-        console.error(
-          'Error loading ticket types:',
-          error
-        );
 
         this.ticketTypes = [];
 
@@ -1075,6 +1601,107 @@ export class PurchaseTicket implements OnInit {
 
 
 
+  loadFlightTypes(): void {
+
+    this.globalDropdownService.getFlightTypesDropDown().subscribe({
+
+      next: (response: any) => {
+
+        if (response?.status && response?.data) {
+
+          this.flightTypes = response.data.map((item: any) => ({
+            label: item.Text,
+            value: item.Value
+          }));
+
+        } else {
+
+          this.flightTypes = [];
+
+        }
+
+        this.updateFlightTypeDropdown();
+
+        this.cdr.detectChanges();
+      },
+
+      error: (error) => {
+
+        this.flightTypes = [];
+
+        this.cdr.detectChanges();
+      }
+    });
+  }
+  updateFlightTypeDropdown(): void {
+
+    const field = this.ticketFormFields.find(
+      (field: FormField) => field.key === 'flightJourneyTypeId'
+    );
+
+    if (field) {
+      field.options = [...this.flightTypes];
+    }
+
+    this.ticketFormFields = [...this.ticketFormFields];
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  loadFlightRouteTypes(): void {
+
+    this.globalDropdownService.getFlightRouteTypesDropDown().subscribe({
+
+      next: (response: any) => {
+
+        if (response?.status && response?.data) {
+
+          this.flightRouteTypes = response.data.map((item: any) => ({
+            label: item.Text,
+            value: item.Value
+          }));
+
+        } else {
+
+          this.flightRouteTypes = [];
+
+        }
+
+        this.updateFlightRouteTypeDropdown();
+
+        this.cdr.detectChanges();
+      },
+
+      error: (error) => {
+
+        this.flightRouteTypes = [];
+
+        this.cdr.detectChanges();
+      }
+    });
+  }
+  updateFlightRouteTypeDropdown(): void {
+
+    const field = this.ticketFormFields.find(
+      (field: FormField) => field.key === 'flightRouteTypeId'
+    );
+
+    if (field) {
+      field.options = [...this.flightRouteTypes];
+    }
+
+    this.ticketFormFields = [...this.ticketFormFields];
+  }
 
 
 
@@ -1169,7 +1796,7 @@ export class PurchaseTicket implements OnInit {
       {
         key: 'paymentDate',
         label: 'Payment Date',
-        type: 'date',
+        type: 'datetime-local',
         required: true,
         value: payment.paymentDate
           ? payment.paymentDate.substring(0, 10)
@@ -1204,9 +1831,6 @@ export class PurchaseTicket implements OnInit {
         value: payment.paymentRemarks || ''
       }
     ];
-
-    console.log('EDIT PAYMENT:', payment);
-    console.log('EDIT FORM FIELDS:', this.paymentEditFormFields);
 
     this.showPaymentEditForm = true;
 
@@ -1252,9 +1876,6 @@ export class PurchaseTicket implements OnInit {
       remarks:
         formData.remarks || ''
     };
-
-    console.log('UPDATE PAYMENT REQUEST:', request);
-
     this.paymentSubmitting = true;
 
     this.invoiceService
@@ -1290,9 +1911,6 @@ export class PurchaseTicket implements OnInit {
         error: (error: any) => {
 
           this.paymentSubmitting = false;
-
-          console.error('Update Payment Error:', error);
-
           this.notificationService.error(
             error?.error?.message ||
             'Unable to update payment.'

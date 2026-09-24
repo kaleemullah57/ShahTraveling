@@ -254,92 +254,86 @@
 
 
 
+.flight-stops-section {
+    margin-top: 20px;
+}
 
-/* =========================================================
-   MODAL OVERLAY
-   ========================================================= */
+.flight-stops-section h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
-// .modal-overlay {
-//   position: fixed;
-//   inset: 0;
+.stops-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
-//   /* Dark + blur background */
-//   background: rgba(0, 0, 0, 0.35);
+.stop-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid #e2e7e5;
+    border-radius: 8px;
+    background: #fafcfb;
+}
 
-//   backdrop-filter: blur(6px);
-//   -webkit-backdrop-filter: blur(6px);
+.stop-number {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
+    background: #0F6045;
+    color: #fff;
 
-//   z-index: 9999;
-//   padding: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
 
-//   animation: fadeIn 0.2s ease;
-// }
+.stop-content {
+    flex: 1;
+    min-width: 0;
+}
 
+.stop-airport {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+}
 
-// /* =========================================================
-//    MODAL CONTAINER
-//    ========================================================= */
+.stop-airport i {
+    font-size: 13px;
+}
 
-// .modal-container {
-//   width: 100%;
-//   max-width: 550px;
+.stop-airport strong {
+    font-size: 13px;
+}
 
-//   max-height: 90vh;
-//   overflow-y: auto;
+.stop-times {
+    display: flex;
+    gap: 35px;
+    flex-wrap: wrap;
+}
 
-//   background: #fff;
+.stop-time {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
 
-//   border-radius: 12px;
+.stop-time span {
+    font-size: 11px;
+    color: #777;
+}
 
-//   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-
-//   animation: modalSlideIn 0.2s ease;
-// }
-
-
-// /* =========================================================
-//    ANIMATION
-//    ========================================================= */
-
-// @keyframes fadeIn {
-//   from {
-//     opacity: 0;
-//   }
-
-//   to {
-//     opacity: 1;
-//   }
-// }
-
-// @keyframes modalSlideIn {
-//   from {
-//     opacity: 0;
-//     transform: translateY(-20px) scale(0.98);
-//   }
-
-//   to {
-//     opacity: 1;
-//     transform: translateY(0) scale(1);
-//   }
-// }
-
-
-// /* =========================================================
-//    MOBILE
-//    ========================================================= */
-
-// @media (max-width: 600px) {
-
-//   .modal-overlay {
-//     padding: 12px;
-//   }
-
-//   .modal-container {
-//     max-width: 100%;
-//   }
-
-// }
+.stop-time strong {
+    font-size: 12px;
+    font-weight: 500;
+}

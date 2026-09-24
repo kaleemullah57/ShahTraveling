@@ -346,6 +346,65 @@
                 </div>
 
             </div>
+            
+
+             @if (selectedTicket.stops && selectedTicket.stops.length > 0) {
+
+                <div class="section flight-stops-section">
+
+                    <h4>
+                        <i class="fa fa-route"></i>
+                        Flight Stops
+                    </h4>
+
+                    <div class="stops-list">
+
+                        @for (stop of selectedTicket.stops; track stop.stopNumber) {
+
+                            <div class="stop-card">
+
+                                <div class="stop-number">
+                                    {{ stop.stopNumber }}
+                                </div>
+
+                                <div class="stop-content">
+
+                                    <div class="stop-airport">
+                                        <i class="fa fa-map-marker-alt"></i>
+                                        <strong>
+                                            {{ stop.stopAirport }}
+                                        </strong>
+                                    </div>
+
+                                    <div class="stop-times">
+
+                                        <div class="stop-time">
+                                            <span>Arrival</span>
+                                            <strong>
+                                                {{ stop.arrivalDateTime | date:'dd MMM yyyy, hh:mm a' }}
+                                            </strong>
+                                        </div>
+
+                                        <div class="stop-time">
+                                            <span>Departure</span>
+                                            <strong>
+                                                {{ stop.departureDateTime | date:'dd MMM yyyy, hh:mm a' }}
+                                            </strong>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        }
+
+                    </div>
+
+                </div>
+
+            }
 
         </div>
 
