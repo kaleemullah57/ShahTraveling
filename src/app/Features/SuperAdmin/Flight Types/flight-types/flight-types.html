@@ -1,0 +1,101 @@
+<div class="page-container">
+
+  <!-- Header -->
+  <div class="page-header">
+
+    <div>
+      <h2>Flight Journey Types</h2>
+      <p>Manage flight journey types</p>
+    </div>
+
+    <app-button
+      label="Add Journey Type"
+      icon="add"
+      (click)="openAddForm()">
+    </app-button>
+
+  </div>
+
+
+  <!-- Filters -->
+  <div class="filters">
+
+    <div class="filter-item">
+
+      <label>Search</label>
+
+      <input
+        type="text"
+        [(ngModel)]="search"
+        placeholder="Search journey type or code"
+        (keyup.enter)="onSearch()">
+
+    </div>
+
+
+    <div class="filter-item">
+
+      <label>Status</label>
+
+      <select [(ngModel)]="isActive">
+
+        <option [ngValue]="null">
+          All
+        </option>
+
+        <option [ngValue]="true">
+          Active
+        </option>
+
+        <option [ngValue]="false">
+          Inactive
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="filter-actions">
+
+      <app-button
+        label="Search"
+        icon="search"
+        (click)="onSearch()">
+      </app-button>
+
+    </div>
+
+  </div>
+
+
+  <!-- Table -->
+  <div class="table-container">
+
+    <app-data-table
+      [columns]="columns"
+      [data]="journeyTypes"
+      [actions]="actions"
+      [loading]="loading"
+      (actionClick)="onActionClick($event)">
+    </app-data-table>
+
+  </div>
+
+</div>
+
+
+<!-- Add / Edit Form -->
+
+@if (showForm) {
+
+  <app-global-form
+    [title]="isEditMode ? 'Edit Flight Journey Type' : 'Add Flight Journey Type'"
+    [model]="selectedJourneyType"
+    [fields]="fields"
+    [buttons]="buttons"
+    (submitForm)="onSubmitForm($event)"
+    (cancelForm)="closeForm()">
+  </app-global-form>
+
+}

@@ -115,6 +115,18 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./Features/SuperAdmin/Passenger Types/passenger-types/passenger-types')
             .then(m => m.PassengerTypes)
+      },
+      {
+        path: 'flight-types',
+        loadComponent: () =>
+          import('./Features/SuperAdmin/Flight Types/flight-types/flight-types')
+            .then(m => m.FlightTypes)
+      },
+      {
+        path: 'FlightRoutesTypes',
+        loadComponent: () =>
+          import('./Features/SuperAdmin/Flight Routes Types/flight-routes-types/flight-routes-types')
+            .then(m => m.FlightRoutesTypes)
       }
     ]
     },
