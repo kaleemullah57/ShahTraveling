@@ -1,6 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable
+} from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
 
@@ -30,17 +33,46 @@ interface JwtPayload {
 })
 export class AuthService {
 
-  private readonly http = inject(HttpClient);
+  private readonly http =
+    inject(HttpClient);
 
   private readonly apiUrl =
     `${environment.apiUrl}/Auth`;
 
 
   // ==========================================
+  // LOGIN STATE
+  // ==========================================
+
+  private readonly loginStateSubject =
+    new BehaviorSubject<boolean>(
+      !!localStorage.getItem('token')
+    );
+
+  readonly isLoggedIn$ =
+    this.loginStateSubject.asObservable();
+
+
+  // ==========================================
+  // CURRENT USER STATE
+  // ==========================================
+
+  private readonly userSubject =
+    new BehaviorSubject<User | null>(
+      this.getCurrentUser()
+    );
+
+  readonly user$ =
+    this.userSubject.asObservable();
+
+
+  // ==========================================
   // LOGIN
   // ==========================================
 
-  login(request: LoginRequest): Observable<LoginResponse> {
+  login(
+    request: LoginRequest
+  ): Observable<LoginResponse> {
 
     return this.http.post<LoginResponse>(
       `${this.apiUrl}/login`,
@@ -64,6 +96,13 @@ export class AuthService {
       'user',
       JSON.stringify(user)
     );
+
+    // IMPORTANT:
+    // Notify Header immediately
+    this.userSubject.next(user);
+
+    // Notify login state
+    this.loginStateSubject.next(true);
   }
 
 
@@ -73,7 +112,19 @@ export class AuthService {
 
   getToken(): string | null {
 
-    return localStorage.getItem('token');
+    return localStorage.getItem(
+      'token'
+    );
+  }
+
+
+  // ==========================================
+  // IS LOGGED IN
+  // ==========================================
+
+  isLoggedIn(): boolean {
+
+    return !!this.getToken();
   }
 
 
@@ -83,7 +134,8 @@ export class AuthService {
 
   getCurrentUser(): User | null {
 
-    const user = localStorage.getItem('user');
+    const user =
+      localStorage.getItem('user');
 
     if (!user) {
       return null;
@@ -95,7 +147,10 @@ export class AuthService {
 
     } catch (error) {
 
-      console.error('Invalid user data in localStorage.', error);
+      console.error(
+        'Invalid user data in localStorage.',
+        error
+      );
 
       return null;
     }
@@ -108,18 +163,35 @@ export class AuthService {
 
   logout(): void {
 
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem(
+      'token'
+    );
+
+    localStorage.removeItem(
+      'user'
+    );
+
+    // IMPORTANT:
+    // Notify Header immediately
+    this.userSubject.next(null);
+
+    // Notify login state
+    this.loginStateSubject.next(false);
   }
 
 
   // ==========================================
-  // CHECK LOGIN
+  // GET USER TYPE
   // ==========================================
 
-  isLoggedIn(): boolean {
+  getUserType(): number {
 
-    return !!this.getToken();
+    const user =
+      this.getCurrentUser();
+
+    return Number(
+      user?.userTypeId ?? 0
+    );
   }
 
 
@@ -129,7 +201,8 @@ export class AuthService {
 
   getUserName(): string {
 
-    const user = this.getCurrentUser();
+    const user =
+      this.getCurrentUser();
 
     return user?.userName ?? '';
   }
@@ -141,7 +214,8 @@ export class AuthService {
 
   getUserEmail(): string {
 
-    const user = this.getCurrentUser();
+    const user =
+      this.getCurrentUser();
 
     return user?.email ?? '';
   }
@@ -153,21 +227,10 @@ export class AuthService {
 
   getUserId(): number | null {
 
-    const user = this.getCurrentUser();
+    const user =
+      this.getCurrentUser();
 
     return user?.userID ?? null;
-  }
-
-
-  // ==========================================
-  // GET USER TYPE
-  // ==========================================
-
-  getUserType(): string {
-
-    const user = this.getCurrentUser();
-
-    return user?.userType ?? '';
   }
 
 
@@ -175,9 +238,10 @@ export class AuthService {
   // DECODE JWT
   // ==========================================
 
-  private getDecodedToken(): any | null {
+  private getDecodedToken(): JwtPayload | null {
 
-    const token = this.getToken();
+    const token =
+      this.getToken();
 
     if (!token) {
       return null;
@@ -185,23 +249,31 @@ export class AuthService {
 
     try {
 
-      const payload = token.split('.')[1];
+      const payload =
+        token.split('.')[1];
 
       if (!payload) {
         return null;
       }
 
-      const base64 = payload
-        .replace(/-/g, '+')
-        .replace(/_/g, '/');
+      const base64 =
+        payload
+          .replace(/-/g, '+')
+          .replace(/_/g, '/');
 
-      const decodedPayload = atob(base64);
+      const decodedPayload =
+        atob(base64);
 
-      return JSON.parse(decodedPayload);
+      return JSON.parse(
+        decodedPayload
+      ) as JwtPayload;
 
     } catch (error) {
 
-      console.error('Unable to decode JWT token.', error);
+      console.error(
+        'Unable to decode JWT token.',
+        error
+      );
 
       return null;
     }
@@ -214,7 +286,8 @@ export class AuthService {
 
   getBranchId(): number {
 
-    const token = this.getDecodedToken();
+    const token =
+      this.getDecodedToken();
 
     if (!token) {
       return 0;

@@ -2,7 +2,7 @@ import { inject, Injectable, Service } from '@angular/core';
 import { AddTicketPurchaseRequest, PurchasedInvoiceSearchRequest, UpdatePurchasedInvoicePaymentRequest } from '../../Admin Models/Ticket Inventory Models/inventory-model';
 import { ApiService } from '../../../../Core/Services/API Services/api-service';
 import { Observable } from 'rxjs';
-import { ApiResponse, AvailableTicketModel, AvailableTicketsRequest, ShareTicketsRequest, UpdateTicketSellingPriceRequest } from '../../Admin Models/Ticket Inventory Models/available-tickets';
+import { ApiResponse, AvailableTicketModel, AvailableTicketsRequest, ReduceSharedTicketQuantityRequest, ShareTicketsRequest, UpdateTicketSellingPriceRequest } from '../../Admin Models/Ticket Inventory Models/available-tickets';
 
 @Injectable({
     providedIn: 'root'
@@ -86,6 +86,8 @@ export class InventoryServices {
 
 
 
+
+
     // Share Tickets To Customers
     shareTicketsToCustomers(
         request: ShareTicketsRequest
@@ -93,6 +95,23 @@ export class InventoryServices {
 
         return this.api.post<ApiResponse<any>>(
             'BranchAdmin/ShareTicketsToCustomers',
+            request
+        );
+    }
+
+
+
+    
+
+
+
+
+    // Reduce  Shared Tickets
+    reduceSharedTicketQuantity(
+        request: ReduceSharedTicketQuantityRequest
+    ): Observable<any> {
+        return this.api.post<any>(
+            `BranchAdmin/ReduceSharedTicketQuantity`,
             request
         );
     }

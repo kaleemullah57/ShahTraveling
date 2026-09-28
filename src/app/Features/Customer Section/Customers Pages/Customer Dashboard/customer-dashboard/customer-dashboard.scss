@@ -1,0 +1,800 @@
+.customer-dashboard {
+    min-height: calc(100vh - 70px);
+    background: #f8faf9;
+    color: #17352d;
+}
+
+/* =========================================================
+   CUSTOMER OPTIONS / TOP CARDS
+   ========================================================= */
+
+.customer-options {
+    padding: 32px 8px 38px;
+    background: #ffffff;
+}
+
+.options-container {
+    max-width: 1180px;
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr;
+    gap: 18px;
+}
+
+/* Card */
+
+.option-card {
+    position: relative;
+
+    min-height: 175px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 22px;
+
+    border: 1px solid #e5ebe8;
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.option-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #cddbd5;
+
+    box-shadow:
+        0 12px 30px rgba(20, 65, 52, 0.08);
+}
+
+/* Primary Card */
+
+.primary-card {
+    background: #f0f7f4;
+    border-color: #d7e7e0;
+}
+
+.primary-card:hover {
+    border-color: #b8d3c8;
+
+    box-shadow:
+        0 14px 32px rgba(15, 96, 69, 0.11);
+}
+
+/* Icon */
+
+.option-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    border-radius: 8px;
+
+    background: #e9f2ee;
+    color: #0f6045;
+}
+
+.primary-card .option-icon {
+    background: #0f6045;
+    color: #ffffff;
+}
+
+.option-icon i {
+    font-size: 15px;
+}
+
+/* Card Content */
+
+.option-content {
+    padding-right: 35px;
+}
+
+.option-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+
+    color: #0f6045;
+}
+
+.option-content h3 {
+    margin: 0 0 9px;
+
+    font-size: 20px;
+    line-height: 1.25;
+
+    font-weight: 650;
+
+    letter-spacing: -0.3px;
+
+    color: #24443a;
+}
+
+.option-content p {
+    max-width: 300px;
+
+    margin: 0;
+
+    font-size: 12px;
+    line-height: 1.6;
+
+    color: #74817d;
+}
+
+/* Arrow */
+
+.option-arrow {
+    position: absolute;
+
+    right: 22px;
+    bottom: 22px;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f1f5f3;
+    color: #0f6045;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+}
+
+.option-card:hover .option-arrow {
+    transform: translateX(3px);
+
+    background: #e4eee9;
+}
+
+.primary-card .option-arrow {
+    background: #ffffff;
+}
+
+
+/* =========================================================
+   HERO SECTION
+   ========================================================= */
+
+.hero-section {
+    position: relative;
+
+    min-height: 390px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 60px;
+
+    padding: 55px 8%;
+
+    background:
+        linear-gradient(
+            120deg,
+            #f8faf9 0%,
+            #eef6f2 55%,
+            #e4f0eb 100%
+        );
+
+    overflow: hidden;
+}
+
+/* Subtle decorative circle */
+
+.hero-section::before {
+    content: "";
+
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    right: -170px;
+    top: -180px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(15, 96, 69, 0.08);
+
+    pointer-events: none;
+}
+
+.hero-section::after {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    left: -140px;
+    bottom: -160px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(15, 96, 69, 0.06);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   HERO CONTENT
+   ========================================================= */
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 610px;
+}
+
+.eyebrow {
+    display: inline-block;
+
+    margin-bottom: 16px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 2.4px;
+
+    color: #0f6045;
+}
+
+.hero-content h1 {
+    margin: 0;
+
+    font-size: clamp(42px, 5vw, 68px);
+
+    line-height: 1.03;
+
+    font-weight: 650;
+
+    letter-spacing: -2.8px;
+
+    color: #203d34;
+}
+
+.hero-content h1 span {
+    color: #0f6045;
+}
+
+.hero-content p {
+    max-width: 520px;
+
+    margin: 22px 0 0;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+
+    color: #6f7f79;
+}
+
+
+/* =========================================================
+   HERO VISUAL
+   ========================================================= */
+
+.hero-visual {
+    position: relative;
+    z-index: 2;
+
+    width: 390px;
+    height: 180px;
+
+    flex-shrink: 0;
+}
+
+/* Route Line */
+
+.route-line {
+    position: absolute;
+
+    left: 45px;
+    right: 45px;
+
+    top: 88px;
+
+    height: 1px;
+
+    background: #a9c8bc;
+}
+
+/* Dashed route */
+
+.route-line::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: -1px;
+
+    height: 3px;
+
+    background:
+        repeating-linear-gradient(
+            to right,
+            #a9c8bc 0,
+            #a9c8bc 6px,
+            transparent 6px,
+            transparent 12px
+        );
+
+    opacity: 0.8;
+}
+
+
+/* =========================================================
+   LOCATION POINTS
+   ========================================================= */
+
+.location-point {
+    position: absolute;
+
+    top: 73px;
+
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.location-point span {
+    display: block;
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #0f6045;
+
+    box-shadow:
+        0 0 0 5px rgba(15, 96, 69, 0.08);
+}
+
+.location-point small {
+    position: absolute;
+
+    top: 32px;
+
+    white-space: nowrap;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    color: #75847e;
+}
+
+.location-point.from {
+    left: 30px;
+}
+
+.location-point.to {
+    right: 30px;
+}
+
+
+/* =========================================================
+   AIRPLANE
+   ========================================================= */
+
+.airplane {
+    position: absolute;
+
+    left: 50%;
+    top: 68px;
+
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transform: translateX(-50%);
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #0f6045;
+
+    box-shadow:
+        0 8px 22px rgba(15, 96, 69, 0.12);
+}
+
+.airplane i {
+    font-size: 16px;
+
+    transform: rotate(0deg);
+}
+
+
+/* =========================================================
+   INTRO SECTION
+   ========================================================= */
+
+.intro-section {
+    padding: 55px 8% 65px;
+
+    background: #f8faf9;
+
+    border-top: 1px solid #edf1ef;
+}
+
+.intro-content {
+    max-width: 760px;
+}
+
+.intro-content > span {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: #0f6045;
+}
+
+.intro-content h2 {
+    margin: 0;
+
+    font-size: 32px;
+
+    line-height: 1.25;
+
+    font-weight: 500;
+
+    letter-spacing: -1px;
+
+    color: #304a42;
+}
+
+.intro-content h2 strong {
+    font-weight: 700;
+
+    color: #0f6045;
+}
+
+.intro-content p {
+    max-width: 650px;
+
+    margin: 16px 0 0;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    color: #78857f;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .customer-options {
+        padding: 28px 7% 35px;
+    }
+
+    .options-container {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .primary-card {
+        grid-column: span 2;
+    }
+
+    .hero-section {
+        gap: 35px;
+
+        padding: 55px 7%;
+    }
+
+    .hero-content {
+        max-width: 520px;
+    }
+
+    .hero-content h1 {
+        font-size: 52px;
+    }
+
+    .hero-visual {
+        width: 300px;
+    }
+
+    .location-point.from {
+        left: 10px;
+    }
+
+    .location-point.to {
+        right: 10px;
+    }
+
+    .route-line {
+        left: 25px;
+        right: 25px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .customer-dashboard {
+        min-height: auto;
+    }
+
+    /* Cards */
+
+    .customer-options {
+        padding: 25px 6% 35px;
+    }
+
+    .options-container {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+    }
+
+    .primary-card {
+        grid-column: auto;
+    }
+
+    .option-card {
+        min-height: 175px;
+
+        padding: 20px;
+    }
+
+    .option-content {
+        padding-right: 30px;
+    }
+
+    .option-content h3 {
+        font-size: 19px;
+    }
+
+    .option-content p {
+        max-width: 100%;
+
+        font-size: 12px;
+    }
+
+    .option-arrow {
+        right: 18px;
+        bottom: 18px;
+    }
+
+
+    /* Hero */
+
+    .hero-section {
+        min-height: auto;
+
+        display: block;
+
+        padding: 50px 7% 55px;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .eyebrow {
+        margin-bottom: 14px;
+
+        font-size: 9px;
+
+        letter-spacing: 2px;
+    }
+
+    .hero-content h1 {
+        font-size: 46px;
+
+        line-height: 1.05;
+
+        letter-spacing: -1.8px;
+    }
+
+    .hero-content p {
+        margin-top: 18px;
+
+        font-size: 13px;
+
+        line-height: 1.7;
+    }
+
+    /* Hide route illustration */
+
+    .hero-visual {
+        display: none;
+    }
+
+
+    /* Intro */
+
+    .intro-section {
+        padding: 45px 7% 55px;
+    }
+
+    .intro-content h2 {
+        font-size: 25px;
+
+        line-height: 1.3;
+    }
+
+    .intro-content p {
+        font-size: 12px;
+
+        line-height: 1.75;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .customer-options {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+    .option-card {
+        min-height: 165px;
+
+        padding: 18px;
+    }
+
+    .option-icon {
+        width: 38px;
+        height: 38px;
+
+        margin-bottom: 17px;
+    }
+
+    .option-icon i {
+        font-size: 14px;
+    }
+
+    .option-label {
+        font-size: 8px;
+
+        letter-spacing: 1.5px;
+    }
+
+    .option-content h3 {
+        font-size: 18px;
+    }
+
+    .option-content p {
+        font-size: 11px;
+
+        line-height: 1.55;
+    }
+
+    .option-arrow {
+        width: 28px;
+        height: 28px;
+
+        right: 16px;
+        bottom: 16px;
+    }
+
+    .hero-section {
+        padding: 42px 6% 48px;
+    }
+
+    .hero-content h1 {
+        font-size: 39px;
+
+        letter-spacing: -1.5px;
+    }
+
+    .hero-content p {
+        font-size: 12px;
+    }
+
+    .intro-section {
+        padding: 40px 6% 48px;
+    }
+
+    .intro-content h2 {
+        font-size: 23px;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.option-card:focus-visible {
+    outline: 2px solid #0f6045;
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .option-card,
+    .option-arrow {
+        transition: none;
+    }
+
+    .option-card:hover {
+        transform: none;
+    }
+
+    .option-card:hover .option-arrow {
+        transform: none;
+    }
+}
+
+
+
+.intro-section {
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.intro-section:hover {
+    background: #f1f7f4;
+}
+
+.intro-section:hover .intro-content h2 strong {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}

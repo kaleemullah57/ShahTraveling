@@ -1,9 +1,10 @@
+
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 
 import { AuthService } from '../Services/auth.service/auth.service';
 
-export const authGuard: CanActivateFn = (route) => {
+export const authGuard: CanActivateFn = (route, state) => {
 
   const authService = inject(AuthService);
   const router = inject(Router);
@@ -15,89 +16,87 @@ export const authGuard: CanActivateFn = (route) => {
   if (!authService.isLoggedIn()) {
 
     console.log('AUTH GUARD: NOT LOGGED IN');
+    console.log('AUTH GUARD RETURN URL:', state.url);
 
-    return router.createUrlTree(['/login']);
+    return router.createUrlTree(['/login'], {
+      queryParams: {
+        returnUrl: state.url
+      }
+    });
   }
 
-  // ==========================================
-  // GET USER INFORMATION
-  // ==========================================
-
   const userType = authService.getUserType();
-  const branchId = authService.getBranchId();
 
   console.log('AUTH GUARD USER TYPE:', userType);
-  console.log('AUTH GUARD BRANCH ID:', branchId);
+  console.log('AUTH GUARD URL:', state.url);
 
-  // ==========================================
-  // REQUESTED ROUTE
-  // ==========================================
-
-  const requestedRoute = route.routeConfig?.path;
-
-  console.log(
-    'AUTH GUARD REQUESTED ROUTE:',
-    requestedRoute
-  );
 
   // ==========================================
   // SUPER ADMIN DASHBOARD
   // ==========================================
 
-  if (requestedRoute === 'SuperAdminDashboard') {
+  if (state.url.startsWith('/SuperAdminDashboard')) {
 
-    /*
-     * Branch Admin has BranchId > 0
-     * Therefore Branch Admin cannot enter
-     * Super Admin Dashboard.
-     */
-
-    if (branchId > 0) {
-
-      console.log(
-        'AUTH GUARD: Branch Admin blocked from Super Admin Dashboard'
-      );
-
-      return router.createUrlTree([
-        '/AdminDashboard'
-      ]);
+    if (userType === 1) {
+      return true;
     }
 
-    // Super Admin
-    return true;
+    if (userType === 2) {
+      return router.createUrlTree(['/AdminDashboard']);
+    }
+
+    if (userType === 3) {
+      return router.createUrlTree(['/CustomerDashboard']);
+    }
+
+    return router.createUrlTree(['/']);
   }
+
 
   // ==========================================
   // BRANCH ADMIN DASHBOARD
   // ==========================================
 
-  if (requestedRoute === 'AdminDashboard') {
+  if (state.url.startsWith('/AdminDashboard')) {
 
-    /*
-     * Branch Admin must have BranchId > 0
-     */
-
-    if (branchId > 0) {
-
+    if (userType === 2) {
       return true;
     }
 
-    /*
-     * Super Admin has BranchId = 0
-     */
+    if (userType === 1) {
+      return router.createUrlTree(['/SuperAdminDashboard']);
+    }
 
-    console.log(
-      'AUTH GUARD: Super Admin redirected to SuperAdminDashboard'
-    );
+    if (userType === 3) {
+      return router.createUrlTree(['/CustomerDashboard']);
+    }
 
-    return router.createUrlTree([
-      '/SuperAdminDashboard'
-    ]);
+    return router.createUrlTree(['/']);
   }
 
+
   // ==========================================
-  // OTHER AUTHENTICATED ROUTES
+  // CUSTOMER DASHBOARD
   // ==========================================
+
+  if (state.url.startsWith('/CustomerDashboard')) {
+
+    if (userType === 3) {
+      return true;
+    }
+
+    if (userType === 1) {
+      return router.createUrlTree(['/SuperAdminDashboard']);
+    }
+
+    if (userType === 2) {
+      return router.createUrlTree(['/AdminDashboard']);
+    }
+
+    return router.createUrlTree(['/']);
+  }
+
 
   return true;
 };
+

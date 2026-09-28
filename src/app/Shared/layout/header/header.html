@@ -1,216 +1,329 @@
-<header class="travel-header">
+<header class="site-header">
 
   <div class="header-container">
 
+    <!-- ================================= -->
     <!-- LOGO -->
-    <a routerLink="/" class="brand" (click)="closeMobileMenu()">
+    <!-- ================================= -->
 
-      <div class="brand-icon">
-        <i class="fa fa-plane"></i>
-      </div>
+    <a
+      routerLink="/"
+      class="logo"
+      (click)="closeMobileMenu()">
 
-      <div class="brand-text">
-        <span class="brand-name">
-          Shah<span>Traveling</span>
-        </span>
-
-        <small>
-          Explore. Experience. Enjoy.
-        </small>
-      </div>
+      SHAH TRAVELING AGENCY
 
     </a>
 
 
+    <!-- ================================= -->
     <!-- DESKTOP NAVIGATION -->
-    <nav class="desktop-navigation">
+    <!-- ================================= -->
 
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+    <nav class="desktop-nav">
+
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+
         Home
+
       </a>
 
-      <a routerLink="/SharedTickets" routerLinkActive="active">
-        SharedTickets
-      </a>
+      <a
+  routerLink="/SharedTickets"
+  routerLinkActive="active">
+  Shared Tickets
+</a>
 
-      <a routerLink="/destinations" routerLinkActive="active">
+      <a
+        routerLink="/destinations"
+        routerLinkActive="active">
+
         Destinations
+
       </a>
 
-      <a routerLink="/packages" routerLinkActive="active">
+      <a
+        routerLink="/packages"
+        routerLinkActive="active">
+
         Packages
+
       </a>
 
-      <a routerLink="/services" routerLinkActive="active">
+      <a
+        routerLink="/services"
+        routerLinkActive="active">
+
         Services
+
       </a>
 
-      <a routerLink="/about" routerLinkActive="active">
+      <a
+        routerLink="/about"
+        routerLinkActive="active">
+
         About
+
       </a>
 
-      <a routerLink="/contact" routerLink="/contact" routerLinkActive="active">
+      <a
+        routerLink="/contact"
+        routerLinkActive="active">
+
         Contact
+
       </a>
 
-      <a routerLink="/login" routerLink="/login" routerLinkActive="active">
-        Login
-      </a>
-
-
-      @if (!isLoggedIn) {
-
-      <app-global-buttons label="Login" variant="primary" size="small" icon="fa fa-sign-in" routerLink="/login" />
-
-      }
-
-
-      <!-- LOGGED IN -->
-      @if (isLoggedIn) {
-
-      <app-button label="Dashboard" variant="light" size="small" icon="fa fa-dashboard"
-        routerLink="/SuperAdminDashboard" />
-
-      <!-- <app-button label="Logout" variant="light" size="small" icon="fa fa-sign-out" (click)="logout()" /> -->
-
-      }
     </nav>
 
 
-    <!-- DESKTOP ACTIONS -->
-    <div class="header-actions">
-      <div class="header-actions">
+    <!-- ================================= -->
+    <!-- DESKTOP AUTH -->
+    <!-- ================================= -->
 
-        <button class="search-button" type="button" aria-label="Search">
-          <i class="fa fa-search"></i>
-        </button>
+    <div class="desktop-auth">
 
-        <a routerLink="/booking" class="book-button">
-          <i class="fa fa-paper-plane"></i>
-          <span>Book Now</span>
-        </a>
+      @if (!isLoggedIn) {
 
-      </div>
+        <app-button
+          label="Login"
+          variant="primary"
+          size="small"
+          icon="fa fa-sign-in"
+          routerLink="/login">
+        </app-button>
 
+      }
+
+      @else {
+
+        @if (userType === 1) {
+
+          <app-button
+            label="Super Admin Dashboard"
+            variant="light"
+            size="small"
+            icon="fa fa-dashboard"
+            routerLink="/SuperAdminDashboard">
+          </app-button>
+
+        }
+
+        @else if (userType === 2) {
+
+          <app-button
+            label="Admin Dashboard"
+            variant="light"
+            size="small"
+            icon="fa fa-dashboard"
+            routerLink="/AdminDashboard">
+          </app-button>
+
+        }
+
+        @else if (userType === 3) {
+
+          <app-button
+            label="Customer Dashboard"
+            variant="light"
+            size="small"
+            icon="fa fa-dashboard"
+            routerLink="/CustomerDashboard">
+          </app-button>
+
+        }
+
+
+        <app-button
+          label="Logout"
+          variant="success"
+          size="small"
+          icon="fa fa-sign-out"
+          (clicked)="logout()">
+        </app-button>
+
+      }
 
     </div>
 
 
-    <!-- MOBILE TOGGLE -->
-    <button class="mobile-menu-button" type="button" aria-label="Toggle menu" (click)="toggleMobileMenu()">
+    <!-- ================================= -->
+    <!-- MOBILE BUTTON -->
+    <!-- ================================= -->
 
-      <i class="fa" [ngClass]="mobileMenuOpen ? 'fa-times' : 'fa-bars'">
-      </i>
+    <button
+      type="button"
+      class="mobile-menu-button"
+      (click)="toggleMobileMenu()">
+
+      <i class="fa fa-bars"></i>
 
     </button>
 
   </div>
 
 
-  <!-- =========================================
-       MOBILE NAVIGATION
-  ========================================== -->
+  <!-- ===================================== -->
+  <!-- MOBILE NAVIGATION -->
+  <!-- ===================================== -->
 
-  <div class="mobile-navigation" [class.open]="mobileMenuOpen">
+  @if (mobileMenuOpen) {
 
-    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileMenu()">
+    <div class="mobile-menu">
 
-      <i class="fa fa-home"></i>
-      <span>Home</span>
+      <nav class="mobile-nav">
 
-    </a>
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()">
 
+          Home
 
-    <a routerLink="/destinations" routerLinkActive="active" (click)="closeMobileMenu()">
-
-      <i class="fa fa-globe"></i>
-      <span>Destinations</span>
-
-    </a>
-
-
-    <a routerLink="/packages" routerLinkActive="active" (click)="closeMobileMenu()">
-
-      <i class="fa fa-suitcase"></i>
-      <span>Packages</span>
-
-    </a>
+        </a>
 
 
-    <a routerLink="/services" routerLinkActive="active" (click)="closeMobileMenu()">
+        <a
+          routerLink="/customer/shared-tickets"
+          routerLinkActive="active"
+          (click)="closeMobileMenu()">
 
-      <i class="fa fa-concierge-bell"></i>
-      <span>Services</span>
+          Shared Tickets
 
-    </a>
-
-
-    <a routerLink="/about" routerLinkActive="active" (click)="closeMobileMenu()">
-
-      <i class="fa fa-info-circle"></i>
-      <span>About</span>
-
-    </a>
+        </a>
 
 
-    <a routerLink="/contact" routerLinkActive="active" (click)="closeMobileMenu()">
+        <a
+          routerLink="/destinations"
+          routerLinkActive="active"
+          (click)="closeMobileMenu()">
 
-      <i class="fa fa-phone"></i>
-      <span>Contact</span>
+          Destinations
 
-    </a>
-
-    <a routerLink="/login" routerLinkActive="active" (click)="closeMobileMenu()">
-
-      <i class="fa fa-login"></i>
-      <span>Login</span>
-
-    </a>
-
-     @if (!isLoggedIn) {
-
-      <app-global-buttons
-        label="Login"
-        variant="primary"
-        size="small"
-        icon="fa fa-sign-in"
-        routerLink="/login"
-        (click)="closeMobileMenu()"
-      />
-
-    }
+        </a>
 
 
-    @if (isLoggedIn) {
+        <a
+          routerLink="/packages"
+          routerLinkActive="active"
+          (click)="closeMobileMenu()">
 
-      <app-button
-        label="Dashboard"
-        variant="primary"
-        size="small"
-        icon="fa fa-dashboard"
-        routerLink="/SuperAdminDashboard"
-        (click)="closeMobileMenu()"
-      />
+          Packages
 
-      <app-button
-        label="Logout"
-        variant="success"
-        size="small"
-        icon="fa fa-sign-out"
-        (click)="logout()"
-      />
-
-    }
+        </a>
 
 
-    <a routerLink="/booking" class="mobile-book-button" (click)="closeMobileMenu()">
+        <a
+          routerLink="/services"
+          routerLinkActive="active"
+          (click)="closeMobileMenu()">
 
-      <i class="fa fa-paper-plane"></i>
+          Services
 
-      <span>Book Your Trip</span>
+        </a>
 
-    </a>
 
-  </div>
+        <a
+          routerLink="/about"
+          routerLinkActive="active"
+          (click)="closeMobileMenu()">
+
+          About
+
+        </a>
+
+
+        <a
+          routerLink="/contact"
+          routerLinkActive="active"
+          (click)="closeMobileMenu()">
+
+          Contact
+
+        </a>
+
+      </nav>
+
+
+      <!-- ================================= -->
+      <!-- MOBILE AUTH -->
+      <!-- ================================= -->
+
+      <div class="mobile-auth">
+
+        @if (!isLoggedIn) {
+
+          <app-button
+            label="Login"
+            variant="primary"
+            size="small"
+            icon="fa fa-sign-in"
+            routerLink="/login"
+            (clicked)="closeMobileMenu()">
+          </app-button>
+
+        }
+
+        @else {
+
+          @if (userType === 1) {
+
+            <app-button
+              label="Super Admin Dashboard"
+              variant="light"
+              size="small"
+              icon="fa fa-dashboard"
+              routerLink="/SuperAdminDashboard"
+              (clicked)="closeMobileMenu()">
+            </app-button>
+
+          }
+
+          @else if (userType === 2) {
+
+            <app-button
+              label="Admin Dashboard"
+              variant="light"
+              size="small"
+              icon="fa fa-dashboard"
+              routerLink="/AdminDashboard"
+              (clicked)="closeMobileMenu()">
+            </app-button>
+
+          }
+
+          @else if (userType === 3) {
+
+            <app-button
+              label="Customer Dashboard"
+              variant="light"
+              size="small"
+              icon="fa fa-dashboard"
+              routerLink="/CustomerDashboard"
+              (clicked)="closeMobileMenu()">
+            </app-button>
+
+          }
+
+
+          <app-button
+            label="Logout"
+            variant="success"
+            size="small"
+            icon="fa fa-sign-out"
+            (clicked)="logout()">
+          </app-button>
+
+        }
+
+      </div>
+
+    </div>
+
+  }
 
 </header>

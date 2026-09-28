@@ -1,0 +1,169 @@
+<div class="customer-dashboard">
+
+    <!-- Customer Options -->
+    <section class="customer-options">
+
+        <div class="options-container">
+
+            <!-- Available Tickets -->
+            <div class="option-card primary-card" (click)="exploreTickets()" (click)="openTickets()">
+
+                <div class="option-icon">
+                    <i class="fa fa-plane"></i>
+                </div>
+
+                <div class="option-content">
+
+                    <span class="option-label">
+                        EXPLORE
+                    </span>
+
+                    <h3>
+                        Available Tickets
+                    </h3>
+
+                    <p>
+                        Browse available flights and find a ticket
+                        for your next journey.
+                    </p>
+
+                </div>
+
+                <div class="option-arrow">
+                    <i class="fa fa-arrow-right"></i>
+                </div>
+
+            </div>
+
+
+            <!-- My Tickets -->
+            <div class="option-card" (click)="openMyTickets()">
+
+    <div class="option-icon">
+        <i class="fa fa-ticket-alt"></i>
+    </div>
+
+    <div class="option-content">
+
+        <span class="option-label">
+            MY JOURNEYS
+        </span>
+
+        <h3>
+            My Tickets
+        </h3>
+
+        <p>
+            View your booked, on-hold and cancelled
+            tickets in one place.
+        </p>
+
+    </div>
+
+</div>
+
+
+            <!-- Other -->
+            <div class="option-card" (click)="openOther()">
+
+                <div class="option-icon">
+                    <i class="fa fa-th-large"></i>
+                </div>
+
+                <div class="option-content">
+
+                    <span class="option-label">
+                        MORE
+                    </span>
+
+                    <h3>
+                        Other
+                    </h3>
+
+                    <p>
+                        Access your profile, support and other
+                        travel options.
+                    </p>
+
+                </div>
+
+                <div class="option-arrow">
+                    <i class="fa fa-arrow-right"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Hero -->
+    <section class="hero-section">
+
+        <div class="hero-content">
+
+            <span class="eyebrow">
+                SHAH TRAVELING AGENCY
+            </span>
+
+            <h1>
+                Your Journey,<br />
+                <span>Our Responsibility.</span>
+            </h1>
+
+            <p>
+                Discover available flights, choose the ticket that suits you,
+                and travel with confidence.
+            </p>
+
+        </div>
+
+
+        <div class="hero-visual">
+
+            <div class="route-line"></div>
+
+            <div class="location-point from">
+                <span></span>
+                <small>Departure</small>
+            </div>
+
+            <div class="airplane">
+                <i class="fa fa-plane"></i>
+            </div>
+
+            <div class="location-point to">
+                <span></span>
+                <small>Destination</small>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Intro -->
+    <section class="intro-section">
+
+        <div class="intro-content">
+
+            <span>
+                TRAVEL WITH EASE
+            </span>
+
+            <h2>
+                Everything starts with
+                <strong>the right ticket.</strong>
+            </h2>
+
+            <p>
+                Browse available flight tickets, view complete journey
+                details, and find the option that fits your travel plans.
+            </p>
+
+        </div>
+
+    </section>
+    <router-outlet></router-outlet>
+</div>

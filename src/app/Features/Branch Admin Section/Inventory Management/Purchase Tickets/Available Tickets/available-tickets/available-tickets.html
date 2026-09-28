@@ -101,6 +101,234 @@
     </app-global-form>
 
     }
+
+
+
+
+    @if (showReduceForm && selectedTicket) {
+
+    <app-global-form [fields]="reduceFormFields" [buttons]="reduceFormButtons" [title]="'Reduce Shared Tickets'"
+        (formSubmit)="reduceSharedQuantity($event)" (formCancel)="cancelReduce()">
+    </app-global-form>
+
+    }
+
+
+
+
+
+    @if (showPassengerPriceModal && selectedPassengerPriceTicket) {
+
+    <div class="modal-overlay" (click)="closePassengerPriceModal()">
+
+        <div class="passenger-price-modal" (click)="$event.stopPropagation()">
+
+            <!-- HEADER -->
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h3>
+                        Passenger Type Prices
+                    </h3>
+
+                    <p>
+
+                        {{ selectedPassengerPriceTicket.airlineName }}
+
+                        -
+
+                        {{ selectedPassengerPriceTicket.fromAirport }}
+
+                        →
+
+                        {{ selectedPassengerPriceTicket.toAirport }}
+
+                    </p>
+
+                </div>
+
+
+                <button type="button" class="close-button" (click)="closePassengerPriceModal()">
+
+                    <i class="fa fa-times"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- BODY -->
+
+            <div class="modal-body">
+
+
+                <!-- Ticket Information -->
+
+                <div class="passenger-price-ticket-info">
+
+                    <div class="ticket-info-item">
+
+                        <span>
+                            Airline
+                        </span>
+
+                        <strong>
+                            {{ selectedPassengerPriceTicket.airlineName }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ticket-info-item">
+
+                        <span>
+                            Route
+                        </span>
+
+                        <strong>
+
+                            {{ selectedPassengerPriceTicket.fromAirport }}
+
+                            →
+
+                            {{ selectedPassengerPriceTicket.toAirport }}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ticket-info-item">
+
+                        <span>
+                            Ticket Type
+                        </span>
+
+                        <strong>
+                            {{ selectedPassengerPriceTicket.ticketTypeName }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="ticket-info-item">
+
+                        <span>
+                            Ticket Item
+                        </span>
+
+                        <strong>
+
+                            #{{ selectedPassengerPriceTicket.purchaseInvoiceItemId }}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Toolbar -->
+
+                <div class="passenger-price-toolbar">
+
+                    <div>
+
+                        <h4>
+                            Passenger Prices
+                        </h4>
+
+                        <p>
+                            Configure prices for each passenger type.
+                        </p>
+
+                    </div>
+
+
+                    <app-button label="+ Add Price" type="button" (click)="openPassengerPriceAddForm()">
+
+                    </app-button>
+
+                </div>
+
+
+                <!-- Table -->
+
+                <app-data-table [columns]="passengerPriceColumns" [data]="passengerPrices"
+                    [loading]="passengerPriceLoading" [totalRecords]="passengerPrices.length" [pageNumber]="1"
+                    [pageSize]="passengerPrices.length || 10" [actions]="passengerPriceActions" [showActions]="true"
+                    (actionClick)="onPassengerPriceAction($event)">
+
+                </app-data-table>
+
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="modal-footer">
+
+                <app-button label="Close" type="button" (click)="closePassengerPriceModal()">
+
+                </app-button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    }
+
+    @if (showPassengerPriceAddForm) {
+
+    <div class="modal-overlay" (click)="closePassengerPriceAddForm()">
+
+        <div class="modal-container" (click)="$event.stopPropagation()">
+
+            <app-global-form [fields]="passengerPriceAddFields" [buttons]="passengerPriceAddButtons"
+                [title]="'Add Passenger Price'" [loading]="passengerPriceSaving"
+                (formSubmit)="addPassengerPrice($event)" (close)="closePassengerPriceAddForm()">
+            </app-global-form>
+
+        </div>
+
+    </div>
+
+    }
+
+
+    @if (showPassengerPriceEditForm && selectedPassengerPrice) {
+
+    <div
+        class="modal-overlay"
+        (click)="closePassengerPriceEditForm()">
+
+        <div
+            class="modal-container"
+            (click)="$event.stopPropagation()">
+
+            <app-global-form
+                [fields]="passengerPriceEditFields"
+                [buttons]="passengerPriceEditButtons"
+                [model]="{ price: selectedPassengerPrice.price }"
+                [title]="'Update Passenger Price'"
+                [loading]="passengerPriceSaving"
+                (formSubmit)="updatePassengerPrice($event)"
+                (close)="closePassengerPriceEditForm()">
+
+            </app-global-form>
+
+        </div>
+
+    </div>
+
+}
+
+
 </div>
 
 
@@ -346,67 +574,72 @@
                 </div>
 
             </div>
-            
 
-             @if (selectedTicket.stops && selectedTicket.stops.length > 0) {
 
-                <div class="section flight-stops-section">
+            @if (selectedTicket.stops && selectedTicket.stops.length > 0) {
 
-                    <h4>
-                        <i class="fa fa-route"></i>
-                        Flight Stops
-                    </h4>
+            <div class="section flight-stops-section">
 
-                    <div class="stops-list">
+                <h4>
+                    <i class="fa fa-route"></i>
+                    Flight Stops
+                </h4>
 
-                        @for (stop of selectedTicket.stops; track stop.stopNumber) {
+                <div class="stops-list">
 
-                            <div class="stop-card">
+                    @for (stop of selectedTicket.stops; track stop.stopNumber) {
 
-                                <div class="stop-number">
-                                    {{ stop.stopNumber }}
+                    <div class="stop-card">
+
+                        <div class="stop-number">
+                            {{ stop.stopNumber }}
+                        </div>
+
+                        <div class="stop-content">
+
+                            <div class="stop-airport">
+                                <i class="fa fa-map-marker-alt"></i>
+                                <strong>
+                                    {{ stop.stopAirport }}
+                                </strong>
+                            </div>
+
+                            <div class="stop-times">
+
+                                <div class="stop-time">
+                                    <span>Arrival</span>
+                                    <strong>
+                                        {{ stop.arrivalDateTime | date:'dd MMM yyyy, hh:mm a' }}
+                                    </strong>
                                 </div>
 
-                                <div class="stop-content">
-
-                                    <div class="stop-airport">
-                                        <i class="fa fa-map-marker-alt"></i>
-                                        <strong>
-                                            {{ stop.stopAirport }}
-                                        </strong>
-                                    </div>
-
-                                    <div class="stop-times">
-
-                                        <div class="stop-time">
-                                            <span>Arrival</span>
-                                            <strong>
-                                                {{ stop.arrivalDateTime | date:'dd MMM yyyy, hh:mm a' }}
-                                            </strong>
-                                        </div>
-
-                                        <div class="stop-time">
-                                            <span>Departure</span>
-                                            <strong>
-                                                {{ stop.departureDateTime | date:'dd MMM yyyy, hh:mm a' }}
-                                            </strong>
-                                        </div>
-
-                                    </div>
-
+                                <div class="stop-time">
+                                    <span>Departure</span>
+                                    <strong>
+                                        {{ stop.departureDateTime | date:'dd MMM yyyy, hh:mm a' }}
+                                    </strong>
                                 </div>
 
                             </div>
 
-                        }
+                        </div>
 
                     </div>
 
+                    }
+
                 </div>
+
+            </div>
 
             }
 
         </div>
+
+
+
+
+
 
 
         <div class="modal-footer">

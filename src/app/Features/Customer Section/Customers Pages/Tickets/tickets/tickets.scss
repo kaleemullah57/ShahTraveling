@@ -1,0 +1,1122 @@
+.tickets-page {
+    min-height: calc(100vh - 70px);
+    background: #f8faf9;
+    color: #17352d;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.page-header {
+    padding: 45px 8% 38px;
+    background: #ffffff;
+    border-bottom: 1px solid #edf1ef;
+}
+
+.header-content {
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+.eyebrow {
+    display: block;
+
+    margin-bottom: 10px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 2.2px;
+
+    color: #0f6045;
+}
+
+.header-content h1 {
+    margin: 0;
+
+    font-size: 38px;
+    line-height: 1.15;
+
+    font-weight: 500;
+
+    letter-spacing: -1.2px;
+
+    color: #29453c;
+}
+
+.header-content h1 strong {
+    color: #0f6045;
+    font-weight: 700;
+}
+
+.header-content p {
+    max-width: 600px;
+
+    margin: 12px 0 0;
+
+    font-size: 13px;
+    line-height: 1.7;
+
+    color: #78857f;
+}
+
+
+/* =========================================================
+   FILTERS
+   ========================================================= */
+
+.filters-section {
+    padding: 22px 8%;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #e8eeeb;
+}
+
+.filters-container {
+    max-width: 1180px;
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(220px, 1.8fr)
+        1fr
+        1fr
+        0.9fr
+        0.9fr
+        auto;
+
+    gap: 12px;
+
+    align-items: end;
+}
+
+.filter-group {
+    min-width: 0;
+}
+
+.filter-group label {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+
+    color: #65746e;
+}
+
+.filter-group input {
+    width: 100%;
+    height: 40px;
+
+    padding: 0 11px;
+
+    border: 1px solid #dfe7e3;
+    border-radius: 6px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #29453c;
+
+    font-family: inherit;
+    font-size: 12px;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.filter-group input:focus {
+    border-color: #9fc5b6;
+
+    box-shadow:
+        0 0 0 3px rgba(15, 96, 69, 0.06);
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper i {
+    position: absolute;
+
+    left: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 11px;
+
+    color: #87948f;
+
+    pointer-events: none;
+}
+
+.input-wrapper input {
+    padding-left: 32px;
+}
+
+
+/* Filter Buttons */
+
+.filter-actions {
+    display: flex;
+    gap: 7px;
+}
+
+.search-button,
+.clear-button {
+    height: 40px;
+
+    padding: 0 14px;
+
+    border-radius: 6px;
+
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.search-button {
+    border: 1px solid #0f6045;
+
+    background: #0f6045;
+
+    color: #ffffff;
+}
+
+.search-button:hover {
+    background: #0c513b;
+
+    transform: translateY(-1px);
+}
+
+.clear-button {
+    border: 1px solid #dce5e1;
+
+    background: #ffffff;
+
+    color: #61716b;
+}
+
+.clear-button:hover {
+    background: #f4f7f5;
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.tickets-content {
+    max-width: 1180px;
+
+    margin: 0 auto;
+
+    padding: 35px 0 60px;
+}
+
+.results-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.results-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1.8px;
+
+    color: #0f6045;
+}
+
+.results-header h2 {
+    margin: 0;
+
+    font-size: 24px;
+
+    font-weight: 600;
+
+    letter-spacing: -0.5px;
+
+    color: #2c473e;
+}
+
+.result-count {
+    font-size: 11px;
+
+    color: #7b8883;
+}
+
+
+/* =========================================================
+   TICKET CARD
+   ========================================================= */
+
+.ticket-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+.ticket-card {
+    background: #ffffff;
+
+    border: 1px solid #e3ebe7;
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.ticket-card:hover {
+    border-color: #cbdcd5;
+
+    box-shadow:
+        0 10px 30px rgba(20, 65, 52, 0.07);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   TICKET TOP
+   ========================================================= */
+
+.ticket-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 22px;
+
+    border-bottom: 1px solid #edf2ef;
+}
+
+.airline-info {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+.airline-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #eef6f2;
+
+    color: #0f6045;
+}
+
+.airline-icon i {
+    font-size: 15px;
+}
+
+.small-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: #8a9792;
+}
+
+.airline-info h3 {
+    display: inline-block;
+
+    margin: 0;
+
+    font-size: 15px;
+
+    font-weight: 650;
+
+    color: #29453c;
+}
+
+.airline-code {
+    margin-left: 7px;
+
+    padding: 3px 6px;
+
+    border-radius: 4px;
+
+    background: #f2f5f3;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    color: #718079;
+}
+
+.ticket-type {
+    text-align: right;
+}
+
+.ticket-type strong {
+    font-size: 11px;
+
+    color: #0f6045;
+}
+
+
+/* =========================================================
+   ROUTE
+   ========================================================= */
+
+.route-section {
+    display: grid;
+
+    grid-template-columns: 1fr 180px 1fr;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 25px 22px;
+}
+
+.airport {
+    text-align: left;
+}
+
+.airport.arrival {
+    text-align: right;
+}
+
+.country {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.8px;
+
+    color: #84918c;
+}
+
+.airport h2 {
+    margin: 0;
+
+    font-size: 17px;
+    line-height: 1.3;
+
+    font-weight: 650;
+
+    color: #29453c;
+}
+
+.route-time {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 10px;
+
+    color: #788680;
+}
+
+
+/* Route Visual */
+
+.route-visual {
+    position: relative;
+
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.route-line {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 28px;
+
+    height: 1px;
+
+    background:
+        repeating-linear-gradient(
+            to right,
+            #aac8bd 0,
+            #aac8bd 5px,
+            transparent 5px,
+            transparent 10px
+        );
+}
+
+.route-plane {
+    position: relative;
+    z-index: 2;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    border: 1px solid #dce8e3;
+
+    color: #0f6045;
+
+    box-shadow:
+        0 4px 12px rgba(15, 96, 69, 0.08);
+}
+
+.route-plane i {
+    font-size: 13px;
+}
+
+.route-visual > span {
+    position: absolute;
+
+    bottom: 0;
+
+    font-size: 7px;
+    font-weight: 700;
+
+    letter-spacing: 1.3px;
+
+    color: #98a49f;
+}
+
+
+/* =========================================================
+   STOPS
+   ========================================================= */
+
+.stops-section {
+    margin: 0 22px;
+
+    padding: 13px 0;
+
+    border-top: 1px dashed #e2eae6;
+    border-bottom: 1px dashed #e2eae6;
+}
+
+.stops-header span {
+    font-size: 9px;
+    font-weight: 700;
+
+    color: #0f6045;
+}
+
+.stops-header i {
+    margin-right: 5px;
+}
+
+.stops-list {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+.stop-item {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 7px 10px;
+
+    border-radius: 6px;
+
+    background: #f7faf8;
+}
+
+.stop-number {
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e6f1ec;
+
+    color: #0f6045;
+
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.stop-info {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.stop-info strong {
+    font-size: 10px;
+
+    color: #355148;
+}
+
+.stop-info span {
+    font-size: 8px;
+
+    color: #7d8a85;
+}
+
+
+/* =========================================================
+   TICKET BOTTOM
+   ========================================================= */
+
+.ticket-bottom {
+    display: grid;
+
+    grid-template-columns: 1fr 1.5fr 1fr auto;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 17px 22px;
+
+    background: #fafcfb;
+}
+
+.availability,
+.validity,
+.price {
+    min-width: 0;
+}
+
+.availability strong {
+    font-size: 18px;
+
+    color: #0f6045;
+}
+
+.availability > span:last-child {
+    margin-left: 4px;
+
+    font-size: 9px;
+
+    color: #7c8984;
+}
+
+.validity strong {
+    display: block;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    color: #4d625a;
+}
+
+.price {
+    text-align: right;
+}
+
+.price strong {
+    display: block;
+
+    font-size: 17px;
+
+    color: #0f6045;
+}
+
+.book-button {
+    height: 38px;
+
+    padding: 0 15px;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: #0f6045;
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.book-button:hover {
+    background: #0c513b;
+
+    transform: translateX(2px);
+}
+
+.book-button i {
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-state {
+    padding: 70px 20px;
+
+    text-align: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e3ebe7;
+    border-radius: 10px;
+}
+
+.empty-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    background: #eef6f2;
+
+    color: #0f6045;
+}
+
+.empty-icon i {
+    font-size: 17px;
+}
+
+.empty-state h3 {
+    margin: 0;
+
+    font-size: 18px;
+
+    color: #304a42;
+}
+
+.empty-state p {
+    margin: 8px 0 18px;
+
+    font-size: 11px;
+
+    color: #84908b;
+}
+
+.clear-empty-button {
+    padding: 9px 16px;
+
+    border: 1px solid #d5e2dc;
+    border-radius: 5px;
+
+    background: #ffffff;
+
+    color: #0f6045;
+
+    font-size: 10px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-state {
+    min-height: 260px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e3ebe7;
+    border-radius: 10px;
+}
+
+.loading-spinner {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    border-radius: 50%;
+
+    background: #eef6f2;
+
+    color: #0f6045;
+}
+
+.loading-spinner i {
+    font-size: 15px;
+}
+
+.loading-state p {
+    margin: 0;
+
+    font-size: 11px;
+
+    color: #7c8984;
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.pagination-wrapper {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 20px;
+}
+
+.pagination-info {
+    font-size: 10px;
+
+    color: #84908b;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+.pagination-controls button {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #dce5e1;
+    border-radius: 5px;
+
+    background: #ffffff;
+
+    color: #0f6045;
+
+    cursor: pointer;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+    background: #eef6f2;
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.4;
+
+    cursor: not-allowed;
+}
+
+.pagination-controls span {
+    font-size: 10px;
+    font-weight: 600;
+
+    color: #63736c;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .filters-container {
+        grid-template-columns:
+            1.5fr
+            1fr
+            1fr
+            1fr
+            1fr;
+
+        .filter-actions {
+            grid-column: span 5;
+        }
+    }
+
+    .tickets-content {
+        padding-left: 7%;
+        padding-right: 7%;
+    }
+
+    .route-section {
+        grid-template-columns: 1fr 130px 1fr;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .page-header {
+        padding: 32px 6% 30px;
+    }
+
+    .header-content h1 {
+        font-size: 31px;
+    }
+
+    .header-content p {
+        font-size: 12px;
+    }
+
+
+    /* Filters */
+
+    .filters-section {
+        padding: 18px 6% 22px;
+    }
+
+    .filters-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .search-group {
+        grid-column: span 2;
+    }
+
+    .filter-actions {
+        grid-column: span 2 !important;
+    }
+
+    .filter-actions button {
+        flex: 1;
+    }
+
+
+    /* Content */
+
+    .tickets-content {
+        padding: 28px 6% 45px;
+    }
+
+    .results-header {
+        align-items: flex-start;
+    }
+
+    .results-header h2 {
+        font-size: 21px;
+    }
+
+
+    /* Ticket */
+
+    .ticket-top {
+        padding: 17px;
+    }
+
+    .ticket-type {
+        display: none;
+    }
+
+    .route-section {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+
+        padding: 20px 17px;
+    }
+
+    .airport,
+    .airport.arrival {
+        text-align: center;
+    }
+
+    .route-visual {
+        height: 35px;
+
+        order: 2;
+    }
+
+    .airport:first-child {
+        order: 1;
+    }
+
+    .airport.arrival {
+        order: 3;
+    }
+
+    .route-line {
+        left: 25%;
+        right: 25%;
+
+        top: 17px;
+    }
+
+    .route-plane {
+        width: 32px;
+        height: 32px;
+    }
+
+    .route-visual > span {
+        display: none;
+    }
+
+
+    /* Stops */
+
+    .stops-section {
+        margin: 0 17px;
+    }
+
+    .stops-list {
+        flex-direction: column;
+    }
+
+    .stop-item {
+        width: 100%;
+    }
+
+    .stop-info {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 3px;
+    }
+
+
+    /* Bottom */
+
+    .ticket-bottom {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 15px;
+
+        padding: 16px 17px;
+    }
+
+    .price {
+        text-align: left;
+    }
+
+    .book-button {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    /* Pagination */
+
+    .pagination-wrapper {
+        flex-direction: column;
+
+        gap: 12px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .filters-container {
+        grid-template-columns: 1fr;
+    }
+
+    .search-group,
+    .filter-actions {
+        grid-column: auto !important;
+    }
+
+    .header-content h1 {
+        font-size: 28px;
+    }
+
+    .ticket-bottom {
+        grid-template-columns: 1fr;
+    }
+
+    .price {
+        text-align: left;
+    }
+
+    .book-button {
+        width: 100%;
+    }
+}

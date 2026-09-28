@@ -95,3 +95,13 @@ export interface ShareTicketsRequest {
   purchaseInvoiceItemId: number;
   quantity: number;
 }
+
+
+
+
+
+// Reduce Shared Tickets
+export interface ReduceSharedTicketQuantityRequest {
+  purchaseInvoiceItemId: number;
+  quantity: number;
+}

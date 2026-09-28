@@ -72,6 +72,7 @@ export class forms {
   @Output() formSubmit = new EventEmitter<any>();
   @Output() formCancel = new EventEmitter<void>();
   @Output() formReset = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
   @Output() formValueChange = new EventEmitter<any>();
   @Output() fieldChange = new EventEmitter<{
     key: string;
@@ -160,10 +161,10 @@ export class forms {
       )
     ) {
 
-      // Existing components
       this.cancelForm.emit();
       this.formCancel.emit();
       this.formReset.emit();
+      this.close.emit();
 
       return;
     }

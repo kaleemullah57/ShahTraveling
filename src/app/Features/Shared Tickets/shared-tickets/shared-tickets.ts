@@ -1,14 +1,19 @@
 import {
   ChangeDetectorRef,
   Component,
+  NgZone,
   OnDestroy,
   OnInit,
   inject
 } from '@angular/core';
 
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { SharedTicketService } from '../../../Core/Services/public Services/Shared Tickets Service/shared-ticket-service';
 
 import {
+  TicketInventoryUpdatedEvent,
   TicketRealtimeService,
   TicketUpdatedEvent
 } from '../../../Shared/components/TicketRealtimeService/ticket-realtime-service';
@@ -18,21 +23,49 @@ import {
   SharedTicketsRequest
 } from '../../../Core/Models/Public Tickets/shared-ticket-model';
 
-import { DataTable } from '../../../Shared/components/DataTables/data-table/data-table';
-import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../Core/Services/auth.service/auth.service';
+
+import {
+  BookingPassengerRequest,
+  CreateBookingRequest,
+  CreateBookingResponse
+} from '../../Customer Section/Customers Models/Ticket Booking Models/ticket-booking-model';
+
+import { TicketBookingService } from '../../Customer Section/Customers services/Ticket Booking Services/ticket-booking-service';
+
+import { GlobalDropdownService } from '../../../Core/Services/Dropdown Services/global-dropdown-service';
 
 @Component({
   selector: 'app-shared-tickets',
   standalone: true,
-  imports: [DataTable,FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './shared-tickets.html',
-  styleUrl: './shared-tickets.scss',
+  styleUrl: './shared-tickets.scss'
 })
 export class SharedTickets implements OnInit, OnDestroy {
 
-  private sharedTicketsService = inject(SharedTicketService);
-  private ticketRealtimeService = inject(TicketRealtimeService);
-  private cdr = inject(ChangeDetectorRef);
+  private readonly sharedTicketsService = inject(SharedTicketService);
+  private readonly ticketRealtimeService = inject(TicketRealtimeService);
+
+  // IMPORTANT:
+  // Must not be private because HTML template uses it.
+  readonly authService = inject(AuthService);
+
+  private bookingService = inject(TicketBookingService);
+  private globalDropDownService = inject(GlobalDropdownService);
+
+  private readonly router = inject(Router);
+  private readonly ngZone = inject(NgZone);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+
+  // ============================================================
+  // TICKETS
+  // ============================================================
 
   tickets: SharedTicketModel[] = [];
 
@@ -41,49 +74,88 @@ export class SharedTickets implements OnInit, OnDestroy {
   totalRecords = 0;
 
   pageNumber = 1;
+
   pageSize = 10;
 
-  // Filters
+
+  // ============================================================
+  // FILTERS
+  // ============================================================
+
   search = '';
 
   fromDate: string | null = null;
+
   toDate: string | null = null;
 
   fromSellingPrice: number | null = null;
+
   toSellingPrice: number | null = null;
 
 
-  // DataTable columns
-  columns = [
-    { key: 'airlineName', label: 'Airline' },
-    { key: 'fromAirport', label: 'From' },
-    { key: 'toAirport', label: 'To' },
-    { key: 'departureDateTime', label: 'Departure' },
-    { key: 'ticketTypeName', label: 'Ticket Type' },
-    // { key: 'arrivalDateTime', label: 'Arrival' },
-    { key: 'availableQuantity', label: 'Available' },
-    // { key: 'sellingPrice', label: 'Selling Price' },
-    { key: 'validUntil', label: 'Valid Until' }
-  ];
+  // ============================================================
+  // BOOKING
+  // ============================================================
 
-  actions: any[] = [];
+  showBookingForm = false;
+
+  selectedTicket: SharedTicketModel | null = null;
+
+  bookingPassengers: BookingPassengerRequest[] = [];
+
+  bookingResult: CreateBookingResponse | null = null;
+
+  passengerTypes: {
+    label: string;
+    value: number;
+  }[] = [];
+
+  isBooking = false;
 
 
-  ngOnInit(): void {
+  // ============================================================
+  // INIT
+  // ============================================================
 
-    // Initial data
-    this.loadTickets();
+ ngOnInit(): void {
 
-    // Start SignalR
-    this.ticketRealtimeService.startConnection();
+  // Tickets are PUBLIC
+  this.loadTickets();
 
-    // Listen for ticket updates
-    this.ticketRealtimeService.ticketUpdated$
-      .subscribe((event) => {
-        this.updateTicket(event);
-      });
+
+  // Passenger types are only required when booking
+  if (this.authService.isLoggedIn()) {
+    this.loadPassengerTypes();
   }
 
+
+  // Start SignalR
+  this.ticketRealtimeService.startConnection();
+
+
+  // Existing ticket sharing / price updates
+  this.ticketRealtimeService.ticketUpdated$
+    .subscribe((event) => {
+
+      this.updateTicket(event);
+
+    });
+
+
+  // NEW - Booking / Hold / Cancel / Expiry
+  this.ticketRealtimeService.ticketInventoryUpdated$
+    .subscribe((event) => {
+
+      this.updateTicketInventory(event);
+
+    });
+
+}
+
+
+  // ============================================================
+  // LOAD TICKETS
+  // ============================================================
 
   loadTickets(): void {
 
@@ -104,79 +176,95 @@ export class SharedTickets implements OnInit, OnDestroy {
       fromSellingPrice: this.fromSellingPrice,
 
       toSellingPrice: this.toSellingPrice
+
     };
 
-    this.sharedTicketsService
-      .getSharedTickets(request)
-      .subscribe({
 
-        next: (response) => {
+    this.sharedTicketsService.getSharedTickets(request).subscribe({
 
-          if (response.status === true) {
+      next: (response) => {
 
-            this.tickets = response.data ?? [];
+        if (response.status === true) {
 
-            this.totalRecords =
-              response.totalCount ?? 0;
-          }
-          else {
+          this.tickets = response.data ?? [];
 
-            this.tickets = [];
-            this.totalRecords = 0;
-          }
+          this.totalRecords = response.totalCount ?? 0;
 
-          this.loading = false;
-
-          this.cdr.detectChanges();
-        },
-
-        error: (error) => {
-
-          console.error(
-            'Get Shared Tickets Error:',
-            error
-          );
+        }
+        else {
 
           this.tickets = [];
+
           this.totalRecords = 0;
 
-          this.loading = false;
-
-          this.cdr.detectChanges();
         }
-      });
+
+
+        this.loading = false;
+
+        this.cdr.detectChanges();
+
+      },
+
+
+      error: (error) => {
+
+        console.error(
+          'Get Shared Tickets Error:',
+          error
+        );
+
+        this.tickets = [];
+
+        this.totalRecords = 0;
+
+        this.loading = false;
+
+        this.cdr.detectChanges();
+
+      }
+
+    });
+
   }
 
 
-  // Search / filter
+  // ============================================================
+  // FILTERS
+  // ============================================================
+
   applyFilters(): void {
 
-    // Whenever filters change,
-    // start from first page.
     this.pageNumber = 1;
 
     this.loadTickets();
+
   }
 
 
-  // Clear filters
   clearFilters(): void {
 
     this.search = '';
 
     this.fromDate = null;
+
     this.toDate = null;
 
     this.fromSellingPrice = null;
+
     this.toSellingPrice = null;
 
     this.pageNumber = 1;
 
     this.loadTickets();
+
   }
 
 
-  // Pagination
+  // ============================================================
+  // PAGINATION
+  // ============================================================
+
   onPageChange(event: any): void {
 
     this.pageNumber = event.pageNumber;
@@ -184,48 +272,536 @@ export class SharedTickets implements OnInit, OnDestroy {
     this.pageSize = event.pageSize;
 
     this.loadTickets();
+
   }
 
 
-  // Real-time price update
-private updateTicket(event: TicketUpdatedEvent): void {
-  const index = this.tickets.findIndex(
-    x => x.purchaseInvoiceItemId === event.purchaseInvoiceItemId
-  );
+  // ============================================================
+  // SIGNALR
+  // ============================================================
 
-  if (index === -1) {
-    return;
+  private updateTicket(
+    event: TicketUpdatedEvent
+  ): void {
+
+    this.ngZone.run(() => {
+
+      const index = this.tickets.findIndex(
+        x =>
+          Number(x.purchaseInvoiceItemId) ===
+          Number(event.purchaseInvoiceItemId)
+      );
+
+
+      // Ticket is not currently in the loaded page.
+      // Reload so first-time sharing also appears.
+      if (index === -1) {
+
+        if (
+          event.sharedQuantityIncrease !== undefined
+        ) {
+
+          this.loadTickets();
+
+        }
+
+        return;
+
+      }
+
+
+      const ticket = this.tickets[index];
+
+      const updatedTicket: SharedTicketModel = {
+        ...ticket
+      };
+
+
+      // Selling price changed
+      if (
+        event.sellingPrice !== undefined
+      ) {
+
+        updatedTicket.sellingPrice =
+          Number(event.sellingPrice);
+
+      }
+
+
+      // Shared quantity increased
+      if (
+        event.sharedQuantityIncrease !== undefined
+      ) {
+
+        updatedTicket.availableQuantity =
+          Number(ticket.availableQuantity ?? 0) +
+          Number(event.sharedQuantityIncrease);
+
+      }
+
+
+      // Shared quantity decreased
+      if (
+        event.sharedQuantityDecrease !== undefined
+      ) {
+
+        updatedTicket.availableQuantity =
+          Math.max(
+            0,
+            Number(ticket.availableQuantity ?? 0) -
+            Number(event.sharedQuantityDecrease)
+          );
+
+      }
+
+
+      this.tickets = this.tickets.map(
+        (item, i) =>
+          i === index
+            ? updatedTicket
+            : item
+      );
+
+
+      this.cdr.detectChanges();
+
+    });
+
   }
 
-  const currentTicket = this.tickets[index];
+  private updateTicketInventory(
+  event: TicketInventoryUpdatedEvent
+): void {
 
-  const updatedTicket: SharedTicketModel = {
-    ...currentTicket
-  };
+  this.ngZone.run(() => {
 
-  // Price update
-  if (event.sellingPrice !== undefined) {
-    updatedTicket.sellingPrice = event.sellingPrice;
-  }
+    console.log(
+      '🔔 INVENTORY UPDATED:',
+      event.purchaseInvoiceItemId
+    );
 
-  // Shared quantity update
-  if (event.sharedQuantityIncrease !== undefined) {
-    updatedTicket.availableQuantity =
-      Number(currentTicket.availableQuantity ?? 0) +
-      Number(event.sharedQuantityIncrease);
-  }
+    this.loadTickets();
 
-  // Replace the object AND array
-  this.tickets = this.tickets.map((ticket, i) =>
-    i === index ? updatedTicket : ticket
-  );
+  });
 
-  this.cdr.detectChanges();
 }
 
+
+  // ============================================================
+  // GUEST TICKET DETAILS
+  // ============================================================
+
+seeTicketDetails(ticket: SharedTicketModel): void {
+
+  const returnUrl =
+    `/SharedTickets?ticketId=${ticket.purchaseInvoiceItemId}`;
+
+  this.router.navigate(
+    ['/login'],
+    {
+      queryParams: {
+        returnUrl
+      }
+    }
+  );
+}
+  openBookingForm(
+    ticket: SharedTicketModel
+  ): void {
+    if (!this.authService.isLoggedIn()) {
+      return;
+    }
+
+
+    this.selectedTicket = ticket;
+
+
+    this.bookingPassengers = [
+
+      {
+        passengerTypeId: 0,
+
+        fullName: '',
+
+        passportNumber: '',
+
+        dateOfBirth: '',
+
+        gender: '',
+
+        nationality: '',
+
+        contactNumber: '',
+
+        email: ''
+
+      }
+
+    ];
+
+
+    this.bookingResult = null;
+
+    this.showBookingForm = true;
+
+  }
+
+
+  // ============================================================
+  // ADD PASSENGER
+  // ============================================================
+
+  addPassenger(): void {
+
+    this.bookingPassengers.push({
+
+      passengerTypeId: 0,
+
+      fullName: '',
+
+      passportNumber: '',
+
+      dateOfBirth: '',
+
+      gender: '',
+
+      nationality: '',
+
+      contactNumber: '',
+
+      email: ''
+
+    });
+
+  }
+
+
+  // ============================================================
+  // REMOVE PASSENGER
+  // ============================================================
+
+  removePassenger(
+    index: number
+  ): void {
+
+    if (
+      this.bookingPassengers.length === 1
+    ) {
+
+      return;
+
+    }
+
+
+    this.bookingPassengers.splice(
+      index,
+      1
+    );
+
+  }
+
+
+  // ============================================================
+  // CREATE BOOKING
+  // ============================================================
+
+  createBooking(): void {
+
+    if (
+      !this.authService.isLoggedIn()
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      !this.selectedTicket?.purchaseInvoiceItemId
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      !this.validatePassengers()
+    ) {
+
+      return;
+
+    }
+
+
+    const request: CreateBookingRequest = {
+
+      purchaseInvoiceItemId:
+        this.selectedTicket.purchaseInvoiceItemId,
+
+      passengers:
+        this.bookingPassengers.map(
+          p => ({
+
+            passengerTypeId:
+              Number(p.passengerTypeId),
+
+            fullName:
+              p.fullName.trim(),
+
+            passportNumber:
+              p.passportNumber.trim(),
+
+            dateOfBirth:
+              p.dateOfBirth,
+
+            gender:
+              p.gender,
+
+            nationality:
+              p.nationality.trim(),
+
+            contactNumber:
+              p.contactNumber.trim(),
+
+            email:
+              p.email.trim()
+
+          })
+        )
+
+    };
+
+
+    this.isBooking = true;
+
+
+    this.bookingService
+      .createBooking(request)
+      .subscribe({
+
+        next: (response) => {
+
+          this.isBooking = false;
+
+
+          if (response?.status) {
+
+            this.bookingResult =
+              response.data;
+
+            // Refresh availability
+            this.loadTickets();
+
+          }
+
+        },
+
+
+        error: (error) => {
+
+          this.isBooking = false;
+
+          console.error(
+            'Create booking error:',
+            error
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // ============================================================
+  // VALIDATE PASSENGERS
+  // ============================================================
+
+  validatePassengers(): boolean {
+
+    if (
+      !this.bookingPassengers.length
+    ) {
+
+      return false;
+
+    }
+
+
+    for (
+      const passenger
+      of this.bookingPassengers
+    ) {
+
+      if (
+        !passenger.passengerTypeId
+      ) {
+
+        return false;
+
+      }
+
+
+      if (
+        !passenger.fullName?.trim()
+      ) {
+
+        return false;
+
+      }
+
+
+      if (
+        !passenger.passportNumber?.trim()
+      ) {
+
+        return false;
+
+      }
+
+
+      if (
+        !passenger.dateOfBirth
+      ) {
+
+        return false;
+
+      }
+
+
+      if (
+        !passenger.gender
+      ) {
+
+        return false;
+
+      }
+
+
+      // Nationality optional
+
+
+      if (
+        !passenger.contactNumber?.trim()
+      ) {
+
+        return false;
+
+      }
+
+
+      // Email optional
+
+    }
+
+
+    return true;
+
+  }
+
+
+  // ============================================================
+  // PASSENGER TYPE NAME
+  // ============================================================
+
+  getPassengerTypeName(
+    passengerTypeId: number
+  ): string {
+
+    return (
+      this.passengerTypes.find(
+        x =>
+          x.value ===
+          Number(passengerTypeId)
+      )?.label
+      ?? 'Passenger'
+    );
+
+  }
+
+
+  // ============================================================
+  // LOAD PASSENGER TYPES
+  // ============================================================
+
+  loadPassengerTypes(): void {
+
+    this.globalDropDownService
+      .getPassengerTypes()
+      .subscribe({
+
+        next: (response) => {
+
+          if (
+            response?.status &&
+            response?.data
+          ) {
+
+            this.passengerTypes =
+              response.data.map(
+                (item: any) => ({
+
+                  label:
+                    item.text ??
+                    item.Text,
+
+                  value:
+                    Number(
+                      item.value ??
+                      item.Value
+                    )
+
+                })
+              );
+
+          }
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'Failed to load passenger types',
+            error
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // ============================================================
+  // CLOSE BOOKING
+  // ============================================================
+
+  closeBookingForm(): void {
+
+    this.showBookingForm = false;
+
+    this.selectedTicket = null;
+
+    this.bookingPassengers = [];
+
+    this.bookingResult = null;
+
+  }
+
+
+  
+
+
+  // ============================================================
+  // DESTROY
+  // ============================================================
 
   ngOnDestroy(): void {
 
     this.ticketRealtimeService.stopConnection();
+
   }
+
 }

@@ -337,3 +337,308 @@
     font-size: 12px;
     font-weight: 500;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================
+   Passenger Ticket Price Modal
+   ========================================= */
+
+.passenger-price-modal {
+    width: min(950px, 95vw);
+    max-height: 90vh;
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    flex-direction: column;
+
+    animation: passengerPriceModalIn 0.2s ease-out;
+}
+
+
+/* =========================================
+   Modal Header
+   ========================================= */
+
+.passenger-price-modal .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f8fafc;
+}
+
+.passenger-price-modal .modal-header h3 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.passenger-price-modal .modal-header p {
+    margin: 5px 0 0;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+
+/* Close button */
+
+.passenger-price-modal .close-button {
+    width: 36px;
+    height: 36px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #6b7280;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    font-size: 16px;
+
+    transition: all 0.2s ease;
+}
+
+.passenger-price-modal .close-button:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
+/* =========================================
+   Modal Body
+   ========================================= */
+
+.passenger-price-modal .modal-body {
+    padding: 24px;
+    overflow-y: auto;
+}
+
+
+/* =========================================
+   Ticket Information
+   ========================================= */
+
+.passenger-price-ticket-info {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+
+    margin-bottom: 24px;
+}
+
+.ticket-info-item {
+    padding: 15px 16px;
+
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+
+    min-width: 0;
+}
+
+.ticket-info-item span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    color: #6b7280;
+}
+
+.ticket-info-item strong {
+    display: block;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: #1f2937;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   Passenger Price Toolbar
+   ========================================= */
+
+.passenger-price-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 16px;
+    padding: 16px 18px;
+
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+
+.passenger-price-toolbar h4 {
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #1f2937;
+}
+
+.passenger-price-toolbar p {
+    margin: 4px 0 0;
+
+    font-size: 12px;
+    color: #6b7280;
+}
+
+
+/* =========================================
+   Data Table Area
+   ========================================= */
+
+.passenger-price-modal app-data-table {
+    display: block;
+    width: 100%;
+}
+
+
+/* =========================================
+   Modal Footer
+   ========================================= */
+
+.passenger-price-modal .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    padding: 16px 24px;
+
+    border-top: 1px solid #e5e7eb;
+    background: #f8fafc;
+}
+
+
+/* =========================================
+   Overlay - scoped for Passenger Price
+   ========================================= */
+
+.modal-overlay:has(.passenger-price-modal) {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(3px);
+}
+
+
+/* =========================================
+   Animation
+   ========================================= */
+
+@keyframes passengerPriceModalIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* =========================================
+   Responsive
+   ========================================= */
+
+@media (max-width: 800px) {
+
+    .passenger-price-modal {
+        width: 96vw;
+        max-height: 94vh;
+    }
+
+    .passenger-price-ticket-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 520px) {
+
+    .passenger-price-modal .modal-header {
+        padding: 16px;
+    }
+
+    .passenger-price-modal .modal-body {
+        padding: 16px;
+    }
+
+    .passenger-price-ticket-info {
+        grid-template-columns: 1fr;
+    }
+
+    .passenger-price-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .passenger-price-modal .modal-footer {
+        padding: 14px 16px;
+    }
+}

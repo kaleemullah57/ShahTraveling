@@ -4,6 +4,7 @@ import {
 } from '@angular/common/http';
 
 import { inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -13,18 +14,11 @@ import { NotificationService } from '../Services/Notification Services/notificat
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   const notification = inject(NotificationService);
+  const router = inject(Router);
 
   return next(req).pipe(
 
     catchError((error: HttpErrorResponse) => {
-
-      // console.error('HTTP Error:', {
-      //   url: req.url,
-      //   method: req.method,
-      //   status: error.status,
-      //   message: error.error?.message,
-      //   error
-      // });
 
       let message = 'Something went wrong.';
 
@@ -42,9 +36,17 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           break;
 
         case 401:
-          notification.error(
-            message || 'Unauthorized request.'
+
+          console.log(
+            'AUTH: Token expired or unauthorized. Redirecting to home.'
           );
+
+          // Remove expired token
+          localStorage.removeItem('token');
+
+          // Redirect directly to home
+          router.navigate(['/']);
+
           break;
 
         case 403:

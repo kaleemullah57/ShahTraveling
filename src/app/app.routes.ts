@@ -48,6 +48,31 @@ export const routes: Routes = [
         .then(m => m.Login)
   },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   {
     path: 'SuperAdminDashboard',
     canActivate: [authGuard],
@@ -129,7 +154,7 @@ export const routes: Routes = [
             .then(m => m.FlightRoutesTypes)
       }
     ]
-    },
+  },
 
 
 
@@ -170,5 +195,35 @@ export const routes: Routes = [
             .then(m => m.AvailableTickets)
       }
     ]
+  },
+
+
+
+
+
+
+
+
+  // Customers
+  {
+    path: 'CustomerDashboard',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./Features/Customer Section/Customers Pages/Customer Dashboard/customer-dashboard/customer-dashboard')
+        .then(m => m.CustomerDashboard),
+  },
+  {
+    path: 'BookedTickets',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./Features/Customer Section/Customers Pages/Booked Tickets/booked-tickets/booked-tickets')
+        .then(m => m.BookedTickets)
+  },
+  {
+    path: 'tickets',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./Features/Customer Section/Customers Pages/Tickets/tickets/tickets')
+        .then(m => m.Tickets)
   }
 ];

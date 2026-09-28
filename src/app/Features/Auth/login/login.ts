@@ -4,7 +4,10 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router
+} from '@angular/router';
 
 import { AuthService } from '../../../Core/Services/auth.service/auth.service';
 
@@ -19,21 +22,31 @@ export class Login {
 
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
 
   loading = false;
   errorMessage = '';
 
   loginForm = this.fb.group({
-    email: ['', [
-      Validators.required,
-      Validators.email
-    ]],
 
-    password: ['', [
-      Validators.required
-    ]]
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.email
+      ]
+    ],
+
+    password: [
+      '',
+      [
+        Validators.required
+      ]
+    ]
+
   });
+
 
   login(): void {
 
@@ -42,7 +55,9 @@ export class Login {
     }
 
     if (this.loginForm.invalid) {
+
       this.loginForm.markAllAsTouched();
+
       return;
     }
 
@@ -50,70 +65,173 @@ export class Login {
     this.errorMessage = '';
 
     const request = {
+
       email: this.loginForm.value.email!,
       password: this.loginForm.value.password!
+
     };
 
 
-    this.authService.login(request).subscribe({
+    this.authService.login(request)
+      .subscribe({
 
-      next: (response) => {
+        next: (response) => {
 
-        this.loading = false;
-
-        if (response.statusCode === 200) {
-
-          this.authService.saveLogin(response.data);
-          localStorage.setItem(
-            'token',
-            response.data.token
+          console.log(
+            'LOGIN RESPONSE:',
+            response
           );
-          this.redirectUser(response.data.userTypeId);
+
+          this.loading = false;
+
+
+          if (response.statusCode === 200) {
+
+            console.log(
+              'LOGIN SUCCESS'
+            );
+
+
+            this.authService.saveLogin(
+              response.data
+            );
+
+
+            console.log(
+              'TOKEN:',
+              this.authService.getToken()
+            );
+
+            console.log(
+              'IS LOGGED IN:',
+              this.authService.isLoggedIn()
+            );
+
+            console.log(
+              'USER TYPE:',
+              response.data.userTypeId
+            );
+
+
+            const returnUrl =
+              this.route.snapshot
+                .queryParamMap
+                .get('returnUrl');
+
+
+            console.log(
+              'RETURN URL:',
+              returnUrl
+            );
+
+
+            if (returnUrl) {
+
+              console.log(
+                'NAVIGATING TO:',
+                returnUrl
+              );
+
+              this.router
+                .navigateByUrl(returnUrl)
+                .then(success => {
+
+                  console.log(
+                    'NAVIGATION RESULT:',
+                    success
+                  );
+
+                })
+                .catch(error => {
+
+                  console.error(
+                    'NAVIGATION ERROR:',
+                    error
+                  );
+
+                });
+
+            }
+            else {
+
+              this.redirectUser(
+                response.data.userTypeId
+              );
+
+            }
+
+          }
+          else {
+
+            this.errorMessage =
+              response.message ||
+              'Login failed.';
+
+          }
+
+        },
+
+
+        error: (error) => {
+
+          console.error(
+            'LOGIN API ERROR:',
+            error
+          );
+
+          this.loading = false;
+
+          this.errorMessage =
+            error?.error?.message ||
+            'Invalid email or password.';
+
         }
-      },
 
-      error: (error) => {
-
-        console.error('❌ LOGIN API ERROR:', error);
-
-        this.loading = false;
-
-        this.errorMessage =
-          error?.error?.message ||
-          'Invalid email or password.';
-      }
-    });
+      });
   }
 
-  private redirectUser(userTypeId: number): void {
 
-    switch (userTypeId) {
+  private redirectUser(
+    userTypeId: number
+  ): void {
 
-      // Super Admin
+    console.log(
+      'REDIRECT USER TYPE:',
+      userTypeId
+    );
+
+
+    switch (Number(userTypeId)) {
+
       case 1:
-        this.router.navigateByUrl('/SuperAdminDashboard');
+
+        this.router.navigateByUrl(
+          '/SuperAdminDashboard'
+        );
+
         break;
 
-      // Admin
+
       case 2:
-        this.router.navigateByUrl('/AdminDashboard');
-        break;
 
-      // Normal User
-      case 3:
-        this.router.navigateByUrl('/UserDashboard');
-        break;
-
-      default:
-
-        this.errorMessage = 'Invalid user type.';
-
-        this.authService.logout();
-
-        this.router.navigateByUrl('/login');
+        this.router.navigateByUrl(
+          '/AdminDashboard'
+        );
 
         break;
-    }
+
+
+       case 3:
+      this.router.navigateByUrl('/SharedTickets');
+      break;
+
+    default:
+      this.errorMessage = 'Invalid user type.';
+      this.authService.logout();
+      this.router.navigateByUrl('/login');
+      break;
+  }
 
   }
+
 }

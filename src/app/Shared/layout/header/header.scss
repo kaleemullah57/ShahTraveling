@@ -1,244 +1,121 @@
-/* =========================================================
-   TRAVEL HEADER
-========================================================= */
-
-.travel-header {
-
+.site-header {
   position: sticky;
-
   top: 0;
-
   z-index: 1000;
 
   width: 100%;
 
-  // background: #5273b9;
-  // background:
-  //   linear-gradient(
-  //     180deg,
-  //     #111827 0%,
-  //     #0f172a 100%
-  //   );
+  background: #ffffff;
+  border-bottom: 1px solid #e8ecea;
 
-   background:
-    linear-gradient(
-      135deg,
-      #063d47 0%,
-      #087f8c 48%,
-      #0fa7a7 100%
-    );
-
-  box-shadow:
-    0 20px 45px rgba(8, 127, 140, 0.20);
-  border-bottom:
-    1px solid rgba(255, 255, 255, 0.12);
-
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.12);
-
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 
-/* =========================================================
+/* ==========================================
    HEADER CONTAINER
-========================================================= */
+   ========================================== */
 
 .header-container {
-
   width: 100%;
-
   max-width: 1400px;
 
-  min-height: 78px;
+  min-height: 74px;
 
   margin: 0 auto;
-
   padding: 0 32px;
 
   display: flex;
-
   align-items: center;
-
-  justify-content: space-between;
 
   gap: 30px;
-
-  box-sizing: border-box;
-
 }
 
 
-/* =========================================================
-   BRAND
-========================================================= */
+/* ==========================================
+   LOGO
+   ========================================== */
 
-.brand {
+.logo {
+  flex-shrink: 0;
 
-  display: flex;
-
+  display: inline-flex;
   align-items: center;
 
-  gap: 11px;
-
-  flex-shrink: 0;
+  color: #0f6045;
 
   text-decoration: none;
-
-}
-
-
-/* =========================================================
-   BRAND ICON
-========================================================= */
-
-.brand-icon {
-
-  width: 44px;
-
-  height: 44px;
-
-  flex-shrink: 0;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border-radius: 13px;
-
-  background:
-    rgba(255, 255, 255, 0.14);
-
-  color: #ffffff;
-
-  font-size: 19px;
-
-  transform: rotate(-8deg);
-
-  box-shadow:
-    0 7px 18px rgba(0, 0, 0, 0.15);
-
-}
-
-
-.brand-icon i {
-
-  transform: rotate(8deg);
-
-}
-
-
-/* =========================================================
-   BRAND TEXT
-========================================================= */
-
-.brand-text {
-
-  display: flex;
-
-  flex-direction: column;
-
-  line-height: 1;
-
-}
-
-
-.brand-name {
-
-  color: #ffffff;
 
   font-size: 21px;
-
   font-weight: 800;
 
-  letter-spacing: -0.6px;
+  letter-spacing: 0.5px;
 
+  white-space: nowrap;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.logo:hover {
+  color: #0b4d38;
+  transform: translateY(-1px);
 }
 
 
-.brand-name span {
+/* ==========================================
+   DESKTOP NAV
+   ========================================== */
 
-  color: #ffffff;
-
-}
-
-
-.brand-text small {
-
-  margin-top: 6px;
-
-  color:
-    rgba(255, 255, 255, 0.70);
-
-  font-size: 8px;
-
-  font-weight: 600;
-
-  letter-spacing: 1.3px;
-
-  text-transform: uppercase;
-
-}
-
-
-/* =========================================================
-   DESKTOP NAVIGATION
-========================================================= */
-
-.desktop-navigation {
+.desktop-nav {
+  flex: 1;
 
   display: flex;
-
   align-items: center;
+  justify-content: center;
 
-  gap: 3px;
-
-  margin-left: auto;
-
+  gap: 26px;
 }
 
 
-.desktop-navigation a {
-
+.desktop-nav a {
   position: relative;
 
-  padding: 10px 13px;
+  display: inline-flex;
+  align-items: center;
 
-  color:
-    rgba(255, 255, 255, 0.82);
+  padding: 27px 0;
 
-  font-size: 14px;
-
-  font-weight: 600;
+  color: #475569;
 
   text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 600;
 
   white-space: nowrap;
 
   transition:
     color 0.2s ease;
-
 }
 
 
-.desktop-navigation a::after {
-
+.desktop-nav a::after {
   content: '';
 
   position: absolute;
 
-  left: 13px;
+  left: 0;
+  right: 0;
 
-  right: 13px;
-
-  bottom: 3px;
+  bottom: 17px;
 
   height: 2px;
 
-  border-radius: 10px;
+  background: #0f6045;
 
-  background: #ffffff;
+  border-radius: 2px;
 
   transform: scaleX(0);
 
@@ -246,533 +123,346 @@
 
   transition:
     transform 0.2s ease;
-
 }
 
 
-.desktop-navigation a:hover {
-
-  color: #ffffff;
-
+.desktop-nav a:hover {
+  color: #0f6045;
 }
 
 
-.desktop-navigation a:hover::after,
-
-.desktop-navigation a.active::after {
-
+.desktop-nav a:hover::after,
+.desktop-nav a.active::after {
   transform: scaleX(1);
-
 }
 
 
-.desktop-navigation a.active {
-
-  color: #ffffff;
-
+.desktop-nav a.active {
+  color: #0f6045;
 }
 
 
-/* =========================================================
-   HEADER ACTIONS
-========================================================= */
+/* ==========================================
+   DESKTOP AUTH
+   ========================================== */
 
-.header-actions {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 12px;
-
-  flex-shrink: 0;
-
-}
-
-
-/* =========================================================
-   SEARCH BUTTON
-========================================================= */
-
-.search-button {
-
-  width: 40px;
-
-  height: 40px;
-
+.desktop-auth {
   flex-shrink: 0;
 
   display: flex;
-
   align-items: center;
 
-  justify-content: center;
-
-  border:
-    1px solid rgba(255, 255, 255, 0.25);
-
-  border-radius: 50%;
-
-  background:
-    rgba(255, 255, 255, 0.10);
-
-  color: #ffffff;
-
-  font-size: 14px;
-
-  cursor: pointer;
-
-  transition: all 0.2s ease;
-
+  gap: 10px;
 }
 
 
-.search-button:hover {
+/*
+  Your shared app-button component
+  may render its own internal button.
+*/
 
-  color: #0F6045;
-
-  border-color: #ffffff;
-
-  background: #ffffff;
-
-  transform: translateY(-1px);
-
-}
-
-
-/* =========================================================
-   BOOK BUTTON
-========================================================= */
-
-.book-button {
-
-  min-height: 44px;
-
-  padding: 0 19px;
-
+.desktop-auth app-button {
   display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 8px;
-
-  border-radius: 10px;
-
-  background: #ffffff;
-
-  color: #0F6045;
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  text-decoration: none;
-
-  box-shadow:
-    0 6px 18px rgba(0, 0, 0, 0.12);
-
-  transition: all 0.2s ease;
-
 }
 
 
-.book-button:hover {
-
-  background: #E8F5EF;
-
-  color: #0F6045;
-
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 9px 23px rgba(0, 0, 0, 0.18);
-
-}
-
-
-/* =========================================================
+/* ==========================================
    MOBILE MENU BUTTON
-========================================================= */
+   ========================================== */
 
 .mobile-menu-button {
-
   display: none;
 
   width: 42px;
-
   height: 42px;
 
-  flex-shrink: 0;
+  padding: 0;
 
-  align-items: center;
+  border: 1px solid #dce5e1;
+  border-radius: 8px;
 
-  justify-content: center;
+  background: #ffffff;
 
-  border:
-    1px solid rgba(255, 255, 255, 0.30);
-
-  border-radius: 10px;
-
-  background:
-    rgba(255, 255, 255, 0.10);
-
-  color: #ffffff;
+  color: #0f6045;
 
   font-size: 18px;
 
   cursor: pointer;
 
-  transition: all 0.2s ease;
+  align-items: center;
+  justify-content: center;
 
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 
 .mobile-menu-button:hover {
+  background: #0f6045;
+  border-color: #0f6045;
+  color: #ffffff;
+}
+
+
+/* ==========================================
+   MOBILE MENU
+   ========================================== */
+
+.mobile-menu {
+  display: none;
+
+  width: 100%;
 
   background: #ffffff;
 
-  color: #0F6045;
+  border-top: 1px solid #edf1ef;
 
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 
-/* =========================================================
-   MOBILE NAVIGATION
-========================================================= */
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
 
-.mobile-navigation {
-
-  display: none;
-
+  padding: 12px 20px;
 }
 
 
-/* =========================================================
+.mobile-nav a {
+  display: flex;
+  align-items: center;
+
+  min-height: 46px;
+
+  padding: 10px 14px;
+
+  color: #475569;
+
+  text-decoration: none;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  border-radius: 7px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+
+.mobile-nav a:hover {
+  background: #f1f7f4;
+  color: #0f6045;
+}
+
+
+.mobile-nav a.active {
+  background: #eaf4f0;
+  color: #0f6045;
+}
+
+
+/* ==========================================
+   MOBILE AUTH
+   ========================================== */
+
+.mobile-auth {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 14px 20px 20px;
+
+  border-top: 1px solid #edf1ef;
+}
+
+
+.mobile-auth app-button {
+  width: 100%;
+}
+
+
+/* ==========================================
    TABLET
-========================================================= */
+   ========================================== */
 
-@media (max-width: 1050px) {
+@media (max-width: 1200px) {
 
   .header-container {
+    padding: 0 22px;
 
-    padding: 0 24px;
-
-    gap: 15px;
-
+    gap: 20px;
   }
 
 
-  .desktop-navigation {
-
-    gap: 0;
-
+  .desktop-nav {
+    gap: 18px;
   }
 
 
-  .desktop-navigation a {
-
-    padding: 10px 9px;
-
+  .desktop-nav a {
     font-size: 13px;
-
   }
 
 
-  .book-button {
-
-    padding: 0 15px;
-
+  .logo {
+    font-size: 18px;
   }
 
 }
 
 
-
-#destinations {
-  scroll-margin-top: 90px;
-}
-
-/* =========================================================
+/* ==========================================
    MOBILE
-========================================================= */
+   ========================================== */
 
-@media (max-width: 850px) {
-
-  /* -----------------------------------------
-     Header
-  ----------------------------------------- */
+@media (max-width: 992px) {
 
   .header-container {
+    min-height: 68px;
 
-    min-height: 70px;
+    padding: 0 18px;
 
-    padding: 0 20px;
-
-    gap: 15px;
-
+    justify-content: space-between;
   }
 
 
-  /* -----------------------------------------
-     Brand
-  ----------------------------------------- */
-
-  .brand {
-
-    min-width: 0;
-
-  }
-
-
-  .brand-text {
-
-    min-width: 0;
-
-  }
-
-
-  .brand-name {
-
-    font-size: 20px;
-
-  }
-
-
-  /* -----------------------------------------
-     Hide Desktop
-  ----------------------------------------- */
-
-  .desktop-navigation,
-
-  .header-actions {
-
+  .desktop-nav {
     display: none;
-
   }
 
 
-  /* -----------------------------------------
-     Show Mobile Button
-  ----------------------------------------- */
+  .desktop-auth {
+    display: none;
+  }
+
 
   .mobile-menu-button {
-
-    display: flex;
-
-    margin-left: auto;
-
+    display: inline-flex;
   }
 
 
-  /* -----------------------------------------
-     Mobile Navigation
-  ----------------------------------------- */
-
-  .mobile-navigation {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 4px;
-
-    width: 100%;
-
-    max-height: 0;
-
-    overflow: hidden;
-
-    padding: 0 20px;
-
-    box-sizing: border-box;
-
-    background: #0F6045;
-
-    border-top:
-      1px solid transparent;
-
-    transition:
-      max-height 0.3s ease,
-      padding 0.3s ease,
-      border-color 0.3s ease;
-
+  .mobile-menu {
+    display: block;
   }
 
 
-  /* -----------------------------------------
-     OPEN MENU
-  ----------------------------------------- */
-
-  .mobile-navigation.open {
-
-    max-height: 600px;
-
-    padding:
-      12px 20px 20px;
-
-    border-top-color:
-      rgba(255, 255, 255, 0.12);
-
+  .logo {
+    font-size: 18px;
   }
 
+}
 
-  /* -----------------------------------------
-     Mobile Links
-  ----------------------------------------- */
 
-  .mobile-navigation a {
+/* ==========================================
+   SMALL MOBILE
+   ========================================== */
 
-    width: 100%;
+@media (max-width: 576px) {
 
-    min-height: 46px;
+  .header-container {
+    min-height: 62px;
 
     padding: 0 14px;
-
-    box-sizing: border-box;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    border-radius: 9px;
-
-    color:
-      rgba(255, 255, 255, 0.85);
-
-    font-size: 14px;
-
-    font-weight: 600;
-
-    text-decoration: none;
-
-    transition:
-      background 0.2s ease,
-      color 0.2s ease;
-
   }
 
 
-  .mobile-navigation a:hover,
-
-  .mobile-navigation a.active {
-
-    background:
-      rgba(255, 255, 255, 0.12);
-
-    color: #ffffff;
-
-  }
-
-
-  /* -----------------------------------------
-     Mobile Icons
-  ----------------------------------------- */
-
-  .mobile-navigation a i {
-
-    width: 20px;
-
-    flex-shrink: 0;
-
-    text-align: center;
-
-    color: #ffffff;
-
+  .logo {
     font-size: 15px;
 
+    letter-spacing: 0.2px;
   }
 
 
-  /* -----------------------------------------
-     Mobile Book Button
-  ----------------------------------------- */
+  .mobile-menu-button {
+    width: 38px;
+    height: 38px;
 
-  .mobile-navigation .mobile-book-button {
-
-    margin-top: 8px;
-
-    justify-content: center;
-
-    background: #ffffff;
-
-    color: #0F6045;
-
-    box-shadow:
-      0 6px 16px rgba(0, 0, 0, 0.15);
-
+    font-size: 16px;
   }
 
 
-  .mobile-navigation .mobile-book-button:hover {
-
-    background: #E8F5EF;
-
-    color: #0F6045;
-
+  .mobile-nav {
+    padding: 10px 14px;
   }
 
 
-  .mobile-navigation .mobile-book-button i {
+  .mobile-nav a {
+    min-height: 44px;
 
-    color: #0F6045;
+    padding: 9px 12px;
 
+    font-size: 14px;
+  }
+
+
+  .mobile-auth {
+    padding:
+      12px 14px
+      18px;
   }
 
 }
 
 
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
+/* ==========================================
+   VERY SMALL DEVICES
+   ========================================== */
 
-@media (max-width: 450px) {
+@media (max-width: 380px) {
+
+  .logo {
+    font-size: 13px;
+  }
+
 
   .header-container {
-
-    min-height: 66px;
-
-    padding: 0 15px;
-
+    padding: 0 10px;
   }
 
-
-  .brand-icon {
-
-    width: 40px;
-
-    height: 40px;
-
-    font-size: 17px;
-
-  }
+}
 
 
-  .brand-name {
+/* ==========================================
+   BUTTON ALIGNMENT
+   ========================================== */
 
-    font-size: 18px;
-
-  }
-
-
-  .brand-text small {
-
-    font-size: 7px;
-
-    letter-spacing: 1px;
-
-  }
+.desktop-auth app-button,
+.mobile-auth app-button {
+  vertical-align: middle;
+}
 
 
-  .mobile-menu-button {
+/* ==========================================
+   ACCESSIBILITY
+   ========================================== */
 
-    width: 40px;
+.mobile-menu-button:focus-visible,
+.desktop-nav a:focus-visible,
+.mobile-nav a:focus-visible {
+  outline: 2px solid #0f6045;
+  outline-offset: 2px;
+}
 
-    height: 40px;
 
+/* ==========================================
+   REDUCE MOTION
+   ========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .logo,
+  .desktop-nav a,
+  .desktop-nav a::after,
+  .mobile-menu-button,
+  .mobile-nav a {
+    transition: none;
   }
 
 }

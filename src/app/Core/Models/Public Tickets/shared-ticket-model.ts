@@ -21,6 +21,13 @@ export interface SharedTicketModel {
   createdBy: string;
   ticketTypeId:number | null,
   ticketTypeName : string | null;
+   stops: SharedTicketStop[];
+}
+export interface SharedTicketStop {
+  stopNumber: number;
+  stopAirport: string | null;
+  arrivalDateTime: string | null;
+  departureDateTime: string | null;
 }
 
 export interface SharedTicketsRequest {
