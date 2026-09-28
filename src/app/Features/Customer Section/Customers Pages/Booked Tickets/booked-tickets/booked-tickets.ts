@@ -7,7 +7,9 @@ import { BookedTicketsService } from '../../../Customers services/Booked Tickets
 import { TicketRealtimeService } from '../../../../../Shared/components/TicketRealtimeService/ticket-realtime-service';
 
 import {
+  CancelBookingPassengerRequest,
   CustomerBooking,
+  CustomerBookingPassenger,
   CustomerBookingSearchRequest
 } from '../../../Customers Models/Booked Tickets Models/booked-tickets-model';
 
@@ -224,11 +226,8 @@ onTableAction(event: {
   row: CustomerBooking;
 }): void {
 
-  console.log('TABLE ACTION EVENT:', event);
 
   if (event.action.type === 'view') {
-
-    console.log('BOOKING:', event.row);
 
     this.viewBooking(event.row);
   }
@@ -270,5 +269,138 @@ onTableAction(event: {
   this.pageNumber = 1;
 
   this.loadBookings();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Cancel Passenger  Booked Tickets
+showCancelModal = false;
+
+selectedPassenger: CustomerBookingPassenger | null = null;
+
+cancellationReason = '';
+
+isCancelling = false;
+
+openCancelModal(
+  passenger: CustomerBookingPassenger
+): void {
+
+  // Customer can cancel ONLY Held passenger
+  if (passenger.passengerBookingStatus !== 'Held') {
+    return;
+  }
+
+  this.selectedPassenger = passenger;
+  this.cancellationReason = '';
+  this.showCancelModal = true;
+
+  this.cdr.detectChanges();
+}
+
+
+
+closeCancelModal(): void {
+
+  if (this.isCancelling) {
+    return;
+  }
+
+  this.showCancelModal = false;
+  this.selectedPassenger = null;
+  this.cancellationReason = '';
+
+  this.cdr.detectChanges();
+}
+
+
+
+cancelTicket(): void {
+
+  if (!this.selectedPassenger) {
+    return;
+  }
+
+  if (
+    !this.selectedPassenger.bookingPassengerId ||
+    this.selectedPassenger.bookingPassengerId <= 0
+  ) {
+    return;
+  }
+
+  this.isCancelling = true;
+
+  const request: CancelBookingPassengerRequest = {
+    bookingPassengerId:
+      this.selectedPassenger.bookingPassengerId,
+
+    cancellationReason:
+      this.cancellationReason?.trim() || undefined
+  };
+
+  this.bookedTicketsService
+    .cancelBookingPassenger(request)
+    .subscribe({
+
+      next: (response) => {
+
+        this.isCancelling = false;
+
+        if (response?.status) {
+
+          this.showCancelModal = false;
+          this.selectedPassenger = null;
+          this.cancellationReason = '';
+
+          // Reload customer bookings immediately
+          this.loadBookings();
+
+          this.cdr.detectChanges();
+
+        } else {
+
+          console.error(
+            'Cancellation failed:',
+            response?.message
+          );
+
+          this.cdr.detectChanges();
+        }
+      },
+
+      error: (error) => {
+
+        this.isCancelling = false;
+
+        console.error(
+          'Error cancelling ticket:',
+          error
+        );
+
+        this.cdr.detectChanges();
+      }
+    });
 }
 }

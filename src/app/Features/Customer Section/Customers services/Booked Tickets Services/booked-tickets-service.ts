@@ -1,5 +1,5 @@
 import { inject, Injectable, Service } from '@angular/core';
-import { CustomerBookingApiResponse, CustomerBookingSearchRequest } from '../../Customers Models/Booked Tickets Models/booked-tickets-model';
+import { CancelBookingPassengerRequest, CustomerBookingApiResponse, CustomerBookingSearchRequest } from '../../Customers Models/Booked Tickets Models/booked-tickets-model';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../../../Core/Services/API Services/api-service';
 import { HttpParams } from '@angular/common/http';
@@ -16,6 +16,20 @@ export class BookedTicketsService {
 
         return this.api.post<CustomerBookingApiResponse>(
             `Public/GetCustomerBookings`,
+            request
+        );
+    }
+
+
+
+
+
+    cancelBookingPassenger(
+        request: CancelBookingPassengerRequest
+    ): Observable<any> {
+
+        return this.api.post<any>(
+            `Public/CancelBookingPassenger`,
             request
         );
     }

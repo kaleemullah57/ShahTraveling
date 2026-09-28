@@ -77,3 +77,36 @@ export interface CustomerBookingApiResponse {
   data: CustomerBooking[];
   success: boolean;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Cancel Ticket Booking
+export interface CancelBookingPassengerRequest {
+  bookingPassengerId: number;
+  cancellationReason?: string;
+}
+
+export interface CancelBookingPassengerResponse {
+  bookingId: number;
+  bookingPassengerId: number;
+  purchaseInvoiceItemId: number;
+  bookingStatusId: number;
+  bookingStatus?: string;
+  cancellationTypeId: number;
+  cancellationTypeName?: string;
+}

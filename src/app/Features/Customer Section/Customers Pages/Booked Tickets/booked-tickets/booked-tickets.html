@@ -174,272 +174,276 @@
           <!-- PASSENGER CARDS -->
 
           @for (
-            passenger of selectedBooking.passengerBookingDetails;
-            track passenger.bookingPassengerId;
-            let i = $index
-          ) {
+  passenger of selectedBooking.passengerBookingDetails;
+  track passenger.bookingPassengerId;
+  let i = $index
+) {
 
-            <div class="passenger-card">
+  <div class="passenger-card">
 
-              <!-- Passenger Header -->
+    <!-- Passenger Header -->
 
-              <div class="passenger-card-header">
+    <div class="passenger-card-header">
 
-                <div class="passenger-number">
+      <div class="passenger-number">
 
-                  <span>
-                    {{ i + 1 }}
-                  </span>
+        <span>
+          {{ i + 1 }}
+        </span>
 
-                  <div>
+        <div>
 
-                    <h4>
-                      {{ passenger.passengerName }}
-                    </h4>
+          <h4>
+            {{ passenger.passengerName }}
+          </h4>
 
-                    <small>
-                      {{ passenger.passengerTypeName }}
-                    </small>
+          <small>
+            {{ passenger.passengerTypeName }}
+          </small>
 
-                  </div>
+        </div>
 
-                </div>
+      </div>
 
 
-                <div class="passenger-price">
+      <div class="passenger-price">
+
+        <span>
+          Price
+        </span>
 
-                  <span>
-                    Price
-                  </span>
+        <strong>
+          {{ passenger.totalPrice | number:'1.2-2' }}
+        </strong>
 
-                  <strong>
-                    {{ passenger.totalPrice | number:'1.2-2' }}
-                  </strong>
+      </div>
 
-                </div>
+    </div>
 
-              </div>
 
+    <!-- Passenger Information -->
 
-              <!-- Passenger Information -->
+    <div class="passenger-details-grid">
 
-              <div class="passenger-details-grid">
+      <div class="detail-item">
+        <span>Passport Number</span>
+        <strong>
+          {{ passenger.passportNumber || '-' }}
+        </strong>
+      </div>
 
-                <div class="detail-item">
+      <div class="detail-item">
+        <span>Date of Birth</span>
+        <strong>
+          {{
+            passenger.dateOfBirth
+              ? (passenger.dateOfBirth | date:'dd MMM yyyy')
+              : '-'
+          }}
+        </strong>
+      </div>
 
-                  <span>
-                    Passport Number
-                  </span>
+      <div class="detail-item">
+        <span>Gender</span>
+        <strong>
+          {{ passenger.gender || '-' }}
+        </strong>
+      </div>
 
-                  <strong>
-                    {{ passenger.passportNumber || '-' }}
-                  </strong>
+      <div class="detail-item">
+        <span>Nationality</span>
+        <strong>
+          {{ passenger.nationality || '-' }}
+        </strong>
+      </div>
 
-                </div>
+      <div class="detail-item">
+        <span>Contact</span>
+        <strong>
+          {{ passenger.contactNumber || '-' }}
+        </strong>
+      </div>
 
+      <div class="detail-item">
+        <span>Email</span>
+        <strong>
+          {{ passenger.email || '-' }}
+        </strong>
+      </div>
 
-                <div class="detail-item">
+    </div>
 
-                  <span>
-                    Date of Birth
-                  </span>
 
-                  <strong>
-                    {{
-                      passenger.dateOfBirth
-                        ? (passenger.dateOfBirth | date:'dd MMM yyyy')
-                        : '-'
-                    }}
-                  </strong>
+    <!-- Passenger Status + Cancel -->
 
-                </div>
+    <div class="passenger-status-row">
 
+      <div class="passenger-current-status">
 
-                <div class="detail-item">
+        <span>
+          Passenger Status
+        </span>
 
-                  <span>
-                    Gender
-                  </span>
+        <strong
+          [class.status-held]="
+            passenger.passengerBookingStatus === 'Held'
+          "
+          [class.status-approved]="
+            passenger.passengerBookingStatus === 'Approved'
+          "
+          [class.status-cancelled]="
+            passenger.passengerBookingStatus === 'Cancelled'
+          "
+          [class.status-expired]="
+            passenger.passengerBookingStatus === 'Expired'
+          "
+          [class.status-rejected]="
+            passenger.passengerBookingStatus === 'Rejected'
+          "
+        >
 
-                  <strong>
-                    {{ passenger.gender || '-' }}
-                  </strong>
+          {{
+            passenger.passengerBookingStatus
+              || selectedBooking.bookingStatus
+              || 'Unknown'
+          }}
 
-                </div>
+        </strong>
 
+      </div>
 
-                <div class="detail-item">
 
-                  <span>
-                    Nationality
-                  </span>
+      @if (
+        passenger.passengerBookingStatus === 'Held'
+      ) {
 
-                  <strong>
-                    {{ passenger.nationality || '-' }}
-                  </strong>
+        <button
+          type="button"
+          class="cancel-ticket-btn"
+          (click)="openCancelModal(passenger)"
+        >
 
-                </div>
+          <i class="fa fa-times-circle"></i>
 
+          Cancel Ticket
 
-                <div class="detail-item">
+        </button>
 
-                  <span>
-                    Contact
-                  </span>
+      }
 
-                  <strong>
-                    {{ passenger.contactNumber || '-' }}
-                  </strong>
+    </div>
 
-                </div>
 
+    <!-- HOLD INFORMATION -->
 
-                <div class="detail-item">
+    @if (passenger.holdUntil) {
 
-                  <span>
-                    Email
-                  </span>
+      <div class="hold-info">
 
-                  <strong>
-                    {{ passenger.email || '-' }}
-                  </strong>
+        <i class="fa fa-clock"></i>
 
-                </div>
+        <span>
+          Hold Until:
+        </span>
 
-              </div>
+        <strong>
+          {{ passenger.holdUntil | date:'dd MMM yyyy, hh:mm a' }}
+        </strong>
 
+      </div>
 
-              <!-- Passenger Status -->
+    }
 
-              <div class="passenger-status-row">
 
-                <span>
-                  Passenger Status
-                </span>
+    <!-- APPROVAL INFORMATION -->
 
-                <strong>
+    @if (passenger.approvedDate) {
 
-                  {{
-                    passenger.passengerBookingStatus
-                      || selectedBooking.bookingStatus
-                      || 'Unknown'
-                  }}
+      <div class="approval-info">
 
-                </strong>
+        <i class="fa fa-check-circle"></i>
 
-              </div>
+        <span>
+          Approved on
+        </span>
 
+        <strong>
+          {{ passenger.approvedDate | date:'dd MMM yyyy, hh:mm a' }}
+        </strong>
 
-              <!-- HOLD INFORMATION -->
+        @if (passenger.approvedBy) {
 
-              @if (passenger.holdUntil) {
+          <span>
+            by {{ passenger.approvedBy }}
+          </span>
 
-                <div class="hold-info">
+        }
 
-                  <i class="fa fa-clock"></i>
+      </div>
 
-                  <span>
-                    Hold Until:
-                  </span>
+    }
 
-                  <strong>
-                    {{ passenger.holdUntil | date:'dd MMM yyyy, hh:mm a' }}
-                  </strong>
 
-                </div>
+    <!-- CANCELLATION INFORMATION -->
 
-              }
+    @if (passenger.cancelledDate) {
 
+      <div class="cancellation-info">
 
-              <!-- APPROVAL INFORMATION -->
+        <i class="fa fa-times-circle"></i>
 
-              @if (passenger.approvedDate) {
+        <span>
+          Cancelled on
+        </span>
 
-                <div class="approval-info">
+        <strong>
+          {{ passenger.cancelledDate | date:'dd MMM yyyy, hh:mm a' }}
+        </strong>
 
-                  <i class="fa fa-check-circle"></i>
+        @if (passenger.cancellationReason) {
 
-                  <span>
-                    Approved on
-                  </span>
+          <span>
+            — {{ passenger.cancellationReason }}
+          </span>
 
-                  <strong>
-                    {{ passenger.approvedDate | date:'dd MMM yyyy, hh:mm a' }}
-                  </strong>
+        }
 
-                  @if (passenger.approvedBy) {
+      </div>
 
-                    <span>
-                      by {{ passenger.approvedBy }}
-                    </span>
+    }
 
-                  }
 
-                </div>
+    <!-- REJECTION INFORMATION -->
 
-              }
+    @if (passenger.rejectedDate) {
 
+      <div class="rejection-info">
 
-              <!-- CANCELLATION INFORMATION -->
+        <i class="fa fa-ban"></i>
 
-              @if (passenger.cancelledDate) {
+        <span>
+          Rejected on
+        </span>
 
-                <div class="cancellation-info">
+        <strong>
+          {{ passenger.rejectedDate | date:'dd MMM yyyy, hh:mm a' }}
+        </strong>
 
-                  <i class="fa fa-times-circle"></i>
+        @if (passenger.rejectionReason) {
 
-                  <span>
-                    Cancelled on
-                  </span>
+          <span>
+            — {{ passenger.rejectionReason }}
+          </span>
 
-                  <strong>
-                    {{ passenger.cancelledDate | date:'dd MMM yyyy, hh:mm a' }}
-                  </strong>
+        }
 
-                  @if (passenger.cancellationReason) {
+      </div>
 
-                    <span>
-                      — {{ passenger.cancellationReason }}
-                    </span>
+    }
 
-                  }
+  </div>
 
-                </div>
-
-              }
-
-
-              <!-- REJECTION INFORMATION -->
-
-              @if (passenger.rejectedDate) {
-
-                <div class="rejection-info">
-
-                  <i class="fa fa-ban"></i>
-
-                  <span>
-                    Rejected on
-                  </span>
-
-                  <strong>
-                    {{ passenger.rejectedDate | date:'dd MMM yyyy, hh:mm a' }}
-                  </strong>
-
-                  @if (passenger.rejectionReason) {
-
-                    <span>
-                      — {{ passenger.rejectionReason }}
-                    </span>
-
-                  }
-
-                </div>
-
-              }
-
-            </div>
-
-          }
+}
 
         </div>
 
@@ -489,5 +493,120 @@
     </div>
 
   }
+
+
+
+
+
+
+  @if (showCancelModal && selectedPassenger) {
+
+  <div
+    class="cancel-modal-backdrop"
+    (click)="closeCancelModal()"
+  >
+
+    <div
+      class="cancel-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="cancel-modal-icon">
+        <i class="fa fa-times-circle"></i>
+      </div>
+
+
+      <h3>Cancel Ticket?</h3>
+
+      <p class="cancel-description">
+        Are you sure you want to cancel the ticket for
+        <strong>
+          {{ selectedPassenger.passengerName }}
+        </strong>?
+      </p>
+
+
+      <div class="cancel-passenger-info">
+
+        <div>
+          <span>Passenger</span>
+          <strong>
+            {{ selectedPassenger.passengerName }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Type</span>
+          <strong>
+            {{ selectedPassenger.passengerTypeName }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Status</span>
+          <strong>
+            {{ selectedPassenger.passengerBookingStatus }}
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="reason-field">
+
+        <label>
+          Cancellation Reason
+          <span>(Optional)</span>
+        </label>
+
+        <textarea
+          [(ngModel)]="cancellationReason"
+          rows="4"
+          placeholder="Enter cancellation reason..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="cancel-modal-actions">
+
+        <button
+          type="button"
+          class="keep-ticket-btn"
+          [disabled]="isCancelling"
+          (click)="closeCancelModal()"
+        >
+          Keep Ticket
+        </button>
+
+
+        <button
+          type="button"
+          class="confirm-cancel-btn"
+          [disabled]="isCancelling"
+          (click)="cancelTicket()"
+        >
+
+          @if (isCancelling) {
+
+            <i class="fa fa-spinner fa-spin"></i>
+            Cancelling...
+
+          } @else {
+
+            <i class="fa fa-times"></i>
+            Cancel Ticket
+
+          }
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
 
 </div>

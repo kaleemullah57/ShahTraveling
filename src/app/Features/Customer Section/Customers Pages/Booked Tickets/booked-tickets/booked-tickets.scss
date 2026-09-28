@@ -1248,3 +1248,346 @@
   }
 }
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.cancel-ticket-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 9px 16px;
+
+  border: 1px solid rgba(220, 53, 69, 0.35);
+  border-radius: 10px;
+
+  background: rgba(220, 53, 69, 0.08);
+  color: #dc3545;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.cancel-ticket-btn:hover {
+  background: rgba(220, 53, 69, 0.14);
+  transform: translateY(-1px);
+}
+
+
+/* =========================================
+   Cancellation Modal
+   ========================================= */
+
+.cancel-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(4, 24, 19, 0.62);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+
+.cancel-modal {
+  width: 100%;
+  max-width: 480px;
+
+  padding: 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.92),
+      rgba(255, 255, 255, 0.78)
+    );
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.25);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  animation: cancelModalIn 0.2s ease-out;
+}
+
+
+@keyframes cancelModalIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+.cancel-modal-icon {
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(220, 53, 69, 0.1);
+
+  color: #dc3545;
+
+  font-size: 25px;
+}
+
+
+.cancel-modal h3 {
+  margin: 0;
+
+  text-align: center;
+
+  color: #173b32;
+
+  font-size: 24px;
+  font-weight: 700;
+}
+
+
+.cancel-description {
+  margin: 10px 0 22px;
+
+  text-align: center;
+
+  color: #66756f;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+.cancel-passenger-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+}
+
+
+.cancel-passenger-info > div {
+  padding: 12px;
+
+  border: 1px solid rgba(15, 96, 69, 0.12);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.55);
+}
+
+
+.cancel-passenger-info span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #80908a;
+
+  font-size: 11px;
+}
+
+
+.cancel-passenger-info strong {
+  display: block;
+
+  color: #234b40;
+
+  font-size: 13px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.reason-field {
+  margin-bottom: 22px;
+}
+
+
+.reason-field label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #31584e;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+.reason-field label span {
+  color: #899791;
+  font-weight: 400;
+}
+
+
+.reason-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 12px 14px;
+
+  border: 1px solid rgba(15, 96, 69, 0.18);
+  border-radius: 12px;
+
+  outline: none;
+
+  resize: vertical;
+
+  background: rgba(255, 255, 255, 0.7);
+
+  color: #24483e;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  transition: border-color 0.2s ease;
+}
+
+
+.reason-field textarea:focus {
+  border-color: #0F6045;
+}
+
+
+.cancel-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 10px;
+}
+
+
+.keep-ticket-btn,
+.confirm-cancel-btn {
+  min-width: 125px;
+
+  padding: 11px 18px;
+
+  border-radius: 11px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+
+.keep-ticket-btn {
+  border: 1px solid rgba(15, 96, 69, 0.18);
+
+  background: rgba(255, 255, 255, 0.65);
+
+  color: #31584e;
+}
+
+
+.keep-ticket-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+
+.confirm-cancel-btn {
+  border: none;
+
+  background: #dc3545;
+
+  color: white;
+}
+
+
+.confirm-cancel-btn:hover {
+  background: #c82333;
+}
+
+
+.keep-ticket-btn:disabled,
+.confirm-cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+@media (max-width: 600px) {
+
+  .cancel-modal {
+    padding: 22px;
+    border-radius: 20px;
+  }
+
+  .cancel-passenger-info {
+    grid-template-columns: 1fr;
+  }
+
+  .cancel-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .keep-ticket-btn,
+  .confirm-cancel-btn {
+    width: 100%;
+  }
+
+}
