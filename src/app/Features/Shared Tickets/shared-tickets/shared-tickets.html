@@ -5,600 +5,858 @@
 
 
 <!-- ============================================================
-     FILTERS
+     FLIGHT SEARCH / FILTERS
 ============================================================ -->
 
-<div class="filters">
+<!-- ============================================================
+     FLIGHT SEARCH / FILTERS
+============================================================ -->
 
-  <div class="filter-item">
+<div class="flight-search-panel">
 
-    <label>
-      Search
-    </label>
+  <div class="flight-search-top">
 
-    <input type="text" [(ngModel)]="search" placeholder="Airline, airport, country..." />
+    <!-- SEARCH -->
+    <div class="search-field search-field-wide">
 
-  </div>
+      <label>
+        <i class="fa fa-search"></i>
+        Search
+      </label>
 
+      <input
+        type="text"
+        [(ngModel)]="search"
+        placeholder="Airline, airport, country..."
+      />
 
-  <div class="filter-item">
-
-    <label>
-      From Date
-    </label>
-
-    <input type="date" [(ngModel)]="fromDate" />
-
-  </div>
-
-
-  <div class="filter-item">
-
-    <label>
-      To Date
-    </label>
-
-    <input type="date" [(ngModel)]="toDate" />
-
-  </div>
+    </div>
 
 
-  <!-- PRICE FILTERS ONLY FOR LOGGED IN USER -->
+    <!-- FROM DATE -->
+    <div class="search-field">
 
-  @if (authService.isLoggedIn()) {
+      <label>
+        From Date
+      </label>
 
-  <div class="filter-item">
+      <input
+        type="date"
+        [(ngModel)]="fromDate"
+      />
 
-    <label>
-      Min Price
-    </label>
-
-    <input type="number" [(ngModel)]="fromSellingPrice" placeholder="Min price" min="0" />
-
-  </div>
-
-
-  <div class="filter-item">
-
-    <label>
-      Max Price
-    </label>
-
-    <input type="number" [(ngModel)]="toSellingPrice" placeholder="Max price" min="0" />
-
-  </div>
-
-  }
+    </div>
 
 
-  <div class="filter-actions">
+    <!-- TO DATE -->
+    <div class="search-field">
 
-    <button type="button" (click)="applyFilters()">
+      <label>
+        To Date
+      </label>
 
-      <i class="fa fa-search"></i>
+      <input
+        type="date"
+        [(ngModel)]="toDate"
+      />
 
-      Search
-
-    </button>
+    </div>
 
 
-    <button type="button" (click)="clearFilters()">
+    <!-- MIN PRICE -->
+    @if (authService.isLoggedIn()) {
 
-      <i class="fa fa-times"></i>
+      <div class="search-field">
 
-      Clear
+        <label>
+          Min Price
+        </label>
 
-    </button>
+        <input
+          type="number"
+          [(ngModel)]="fromSellingPrice"
+          placeholder="Min price"
+          min="0"
+        />
+
+      </div>
+
+
+      <!-- MAX PRICE -->
+      <div class="search-field">
+
+        <label>
+          Max Price
+        </label>
+
+        <input
+          type="number"
+          [(ngModel)]="toSellingPrice"
+          placeholder="Max price"
+          min="0"
+        />
+
+      </div>
+
+    }
+
+
+    <!-- ACTIONS -->
+    <div class="flight-search-actions">
+
+      <button
+        type="button"
+        class="flight-search-btn"
+        (click)="applyFilters()">
+
+        <i class="fa fa-search"></i>
+
+        Search
+
+      </button>
+
+
+      <button
+        type="button"
+        class="flight-clear-btn"
+        (click)="clearFilters()">
+
+        <i class="fa fa-times"></i>
+
+        Clear
+
+      </button>
+
+    </div>
 
   </div>
 
 </div>
 
 
+
 <!-- ============================================================
-     TICKET RESULTS
+     FLIGHT RESULTS
 ============================================================ -->
 
-<main class="tickets-content">
+<main class="flight-results-page">
+
+  <div class="flight-results-layout">
 
 
-  <!-- RESULT HEADER -->
+    <!-- ========================================================
+         LEFT FILTER SIDEBAR
+    ========================================================= -->
 
-  <div class="results-header">
-
-    <h2>
-      Find your journey
-    </h2>
-
-    <div class="result-count">
-
-      {{ totalRecords }}
-      tickets
-
-    </div>
-
-  </div>
+   
 
 
-  <!-- ============================================================
-       LOADING
-  ============================================================ -->
 
-  @if (loading) {
+    <!-- ========================================================
+         RIGHT SIDE RESULTS
+    ========================================================= -->
 
-  <div class="loading-state">
-
-    <div class="loading-spinner">
-
-      <i class="fa fa-spinner fa-spin"></i>
-
-    </div>
-
-    <p>
-      Finding available tickets...
-    </p>
-
-  </div>
-
-  }
+    <section class="flight-results-content">
 
 
-  <!-- ============================================================
-       EMPTY
-  ============================================================ -->
+      <!-- ======================================================
+           RESULTS HEADER
+      ======================================================= -->
 
-  @else if (tickets.length === 0) {
+      <div class="flight-results-header">
 
-  <div class="empty-state">
+        <div>
 
-    <div class="empty-icon">
+          <span class="results-eyebrow">
+            SHAH TRAVELING AGENCY
+          </span>
 
-      <i class="fa fa-plane"></i>
+          <h2>
+            Available Flights
+          </h2>
 
-    </div>
-
-    <h3>
-      No tickets found
-    </h3>
-
-    <p>
-      There are no available tickets matching your search.
-    </p>
-
-    <button type="button" class="clear-empty-button" (click)="clearFilters()">
-
-      Clear Filters
-
-    </button>
-
-  </div>
-
-  }
-
-
-  <!-- ============================================================
-       TICKETS
-  ============================================================ -->
-
-  @else {
-
-  <div class="ticket-list">
-
-
-    @for (
-    ticket of tickets;
-    track ticket.purchaseInvoiceItemId
-    ) {
-
-    <article class="ticket-card">
-
-
-      <!-- ====================================================
-               TOP
-          ==================================================== -->
-
-      <div class="ticket-top">
-
-
-        <!-- AIRLINE -->
-
-        <div class="airline-info">
-
-          <div class="airline-icon">
-
-            <i class="fa fa-plane"></i>
-
-          </div>
-
-
-          <div>
-
-            <span class="small-label">
-              AIRLINE
-            </span>
-
-            <h3>
-              {{ ticket.airlineName }}
-            </h3>
-
-
-            @if (ticket.airlineCode) {
-
-            <span class="airline-code">
-              {{ ticket.airlineCode }}
-            </span>
-
-            }
-
-          </div>
+          <p>
+            {{ totalRecords }} results found
+          </p>
 
         </div>
 
 
-        <!-- TICKET TYPE -->
+        <!-- SORT -->
+        <div class="flight-sort-tabs">
 
-        <div class="ticket-type">
+          <button
+            type="button"
+            class="active">
 
-          <span class="small-label">
-            TICKET TYPE
-          </span>
+            Lowest Price
 
-          <strong>
-            {{ ticket.ticketTypeName || 'Standard' }}
-          </strong>
+          </button>
+
+
+          <button
+            type="button">
+
+            Most Popular
+
+          </button>
+
+
+          <button
+            type="button">
+
+            Our Trending
+
+          </button>
 
         </div>
 
       </div>
 
 
-      <!-- ====================================================
-               ROUTE
-          ==================================================== -->
 
-      <div class="route-section">
+      <!-- ======================================================
+           LOADING
+      ======================================================= -->
 
+      @if (loading) {
 
-        <!-- FROM -->
+        <div class="flight-loading">
 
-        <div class="airport">
+          <i class="fa fa-spinner fa-spin"></i>
 
-          <span class="country">
-            {{ ticket.fromCountry }}
-          </span>
-
-          <h2>
-            {{ ticket.fromAirport }}
-          </h2>
-
-          <span class="route-time">
-
-            {{
-            ticket.departureDateTime
-            | date:'dd MMM yyyy, hh:mm a'
-            }}
-
+          <span>
+            Finding available tickets...
           </span>
 
         </div>
 
+      }
 
-        <!-- ROUTE -->
 
-        <div class="route-visual">
 
-          <div class="route-line"></div>
+      <!-- ======================================================
+           EMPTY
+      ======================================================= -->
 
-          <div class="route-plane">
+      @else if (tickets.length === 0) {
+
+        <div class="flight-empty">
+
+          <div class="flight-empty-icon">
 
             <i class="fa fa-plane"></i>
 
           </div>
 
-          <span>
-            JOURNEY
-          </span>
+          <h3>
+            No tickets found
+          </h3>
+
+          <p>
+            There are no available tickets matching your search.
+          </p>
+
+          <button
+            type="button"
+            (click)="clearFilters()">
+
+            Clear Filters
+
+          </button>
 
         </div>
 
-
-        <!-- TO -->
-
-        <div class="airport arrival">
-
-          <span class="country">
-            {{ ticket.toCountry }}
-          </span>
-
-          <h2>
-            {{ ticket.toAirport }}
-          </h2>
-
-          <span class="route-time">
-
-            {{
-            ticket.arrivalDateTime
-            | date:'dd MMM yyyy, hh:mm a'
-            }}
-
-          </span>
-
-        </div>
-
-      </div>
+      }
 
 
-      <!-- ====================================================
-               STOPS
-          ==================================================== -->
 
-      @if (
-      ticket.stops &&
-      ticket.stops.length > 0
-      ) {
+      <!-- ======================================================
+           TICKETS
+      ======================================================= -->
 
-      <div class="stops-section">
+      @else {
 
-
-        <div class="stops-header">
-
-          <span>
-
-            <i class="fa fa-map-marker-alt"></i>
-
-            {{ ticket.stops.length }}
-
-            Stop{{
-            ticket.stops.length > 1
-            ? 's'
-            : ''
-            }}
-
-          </span>
-
-        </div>
-
-
-        <div class="stops-list">
+        <div class="flight-ticket-list">
 
 
           @for (
-          stop of ticket.stops;
-          track stop.stopNumber
+            ticket of tickets;
+            track ticket.purchaseInvoiceItemId
           ) {
 
-          <div class="stop-item">
+            <!-- ==================================================
+                 ONE TICKET
+            ================================================== -->
+
+            <article class="flight-ticket-card">
 
 
-            <div class="stop-number">
+              <!-- ================================================
+                   GREEN FARE HEADER
+              ================================================= -->
 
-              {{ stop.stopNumber }}
+              <div class="fare-header">
 
-            </div>
+                <div class="fare-title">
 
+                  <span>
+                    Cheapest Fare
+                  </span>
 
-            <div class="stop-info">
-
-              <strong>
-                {{ stop.stopAirport }}
-              </strong>
-
-
-              <span>
-
-                Arrival:
-
-                {{
-                stop.arrivalDateTime
-                | date:'dd MMM, hh:mm a'
-                }}
-
-              </span>
+                </div>
 
 
-              <span>
+                @if (authService.isLoggedIn()) {
 
-                Departure:
+                  <div class="fare-saving">
 
-                {{
-                stop.departureDateTime
-                | date:'dd MMM, hh:mm a'
-                }}
+                    <i class="fa fa-dollar"></i>
 
-              </span>
+                    Save on this fare
 
-            </div>
+                  </div>
 
-          </div>
+                }
+
+              </div>
+
+
+
+              <!-- ================================================
+                   MAIN FLIGHT INFORMATION
+              ================================================= -->
+
+              <div class="flight-ticket-main">
+
+
+                <!-- ==============================================
+                     AIRLINE
+                =============================================== -->
+
+                <div class="ticket-airline">
+
+                  <div class="airline-logo">
+
+                    <i class="fa fa-plane"></i>
+
+                  </div>
+
+
+                  <div class="airline-details">
+
+                    <strong>
+                      {{ ticket.airlineCode || ticket.airlineName }}
+                    </strong>
+
+                    <span>
+                      {{ ticket.airlineName }}
+                    </span>
+
+
+                    @if (ticket.ticketTypeName) {
+
+                      <small>
+                        {{ ticket.ticketTypeName }}
+                      </small>
+
+                    }
+
+                  </div>
+
+                </div>
+
+
+
+                <!-- ==============================================
+                     DEPARTURE
+                =============================================== -->
+
+                <div class="flight-point departure-point">
+
+                  <strong class="airport-code">
+                    {{ ticket.fromAirport }}
+                  </strong>
+
+
+                  <span class="flight-time">
+
+                    {{
+                      ticket.departureDateTime
+                      | date:'h:mm a'
+                    }}
+
+                  </span>
+
+
+                  <small>
+
+                    {{
+                      ticket.departureDateTime
+                      | date:'dd MMM yyyy'
+                    }}
+
+                  </small>
+
+
+                  <span class="flight-country">
+                    {{ ticket.fromCountry }}
+                  </span>
+
+                </div>
+
+
+
+                <!-- ==============================================
+                     ROUTE
+                =============================================== -->
+
+                <div class="flight-route">
+
+                  <div class="route-duration">
+
+                    @if (
+                      ticket.stops &&
+                      ticket.stops.length > 0
+                    ) {
+
+                      {{ ticket.stops.length }}
+
+                      Stop{{ ticket.stops.length > 1 ? 's' : '' }}
+
+                    }
+                    @else {
+
+                      Direct
+
+                    }
+
+                  </div>
+
+
+                  <div class="route-line-wrapper">
+
+                    <span class="route-dot"></span>
+
+                    <span class="route-line"></span>
+
+
+                    <span class="route-plane-icon">
+
+                      <i class="fa fa-plane"></i>
+
+                    </span>
+
+
+                    <span class="route-line"></span>
+
+                    <span class="route-dot"></span>
+
+                  </div>
+
+
+                  <small>
+                    Flight Journey
+                  </small>
+
+                </div>
+
+
+
+                <!-- ==============================================
+                     ARRIVAL
+                =============================================== -->
+
+                <div class="flight-point arrival-point">
+
+                  <strong class="airport-code">
+                    {{ ticket.toAirport }}
+                  </strong>
+
+
+                  <span class="flight-time">
+
+                    {{
+                      ticket.arrivalDateTime
+                      | date:'h:mm a'
+                    }}
+
+                  </span>
+
+
+                  <small>
+
+                    {{
+                      ticket.arrivalDateTime
+                      | date:'dd MMM yyyy'
+                    }}
+
+                  </small>
+
+
+                  <span class="flight-country">
+                    {{ ticket.toCountry }}
+                  </span>
+
+                </div>
+
+
+
+                <!-- ==============================================
+                     PRICE
+                =============================================== -->
+
+                @if (authService.isLoggedIn()) {
+
+                  <div class="flight-price-section">
+
+                    <span class="price-label">
+                      PRICE
+                    </span>
+
+
+                    <strong class="flight-price">
+
+                      {{ ticket.sellingPrice | number:'1.0-2' }}
+
+                    </strong>
+
+
+                    <span class="price-currency">
+                      USD
+                    </span>
+
+
+                    <small>
+                      Non-Refundable
+                    </small>
+
+                  </div>
+
+                }
+
+
+
+                <!-- ==============================================
+                     ACTION
+                =============================================== -->
+
+                <div class="flight-action-section">
+
+                  @if (authService.isLoggedIn()) {
+
+                    <button
+                      type="button"
+                      class="flight-book-btn"
+                      (click)="openBookingForm(ticket)">
+
+                      Book Now
+
+                    </button>
+
+                  }
+                  @else {
+
+                    <button
+                      type="button"
+                      class="flight-book-btn"
+                      (click)="seeTicketDetails(ticket)">
+
+                      See Details
+
+                    </button>
+
+                  }
+
+
+                  <button
+                    type="button"
+                    class="flight-details-btn">
+
+                    Flight Details
+
+                    <i class="fa fa-chevron-down"></i>
+
+                  </button>
+
+                </div>
+
+              </div>
+
+
+
+              <!-- ================================================
+                   TICKET FOOTER
+              ================================================= -->
+
+              <div class="flight-ticket-footer">
+
+
+                <!-- AVAILABLE -->
+                <div class="ticket-feature">
+
+                  <i class="fa fa-ticket"></i>
+
+                  <span>
+                    Available
+                  </span>
+
+                  <strong>
+                    {{ ticket.availableQuantity }}
+                  </strong>
+
+                </div>
+
+
+                <!-- VALID UNTIL -->
+                <div class="ticket-feature">
+
+                  <i class="fa fa-calendar"></i>
+
+                  <span>
+                    Valid Until
+                  </span>
+
+                  <strong>
+
+                    {{
+                      ticket.validUntil
+                      | date:'dd MMM yyyy'
+                    }}
+
+                  </strong>
+
+                </div>
+
+
+                <!-- STOPS -->
+                @if (
+                  ticket.stops &&
+                  ticket.stops.length > 0
+                ) {
+
+                  <div class="ticket-feature">
+
+                    <i class="fa fa-map-marker"></i>
+
+                    <span>
+                      Stops
+                    </span>
+
+                    <strong>
+                      {{ ticket.stops.length }}
+                    </strong>
+
+                  </div>
+
+                }
+                @else {
+
+                  <div class="ticket-feature direct-feature">
+
+                    <i class="fa fa-check-circle"></i>
+
+                    <span>
+                      Route
+                    </span>
+
+                    <strong>
+                      Direct
+                    </strong>
+
+                  </div>
+
+                }
+
+
+                <!-- BAGGAGE -->
+                <div class="ticket-baggage">
+
+                  <i class="fa fa-briefcase"></i>
+
+                  Hand Carry
+
+                </div>
+
+              </div>
+
+
+
+              <!-- ================================================
+                   STOPS DETAILS
+              ================================================= -->
+
+              @if (
+                ticket.stops &&
+                ticket.stops.length > 0
+              ) {
+
+                <div class="flight-stops-details">
+
+
+                  <div class="stops-details-title">
+
+                    <i class="fa fa-map-marker"></i>
+
+                    {{ ticket.stops.length }}
+
+                    Stop{{ ticket.stops.length > 1 ? 's' : '' }}
+
+                  </div>
+
+
+                  <div class="flight-stops-list">
+
+
+                    @for (
+                      stop of ticket.stops;
+                      track stop.stopNumber
+                    ) {
+
+                      <div class="flight-stop-item">
+
+
+                        <span class="stop-badge">
+                          {{ stop.stopNumber }}
+                        </span>
+
+
+                        <div>
+
+                          <strong>
+                            {{ stop.stopAirport }}
+                          </strong>
+
+
+                          <small>
+
+                            Arrival:
+
+                            {{
+                              stop.arrivalDateTime
+                              | date:'dd MMM, hh:mm a'
+                            }}
+
+                          </small>
+
+
+                          <small>
+
+                            Departure:
+
+                            {{
+                              stop.departureDateTime
+                              | date:'dd MMM, hh:mm a'
+                            }}
+
+                          </small>
+
+                        </div>
+
+                      </div>
+
+                    }
+
+                  </div>
+
+                </div>
+
+              }
+
+
+              <!-- IMPORTANT:
+                   ARTICLE CLOSES HERE
+              -->
+
+            </article>
 
           }
 
         </div>
 
-      </div>
+
+
+        <!-- ====================================================
+             PAGINATION
+        ===================================================== -->
+
+        <div class="flight-pagination">
+
+
+          <div class="pagination-summary">
+
+            Showing
+
+            <strong>
+              {{ tickets.length }}
+            </strong>
+
+            of
+
+            <strong>
+              {{ totalRecords }}
+            </strong>
+
+            tickets
+
+          </div>
+
+
+          <div class="pagination-buttons">
+
+
+            <button
+              type="button"
+              [disabled]="pageNumber === 1"
+              (click)="onPageChange({
+                pageNumber: pageNumber - 1,
+                pageSize: pageSize
+              })">
+
+              <i class="fa fa-chevron-left"></i>
+
+            </button>
+
+
+            <span>
+              Page {{ pageNumber }}
+            </span>
+
+
+            <button
+              type="button"
+              [disabled]="tickets.length < pageSize"
+              (click)="onPageChange({
+                pageNumber: pageNumber + 1,
+                pageSize: pageSize
+              })">
+
+              <i class="fa fa-chevron-right"></i>
+
+            </button>
+
+          </div>
+
+        </div>
 
       }
 
-
-      <!-- ====================================================
-               BOTTOM
-          ==================================================== -->
-
-      <div class="ticket-bottom">
-
-
-        <!-- AVAILABLE -->
-
-        <div class="availability">
-
-          <span class="small-label">
-            AVAILABLE
-          </span>
-
-          <strong>
-            {{ ticket.availableQuantity }}
-          </strong>
-
-          <span>
-
-            ticket{{
-            ticket.availableQuantity !== 1
-            ? 's'
-            : ''
-            }}
-
-          </span>
-
-        </div>
-
-
-        <!-- VALID UNTIL -->
-
-        <div class="validity">
-
-          <span class="small-label">
-            VALID UNTIL
-          </span>
-
-          <strong>
-
-            {{
-            ticket.validUntil
-            | date:'dd MMM yyyy, hh:mm a'
-            }}
-
-          </strong>
-
-        </div>
-
-
-        <!-- ==================================================
-                 PRICE
-                 ONLY LOGGED IN
-            ================================================== -->
-
-        @if (authService.isLoggedIn()) {
-
-        <div class="price">
-
-          <span class="small-label">
-            PRICE
-          </span>
-
-          <strong>
-
-            {{
-            ticket.sellingPrice
-            | number:'1.0-2'
-            }}
-
-          </strong>
-
-        </div>
-
-        }
-
-
-        <!-- ==================================================
-                 LOGGED IN
-                 BOOK TICKET
-            ================================================== -->
-
-        @if (authService.isLoggedIn()) {
-
-        <button type="button" class="see-tickets-button" (click)="openBookingForm(ticket)">
-
-          <i class="fa fa-ticket"></i>
-
-          Book Ticket
-
-        </button>
-
-        }
-
-
-        <!-- ==================================================
-                 GUEST
-                 SEE DETAILS
-            ================================================== -->
-
-        @else {
-
-        <button type="button" class="see-tickets-button" (click)="seeTicketDetails(ticket)">
-
-          <i class="fa fa-info-circle"></i>
-
-          See Details
-
-        </button>
-
-        }
-
-      </div>
-
-    </article>
-
-    }
+    </section>
 
   </div>
-
-
-  <!-- ==========================================================
-         PAGINATION
-    ========================================================== -->
-
-  <div class="pagination-wrapper">
-
-
-    <div class="pagination-info">
-
-      Showing
-
-      {{ tickets.length }}
-
-      of
-
-      {{ totalRecords }}
-
-      tickets
-
-    </div>
-
-
-    <div class="pagination-controls">
-
-
-      <button type="button" [disabled]="pageNumber === 1" (click)="onPageChange({
-            pageNumber: pageNumber - 1,
-            pageSize: pageSize
-          })">
-
-        <i class="fa fa-chevron-left"></i>
-
-      </button>
-
-
-      <span>
-        Page {{ pageNumber }}
-      </span>
-
-
-      <button type="button" [disabled]="tickets.length < pageSize" (click)="onPageChange({
-            pageNumber: pageNumber + 1,
-            pageSize: pageSize
-          })">
-
-        <i class="fa fa-chevron-right"></i>
-
-      </button>
-
-    </div>
-
-  </div>
-
-  }
 
 </main>
+
+
+<!-- ============================================================
+     STOP HERE
+     
+     KEEP YOUR EXISTING BOOKING MODAL BELOW THIS POINT
+     
+     @if (showBookingForm) {
+       ...
+     }
+============================================================ -->
 
 
 <!-- ==============================================================
