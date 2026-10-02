@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { BookedTicketsService } from '../../../Customers services/Booked Tickets Services/booked-tickets-service';
 
-import { TicketRealtimeService } from '../../../../../Shared/components/TicketRealtimeService/ticket-realtime-service';
+import { BookingPassengerCancelledEvent, TicketRealtimeService } from '../../../../../Shared/components/TicketRealtimeService/ticket-realtime-service';
 
 import {
   CancelBookingPassengerRequest,
@@ -32,7 +32,7 @@ import {
 })
 export class BookedTickets implements OnInit {
 
-  private readonly bookedTicketsService =
+   private readonly bookedTicketsService =
     inject(BookedTicketsService);
 
   private readonly realtimeService =
@@ -90,7 +90,7 @@ export class BookedTickets implements OnInit {
     },
     {
       key: 'bookingStatus',
-      label: 'status',
+      label: 'Status',
       type: 'text',
       sortable: true
     },
@@ -121,15 +121,25 @@ export class BookedTickets implements OnInit {
 
   ngOnInit(): void {
 
-    this.loadBookings();
+  this.realtimeService.startConnection();
 
-    this.realtimeService.startConnection();
+  this.subscribeToRealtimeEvents();
 
-    this.realtimeService.ticketInventoryUpdated$
-      .subscribe(() => {
-        this.loadBookings();
-      });
-  }
+  this.loadBookings();
+}
+
+
+  // =========================================================
+  // REALTIME EVENTS
+  // =========================================================
+
+private subscribeToRealtimeEvents(): void {
+
+  this.realtimeService.ticketInventoryUpdated$
+    .subscribe(event => {
+      this.loadBookings();
+    });
+}
 
 
   // =========================================================
@@ -154,9 +164,13 @@ export class BookedTickets implements OnInit {
 
           this.isLoading = false;
 
-          if (response?.status && response?.data) {
+          if (
+            response?.status &&
+            response?.data
+          ) {
 
-            this.bookings = response.data;
+            this.bookings =
+              response.data;
 
             this.totalCount =
               response.data.length;
@@ -178,15 +192,8 @@ export class BookedTickets implements OnInit {
           this.bookings = [];
 
           this.totalCount = 0;
-
-          console.error(
-            'Error loading customer bookings:',
-            error
-          );
-
           this.cdr.detectChanges();
         }
-
       });
   }
 
@@ -218,27 +225,44 @@ export class BookedTickets implements OnInit {
 
 
   // =========================================================
+  // PAGE SIZE
+  // =========================================================
+
+  onPageSizeChange(size: number): void {
+
+    this.pageSize = size;
+
+    this.pageNumber = 1;
+
+    this.loadBookings();
+  }
+
+
+  // =========================================================
   // TABLE ACTION
   // =========================================================
 
-onTableAction(event: {
-  action: TableAction;
-  row: CustomerBooking;
-}): void {
+  onTableAction(event: {
+    action: TableAction;
+    row: CustomerBooking;
+  }): void {
 
+    if (
+      event.action.type === 'view'
+    ) {
 
-  if (event.action.type === 'view') {
-
-    this.viewBooking(event.row);
+      this.viewBooking(event.row);
+    }
   }
-}
 
 
   // =========================================================
   // VIEW BOOKING
   // =========================================================
 
-  viewBooking(booking: CustomerBooking): void {
+  viewBooking(
+    booking: CustomerBooking
+  ): void {
 
     this.selectedBooking = booking;
 
@@ -262,145 +286,127 @@ onTableAction(event: {
   }
 
 
-  onPageSizeChange(size: number): void {
+  // =========================================================
+  // CANCEL PASSENGER
+  // =========================================================
 
-  this.pageSize = size;
+  showCancelModal = false;
 
-  this.pageNumber = 1;
+  selectedPassenger:
+    CustomerBookingPassenger | null = null;
 
-  this.loadBookings();
-}
+  cancellationReason = '';
 
-
-
-
-
-
+  isCancelling = false;
 
 
+  openCancelModal(
+    passenger: CustomerBookingPassenger
+  ): void {
 
+    // Customer can cancel ONLY Held passenger
+    if (
+      passenger.passengerBookingStatus !==
+      'Held'
+    ) {
+      return;
+    }
 
+    this.selectedPassenger =
+      passenger;
 
+    this.cancellationReason = '';
 
+    this.showCancelModal = true;
 
-
-
-
-
-
-
-
-
-
-
-
-
-// Cancel Passenger  Booked Tickets
-showCancelModal = false;
-
-selectedPassenger: CustomerBookingPassenger | null = null;
-
-cancellationReason = '';
-
-isCancelling = false;
-
-openCancelModal(
-  passenger: CustomerBookingPassenger
-): void {
-
-  // Customer can cancel ONLY Held passenger
-  if (passenger.passengerBookingStatus !== 'Held') {
-    return;
+    this.cdr.detectChanges();
   }
 
-  this.selectedPassenger = passenger;
-  this.cancellationReason = '';
-  this.showCancelModal = true;
 
-  this.cdr.detectChanges();
-}
+  closeCancelModal(): void {
 
+    if (this.isCancelling) {
+      return;
+    }
 
+    this.showCancelModal = false;
 
-closeCancelModal(): void {
+    this.selectedPassenger = null;
 
-  if (this.isCancelling) {
-    return;
+    this.cancellationReason = '';
+
+    this.cdr.detectChanges();
   }
 
-  this.showCancelModal = false;
-  this.selectedPassenger = null;
-  this.cancellationReason = '';
 
-  this.cdr.detectChanges();
-}
+  cancelTicket(): void {
+
+    if (!this.selectedPassenger) {
+      return;
+    }
+
+    if (
+      !this.selectedPassenger
+        .bookingPassengerId ||
+      this.selectedPassenger
+        .bookingPassengerId <= 0
+    ) {
+      return;
+    }
+
+    this.isCancelling = true;
+
+    const request:
+      CancelBookingPassengerRequest = {
+
+      bookingPassengerId:
+        this.selectedPassenger
+          .bookingPassengerId,
+
+      cancellationReason:
+        this.cancellationReason
+          ?.trim() || undefined
+    };
 
 
+    this.bookedTicketsService
+      .cancelBookingPassenger(request)
+      .subscribe({
 
-cancelTicket(): void {
+        next: (response) => {
 
-  if (!this.selectedPassenger) {
-    return;
-  }
+          this.isCancelling = false;
 
-  if (
-    !this.selectedPassenger.bookingPassengerId ||
-    this.selectedPassenger.bookingPassengerId <= 0
-  ) {
-    return;
-  }
+          if (response?.status) {
 
-  this.isCancelling = true;
+            this.showCancelModal = false;
 
-  const request: CancelBookingPassengerRequest = {
-    bookingPassengerId:
-      this.selectedPassenger.bookingPassengerId,
+            this.selectedPassenger = null;
 
-    cancellationReason:
-      this.cancellationReason?.trim() || undefined
-  };
+            this.cancellationReason = '';
 
-  this.bookedTicketsService
-    .cancelBookingPassenger(request)
-    .subscribe({
+            /*
+             * Do not depend on this reload for
+             * realtime functionality.
+             *
+             * The SignalR event will also
+             * trigger loadBookings().
+             */
+            this.loadBookings();
 
-      next: (response) => {
+            this.cdr.detectChanges();
 
-        this.isCancelling = false;
+          } else {
+            this.cdr.detectChanges();
+          }
+        },
 
-        if (response?.status) {
+        error: (error) => {
 
-          this.showCancelModal = false;
-          this.selectedPassenger = null;
-          this.cancellationReason = '';
-
-          // Reload customer bookings immediately
-          this.loadBookings();
-
-          this.cdr.detectChanges();
-
-        } else {
-
-          console.error(
-            'Cancellation failed:',
-            response?.message
-          );
+          this.isCancelling = false;
 
           this.cdr.detectChanges();
         }
-      },
-
-      error: (error) => {
-
-        this.isCancelling = false;
-
-        console.error(
-          'Error cancelling ticket:',
-          error
-        );
-
-        this.cdr.detectChanges();
-      }
-    });
-}
+      });
+  }
 }

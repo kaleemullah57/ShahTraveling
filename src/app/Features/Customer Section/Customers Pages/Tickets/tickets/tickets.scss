@@ -1,18 +1,28 @@
+/* =========================================================
+   SHAH TRAVELING AGENCY
+   AVAILABLE TICKETS — NEUMORPHIC UI
+========================================================= */
+
 .tickets-page {
     min-height: calc(100vh - 70px);
-    background: #f8faf9;
-    color: #17352d;
+    background: #e8edf3;
+    color: #29453c;
 }
 
 
 /* =========================================================
-   HEADER
-   ========================================================= */
+   PAGE HEADER
+========================================================= */
 
 .page-header {
-    padding: 45px 8% 38px;
-    background: #ffffff;
-    border-bottom: 1px solid #edf1ef;
+    padding: 42px 6% 36px;
+
+    background: #e8edf3;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.75);
+
+    box-shadow:
+        0 5px 15px rgba(163, 177, 198, 0.12);
 }
 
 .header-content {
@@ -26,9 +36,9 @@
     margin-bottom: 10px;
 
     font-size: 9px;
-    font-weight: 700;
+    font-weight: 800;
 
-    letter-spacing: 2.2px;
+    letter-spacing: 2.4px;
 
     color: #0f6045;
 }
@@ -48,11 +58,11 @@
 
 .header-content h1 strong {
     color: #0f6045;
-    font-weight: 700;
+    font-weight: 750;
 }
 
 .header-content p {
-    max-width: 600px;
+    max-width: 620px;
 
     margin: 12px 0 0;
 
@@ -64,19 +74,20 @@
 
 
 /* =========================================================
-   FILTERS
-   ========================================================= */
+   FILTER SECTION
+========================================================= */
 
 .filters-section {
-    padding: 22px 8%;
+    padding: 22px 6%;
 
-    background: #ffffff;
+    background: #e8edf3;
 
-    border-bottom: 1px solid #e8eeeb;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.75);
 }
 
 .filters-container {
     max-width: 1180px;
+
     margin: 0 auto;
 
     display: grid;
@@ -89,10 +100,15 @@
         0.9fr
         auto;
 
-    gap: 12px;
+    gap: 14px;
 
     align-items: end;
 }
+
+
+/* =========================================================
+   FILTER GROUP
+========================================================= */
 
 .filter-group {
     min-width: 0;
@@ -101,47 +117,66 @@
 .filter-group label {
     display: block;
 
-    margin-bottom: 6px;
+    margin-bottom: 7px;
 
     font-size: 9px;
-    font-weight: 700;
+    font-weight: 800;
 
     letter-spacing: 1px;
 
     text-transform: uppercase;
 
-    color: #65746e;
+    color: #64746d;
 }
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
 
 .filter-group input {
     width: 100%;
-    height: 40px;
+    height: 42px;
 
-    padding: 0 11px;
+    box-sizing: border-box;
 
-    border: 1px solid #dfe7e3;
-    border-radius: 6px;
+    padding: 0 13px;
+
+    border: none;
+
+    border-radius: 11px;
 
     outline: none;
 
-    background: #ffffff;
+    background: #e8edf3;
 
     color: #29453c;
 
     font-family: inherit;
     font-size: 12px;
 
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
+    box-shadow:
+        inset 4px 4px 9px rgba(163, 177, 198, 0.38),
+        inset -4px -4px 9px rgba(255, 255, 255, 0.90);
+
+    transition: 0.2s ease;
+}
+
+.filter-group input::placeholder {
+    color: #94a19b;
 }
 
 .filter-group input:focus {
-    border-color: #9fc5b6;
-
     box-shadow:
-        0 0 0 3px rgba(15, 96, 69, 0.06);
+        inset 3px 3px 8px rgba(163, 177, 198, 0.40),
+        inset -3px -3px 8px rgba(255, 255, 255, 0.90),
+        0 0 0 2px rgba(15, 96, 69, 0.10);
 }
+
+
+/* =========================================================
+   SEARCH INPUT
+========================================================= */
 
 .input-wrapper {
     position: relative;
@@ -150,56 +185,70 @@
 .input-wrapper i {
     position: absolute;
 
-    left: 12px;
+    left: 15px;
     top: 50%;
 
     transform: translateY(-50%);
 
     font-size: 11px;
 
-    color: #87948f;
+    color: #87958f;
 
     pointer-events: none;
+
+    z-index: 2;
 }
 
 .input-wrapper input {
-    padding-left: 32px;
+    padding-left: 38px;
 }
 
 
-/* Filter Buttons */
+/* =========================================================
+   FILTER ACTIONS
+========================================================= */
 
 .filter-actions {
     display: flex;
-    gap: 7px;
+
+    gap: 9px;
 }
 
-.search-button,
-.clear-button {
-    height: 40px;
 
-    padding: 0 14px;
-
-    border-radius: 6px;
-
-    font-family: inherit;
-    font-size: 11px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
-}
+/* Search */
 
 .search-button {
-    border: 1px solid #0f6045;
+    height: 42px;
+
+    padding: 0 16px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    border: none;
+
+    border-radius: 11px;
 
     background: #0f6045;
 
     color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        5px 5px 11px rgba(163, 177, 198, 0.32),
+        -4px -4px 9px rgba(255, 255, 255, 0.80);
+
+    transition: 0.2s ease;
 }
 
 .search-button:hover {
@@ -208,22 +257,63 @@
     transform: translateY(-1px);
 }
 
+.search-button:active {
+    transform: translateY(1px);
+
+    box-shadow:
+        inset 3px 3px 7px rgba(0, 0, 0, 0.20),
+        inset -3px -3px 7px rgba(255, 255, 255, 0.12);
+}
+
+
+/* Clear */
+
 .clear-button {
-    border: 1px solid #dce5e1;
+    height: 42px;
 
-    background: #ffffff;
+    padding: 0 15px;
 
-    color: #61716b;
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #e8edf3;
+
+    color: #64746d;
+
+    font-family: inherit;
+
+    font-size: 11px;
+    font-weight: 650;
+
+    cursor: pointer;
+
+    box-shadow:
+        5px 5px 11px rgba(163, 177, 198, 0.32),
+        -5px -5px 11px rgba(255, 255, 255, 0.88);
+
+    transition: 0.2s ease;
 }
 
 .clear-button:hover {
-    background: #f4f7f5;
+    color: #0f6045;
+
+    box-shadow:
+        inset 3px 3px 7px rgba(163, 177, 198, 0.30),
+        inset -3px -3px 7px rgba(255, 255, 255, 0.85);
 }
 
 
 /* =========================================================
    CONTENT
-   ========================================================= */
+========================================================= */
 
 .tickets-content {
     max-width: 1180px;
@@ -233,21 +323,29 @@
     padding: 35px 0 60px;
 }
 
+
+/* =========================================================
+   RESULTS HEADER
+========================================================= */
+
 .results-header {
     display: flex;
+
     align-items: flex-end;
+
     justify-content: space-between;
 
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
 .results-label {
     display: block;
 
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 
     font-size: 9px;
-    font-weight: 700;
+
+    font-weight: 800;
 
     letter-spacing: 1.8px;
 
@@ -259,89 +357,120 @@
 
     font-size: 24px;
 
-    font-weight: 600;
+    font-weight: 650;
 
     letter-spacing: -0.5px;
 
-    color: #2c473e;
+    color: #29453c;
 }
 
 .result-count {
+    padding: 8px 13px;
+
+    border-radius: 18px;
+
+    background: #e8edf3;
+
+    color: #718079;
+
     font-size: 11px;
 
-    color: #7b8883;
+    font-weight: 700;
+
+    box-shadow:
+        inset 3px 3px 7px rgba(163, 177, 198, 0.28),
+        inset -3px -3px 7px rgba(255, 255, 255, 0.85);
+}
+
+
+/* =========================================================
+   TICKET LIST
+========================================================= */
+
+.ticket-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
 }
 
 
 /* =========================================================
    TICKET CARD
-   ========================================================= */
-
-.ticket-list {
-    display: flex;
-    flex-direction: column;
-
-    gap: 16px;
-}
+========================================================= */
 
 .ticket-card {
-    background: #ffffff;
+    position: relative;
 
-    border: 1px solid #e3ebe7;
-    border-radius: 10px;
+    background: #e8edf3;
+
+    border: 1px solid rgba(255, 255, 255, 0.70);
+
+    border-radius: 20px;
 
     overflow: hidden;
 
+    box-shadow:
+        10px 10px 24px rgba(163, 177, 198, 0.34),
+        -10px -10px 24px rgba(255, 255, 255, 0.90);
+
     transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .ticket-card:hover {
-    border-color: #cbdcd5;
+    transform: translateY(-3px);
 
     box-shadow:
-        0 10px 30px rgba(20, 65, 52, 0.07);
-
-    transform: translateY(-2px);
+        14px 14px 30px rgba(163, 177, 198, 0.38),
+        -12px -12px 28px rgba(255, 255, 255, 0.95);
 }
 
 
 /* =========================================================
    TICKET TOP
-   ========================================================= */
+========================================================= */
 
 .ticket-top {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
-    padding: 20px 22px;
+    padding: 19px 22px;
 
-    border-bottom: 1px solid #edf2ef;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.65);
 }
 
 .airline-info {
     display: flex;
+
     align-items: center;
 
-    gap: 12px;
+    gap: 13px;
 }
 
 .airline-icon {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    border-radius: 8px;
+    border-radius: 14px;
 
-    background: #eef6f2;
+    background: #e8edf3;
 
     color: #0f6045;
+
+    box-shadow:
+        5px 5px 10px rgba(163, 177, 198, 0.32),
+        -5px -5px 10px rgba(255, 255, 255, 0.90);
 }
 
 .airline-icon i {
@@ -351,10 +480,11 @@
 .small-label {
     display: block;
 
-    margin-bottom: 4px;
+    margin-bottom: 5px;
 
     font-size: 8px;
-    font-weight: 700;
+
+    font-weight: 800;
 
     letter-spacing: 1.2px;
 
@@ -368,7 +498,7 @@
 
     font-size: 15px;
 
-    font-weight: 650;
+    font-weight: 700;
 
     color: #29453c;
 }
@@ -376,16 +506,21 @@
 .airline-code {
     margin-left: 7px;
 
-    padding: 3px 6px;
+    padding: 4px 7px;
 
-    border-radius: 4px;
+    border-radius: 7px;
 
-    background: #f2f5f3;
+    background: #e8edf3;
 
     font-size: 8px;
-    font-weight: 700;
+
+    font-weight: 800;
 
     color: #718079;
+
+    box-shadow:
+        inset 2px 2px 4px rgba(163, 177, 198, 0.25),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.75);
 }
 
 .ticket-type {
@@ -401,7 +536,7 @@
 
 /* =========================================================
    ROUTE
-   ========================================================= */
+========================================================= */
 
 .route-section {
     display: grid;
@@ -412,7 +547,7 @@
 
     gap: 20px;
 
-    padding: 25px 22px;
+    padding: 27px 22px;
 }
 
 .airport {
@@ -426,10 +561,11 @@
 .country {
     display: block;
 
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 
     font-size: 9px;
-    font-weight: 600;
+
+    font-weight: 700;
 
     text-transform: uppercase;
 
@@ -442,9 +578,10 @@
     margin: 0;
 
     font-size: 17px;
-    line-height: 1.3;
 
-    font-weight: 650;
+    line-height: 1.35;
+
+    font-weight: 700;
 
     color: #29453c;
 }
@@ -460,7 +597,9 @@
 }
 
 
-/* Route Visual */
+/* =========================================================
+   ROUTE VISUAL
+========================================================= */
 
 .route-visual {
     position: relative;
@@ -468,7 +607,9 @@
     height: 65px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 }
 
@@ -480,7 +621,7 @@
 
     top: 28px;
 
-    height: 1px;
+    height: 2px;
 
     background:
         repeating-linear-gradient(
@@ -494,25 +635,28 @@
 
 .route-plane {
     position: relative;
+
     z-index: 2;
 
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border-radius: 50%;
 
-    background: #ffffff;
+    background: #e8edf3;
 
-    border: 1px solid #dce8e3;
+    border: none;
 
     color: #0f6045;
 
     box-shadow:
-        0 4px 12px rgba(15, 96, 69, 0.08);
+        6px 6px 12px rgba(163, 177, 198, 0.34),
+        -6px -6px 12px rgba(255, 255, 255, 0.90);
 }
 
 .route-plane i {
@@ -525,7 +669,8 @@
     bottom: 0;
 
     font-size: 7px;
-    font-weight: 700;
+
+    font-weight: 800;
 
     letter-spacing: 1.3px;
 
@@ -535,20 +680,22 @@
 
 /* =========================================================
    STOPS
-   ========================================================= */
+========================================================= */
 
 .stops-section {
     margin: 0 22px;
 
-    padding: 13px 0;
+    padding: 14px 0;
 
-    border-top: 1px dashed #e2eae6;
-    border-bottom: 1px dashed #e2eae6;
+    border-top: 1px dashed #cbd6d1;
+
+    border-bottom: 1px dashed #cbd6d1;
 }
 
 .stops-header span {
     font-size: 9px;
-    font-weight: 700;
+
+    font-weight: 800;
 
     color: #0f6045;
 }
@@ -559,6 +706,7 @@
 
 .stops-list {
     display: flex;
+
     flex-wrap: wrap;
 
     gap: 10px;
@@ -568,37 +716,49 @@
 
 .stop-item {
     display: flex;
+
     align-items: center;
 
     gap: 8px;
 
-    padding: 7px 10px;
+    padding: 8px 11px;
 
-    border-radius: 6px;
+    border-radius: 11px;
 
-    background: #f7faf8;
+    background: #e8edf3;
+
+    box-shadow:
+        inset 3px 3px 7px rgba(163, 177, 198, 0.22),
+        inset -3px -3px 7px rgba(255, 255, 255, 0.75);
 }
 
 .stop-number {
-    width: 22px;
-    height: 22px;
+    width: 23px;
+    height: 23px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     border-radius: 50%;
 
-    background: #e6f1ec;
+    background: #e8edf3;
 
     color: #0f6045;
 
     font-size: 9px;
-    font-weight: 700;
+
+    font-weight: 800;
+
+    box-shadow:
+        3px 3px 6px rgba(163, 177, 198, 0.28),
+        -3px -3px 6px rgba(255, 255, 255, 0.80);
 }
 
 .stop-info {
     display: flex;
+
     align-items: center;
 
     gap: 10px;
@@ -619,20 +779,26 @@
 
 /* =========================================================
    TICKET BOTTOM
-   ========================================================= */
+========================================================= */
 
 .ticket-bottom {
     display: grid;
 
-    grid-template-columns: 1fr 1.5fr 1fr auto;
+    grid-template-columns:
+        1fr
+        1.5fr
+        1fr
+        auto;
 
     align-items: center;
 
     gap: 20px;
 
-    padding: 17px 22px;
+    padding: 18px 22px;
 
-    background: #fafcfb;
+    background: #e4e9ef;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.55);
 }
 
 .availability,
@@ -660,7 +826,7 @@
 
     font-size: 10px;
 
-    font-weight: 600;
+    font-weight: 650;
 
     color: #4d625a;
 }
@@ -677,17 +843,28 @@
     color: #0f6045;
 }
 
-.book-button {
-    height: 38px;
 
-    padding: 0 15px;
+/* =========================================================
+   BOOK BUTTON
+   IMPORTANT: HTML uses .see-tickets-button
+========================================================= */
 
-    display: flex;
+.see-tickets-button {
+    height: 39px;
+
+    padding: 0 16px;
+
+    display: inline-flex;
+
     align-items: center;
-    gap: 9px;
 
-    border: 0;
-    border-radius: 6px;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: none;
+
+    border-radius: 11px;
 
     background: #0f6045;
 
@@ -696,60 +873,81 @@
     font-family: inherit;
 
     font-size: 10px;
-    font-weight: 600;
+
+    font-weight: 700;
 
     cursor: pointer;
 
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
+    box-shadow:
+        6px 6px 12px rgba(163, 177, 198, 0.35),
+        -4px -4px 9px rgba(255, 255, 255, 0.55);
+
+    transition: 0.2s ease;
 }
 
-.book-button:hover {
+.see-tickets-button:hover {
     background: #0c513b;
 
-    transform: translateX(2px);
+    transform: translateY(-1px);
 }
 
-.book-button i {
-    font-size: 9px;
+.see-tickets-button:active {
+    transform: translateY(1px);
+
+    box-shadow:
+        inset 3px 3px 7px rgba(0, 0, 0, 0.22),
+        inset -3px -3px 7px rgba(255, 255, 255, 0.10);
+}
+
+.see-tickets-button i {
+    font-size: 10px;
 }
 
 
 /* =========================================================
    EMPTY STATE
-   ========================================================= */
+========================================================= */
 
 .empty-state {
     padding: 70px 20px;
 
     text-align: center;
 
-    background: #ffffff;
+    background: #e8edf3;
 
-    border: 1px solid #e3ebe7;
-    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.70);
+
+    border-radius: 20px;
+
+    box-shadow:
+        10px 10px 24px rgba(163, 177, 198, 0.32),
+        -10px -10px 24px rgba(255, 255, 255, 0.90);
 }
 
 .empty-icon {
-    width: 55px;
-    height: 55px;
+    width: 60px;
+    height: 60px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    margin: 0 auto 15px;
+    margin: 0 auto 16px;
 
-    border-radius: 50%;
+    border-radius: 18px;
 
-    background: #eef6f2;
+    background: #e8edf3;
 
     color: #0f6045;
+
+    box-shadow:
+        7px 7px 14px rgba(163, 177, 198, 0.34),
+        -7px -7px 14px rgba(255, 255, 255, 0.90);
 }
 
 .empty-icon i {
-    font-size: 17px;
+    font-size: 18px;
 }
 
 .empty-state h3 {
@@ -769,58 +967,85 @@
 }
 
 .clear-empty-button {
-    padding: 9px 16px;
+    padding: 10px 17px;
 
-    border: 1px solid #d5e2dc;
-    border-radius: 5px;
+    border: none;
 
-    background: #ffffff;
+    border-radius: 10px;
+
+    background: #e8edf3;
 
     color: #0f6045;
 
     font-size: 10px;
 
+    font-weight: 700;
+
     cursor: pointer;
+
+    box-shadow:
+        5px 5px 10px rgba(163, 177, 198, 0.32),
+        -5px -5px 10px rgba(255, 255, 255, 0.85);
+
+    transition: 0.2s ease;
+}
+
+.clear-empty-button:hover {
+    box-shadow:
+        inset 3px 3px 7px rgba(163, 177, 198, 0.28),
+        inset -3px -3px 7px rgba(255, 255, 255, 0.85);
 }
 
 
 /* =========================================================
    LOADING
-   ========================================================= */
+========================================================= */
 
 .loading-state {
     min-height: 260px;
 
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
 
-    background: #ffffff;
+    background: #e8edf3;
 
-    border: 1px solid #e3ebe7;
-    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.70);
+
+    border-radius: 20px;
+
+    box-shadow:
+        10px 10px 24px rgba(163, 177, 198, 0.32),
+        -10px -10px 24px rgba(255, 255, 255, 0.90);
 }
 
 .loading-spinner {
-    width: 42px;
-    height: 42px;
+    width: 48px;
+    height: 48px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    margin-bottom: 12px;
+    margin-bottom: 13px;
 
     border-radius: 50%;
 
-    background: #eef6f2;
+    background: #e8edf3;
 
     color: #0f6045;
+
+    box-shadow:
+        6px 6px 13px rgba(163, 177, 198, 0.34),
+        -6px -6px 13px rgba(255, 255, 255, 0.90);
 }
 
 .loading-spinner i {
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .loading-state p {
@@ -834,15 +1059,16 @@
 
 /* =========================================================
    PAGINATION
-   ========================================================= */
+========================================================= */
 
 .pagination-wrapper {
     display: flex;
 
     align-items: center;
+
     justify-content: space-between;
 
-    margin-top: 20px;
+    margin-top: 22px;
 }
 
 .pagination-info {
@@ -853,50 +1079,109 @@
 
 .pagination-controls {
     display: flex;
+
     align-items: center;
 
-    gap: 10px;
+    gap: 9px;
 }
 
 .pagination-controls button {
-    width: 32px;
-    height: 32px;
+    width: 35px;
+    height: 35px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    border: 1px solid #dce5e1;
-    border-radius: 5px;
+    border: none;
 
-    background: #ffffff;
+    border-radius: 10px;
+
+    background: #e8edf3;
 
     color: #0f6045;
 
     cursor: pointer;
+
+    box-shadow:
+        5px 5px 10px rgba(163, 177, 198, 0.32),
+        -5px -5px 10px rgba(255, 255, 255, 0.85);
+
+    transition: 0.2s ease;
 }
 
 .pagination-controls button:hover:not(:disabled) {
-    background: #eef6f2;
+    box-shadow:
+        inset 3px 3px 7px rgba(163, 177, 198, 0.28),
+        inset -3px -3px 7px rgba(255, 255, 255, 0.85);
 }
 
 .pagination-controls button:disabled {
     opacity: 0.4;
 
     cursor: not-allowed;
+
+    box-shadow:
+        inset 2px 2px 5px rgba(163, 177, 198, 0.18),
+        inset -2px -2px 5px rgba(255, 255, 255, 0.65);
 }
 
 .pagination-controls span {
+    min-width: 75px;
+
+    height: 35px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #e8edf3;
+
     font-size: 10px;
-    font-weight: 600;
+
+    font-weight: 700;
 
     color: #63736c;
+
+    box-shadow:
+        inset 3px 3px 7px rgba(163, 177, 198, 0.25),
+        inset -3px -3px 7px rgba(255, 255, 255, 0.80);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.tickets-page ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+.tickets-page ::-webkit-scrollbar-track {
+    background: #e8edf3;
+}
+
+.tickets-page ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+
+    background: #c4ced9;
+}
+
+.tickets-page {
+    scrollbar-width: thin;
+
+    scrollbar-color: #c4ced9 #e8edf3;
 }
 
 
 /* =========================================================
    TABLET
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 1100px) {
 
@@ -907,26 +1192,29 @@
             1fr
             1fr
             1fr;
+    }
 
-        .filter-actions {
-            grid-column: span 5;
-        }
+    .filter-actions {
+        grid-column: span 5;
     }
 
     .tickets-content {
-        padding-left: 7%;
-        padding-right: 7%;
+        padding-left: 6%;
+        padding-right: 6%;
     }
 
     .route-section {
-        grid-template-columns: 1fr 130px 1fr;
+        grid-template-columns:
+            1fr
+            130px
+            1fr;
     }
 }
 
 
 /* =========================================================
    MOBILE
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 700px) {
 
@@ -951,7 +1239,8 @@
 
     .filters-container {
         grid-template-columns: 1fr 1fr;
-        gap: 10px;
+
+        gap: 11px;
     }
 
     .search-group {
@@ -981,8 +1270,16 @@
         font-size: 21px;
     }
 
+    .result-count {
+        font-size: 10px;
+    }
+
 
     /* Ticket */
+
+    .ticket-card {
+        border-radius: 17px;
+    }
 
     .ticket-top {
         padding: 17px;
@@ -997,7 +1294,7 @@
 
         gap: 15px;
 
-        padding: 20px 17px;
+        padding: 21px 17px;
     }
 
     .airport,
@@ -1027,8 +1324,8 @@
     }
 
     .route-plane {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
     }
 
     .route-visual > span {
@@ -1048,10 +1345,13 @@
 
     .stop-item {
         width: 100%;
+
+        box-sizing: border-box;
     }
 
     .stop-info {
         flex-direction: column;
+
         align-items: flex-start;
 
         gap: 3px;
@@ -1065,14 +1365,14 @@
 
         gap: 15px;
 
-        padding: 16px 17px;
+        padding: 17px;
     }
 
     .price {
         text-align: left;
     }
 
-    .book-button {
+    .see-tickets-button {
         width: 100%;
 
         justify-content: center;
@@ -1084,14 +1384,14 @@
     .pagination-wrapper {
         flex-direction: column;
 
-        gap: 12px;
+        gap: 13px;
     }
 }
 
 
 /* =========================================================
    SMALL MOBILE
-   ========================================================= */
+========================================================= */
 
 @media (max-width: 420px) {
 
@@ -1116,7 +1416,7 @@
         text-align: left;
     }
 
-    .book-button {
+    .see-tickets-button {
         width: 100%;
     }
 }

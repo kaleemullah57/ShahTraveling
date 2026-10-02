@@ -193,6 +193,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./Features/Branch Admin Section/Inventory Management/Purchase Tickets/Available Tickets/available-tickets/available-tickets')
             .then(m => m.AvailableTickets)
+      },
+      {
+        path: 'PendingHoldConfirmBookingsComponent',
+        loadComponent: () =>
+          import('./Features/Branch Admin Section/Hold Confirm Cancel/hold-confirm-cancel-tickets/hold-confirm-cancel-tickets')
+            .then(m => m.PendingHoldConfirmBookingsComponent)
       }
     ]
   },

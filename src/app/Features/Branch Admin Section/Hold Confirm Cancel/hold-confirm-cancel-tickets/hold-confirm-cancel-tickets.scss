@@ -1,0 +1,2277 @@
+:host {
+  display: block;
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+.page-container {
+  min-height: 100vh;
+  padding: 32px;
+  box-sizing: border-box;
+
+  background: #e8edf3;
+  color: #29453c;
+
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* Soft decorative background */
+
+.page-container::before,
+.page-container::after {
+  content: '';
+  position: fixed;
+
+  width: 300px;
+  height: 300px;
+
+  border-radius: 50%;
+
+  pointer-events: none;
+  filter: blur(90px);
+
+  z-index: 0;
+}
+
+.page-container::before {
+  top: 20px;
+  right: -120px;
+
+  background: rgba(15, 96, 69, .07);
+}
+
+.page-container::after {
+  bottom: -130px;
+  left: -120px;
+
+  background: rgba(80, 170, 140, .06);
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.page-header {
+  position: relative;
+  z-index: 1;
+
+  margin-bottom: 24px;
+
+  padding: 4px 2px;
+}
+
+.page-header h2 {
+  margin: 0;
+
+  color: #29453c;
+
+  font-size: 28px;
+  font-weight: 750;
+
+  letter-spacing: -.7px;
+}
+
+.page-header p {
+  margin: 7px 0 0;
+
+  color: #7c8984;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   FILTER CARD
+========================================================= */
+
+.filter-card {
+  position: relative;
+  z-index: 1;
+
+  margin-bottom: 24px;
+  padding: 22px;
+
+  box-sizing: border-box;
+
+  background: #e8edf3;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 255, 255, .72);
+
+  box-shadow:
+    10px 10px 24px rgba(163, 177, 198, .30),
+    -10px -10px 24px rgba(255, 255, 255, .88);
+}
+
+
+/* =========================================================
+   FILTER ROW
+========================================================= */
+
+.filter-row {
+  width: 100%;
+}
+
+.filter-row > .filter-group {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, .8fr)
+    minmax(300px, 1.7fr)
+    auto;
+
+  align-items: end;
+
+  gap: 18px;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   FILTER GROUP
+========================================================= */
+
+.filter-group,
+.form-group {
+  min-width: 0;
+}
+
+.filter-group > .filter-group {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   LABELS
+========================================================= */
+
+.filter-group label,
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #66766f;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-transform: uppercase;
+  letter-spacing: .9px;
+}
+
+
+/* =========================================================
+   SELECT
+========================================================= */
+
+.filter-group select {
+  width: 100%;
+  height: 44px;
+
+  padding: 0 38px 0 14px;
+
+  box-sizing: border-box;
+
+  border: none;
+  outline: none;
+
+  border-radius: 11px;
+
+  background: #e8edf3;
+
+  color: #304a41;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset 4px 4px 9px rgba(163, 177, 198, .30),
+    inset -4px -4px 9px rgba(255, 255, 255, .88);
+
+  transition:
+    box-shadow .2s ease,
+    color .2s ease;
+}
+
+.filter-group select:hover {
+  color: #0f6045;
+}
+
+.filter-group select:focus {
+  box-shadow:
+    inset 3px 3px 8px rgba(163, 177, 198, .30),
+    inset -3px -3px 8px rgba(255, 255, 255, .88),
+    0 0 0 2px rgba(15, 96, 69, .08);
+}
+
+
+/* =========================================================
+   SEARCH INPUT
+========================================================= */
+
+.form-control {
+  width: 100%;
+  height: 44px;
+
+  padding: 0 15px;
+
+  box-sizing: border-box;
+
+  border: none;
+  outline: none;
+
+  border-radius: 11px;
+
+  background: #e8edf3;
+
+  color: #29453c;
+
+  font-family: inherit;
+  font-size: 12px;
+
+  box-shadow:
+    inset 4px 4px 9px rgba(163, 177, 198, .30),
+    inset -4px -4px 9px rgba(255, 255, 255, .88);
+
+  transition:
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+.form-control::placeholder {
+  color: #9aa6a1;
+}
+
+.form-control:focus {
+  box-shadow:
+    inset 3px 3px 8px rgba(163, 177, 198, .32),
+    inset -3px -3px 8px rgba(255, 255, 255, .88),
+    0 0 0 2px rgba(15, 96, 69, .08);
+}
+
+
+/* =========================================================
+   FILTER ACTIONS
+========================================================= */
+
+.filter-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  height: 44px;
+}
+
+
+/* =========================================================
+   BUTTON BASE
+========================================================= */
+
+.filter-actions .btn {
+  height: 44px;
+
+  min-width: 92px;
+
+  padding: 0 17px;
+
+  border: none;
+  border-radius: 11px;
+
+  font-family: inherit;
+
+  font-size: 11px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    background .2s ease;
+}
+
+
+/* =========================================================
+   SEARCH BUTTON
+========================================================= */
+
+.filter-actions .btn-primary {
+  background: #0f6045;
+
+  color: #fff;
+
+  box-shadow:
+    6px 6px 12px rgba(163, 177, 198, .34),
+    -4px -4px 9px rgba(255, 255, 255, .60);
+}
+
+.filter-actions .btn-primary:hover {
+  background: #0c513b;
+
+  transform: translateY(-1px);
+}
+
+.filter-actions .btn-primary:active {
+  transform: translateY(1px);
+
+  box-shadow:
+    inset 3px 3px 7px rgba(0, 0, 0, .20),
+    inset -3px -3px 7px rgba(255, 255, 255, .10);
+}
+
+
+/* =========================================================
+   CLEAR BUTTON
+========================================================= */
+
+.filter-actions .btn-secondary {
+  background: #e8edf3;
+
+  color: #65746d;
+
+  box-shadow:
+    5px 5px 10px rgba(163, 177, 198, .30),
+    -5px -5px 10px rgba(255, 255, 255, .86);
+}
+
+.filter-actions .btn-secondary:hover {
+  color: #0f6045;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, .26),
+    inset -3px -3px 7px rgba(255, 255, 255, .82);
+}
+
+.filter-actions .btn-secondary:active {
+  transform: translateY(1px);
+}
+
+
+/* =========================================================
+   TABLE AREA
+========================================================= */
+
+.filter-card app-data-table {
+  display: block;
+
+  margin-top: 22px;
+}
+
+
+/* =========================================================
+   SMALL SEPARATOR ABOVE TABLE
+========================================================= */
+
+.filter-card app-data-table::before {
+  content: '';
+
+  display: block;
+
+  height: 1px;
+
+  margin-bottom: 20px;
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(163, 177, 198, .35),
+    transparent
+  );
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .page-container {
+    padding: 22px;
+  }
+
+  .filter-card {
+    padding: 18px;
+  }
+
+  .filter-row > .filter-group {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filter-actions {
+    grid-column: 1 / -1;
+
+    justify-content: flex-end;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .page-container {
+    padding: 15px;
+  }
+
+  .page-header {
+    margin-bottom: 18px;
+  }
+
+  .page-header h2 {
+    font-size: 22px;
+  }
+
+  .page-header p {
+    font-size: 11px;
+  }
+
+  .filter-card {
+    padding: 15px;
+
+    border-radius: 16px;
+  }
+
+  .filter-row > .filter-group {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 15px;
+  }
+
+  .filter-group,
+  .form-group,
+  .filter-group > .filter-group {
+    width: 100%;
+  }
+
+  .filter-actions {
+    width: 100%;
+
+    height: auto;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+  }
+
+  .filter-actions .btn {
+    width: 100%;
+  }
+
+  .filter-card app-data-table {
+    margin-top: 18px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .page-container {
+    padding: 12px;
+  }
+
+  .page-header h2 {
+    font-size: 20px;
+  }
+
+  .filter-card {
+    padding: 13px;
+  }
+
+  .filter-actions {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.cancel-confirm-backdrop {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+
+  width: 100vw !important;
+  height: 100vh !important;
+
+  z-index: 999999 !important;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+
+  isolation: isolate;
+}
+
+.cancel-confirm-modal {
+  position: relative;
+  z-index: 1000000 !important;
+
+  width: 420px;
+  max-width: calc(100% - 30px);
+
+  background: #ffffff;
+  border-radius: 14px;
+
+  padding: 30px;
+
+  text-align: center;
+
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.20);
+
+  animation: cancelModalIn 0.18s ease-out;
+}
+
+.cancel-confirm-icon {
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #fff4e5;
+  color: #e67e22;
+
+  font-size: 24px;
+}
+
+.cancel-confirm-modal h3 {
+  margin: 0 0 10px;
+
+  font-size: 21px;
+  font-weight: 700;
+
+  color: #172033;
+}
+
+.cancel-confirm-modal p {
+  margin: 0;
+
+  color: #667085;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.cancel-confirm-modal p strong {
+  color: #172033;
+}
+
+.cancel-confirm-warning {
+  margin-top: 20px;
+
+  padding: 12px 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  text-align: left;
+
+  border-radius: 8px;
+
+  background: #fff8ef;
+  color: #9a6700;
+
+  font-size: 13px;
+}
+
+.cancel-confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+
+  margin-top: 25px;
+}
+
+.btn-cancel-no,
+.btn-cancel-yes {
+  min-width: 130px;
+
+  height: 42px;
+
+  padding: 0 18px;
+
+  border-radius: 7px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.btn-cancel-no {
+  border: 1px solid #d0d5dd;
+
+  background: #ffffff;
+  color: #344054;
+}
+
+.btn-cancel-no:hover {
+  background: #f9fafb;
+}
+
+.btn-cancel-yes {
+  border: none;
+
+  background: #c0392b;
+  color: #ffffff;
+}
+
+.btn-cancel-yes:hover {
+  background: #a93226;
+}
+
+.btn-cancel-no:disabled,
+.btn-cancel-yes:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@keyframes cancelModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.booking-modal-backdrop {
+  position: fixed;
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: rgba(18, 30, 48, 0.60);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   CENTERED BOOKING POPUP
+========================================================= */
+
+.booking-modal {
+  position: relative;
+
+  width: min(1450px, 94vw);
+
+  /*
+   * Important:
+   * Modal never becomes taller than the screen.
+   */
+  height: min(900px, 92vh);
+
+  max-height: 92vh;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+
+  background: #e9eef5;
+
+  box-shadow:
+    20px 20px 50px rgba(0, 0, 0, 0.22),
+    -12px -12px 35px rgba(255, 255, 255, 0.9);
+
+  color: #172b4d;
+
+  /*
+   * Small animation when popup opens
+   */
+  animation: bookingModalOpen 0.22s ease-out;
+}
+
+
+/* =========================================================
+   POPUP OPEN ANIMATION
+========================================================= */
+
+@keyframes bookingModalOpen {
+
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.booking-modal-header {
+  flex: 0 0 auto;
+
+  min-height: 92px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 28px;
+
+  box-sizing: border-box;
+
+  background: #e9eef5;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.booking-content {
+  /*
+   * This is the important part.
+   *
+   * Header + content + footer stay inside
+   * the centered popup.
+   */
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.15fr)
+    minmax(420px, 0.85fr);
+
+  gap: 20px;
+
+  padding: 20px 28px;
+
+  box-sizing: border-box;
+
+  /*
+   * ONLY THE CONTENT SCROLLS
+   */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   LEFT SIDE
+========================================================= */
+
+.booking-left {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.booking-right {
+  min-width: 0;
+  min-height: 0;
+}
+
+
+/* =========================================================
+   PASSENGER SECTION
+========================================================= */
+
+.passenger-section {
+  height: 100%;
+
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PASSENGER LIST SCROLL
+========================================================= */
+
+.passenger-list {
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 15px;
+
+  padding: 3px 7px 8px 3px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   PASSENGER CARD
+========================================================= */
+
+.passenger-card {
+  flex: 0 0 auto;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 16px;
+
+  border-radius: 19px;
+
+  background: #e9eef5;
+
+  box-shadow:
+    7px 7px 15px rgba(163, 177, 198, 0.35),
+    -7px -7px 15px rgba(255, 255, 255, 0.85);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.booking-modal-footer {
+  flex: 0 0 auto;
+
+  min-height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 15px 28px;
+
+  box-sizing: border-box;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.7);
+
+  background: #e9eef5;
+
+  box-shadow:
+    0 -7px 20px rgba(163, 177, 198, 0.12);
+}
+
+
+/* =========================================================
+   MODAL SCROLLBAR
+========================================================= */
+
+.booking-content::-webkit-scrollbar,
+.passenger-list::-webkit-scrollbar {
+  width: 7px;
+}
+
+
+.booking-content::-webkit-scrollbar-track,
+.passenger-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+.booking-content::-webkit-scrollbar-thumb,
+.passenger-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+
+  background: #c7d0dc;
+}
+
+
+.booking-content {
+  scrollbar-width: thin;
+  scrollbar-color: #c7d0dc transparent;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .booking-modal {
+    width: 94vw;
+    height: 92vh;
+  }
+
+  .booking-content {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-right {
+    min-height: 450px;
+  }
+
+}
+
+
+@media (max-width: 750px) {
+
+  .booking-modal-backdrop {
+    padding: 10px;
+  }
+
+  .booking-modal {
+    width: 96vw;
+    height: 94vh;
+    max-height: 94vh;
+
+    border-radius: 22px;
+  }
+
+  .booking-modal-header {
+    padding: 16px;
+  }
+
+  .booking-content {
+    padding: 15px;
+  }
+
+  .booking-modal-footer {
+    padding: 12px 16px;
+
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .footer-actions {
+    justify-content: center;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .booking-modal {
+    width: 98vw;
+    height: 96vh;
+    max-height: 96vh;
+
+    border-radius: 18px;
+  }
+
+  .booking-modal-header {
+    min-height: 75px;
+  }
+
+  .booking-content {
+    padding: 12px;
+  }
+
+}
+
+
+
+
+/* =========================================================
+   MAIN MODAL
+========================================================= */
+
+.booking-modal {
+  width: min(1450px, 96vw);
+  max-height: 94vh;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+
+  background: #e9eef5;
+
+  box-shadow:
+    18px 18px 45px rgba(0, 0, 0, 0.18),
+    -12px -12px 35px rgba(255, 255, 255, 0.9);
+
+  color: #172b4d;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.booking-modal-header {
+  min-height: 92px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px 28px;
+
+  background: #e9eef5;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+
+.booking-title-area {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+
+.booking-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 18px;
+
+  background: #e9eef5;
+
+  color: #3169e8;
+
+  font-size: 25px;
+
+  box-shadow:
+    7px 7px 15px rgba(163, 177, 198, 0.45),
+    -7px -7px 15px rgba(255, 255, 255, 0.95);
+}
+
+
+.booking-title-area h2 {
+  margin: 0 0 6px;
+
+  font-size: 24px;
+  font-weight: 750;
+
+  color: #172b4d;
+}
+
+
+.booking-ref-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 13px;
+}
+
+
+.booking-ref-row span {
+  color: #71809a;
+}
+
+
+.booking-ref-row strong {
+  color: #3169e8;
+  letter-spacing: 0.4px;
+}
+
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.close-btn {
+  width: 46px;
+  height: 46px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #e9eef5;
+
+  color: #53647d;
+
+  font-size: 27px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    6px 6px 13px rgba(163, 177, 198, 0.45),
+    -6px -6px 13px rgba(255, 255, 255, 0.95);
+
+  transition: all 0.2s ease;
+}
+
+
+.close-btn:hover {
+  color: #e74c3c;
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.booking-content {
+  flex: 1;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(420px, 0.85fr);
+
+  gap: 20px;
+
+  padding: 20px 28px;
+
+  overflow-y: auto;
+}
+
+
+.booking-left,
+.booking-right {
+  min-width: 0;
+}
+
+
+.booking-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.neo-section,
+.passenger-section {
+  padding: 20px;
+
+  border-radius: 22px;
+
+  background: #e9eef5;
+
+  box-shadow:
+    9px 9px 20px rgba(163, 177, 198, 0.38),
+    -9px -9px 20px rgba(255, 255, 255, 0.88);
+}
+
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  margin-bottom: 18px;
+}
+
+
+.section-heading h3 {
+  margin: 0;
+
+  font-size: 17px;
+  font-weight: 750;
+
+  color: #172b4d;
+}
+
+
+.section-heading span {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 12px;
+  color: #7b899f;
+}
+
+
+.section-icon {
+  width: 40px;
+  height: 40px;
+
+  flex: 0 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  color: #3169e8;
+
+  background: #e9eef5;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.35),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.9);
+
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   BOOKING INFORMATION
+========================================================= */
+
+.booking-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+
+.info-box {
+  min-height: 74px;
+
+  padding: 14px;
+
+  border-radius: 15px;
+
+  background: #e9eef5;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.28),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.85);
+}
+
+
+.info-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 11px;
+
+  color: #7b899f;
+}
+
+
+.info-box strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #23385d;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.info-box .amount {
+  color: #0f6045;
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   FLIGHT ROUTE
+========================================================= */
+
+.flight-route {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 20px;
+
+  border-radius: 19px;
+
+  background: #e9eef5;
+
+  box-shadow:
+    inset 4px 4px 9px rgba(163, 177, 198, 0.27),
+    inset -4px -4px 9px rgba(255, 255, 255, 0.85);
+}
+
+
+.airport-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+.airport-block.destination {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+
+.airport-code {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 50px;
+
+  border-radius: 15px;
+
+  background: #e9eef5;
+
+  color: #3169e8;
+
+  font-weight: 800;
+  font-size: 13px;
+
+  box-shadow:
+    5px 5px 10px rgba(163, 177, 198, 0.38),
+    -5px -5px 10px rgba(255, 255, 255, 0.9);
+}
+
+
+.airport-details span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 11px;
+
+  color: #7b899f;
+}
+
+
+.airport-details strong {
+  display: block;
+
+  max-width: 250px;
+
+  font-size: 13px;
+  color: #243a60;
+}
+
+
+.route-line {
+  min-width: 130px;
+
+  display: flex;
+  align-items: center;
+
+  color: #3169e8;
+}
+
+
+.route-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #3169e8;
+}
+
+
+.route-dashes {
+  flex: 1;
+
+  height: 1px;
+
+  margin: 0 4px;
+
+  border-top: 2px dashed #9db1d1;
+}
+
+
+.plane-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e9eef5;
+
+  box-shadow:
+    5px 5px 10px rgba(163, 177, 198, 0.35),
+    -5px -5px 10px rgba(255, 255, 255, 0.9);
+
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   TICKET META
+========================================================= */
+
+.ticket-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+
+  margin-top: 14px;
+}
+
+
+.ticket-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px;
+
+  border-radius: 14px;
+
+  background: #e9eef5;
+
+  box-shadow:
+    inset 2px 2px 5px rgba(163, 177, 198, 0.25),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+}
+
+
+.meta-icon {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 34px;
+
+  border-radius: 10px;
+
+  color: #3169e8;
+
+  box-shadow:
+    4px 4px 8px rgba(163, 177, 198, 0.32),
+    -4px -4px 8px rgba(255, 255, 255, 0.85);
+}
+
+
+.ticket-meta span {
+  display: block;
+
+  font-size: 10px;
+
+  color: #7b899f;
+}
+
+
+.ticket-meta strong {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 12px;
+
+  color: #263c60;
+}
+
+
+/* =========================================================
+   PASSENGERS
+========================================================= */
+
+.booking-right {
+  min-height: 0;
+}
+
+
+.passenger-section {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+}
+
+
+.passenger-heading {
+  flex-shrink: 0;
+}
+
+
+.passenger-heading h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.count {
+  width: 24px !important;
+  height: 24px;
+
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 !important;
+
+  border-radius: 50%;
+
+  background: #3169e8;
+
+  color: white !important;
+
+  font-size: 11px !important;
+  font-weight: 700;
+}
+
+
+.passenger-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 15px;
+
+  overflow-y: auto;
+
+  padding: 3px 5px 8px 3px;
+}
+
+
+.passenger-card {
+  flex-shrink: 0;
+
+  padding: 16px;
+
+  border-radius: 19px;
+
+  background: #e9eef5;
+
+  box-shadow:
+    7px 7px 15px rgba(163, 177, 198, 0.35),
+    -7px -7px 15px rgba(255, 255, 255, 0.85);
+}
+
+
+.passenger-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 15px;
+}
+
+
+.passenger-identity {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+}
+
+
+.passenger-avatar {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 46px;
+
+  border-radius: 50%;
+
+  background: #e9eef5;
+
+  color: #3169e8;
+
+  font-size: 18px;
+  font-weight: 800;
+
+  box-shadow:
+    6px 6px 12px rgba(163, 177, 198, 0.38),
+    -6px -6px 12px rgba(255, 255, 255, 0.9);
+}
+
+
+.passenger-identity h4 {
+  margin: 0 0 4px;
+
+  overflow: hidden;
+
+  font-size: 14px;
+
+  color: #1d3357;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.passenger-type {
+  display: inline-block !important;
+
+  padding: 3px 9px;
+
+  border-radius: 20px;
+
+  background: #dce8ff;
+
+  color: #3169e8 !important;
+
+  font-size: 10px !important;
+}
+
+
+.passenger-status {
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   PASSENGER INFO GRID
+========================================================= */
+
+.passenger-info-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 9px;
+
+  padding-top: 13px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+
+.passenger-info {
+  min-width: 0;
+}
+
+
+.passenger-info span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  font-size: 10px;
+
+  color: #7b899f;
+}
+
+
+.passenger-info strong {
+  display: block;
+
+  overflow: hidden;
+
+  font-size: 12px;
+
+  color: #273d61;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.passenger-price {
+  color: #0f6045 !important;
+}
+
+
+/* =========================================================
+   CANCELLATION
+========================================================= */
+
+.cancellation-info {
+  margin-top: 14px;
+
+  padding: 12px;
+
+  border-radius: 14px;
+
+  background: #fbe9ee;
+
+  box-shadow:
+    inset 2px 2px 5px rgba(200, 150, 165, 0.18),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+}
+
+
+.cancellation-title {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 8px;
+
+  color: #b83b54;
+
+  font-size: 11px;
+}
+
+
+.cancel-icon {
+  width: 20px !important;
+  height: 20px;
+
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 !important;
+
+  border-radius: 50%;
+
+  background: #f7cbd5;
+
+  color: #b83b54 !important;
+
+  font-weight: 800;
+}
+
+
+.cancellation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 8px;
+}
+
+
+.cancellation-grid > div {
+  min-width: 0;
+}
+
+
+.cancellation-grid .reason {
+  grid-column: 1 / -1;
+}
+
+
+.cancellation-grid span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  font-size: 9px;
+
+  color: #9c6671;
+}
+
+
+.cancellation-grid strong {
+  display: block;
+
+  font-size: 10px;
+
+  color: #783545;
+}
+
+
+/* =========================================================
+   STOPS
+========================================================= */
+
+.stops-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+.stop-item {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 12px;
+
+  border-radius: 14px;
+
+  box-shadow:
+    inset 2px 2px 5px rgba(163, 177, 198, 0.22),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.8);
+}
+
+
+.stop-number {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #3169e8;
+
+  color: white;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+.stop-info strong {
+  display: block;
+
+  font-size: 12px;
+}
+
+
+.stop-info span {
+  margin-right: 12px;
+
+  font-size: 10px;
+
+  color: #7b899f;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 11px;
+
+  border-radius: 30px;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  box-shadow:
+    3px 3px 7px rgba(163, 177, 198, 0.25),
+    -3px -3px 7px rgba(255, 255, 255, 0.75);
+}
+
+
+.status-badge.large {
+  padding: 8px 15px;
+
+  font-size: 11px;
+}
+
+
+.status-held {
+  background: #fff1cc;
+  color: #9a6a00;
+}
+
+
+.status-approved {
+  background: #d9f4e7;
+  color: #16704b;
+}
+
+
+.status-rejected,
+.status-cancelled {
+  background: #ffdfe5;
+  color: #c33d54;
+}
+
+
+.status-expired {
+  background: #e6e8ec;
+  color: #687284;
+}
+
+
+.status-issued {
+  background: #dce8ff;
+  color: #3169e8;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.booking-modal-footer {
+  min-height: 78px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 15px 28px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.7);
+
+  background: #e9eef5;
+
+  box-shadow:
+    0 -7px 20px rgba(163, 177, 198, 0.12);
+}
+
+
+.footer-summary span {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #7b899f;
+
+  font-size: 11px;
+}
+
+
+.footer-summary strong {
+  font-size: 19px;
+
+  color: #0f6045;
+}
+
+
+.footer-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+/* =========================================================
+   NEUMORPHIC BUTTONS
+========================================================= */
+
+.neo-btn {
+  min-width: 105px;
+
+  height: 43px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: #e9eef5;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    6px 6px 13px rgba(163, 177, 198, 0.42),
+    -6px -6px 13px rgba(255, 255, 255, 0.9);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+.neo-btn:hover {
+  transform: translateY(-2px);
+}
+
+
+.neo-btn:active {
+  transform: translateY(1px);
+
+  box-shadow:
+    inset 4px 4px 8px rgba(163, 177, 198, 0.35),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.85);
+}
+
+
+.btn-secondary {
+  color: #596a82;
+}
+
+
+.btn-danger {
+  color: #d3485b;
+}
+
+
+.btn-success {
+  color: #0f6045;
+}
+
+
+.btn-primary {
+  color: #3169e8;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.booking-content::-webkit-scrollbar,
+.passenger-list::-webkit-scrollbar {
+  width: 7px;
+}
+
+
+.booking-content::-webkit-scrollbar-track,
+.passenger-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+.booking-content::-webkit-scrollbar-thumb,
+.passenger-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+
+  background: #c7d0dc;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .booking-content {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-right {
+    min-height: 500px;
+  }
+
+}
+
+
+@media (max-width: 750px) {
+
+  .booking-modal {
+    width: 96vw;
+    max-height: 95vh;
+
+    border-radius: 20px;
+  }
+
+  .booking-modal-header {
+    padding: 16px;
+  }
+
+  .booking-content {
+    padding: 15px;
+  }
+
+  .booking-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ticket-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .flight-route {
+    grid-template-columns: 1fr;
+  }
+
+  .route-line {
+    transform: rotate(90deg);
+
+    margin: 10px auto;
+  }
+
+  .airport-block.destination {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .booking-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .footer-summary {
+    text-align: center;
+  }
+
+  .footer-actions {
+    justify-content: center;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .booking-modal-backdrop {
+    padding: 8px;
+  }
+
+  .booking-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .passenger-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cancellation-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cancellation-grid .reason {
+    grid-column: auto;
+  }
+
+  .passenger-card-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}
+

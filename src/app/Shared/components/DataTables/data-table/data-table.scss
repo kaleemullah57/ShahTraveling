@@ -1,10 +1,20 @@
+/* =========================================================
+   GLOBAL DATA TABLE — NEUMORPHIC UI
+========================================================= */
+
 .data-table-wrapper {
   width: 100%;
-  background: #ffffff;
-  border: 1px solid #e8ebf0;
-  border-radius: 16px;
+  background: #e8edf3;
+  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+
+  border: 1px solid rgba(255, 255, 255, 0.75);
+
+  box-shadow:
+    12px 12px 28px rgba(163, 177, 198, 0.38),
+    -10px -10px 25px rgba(255, 255, 255, 0.95);
+
+  color: #334155;
 }
 
 
@@ -16,9 +26,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 20px;
-  padding: 22px 24px;
-  border-bottom: 1px solid #edf0f4;
+  padding: 20px 24px;
+
+  background: #e8edf3;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+
+  box-shadow:
+    0 5px 12px rgba(163, 177, 198, 0.12);
 }
 
 
@@ -29,21 +46,26 @@
 }
 
 
-.table-title h2 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 700;
-  color: #1d2939;
-}
-
-
 .table-title span {
-  padding: 5px 10px;
-  border-radius: 20px;
-  background: #f1f5f9;
-  color: #667085;
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 32px;
+
+  padding: 0 13px;
+
+  border-radius: 18px;
+
+  background: #e8edf3;
+
+  color: #64748b;
+
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.30),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.85);
 }
 
 
@@ -59,53 +81,98 @@
 
 .table-search > i {
   position: absolute;
-  left: 14px;
+
+  left: 15px;
   top: 50%;
+
   transform: translateY(-50%);
-  color: #98a2b3;
+
+  color: #94a3b8;
+
+  z-index: 2;
+
+  pointer-events: none;
 }
 
 
 .table-search input {
   width: 100%;
   height: 42px;
-  padding: 0 42px 0 40px;
 
-  border: 1px solid #dfe3e8;
-  border-radius: 10px;
+  box-sizing: border-box;
 
+  padding: 0 42px 0 42px;
+
+  border: none;
   outline: none;
 
+  border-radius: 12px;
+
+  background: #e8edf3;
+
+  color: #334155;
+
   font-size: 14px;
-  color: #344054;
+
+  box-shadow:
+    inset 4px 4px 9px rgba(163, 177, 198, 0.38),
+    inset -4px -4px 9px rgba(255, 255, 255, 0.90);
 
   transition: 0.2s ease;
 }
 
 
+.table-search input::placeholder {
+  color: #94a3b8;
+}
+
+
 .table-search input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+  box-shadow:
+    inset 3px 3px 8px rgba(163, 177, 198, 0.40),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.90),
+    0 0 0 2px rgba(15, 96, 69, 0.10);
 }
 
 
 .clear-search {
   position: absolute;
-  right: 12px;
+
+  right: 10px;
   top: 50%;
+
+  width: 26px;
+  height: 26px;
+
   transform: translateY(-50%);
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border: none;
-  background: transparent;
+  border-radius: 50%;
+
+  background: #e8edf3;
+
+  color: #94a3b8;
 
   cursor: pointer;
 
-  color: #98a2b3;
+  box-shadow:
+    3px 3px 7px rgba(163, 177, 198, 0.30),
+    -3px -3px 7px rgba(255, 255, 255, 0.80);
+
+  transition: 0.2s ease;
 }
 
 
 .clear-search:hover {
-  color: #344054;
+  color: #334155;
+
+  box-shadow:
+    inset 2px 2px 5px rgba(163, 177, 198, 0.30),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.80);
 }
 
 
@@ -115,7 +182,11 @@
 
 .table-responsive {
   width: 100%;
+
   overflow-x: auto;
+  overflow-y: hidden;
+
+  background: #e8edf3;
 }
 
 
@@ -126,12 +197,20 @@
 .global-table {
   width: 100%;
   min-width: 800px;
-  border-collapse: collapse;
+
+  border-collapse: separate;
+  border-spacing: 0;
+
+  background: transparent;
 }
 
 
+/* =========================================================
+   TABLE HEADER
+========================================================= */
+
 .global-table thead {
-  background: #f8fafc;
+  background: #e8edf3;
 }
 
 
@@ -140,40 +219,61 @@
 
   text-align: left;
 
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
 
-  color: #667085;
+  color: #64748b;
 
   text-transform: uppercase;
-  letter-spacing: 0.4px;
-
-  border-bottom: 1px solid #e7ebf0;
+  letter-spacing: 0.7px;
 
   white-space: nowrap;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+
+  box-shadow:
+    inset 0 -3px 6px rgba(163, 177, 198, 0.08);
 }
 
+
+/* =========================================================
+   TABLE BODY
+========================================================= */
 
 .global-table td {
   padding: 16px 18px;
 
   font-size: 14px;
 
-  color: #344054;
-
-  border-bottom: 1px solid #eef1f4;
+  color: #475569;
 
   white-space: nowrap;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+
+  background: #e8edf3;
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
+
+/* =========================================================
+   ROW HOVER
+========================================================= */
 
 .global-table tbody tr {
-  transition: background 0.2s ease;
+  transition: 0.2s ease;
 }
 
 
-.global-table tbody tr:hover {
-  background: #fafcff;
+.global-table tbody tr:hover td {
+  background: #edf1f6;
+
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.55),
+    inset 0 -2px 4px rgba(163, 177, 198, 0.10);
 }
 
 
@@ -183,32 +283,45 @@
 
 
 /* =========================================================
-   SERIAL
+   SERIAL NUMBER
 ========================================================= */
 
 .serial-column {
-  width: 60px;
+  width: 55px;
+
   text-align: center !important;
-  color: #98a2b3 !important;
-  font-weight: 600;
+
+  color: #94a3b8 !important;
+
+  font-size: 13px !important;
+
+  font-weight: 700;
 }
 
 
 /* =========================================================
-   STATUS
+   STATUS BADGE
 ========================================================= */
 
 .status-badge {
   display: inline-flex;
+
   align-items: center;
   gap: 7px;
 
-  padding: 6px 11px;
+  min-height: 28px;
+
+  padding: 0 11px;
 
   border-radius: 20px;
 
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
+
+  font-weight: 700;
+
+  box-shadow:
+    3px 3px 7px rgba(163, 177, 198, 0.25),
+    -3px -3px 7px rgba(255, 255, 255, 0.75);
 }
 
 
@@ -216,39 +329,54 @@
   width: 7px;
   height: 7px;
 
+  flex: 0 0 7px;
+
   border-radius: 50%;
 }
 
 
+/* Active */
+
 .status-active {
-  color: #027a48;
-  background: #ecfdf3;
+  color: #087f5b;
+
+  background: #e1f5ec;
 }
 
 
 .status-active .status-dot {
-  background: #12b76a;
+  background: #12b886;
+
+  box-shadow:
+    0 0 0 3px rgba(18, 184, 134, 0.12);
 }
 
 
+/* Inactive */
+
 .status-inactive {
-  color: #b42318;
-  background: #fef3f2;
+  color: #c92a2a;
+
+  background: #fbe7e7;
 }
 
 
 .status-inactive .status-dot {
-  background: #f04438;
+  background: #fa5252;
+
+  box-shadow:
+    0 0 0 3px rgba(250, 82, 82, 0.12);
 }
 
 
 /* =========================================================
-   NUMBER
+   NUMBER VALUES
 ========================================================= */
 
 .number-value {
-  font-weight: 600;
-  color: #1d2939;
+  font-weight: 700;
+
+  color: #334155;
 }
 
 
@@ -257,37 +385,67 @@
 ========================================================= */
 
 .actions-column {
-  width: 140px;
+  width: 130px;
+
   text-align: center !important;
 }
 
 
 .action-buttons {
   display: flex;
+
   justify-content: center;
   align-items: center;
-  gap: 7px;
+
+  gap: 9px;
 }
 
 
 .action-button {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  border: 1px solid transparent;
-  border-radius: 8px;
+  border: none;
+
+  border-radius: 11px;
+
+  background: #e8edf3;
 
   cursor: pointer;
 
-  transition: 0.2s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
 
-  background: #f8fafc;
+  box-shadow:
+    5px 5px 10px rgba(163, 177, 198, 0.35),
+    -5px -5px 10px rgba(255, 255, 255, 0.85);
 }
 
+
+.action-button i {
+  font-size: 13px;
+}
+
+
+/* Press effect */
+
+.action-button:active {
+  transform: translateY(1px);
+
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.35),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.85);
+}
+
+
+/* View */
 
 .action-button.view {
   color: #2563eb;
@@ -295,9 +453,17 @@
 
 
 .action-button.view:hover {
-  background: #eff6ff;
+  color: #1d4ed8;
+
+  background: #e8edf3;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.25),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.85);
 }
 
+
+/* Edit */
 
 .action-button.edit {
   color: #d97706;
@@ -305,9 +471,15 @@
 
 
 .action-button.edit:hover {
-  background: #fffbeb;
+  color: #b45309;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.25),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.85);
 }
 
+
+/* Delete */
 
 .action-button.delete {
   color: #dc2626;
@@ -315,37 +487,62 @@
 
 
 .action-button.delete:hover {
-  background: #fef2f2;
+  color: #b91c1c;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.25),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.85);
 }
 
 
 /* =========================================================
    LOADING
 ========================================================= */
+
 .loading-cell {
   height: 250px;
+
   text-align: center !important;
-  color: #667085 !important;
+
+  color: #64748b !important;
 }
+
 
 .loading-cell .loader {
   margin: 0 auto 12px;
 }
 
+
 .loading-cell > span {
   display: block !important;
+
   margin-top: 12px;
+
+  font-size: 13px;
 }
 
+
+/* Neumorphic Loader */
+
 .loader {
-  width: 35px;
-  height: 35px;
+  width: 38px;
+  height: 38px;
+
   margin: 0 auto;
-  border: 3px solid #e5e7eb;
-  border-top-color: #2563eb;
+
   border-radius: 50%;
+
+  border: 4px solid #e8edf3;
+
+  border-top-color: #0f6045;
+
   animation: spin 0.8s linear infinite;
+
+  box-shadow:
+    4px 4px 8px rgba(163, 177, 198, 0.30),
+    -4px -4px 8px rgba(255, 255, 255, 0.85);
 }
+
 
 @keyframes spin {
   to {
@@ -355,7 +552,7 @@
 
 
 /* =========================================================
-   EMPTY
+   EMPTY STATE
 ========================================================= */
 
 .empty-cell {
@@ -363,27 +560,32 @@
 
   text-align: center !important;
 
-  color: #667085 !important;
+  color: #64748b !important;
 }
 
 
 .empty-icon {
-  width: 55px;
-  height: 55px;
+  width: 58px;
+  height: 58px;
 
-  margin: 0 auto 12px;
+  margin: 0 auto 14px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  border-radius: 50%;
+  border-radius: 18px;
 
-  background: #f2f4f7;
+  background: #e8edf3;
 
-  color: #98a2b3;
+  color: #94a3b8;
 
   font-size: 22px;
+
+  box-shadow:
+    7px 7px 14px rgba(163, 177, 198, 0.35),
+    -7px -7px 14px rgba(255, 255, 255, 0.90);
 }
 
 
@@ -392,12 +594,16 @@
 
   margin-bottom: 5px;
 
-  color: #344054;
+  color: #334155;
+
+  font-size: 14px;
 }
 
 
 .empty-cell span {
   font-size: 13px;
+
+  color: #94a3b8;
 }
 
 
@@ -413,9 +619,14 @@
 
   gap: 20px;
 
-  padding: 18px 24px;
+  padding: 17px 24px;
 
-  border-top: 1px solid #edf0f4;
+  background: #e8edf3;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.65);
+
+  box-shadow:
+    0 -4px 12px rgba(163, 177, 198, 0.10);
 }
 
 
@@ -425,28 +636,39 @@
 
 .page-size {
   display: flex;
+
   align-items: center;
+
   gap: 8px;
 
   font-size: 13px;
-  color: #667085;
+
+  color: #64748b;
 }
 
 
 .page-size select {
   height: 34px;
 
-  padding: 0 30px 0 10px;
+  padding: 0 30px 0 11px;
 
-  border: 1px solid #dfe3e8;
+  border: none;
 
-  border-radius: 7px;
+  border-radius: 9px;
 
   outline: none;
 
-  background: white;
+  background: #e8edf3;
+
+  color: #475569;
+
+  font-size: 13px;
 
   cursor: pointer;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.30),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.85);
 }
 
 
@@ -456,48 +678,100 @@
 
 .pagination {
   display: flex;
+
   align-items: center;
-  gap: 5px;
+
+  gap: 7px;
 }
 
 
 .pagination button {
-  min-width: 34px;
-  height: 34px;
+  min-width: 35px;
+  height: 35px;
 
-  padding: 0 8px;
+  padding: 0 9px;
 
-  border: 1px solid #e1e5ea;
+  border: none;
 
-  border-radius: 7px;
+  border-radius: 10px;
 
-  background: white;
+  background: #e8edf3;
 
-  color: #667085;
+  color: #64748b;
+
+  font-size: 13px;
+
+  font-weight: 600;
 
   cursor: pointer;
 
   transition: 0.2s ease;
+
+  box-shadow:
+    4px 4px 9px rgba(163, 177, 198, 0.32),
+    -4px -4px 9px rgba(255, 255, 255, 0.85);
 }
 
 
 .pagination button:hover:not(:disabled) {
-  background: #f5f8ff;
-  border-color: #2563eb;
-  color: #2563eb;
+  color: #0f6045;
+
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.30),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.85);
 }
 
 
 .pagination button.active {
-  background: #2563eb;
-  border-color: #2563eb;
-  color: white;
+  background: #0f6045;
+
+  color: #ffffff;
+
+  box-shadow:
+    4px 4px 9px rgba(163, 177, 198, 0.35),
+    -3px -3px 7px rgba(255, 255, 255, 0.50);
 }
 
 
 .pagination button:disabled {
-  opacity: 0.45;
+  opacity: 0.40;
+
   cursor: not-allowed;
+
+  box-shadow:
+    inset 2px 2px 5px rgba(163, 177, 198, 0.18),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.65);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #e8edf3;
+}
+
+
+.table-responsive::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+
+  background: #c4ced9;
+
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+
+.table-responsive {
+  scrollbar-width: thin;
+
+  scrollbar-color: #c4ced9 #e8edf3;
 }
 
 
@@ -507,9 +781,17 @@
 
 @media (max-width: 768px) {
 
+  .data-table-wrapper {
+    border-radius: 18px;
+  }
+
+
   .table-toolbar {
     flex-direction: column;
+
     align-items: stretch;
+
+    padding: 18px;
   }
 
 
@@ -520,13 +802,59 @@
 
   .table-footer {
     flex-direction: column;
+
     align-items: stretch;
+
+    padding: 16px 18px;
+  }
+
+
+  .page-size {
+    justify-content: center;
   }
 
 
   .pagination {
     justify-content: center;
+
     flex-wrap: wrap;
   }
 
+
+  .global-table {
+    min-width: 850px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .table-toolbar {
+    padding: 15px;
+  }
+
+
+  .table-title {
+    justify-content: center;
+  }
+
+
+  .table-footer {
+    gap: 14px;
+  }
+
+
+  .pagination {
+    gap: 5px;
+  }
+
+
+  .pagination button {
+    min-width: 32px;
+    height: 32px;
+  }
 }

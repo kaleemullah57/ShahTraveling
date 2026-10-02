@@ -97,6 +97,8 @@ ngOnChanges(changes: SimpleChanges): void {
   @Output()
   pageSizeChange = new EventEmitter<number>();
 
+  
+
   @Output()
   actionClick = new EventEmitter<{
     action: TableAction;

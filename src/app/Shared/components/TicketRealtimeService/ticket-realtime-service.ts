@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Subject } from 'rxjs';
@@ -14,9 +13,18 @@ export interface PassengerPriceChangedEvent {
   purchaseInvoiceItemId: number;
 }
 
-// NEW
 export interface TicketInventoryUpdatedEvent {
   purchaseInvoiceItemId: number;
+}
+
+export interface BookingPassengerCancelledEvent {
+  bookingId: number;
+  bookingPassengerId: number;
+  purchaseInvoiceItemId: number;
+  bookingStatusId: number;
+  bookingStatus?: string;
+  cancellationTypeId: number;
+  cancellationTypeName?: string;
 }
 
 @Injectable({
@@ -67,6 +75,17 @@ export class TicketRealtimeService {
 
 
   // =========================
+  // Booking Passenger Cancelled
+  // =========================
+
+  private bookingPassengerCancelledSubject =
+    new Subject<BookingPassengerCancelledEvent>();
+
+  bookingPassengerCancelled$ =
+    this.bookingPassengerCancelledSubject.asObservable();
+
+
+  // =========================
   // Start Connection
   // =========================
 
@@ -98,36 +117,24 @@ export class TicketRealtimeService {
 
 
     // =========================
-    // Existing Ticket Event
+    // Ticket Updated
     // =========================
 
     this.connection.on(
       'TicketUpdated',
       (data: TicketUpdatedEvent) => {
-
-        console.log(
-          '🔔 TICKET UPDATED:',
-          data
-        );
-
         this.ticketUpdatedSubject.next(data);
       }
     );
 
 
     // =========================
-    // NEW - Inventory Updated
+    // Ticket Inventory Updated
     // =========================
 
     this.connection.on(
       'TicketInventoryUpdated',
       (event: TicketInventoryUpdatedEvent) => {
-
-        console.log(
-          '🔔 TICKET INVENTORY UPDATED:',
-          event
-        );
-
         this.ticketInventoryUpdatedSubject.next({
           purchaseInvoiceItemId:
             event.purchaseInvoiceItemId
@@ -143,11 +150,6 @@ export class TicketRealtimeService {
     this.connection.on(
       'PassengerPriceAdded',
       (event: PassengerPriceChangedEvent) => {
-
-        console.log(
-          '🔥 PASSENGER PRICE ADDED:',
-          event
-        );
 
         this.passengerPriceAddedSubject.next({
           purchaseInvoiceItemId:
@@ -165,15 +167,23 @@ export class TicketRealtimeService {
       'PassengerPriceUpdated',
       (event: PassengerPriceChangedEvent) => {
 
-        console.log(
-          '🔥 PASSENGER PRICE UPDATED:',
-          event
-        );
-
         this.passengerPriceUpdatedSubject.next({
           purchaseInvoiceItemId:
             event.purchaseInvoiceItemId
         });
+      }
+    );
+
+
+    // =========================
+    // Booking Passenger Cancelled
+    // =========================
+
+    this.connection.on(
+      'BookingPassengerCancelled',
+      (event: BookingPassengerCancelledEvent) => {
+
+        this.bookingPassengerCancelledSubject.next(event);
       }
     );
 
@@ -185,18 +195,8 @@ export class TicketRealtimeService {
     this.connection
       .start()
       .then(() => {
-
-        console.log(
-          'Ticket SignalR connected'
-        );
-
       })
       .catch(error => {
-
-        console.error(
-          'SignalR connection error:',
-          error
-        );
 
       });
   }
@@ -213,11 +213,6 @@ export class TicketRealtimeService {
       this.connection
         .stop()
         .then(() => {
-
-          console.log(
-            'Ticket SignalR disconnected'
-          );
-
         });
 
     }

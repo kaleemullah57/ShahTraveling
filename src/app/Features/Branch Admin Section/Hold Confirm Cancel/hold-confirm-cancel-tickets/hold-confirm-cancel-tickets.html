@@ -1,0 +1,809 @@
+<div class="filter-card">
+
+  <div class="filter-row">
+
+    <div class="filter-group">
+
+      <div class="filter-group">
+        <label for="bookingStatus">Booking Status</label>
+
+        <select
+          id="bookingStatus"
+          [(ngModel)]="bookingStatus"
+          (change)="onBookingStatusChange()">
+
+          <option
+            *ngFor="let status of bookingStatuses"
+            [ngValue]="status.value">
+
+            {{ status.label }}
+
+          </option>
+
+        </select>
+      </div>
+
+
+      <div class="form-group">
+
+        <label>Search</label>
+
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="search"
+          placeholder="Booking reference, customer or airline"
+          (keyup.enter)="onSearch()" />
+
+      </div>
+
+
+      <div class="filter-actions">
+
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onSearch()">
+
+          <i class="fa fa-search"></i>
+          Search
+
+        </button>
+
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="clearSearch()">
+
+          <i class="fa fa-times"></i>
+          Clear
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <app-data-table
+    [columns]="columns"
+    [data]="bookings"
+    [actions]="actions"
+    [totalRecords]="totalCount"
+    [pageNumber]="pageNumber"
+    [pageSize]="pageSize"
+    [loading]="loading"
+    (actionClick)="onTableAction($event)"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)">
+  </app-data-table>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  html
+<div
+  class="booking-modal-backdrop"
+  *ngIf="showBookingDetails && selectedBooking"
+  (click)="closeBookingDetails()"
+>
+  <div
+    class="booking-modal"
+    (click)="$event.stopPropagation()"
+  >
+
+    <!-- =====================================================
+         MODAL HEADER
+    ====================================================== -->
+    <div class="booking-modal-header">
+
+      <div class="booking-title-area">
+
+        <div class="booking-icon">
+          <span>✈</span>
+        </div>
+
+        <div>
+          <h2>Booking Details</h2>
+
+          <div class="booking-ref-row">
+            <span>Booking Reference</span>
+            <strong>
+              {{ selectedBooking.bookingReference }}
+            </strong>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="header-status">
+
+        <span
+          class="status-badge large"
+          [class.status-held]="selectedBooking.bookingStatusId === 1"
+          [class.status-approved]="selectedBooking.bookingStatusId === 2"
+          [class.status-rejected]="selectedBooking.bookingStatusId === 3"
+          [class.status-cancelled]="
+            selectedBooking.bookingStatusId === 4 ||
+            selectedBooking.bookingStatusId === 5 ||
+            selectedBooking.bookingStatusId === 8
+          "
+          [class.status-expired]="selectedBooking.bookingStatusId === 6"
+          [class.status-issued]="selectedBooking.bookingStatusId === 7"
+        >
+          {{ selectedBooking.bookingStatus }}
+        </span>
+
+        <button
+          type="button"
+          class="close-btn"
+          (click)="closeBookingDetails()"
+        >
+          ×
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+    <div class="booking-content">
+
+      <!-- ===================================================
+           LEFT SIDE - BOOKING + TICKET
+      ==================================================== -->
+      <div class="booking-left">
+
+
+        <!-- BOOKING INFORMATION -->
+        <section class="neo-section">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              ▣
+            </div>
+
+            <div>
+              <h3>Booking Information</h3>
+              <span>Booking and customer details</span>
+            </div>
+
+          </div>
+
+
+          <div class="booking-info-grid">
+
+            <div class="info-box">
+              <span class="info-label">Booking Reference</span>
+              <strong>
+                {{ selectedBooking.bookingReference }}
+              </strong>
+            </div>
+
+            <div class="info-box">
+              <span class="info-label">Customer</span>
+              <strong>
+                {{ selectedBooking.customerName }}
+              </strong>
+            </div>
+
+            <div class="info-box">
+              <span class="info-label">Airline</span>
+              <strong>
+                {{ selectedBooking.airlineName }}
+              </strong>
+            </div>
+
+            <div class="info-box">
+              <span class="info-label">Passengers</span>
+              <strong>
+                {{ selectedBooking.quantity }}
+              </strong>
+            </div>
+
+            <div class="info-box">
+              <span class="info-label">Total Amount</span>
+              <strong class="amount">
+                {{ selectedBooking.totalAmount | number:'1.2-2' }}
+              </strong>
+            </div>
+
+            <div class="info-box">
+              <span class="info-label">Created</span>
+              <strong>
+                {{ selectedBooking.createdDate | date:'dd MMM yyyy, h:mm a' }}
+              </strong>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             TICKET / ROUTE INFORMATION
+        ================================================== -->
+        <section class="neo-section">
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              ✈
+            </div>
+
+            <div>
+              <h3>Ticket Information</h3>
+              <span>Flight route and ticket details</span>
+            </div>
+
+          </div>
+
+
+          <!-- ROUTE -->
+          <div class="flight-route">
+
+            <div class="airport-block">
+
+              <div class="airport-code">
+                {{ selectedBooking.fromAirport | slice:0:3 | uppercase }}
+              </div>
+
+              <div class="airport-details">
+
+                <span>From</span>
+
+                <strong>
+                  {{ selectedBooking.fromAirport }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="route-line">
+
+              <span class="route-dot"></span>
+
+              <span class="route-dashes"></span>
+
+              <span class="plane-icon">
+                ✈
+              </span>
+
+              <span class="route-dashes"></span>
+
+              <span class="route-dot"></span>
+
+            </div>
+
+
+            <div class="airport-block destination">
+
+              <div class="airport-code">
+                {{ selectedBooking.toAirport | slice:0:3 | uppercase }}
+              </div>
+
+              <div class="airport-details">
+
+                <span>To</span>
+
+                <strong>
+                  {{ selectedBooking.toAirport }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- TICKET META -->
+          <div class="ticket-meta-grid">
+
+            <div class="ticket-meta">
+
+              <div class="meta-icon">
+                ▣
+              </div>
+
+              <div>
+                <span>PNR</span>
+                <strong>
+                  {{ selectedBooking.pnrnumber || 'Not Issued' }}
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="ticket-meta">
+
+              <div class="meta-icon">
+                ◷
+              </div>
+
+              <div>
+                <span>Ticket Valid Until</span>
+
+                <strong>
+                  {{ selectedBooking.ticketValidUntil | date:'dd MMM yyyy, h:mm a' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="ticket-meta">
+
+              <div class="meta-icon">
+                ◉
+              </div>
+
+              <div>
+                <span>Created</span>
+
+                <strong>
+                  {{ selectedBooking.createdDate | date:'dd MMM yyyy, h:mm a' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ROUTE / STOPS
+        ================================================== -->
+        <section
+          class="neo-section"
+          *ngIf="selectedBooking.stopList?.length"
+        >
+
+          <div class="section-heading">
+
+            <div class="section-icon">
+              ⇄
+            </div>
+
+            <div>
+              <h3>Journey Stops</h3>
+              <span>Intermediate airports</span>
+            </div>
+
+          </div>
+
+
+          <div class="stops-list">
+
+            <div
+              class="stop-item"
+              *ngFor="let stop of selectedBooking.stopList"
+            >
+
+              <div class="stop-number">
+                {{ stop.stopNumber }}
+              </div>
+
+              <div class="stop-info">
+
+                <strong>
+                  {{ stop.stopAirport }}
+                </strong>
+
+                <span>
+                  Arrival:
+                  {{ stop.arrivalDateTime | date:'dd MMM, h:mm a' }}
+                </span>
+
+                <span>
+                  Departure:
+                  {{ stop.departureDateTime | date:'dd MMM, h:mm a' }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- ===================================================
+           RIGHT SIDE - PASSENGERS
+      ==================================================== -->
+      <div class="booking-right">
+
+        <section class="passenger-section">
+
+          <div class="section-heading passenger-heading">
+
+            <div class="section-icon">
+              ♙
+            </div>
+
+            <div>
+
+              <h3>
+                Passengers
+                <span class="count">
+                  {{ selectedBooking.passengerList?.length || 0 }}
+                </span>
+              </h3>
+
+              <span>
+                Passenger information and pricing
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- PASSENGER CARDS -->
+          <div class="passenger-list">
+
+            <article
+  class="passenger-card"
+  *ngFor="
+    let passenger of selectedBooking.passengerList;
+    let i = index
+  "
+>
+
+  <!-- PASSENGER HEADER -->
+  <div class="passenger-card-header">
+
+    <div class="passenger-identity">
+
+      <div class="passenger-avatar">
+        {{ passenger.passengerName?.charAt(0) | uppercase }}
+      </div>
+
+      <div>
+        <h4>{{ passenger.passengerName }}</h4>
+
+        <span class="passenger-type">
+          {{ passenger.passengerType }}
+        </span>
+      </div>
+
+    </div>
+
+    <span
+      class="status-badge passenger-status"
+      [class.status-held]="passenger.bookingStatusId === 1"
+      [class.status-approved]="passenger.bookingStatusId === 2"
+      [class.status-rejected]="passenger.bookingStatusId === 3"
+      [class.status-cancelled]="
+        passenger.bookingStatusId === 4 ||
+        passenger.bookingStatusId === 5 ||
+        passenger.bookingStatusId === 8
+      "
+      [class.status-expired]="passenger.bookingStatusId === 6"
+      [class.status-issued]="passenger.bookingStatusId === 7"
+    >
+      {{ passenger.bookingStatus }}
+    </span>
+
+  </div>
+
+
+  <!-- PASSENGER DETAILS -->
+  <div class="passenger-info-grid">
+
+    <div class="passenger-info">
+      <span>Passport</span>
+      <strong>{{ passenger.passportNumber || '-' }}</strong>
+    </div>
+
+    <div class="passenger-info">
+      <span>Date of Birth</span>
+      <strong>
+        {{
+          passenger.dateOfBirth
+            ? (passenger.dateOfBirth | date:'dd MMM yyyy')
+            : '-'
+        }}
+      </strong>
+    </div>
+
+    <div class="passenger-info">
+      <span>Gender</span>
+      <strong>{{ passenger.gender || '-' }}</strong>
+    </div>
+
+    <div class="passenger-info">
+      <span>Nationality</span>
+      <strong>{{ passenger.nationality || '-' }}</strong>
+    </div>
+
+    <div class="passenger-info email">
+      <span>Email</span>
+      <strong>{{ passenger.email || '-' }}</strong>
+    </div>
+
+    <div class="passenger-info">
+      <span>Price</span>
+      <strong class="passenger-price">
+        {{ passenger.totalPrice | number:'1.2-2' }}
+      </strong>
+    </div>
+
+  </div>
+
+
+  <!-- CANCELLATION -->
+  <div
+    class="cancellation-info"
+    *ngIf="passenger.cancellationType"
+  >
+
+    <div class="cancellation-title">
+      <span class="cancel-icon">!</span>
+
+      <strong>
+        Cancellation Information
+      </strong>
+    </div>
+
+    <div class="cancellation-grid">
+
+      <div>
+        <span>Type</span>
+        <strong>
+          {{ passenger.cancellationType }}
+        </strong>
+      </div>
+
+      <div *ngIf="passenger.cancelledDate">
+        <span>Cancelled</span>
+        <strong>
+          {{ passenger.cancelledDate | date:'dd MMM yyyy, h:mm a' }}
+        </strong>
+      </div>
+
+      <div
+        class="reason"
+        *ngIf="passenger.cancellationReason"
+      >
+        <span>Reason</span>
+        <strong>
+          {{ passenger.cancellationReason }}
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- PASSENGER ACTIONS -->
+  <div class="passenger-actions">
+
+    <!-- HELD -->
+    <ng-container *ngIf="passenger.bookingStatusId === 1">
+
+      <button
+  type="button"
+  class="neo-btn btn-danger"
+  (click)="cancelPassenger(passenger)"
+>
+  <span>⊗</span>
+  Reject
+</button>
+
+      <button
+        type="button"
+        class="neo-btn btn-success"
+        //(click)="approvePassenger(passenger)"
+      >
+        <span>✓</span>
+        Approve
+      </button>
+
+    </ng-container>
+
+
+    <!-- APPROVED -->
+    <ng-container *ngIf="passenger.bookingStatusId === 2">
+
+      <button
+        type="button"
+        class="neo-btn btn-primary"
+        //(click)="issuePassengerTicket(passenger)"
+      >
+        <span>✈</span>
+        Issue Ticket
+      </button>
+
+    </ng-container>
+
+  </div>
+
+</article>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER / ACTIONS
+    ====================================================== -->
+    <div class="booking-modal-footer">
+
+      <div class="footer-summary">
+
+        <span>Total Booking Amount</span>
+
+        <strong>
+          {{ selectedBooking.totalAmount | number:'1.2-2' }}
+        </strong>
+
+      </div>
+
+
+      <div class="footer-actions">
+
+        <button
+          type="button"
+          class="neo-btn btn-secondary"
+          (click)="closeBookingDetails()"
+        >
+          <span>×</span>
+          Close
+        </button>
+
+
+
+        <!-- APPROVED -->
+        <ng-container
+          *ngIf="selectedBooking.bookingStatusId === 2"
+        >
+
+          <button
+            type="button"
+            class="neo-btn btn-primary"
+            //(click)="issueTicket(selectedBooking)"
+          >
+            <span>✈</span>
+            Issue Ticket
+          </button>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- CANCEL CONFIRMATION MODAL -->
+<div
+  class="cancel-confirm-backdrop"
+  *ngIf="showCancelConfirm"
+  (click)="closeCancelConfirm()"
+>
+  <div
+    class="cancel-confirm-modal"
+    (click)="$event.stopPropagation()"
+  >
+
+    <div class="cancel-confirm-icon">
+      <i class="fa fa-exclamation-triangle"></i>
+    </div>
+
+    <h3>Cancel Ticket?</h3>
+
+    <p>
+      Are you sure you want to cancel the ticket for
+      <strong>
+        {{ selectedPassengerForCancel?.passengerName }}
+      </strong>
+      ?
+    </p>
+
+    <div class="cancel-confirm-warning">
+      <i class="fa fa-info-circle"></i>
+
+      <span>
+        This action will cancel this passenger's booking.
+      </span>
+    </div>
+
+    <div class="cancel-confirm-actions">
+
+      <button
+        type="button"
+        class="btn-cancel-no"
+        [disabled]="isCancellingPassenger"
+        (click)="closeCancelConfirm()"
+      >
+        No, Keep It
+      </button>
+
+      <button
+        type="button"
+        class="btn-cancel-yes"
+        [disabled]="isCancellingPassenger"
+        (click)="confirmCancelPassenger()"
+      >
+
+        <i
+          *ngIf="isCancellingPassenger"
+          class="fa fa-spinner fa-spin"
+        ></i>
+
+        <span>
+          {{
+            isCancellingPassenger
+              ? 'Cancelling...'
+              : 'Yes, Cancel Ticket'
+          }}
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+</div>
