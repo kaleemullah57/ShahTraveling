@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ApiService } from '../../../../Core/Services/API Services/api-service';
 import { PendingHoldBookingResponse } from '../../Admin Models/Hold Confirm Cancel Models/hold-pending-confirm-cancelled-model';
 import { Observable } from 'rxjs';
-import { CancelBookingPassengerRequest } from '../../../Customer Section/Customers Models/Booked Tickets Models/booked-tickets-model';
+import { CancelBookingPassengerRequest, ConfirmHeldTicketResponse } from '../../../Customer Section/Customers Models/Booked Tickets Models/booked-tickets-model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +44,24 @@ export class HoldConfirmCancelService {
     return this.api.post<any>(
       `Public/CancelBookingPassenger`,
       request
+    );
+  }
+
+
+
+
+
+
+
+  confirmHeldTicket(
+    bookingPassengerId: number
+  ): Observable<ConfirmHeldTicketResponse> {
+
+    return this.api.post(
+      'BranchAdmin/ConfirmHeldTicket',
+      {
+        bookingPassengerId
+      }
     );
   }
 }

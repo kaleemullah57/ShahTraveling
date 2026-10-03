@@ -33,4 +33,27 @@ export class BookedTicketsService {
             request
         );
     }
+
+
+
+
+    // Get Ticket Confirmed Notifications
+    getMyNotifications() {
+        return this.api.get<any>(
+            `Public/MyNotifications`
+        );
+    }
+
+
+
+
+    // Read Confirmed Notification
+    markNotificationRead(notificationId: number): Observable<any> {
+        return this.api.post<any>(
+            `Public/MarkNotificationRead`,
+            {
+                notificationId: notificationId
+            }
+        );
+    }
 }

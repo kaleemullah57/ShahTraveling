@@ -1,6 +1,124 @@
+
+
 <div class="filter-card">
 
-  <div class="filter-row">
+  <!-- FILTER HEADER -->
+  <div class="filter-header">
+
+    <div>
+      <h3>Pending Hold Confirmations</h3>
+      <p>Manage customer booking requests</p>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div class="notification-wrapper">
+
+      <button
+        type="button"
+        class="notification-button"
+        (click)="toggleNotifications()"
+      >
+        <i class="fa fa-bell"></i>
+
+        <span
+          class="notification-badge"
+          *ngIf="notificationCount > 0"
+        >
+          {{ notificationCount }}
+        </span>
+      </button>
+
+      <div
+        class="notification-panel"
+        *ngIf="showNotifications"
+      >
+
+        <div class="notification-header">
+
+          <div>
+            <h3>Notifications</h3>
+            <span>{{ notificationCount }} unread</span>
+          </div>
+
+          <button
+            type="button"
+            class="notification-close"
+            (click)="closeNotifications()"
+          >
+            <i class="fa fa-times"></i>
+          </button>
+
+        </div>
+
+        <div
+          class="notification-empty"
+          *ngIf="notifications.length === 0"
+        >
+          <i class="fa fa-bell-slash"></i>
+          <p>No new notifications</p>
+        </div>
+
+        <div
+          class="notification-list"
+          *ngIf="notifications.length > 0"
+        >
+
+          <div
+            class="notification-item"
+            *ngFor="let notification of notifications"
+          >
+
+            <div class="notification-icon">
+              <i
+                class="fa"
+                [ngClass]="
+                  notification.notificationType === 'TicketConfirmed'
+                    ? 'fa-check-circle'
+                    : notification.notificationType === 'TicketCancelled'
+                      ? 'fa-times-circle'
+                      : 'fa-bell'
+                "
+              ></i>
+            </div>
+
+            <div class="notification-content">
+
+              <h4>{{ notification.title }}</h4>
+
+              <p>{{ notification.message }}</p>
+
+              <small>
+                {{ notification.createdDate | date:'dd MMM yyyy, hh:mm a' }}
+              </small>
+
+              <div class="notification-actions">
+
+                <button
+                  type="button"
+                  class="notification-read-button"
+                  (click)="markNotificationAsRead(notification)"
+                >
+                  <i class="fa fa-check"></i>
+                  Close
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+<div class="filter-row">
 
     <div class="filter-group">
 
@@ -102,7 +220,7 @@
 
 
 
-  html
+ 
 <div
   class="booking-modal-backdrop"
   *ngIf="showBookingDetails && selectedBooking"
@@ -630,7 +748,7 @@
       <button
         type="button"
         class="neo-btn btn-success"
-        //(click)="approvePassenger(passenger)"
+        (click)="approvePassenger(passenger)"
       >
         <span>✓</span>
         Approve
@@ -807,3 +925,270 @@
 
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+@if (showApproveModal && selectedApprovalPassenger) {
+
+  <div
+    class="approve-modal-backdrop"
+    (click)="closeApproveModal()"
+  >
+
+    <div
+      class="approve-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="approve-modal-icon">
+        <i class="fa fa-check-circle"></i>
+      </div>
+
+
+      <h3>Approve Ticket?</h3>
+
+
+      <p class="approve-description">
+        Are you sure you want to approve the ticket for
+        <strong>
+          {{ selectedApprovalPassenger.passengerName }}
+        </strong>?
+      </p>
+
+
+      <div class="approve-passenger-info">
+
+        <div>
+          <span>Passenger</span>
+          <strong>
+            {{ selectedApprovalPassenger.passengerName }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Type</span>
+          <strong>
+            {{ selectedApprovalPassenger.passengerType }}
+          </strong>
+        </div>
+
+        <div>
+          <span>Status</span>
+          <strong>
+            {{ selectedApprovalPassenger.bookingStatus }}
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="approve-notice">
+        <i class="fa fa-info-circle"></i>
+
+        <span>
+          Once approved, this passenger will be confirmed
+          and the customer will be notified.
+        </span>
+      </div>
+
+
+      <div class="approve-modal-actions">
+
+        <button
+          type="button"
+          class="keep-ticket-btn"
+          [disabled]="isApproving"
+          (click)="closeApproveModal()"
+        >
+          Keep Pending
+        </button>
+
+
+        <button
+          type="button"
+          class="confirm-approve-btn"
+          [disabled]="isApproving"
+          (click)="confirmApprovePassenger()"
+        >
+
+          @if (isApproving) {
+
+            <i class="fa fa-spinner fa-spin"></i>
+            Approving...
+
+          } @else {
+
+            <i class="fa fa-check"></i>
+            Approve Ticket
+
+          }
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- NOTIFICATION -->
+  <div class="notification-wrapper">
+
+    <button
+      type="button"
+      class="notification-button"
+      (click)="toggleNotifications()"
+    >
+      <i class="fa fa-bell"></i>
+
+      <span
+        class="notification-badge"
+        *ngIf="notificationCount > 0"
+      >
+        {{ notificationCount }}
+      </span>
+    </button>
+
+
+    <!-- NOTIFICATION PANEL -->
+    <div
+      class="notification-panel"
+      *ngIf="showNotifications"
+    >
+
+      <div class="notification-header">
+
+        <div>
+          <h3>Notifications</h3>
+
+          <span>
+            {{ notificationCount }} unread
+          </span>
+        </div>
+
+        <button
+          type="button"
+          class="notification-close"
+          (click)="closeNotifications()"
+        >
+          <i class="fa fa-times"></i>
+        </button>
+
+      </div>
+
+
+      <!-- EMPTY -->
+      <div
+        class="notification-empty"
+        *ngIf="notifications.length === 0"
+      >
+        <i class="fa fa-bell-slash"></i>
+
+        <p>No new notifications</p>
+      </div>
+
+
+      <!-- NOTIFICATION LIST -->
+      <div
+        class="notification-list"
+        *ngIf="notifications.length > 0"
+      >
+
+        <div
+          class="notification-item"
+          *ngFor="let notification of notifications"
+        >
+
+          <div class="notification-icon">
+
+            <i
+              class="fa"
+              [ngClass]="
+                notification.notificationType === 'TicketConfirmed'
+                  ? 'fa-check-circle'
+                  : 'fa-bell'
+              "
+            ></i>
+
+          </div>
+
+
+          <div class="notification-content">
+
+            <h4>
+              {{ notification.title }}
+            </h4>
+
+            <p>
+              {{ notification.message }}
+            </p>
+
+            <small>
+              {{ notification.createdDate | date:'dd MMM yyyy, hh:mm a' }}
+            </small>
+
+
+            <div class="notification-actions">
+
+              <button
+                type="button"
+                class="notification-view-button"
+                *ngIf="
+                  notification.bookingId &&
+                  notification.notificationType === 'TicketConfirmed'
+                "
+                (click)="openNotification(notification)"
+              >
+                <i class="fa fa-eye"></i>
+                View Booking
+              </button>
+
+
+              <button
+                type="button"
+                class="notification-read-button"
+                (click)="markNotificationAsRead(notification)"
+              >
+                <i class="fa fa-check"></i>
+                Close
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>

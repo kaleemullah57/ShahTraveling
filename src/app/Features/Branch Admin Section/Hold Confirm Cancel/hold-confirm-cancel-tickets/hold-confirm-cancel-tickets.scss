@@ -90,24 +90,348 @@
    FILTER CARD
 ========================================================= */
 
+// .filter-card {
+//   position: relative;
+//   z-index: 1;
+
+//   margin-bottom: 24px;
+//   padding: 22px;
+
+//   box-sizing: border-box;
+
+//   background: #e8edf3;
+
+//   border-radius: 20px;
+
+//   border: 1px solid rgba(255, 255, 255, .72);
+
+//   box-shadow:
+//     10px 10px 24px rgba(163, 177, 198, .30),
+//     -10px -10px 24px rgba(255, 255, 255, .88);
+// }
+
+/* =========================================================
+   FILTER CARD
+========================================================= */
+
 .filter-card {
   position: relative;
-  z-index: 1;
+}
 
-  margin-bottom: 24px;
-  padding: 22px;
 
-  box-sizing: border-box;
+/* =========================================================
+   FILTER HEADER
+========================================================= */
 
-  background: #e8edf3;
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
 
-  border-radius: 20px;
+.filter-header h3 {
+  margin: 0;
+}
 
-  border: 1px solid rgba(255, 255, 255, .72);
+.filter-header p {
+  margin: 4px 0 0;
+  color: #6b7c76;
+}
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+.notification-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+
+/* Bell */
+
+.notification-button {
+  position: relative;
+
+  width: 44px;
+  height: 44px;
+
+  border: 1px solid #e2ebe7;
+  border-radius: 12px;
+
+  background: #ffffff;
+  color: #0f6045;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(15, 96, 69, 0.10);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.notification-button:hover {
+  transform: translateY(-2px);
 
   box-shadow:
-    10px 10px 24px rgba(163, 177, 198, .30),
-    -10px -10px 24px rgba(255, 255, 255, .88);
+    0 7px 18px rgba(15, 96, 69, 0.16);
+}
+
+.notification-button i {
+  font-size: 17px;
+}
+
+
+/* Badge */
+
+.notification-badge {
+  position: absolute;
+
+  top: -6px;
+  right: -6px;
+
+  min-width: 20px;
+  height: 20px;
+
+  padding: 0 5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #d9534f;
+  color: #ffffff;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  border: 2px solid #ffffff;
+}
+
+
+/* =========================================================
+   NOTIFICATION PANEL
+========================================================= */
+
+.notification-panel {
+  position: absolute;
+
+  top: 54px;
+  right: 0;
+
+  width: 380px;
+  max-height: 520px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5ece9;
+  border-radius: 16px;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.15);
+
+  overflow: hidden;
+
+  z-index: 1000;
+}
+
+
+/* Header */
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px 18px;
+
+  border-bottom: 1px solid #edf2f0;
+}
+
+.notification-header h3 {
+  margin: 0;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  color: #17352b;
+}
+
+.notification-header span {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 12px;
+  color: #7a8984;
+}
+
+.notification-close {
+  width: 32px;
+  height: 32px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #f4f7f6;
+
+  color: #66756f;
+
+  cursor: pointer;
+}
+
+
+/* List */
+
+.notification-list {
+  max-height: 440px;
+  overflow-y: auto;
+}
+
+
+/* Item */
+
+.notification-item {
+  display: flex;
+  gap: 12px;
+
+  padding: 15px 18px;
+
+  border-bottom: 1px solid #edf2f0;
+
+  transition: background 0.2s ease;
+}
+
+.notification-item:hover {
+  background: #f8fbfa;
+}
+
+
+/* Icon */
+
+.notification-icon {
+  width: 36px;
+  height: 36px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #eaf5f0;
+  color: #0f6045;
+}
+
+
+/* Content */
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-content h4 {
+  margin: 0 0 5px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: #18362c;
+}
+
+.notification-content p {
+  margin: 0 0 7px;
+
+  font-size: 13px;
+  line-height: 1.45;
+
+  color: #596862;
+}
+
+.notification-content small {
+  color: #89958f;
+  font-size: 11px;
+}
+
+
+/* Actions */
+
+.notification-actions {
+  margin-top: 10px;
+}
+
+.notification-read-button {
+  border: none;
+
+  padding: 6px 10px;
+
+  border-radius: 7px;
+
+  background: #eef5f2;
+  color: #0f6045;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+/* Empty */
+
+.notification-empty {
+  padding: 40px 20px;
+
+  text-align: center;
+
+  color: #89958f;
+}
+
+.notification-empty i {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.notification-empty p {
+  margin: 0;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .filter-header {
+    align-items: flex-start;
+  }
+
+  .notification-panel {
+    position: fixed;
+
+    top: 80px;
+    left: 15px;
+    right: 15px;
+
+    width: auto;
+
+    max-height: calc(100vh - 100px);
+  }
 }
 
 
@@ -2274,4 +2598,493 @@
   }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   APPROVE CONFIRMATION MODAL
+========================================================= */
+/* =========================================
+   Approve Ticket Button
+   ========================================= */
+
+.approve-ticket-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid rgba(15, 96, 69, 0.35);
+  border-radius: 10px;
+  background: rgba(15, 96, 69, 0.08);
+  color: #0f6045;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.approve-ticket-btn:hover {
+  background: rgba(15, 96, 69, 0.14);
+  transform: translateY(-1px);
+}
+
+
+/* =========================================
+   Approve Modal
+   ========================================= */
+
+.approve-modal-backdrop {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+
+  width: 100vw !important;
+  height: 100vh !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 20px;
+  box-sizing: border-box;
+
+  background: rgba(4, 24, 19, 0.62);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* VERY HIGH */
+  z-index: 2147483646 !important;
+
+  isolation: isolate;
+
+  animation: approveBackdropIn 0.2s ease-out;
+}
+
+.approve-modal {
+  position: relative !important;
+
+  width: 100%;
+  max-width: 480px;
+
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+
+  padding: 30px;
+  box-sizing: border-box;
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.96),
+      rgba(255, 255, 255, 0.88)
+    );
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.30);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  /* VERY HIGH */
+  z-index: 2147483647 !important;
+
+  animation: approveModalIn 0.2s ease-out;
+}
+
+
+/* =========================================
+   Icon
+   ========================================= */
+
+.approve-modal-icon {
+
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: rgba(15, 96, 69, 0.10);
+
+  color: #0f6045;
+
+  font-size: 25px;
+}
+
+
+/* =========================================
+   Title
+   ========================================= */
+
+.approve-modal h3 {
+
+  margin: 0;
+
+  text-align: center;
+
+  color: #173b32;
+
+  font-size: 24px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================
+   Description
+   ========================================= */
+
+.approve-description {
+
+  margin: 10px 0 22px;
+
+  text-align: center;
+
+  color: #66756f;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+.approve-description strong {
+
+  color: #234b40;
+
+  font-weight: 700;
+}
+
+
+/* =========================================
+   Passenger Information
+   ========================================= */
+
+.approve-passenger-info {
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+}
+
+
+.approve-passenger-info > div {
+
+  padding: 12px;
+
+  border: 1px solid rgba(15, 96, 69, 0.12);
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.55);
+}
+
+
+.approve-passenger-info span {
+
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #80908a;
+
+  font-size: 11px;
+}
+
+
+.approve-passenger-info strong {
+
+  display: block;
+
+  color: #234b40;
+
+  font-size: 13px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   Approval Notice
+   ========================================= */
+
+.approve-notice {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 9px;
+
+  margin-bottom: 22px;
+
+  padding: 12px 14px;
+
+  border: 1px solid rgba(15, 96, 69, 0.12);
+
+  border-radius: 12px;
+
+  background: rgba(15, 96, 69, 0.06);
+
+  color: #42645a;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+.approve-notice i {
+
+  flex-shrink: 0;
+
+  margin-top: 2px;
+
+  color: #0f6045;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   Modal Actions
+   ========================================= */
+
+.approve-modal-actions {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 10px;
+}
+
+
+/* =========================================
+   Keep Pending
+   Same Shape as Cancel's Keep Ticket
+   ========================================= */
+
+.approve-modal .keep-ticket-btn {
+
+  min-width: 125px;
+
+  padding: 11px 18px;
+
+  border: 1px solid rgba(15, 96, 69, 0.18);
+
+  border-radius: 11px;
+
+  background: rgba(255, 255, 255, 0.65);
+
+  color: #31584e;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+
+.approve-modal .keep-ticket-btn:hover {
+
+  background: rgba(255, 255, 255, 0.9);
+}
+
+
+/* =========================================
+   Confirm Approve Button
+   ========================================= */
+
+.confirm-approve-btn {
+
+  min-width: 125px;
+
+  padding: 11px 18px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #0f6045;
+
+  color: #ffffff;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+
+.confirm-approve-btn:hover {
+
+  background: #0c513b;
+
+  transform: translateY(-1px);
+}
+
+
+.confirm-approve-btn:active {
+
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   Disabled
+   ========================================= */
+
+.approve-modal button:disabled {
+
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================
+   Animation
+   ========================================= */
+
+@keyframes approveModalIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(15px)
+      scale(0.97);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================
+   Mobile
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .approve-modal {
+
+    padding: 22px;
+
+    border-radius: 20px;
+  }
+
+
+  .approve-passenger-info {
+
+    grid-template-columns: 1fr;
+  }
+
+
+  .approve-modal-actions {
+
+    flex-direction: column-reverse;
+  }
+
+
+  .approve-modal .keep-ticket-btn,
+  .confirm-approve-btn {
+
+    width: 100%;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

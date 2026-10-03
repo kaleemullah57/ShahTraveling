@@ -1,37 +1,178 @@
 <div class="page-container">
 
-  <!-- HEADER -->
-  <div class="page-header">
+<!-- ========================================================= -->
+<!-- BOOKED TICKETS HEADER + NOTIFICATION -->
+<!-- ========================================================= -->
 
-    <div>
-      <h2>Booked Tickets</h2>
+<div class="page-header">
 
-      <p>
-        View your booked, on-hold and cancelled tickets
-      </p>
+  <div>
+    <h2>Booked Tickets</h2>
+
+    <p>
+      View your booked, on-hold and cancelled tickets
+    </p>
+  </div>
+
+
+  <!-- NOTIFICATION -->
+  <div class="notification-wrapper">
+
+    <button
+      type="button"
+      class="notification-button"
+      (click)="toggleNotifications()"
+    >
+      <i class="fa fa-bell"></i>
+
+      <span
+        class="notification-badge"
+        *ngIf="notificationCount > 0"
+      >
+        {{ notificationCount }}
+      </span>
+    </button>
+
+
+    <!-- NOTIFICATION PANEL -->
+    <div
+      class="notification-panel"
+      *ngIf="showNotifications"
+    >
+
+      <div class="notification-header">
+
+        <div>
+          <h3>Notifications</h3>
+
+          <span>
+            {{ notificationCount }} unread
+          </span>
+        </div>
+
+        <button
+          type="button"
+          class="notification-close"
+          (click)="closeNotifications()"
+        >
+          <i class="fa fa-times"></i>
+        </button>
+
+      </div>
+
+
+      <!-- EMPTY -->
+      <div
+        class="notification-empty"
+        *ngIf="notifications.length === 0"
+      >
+        <i class="fa fa-bell-slash"></i>
+
+        <p>No new notifications</p>
+      </div>
+
+
+      <!-- NOTIFICATION LIST -->
+      <div
+        class="notification-list"
+        *ngIf="notifications.length > 0"
+      >
+
+        <div
+          class="notification-item"
+          *ngFor="let notification of notifications"
+        >
+
+          <div class="notification-icon">
+
+            <i
+              class="fa"
+              [ngClass]="
+                notification.notificationType === 'TicketConfirmed'
+                  ? 'fa-check-circle'
+                  : 'fa-bell'
+              "
+            ></i>
+
+          </div>
+
+
+          <div class="notification-content">
+
+            <h4>
+              {{ notification.title }}
+            </h4>
+
+            <p>
+              {{ notification.message }}
+            </p>
+
+            <small>
+              {{ notification.createdDate | date:'dd MMM yyyy, hh:mm a' }}
+            </small>
+
+
+            <div class="notification-actions">
+
+              <button
+                type="button"
+                class="notification-view-button"
+                *ngIf="
+                  notification.bookingId &&
+                  notification.notificationType === 'TicketConfirmed'
+                "
+                (click)="openNotification(notification)"
+              >
+                <i class="fa fa-eye"></i>
+                View Booking
+              </button>
+
+
+              <button
+                type="button"
+                class="notification-read-button"
+                (click)="markNotificationAsRead(notification)"
+              >
+                <i class="fa fa-check"></i>
+                Close
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
 
   </div>
 
+</div>
 
-  <!-- TABLE -->
-  <div class="table-card">
 
-    <app-data-table
-  [columns]="columns"
-  [data]="bookings"
-  [actions]="actions"
-  [loading]="isLoading"
-  [pageNumber]="pageNumber"
-  [pageSize]="pageSize"
-  [totalRecords]="totalCount"
-  (searchChange)="onSearch($event)"
-  (pageChange)="onPageChange($event)"
-  (pageSizeChange)="onPageSizeChange($event)"
-  (actionClick)="onTableAction($event)">
-</app-data-table>
+<!-- ========================================================= -->
+<!-- TABLE -->
+<!-- ========================================================= -->
 
-  </div>
+<div class="table-card">
+
+  <app-data-table
+    [columns]="columns"
+    [data]="bookings"
+    [actions]="actions"
+    [loading]="isLoading"
+    [pageNumber]="pageNumber"
+    [pageSize]="pageSize"
+    [totalRecords]="totalCount"
+    (searchChange)="onSearch($event)"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+    (actionClick)="onTableAction($event)">
+  </app-data-table>
+
+</div>
 
 
   <!-- ===================================================== -->
@@ -40,457 +181,435 @@
 
   @if (showDetails && selectedBooking) {
 
-    <div
-      class="booking-modal-backdrop"
-      (click)="closeDetails()">
+  <div class="booking-modal-backdrop" (click)="closeDetails()">
 
-      <div
-        class="booking-modal"
-        (click)="$event.stopPropagation()">
+    <div class="booking-modal" (click)="$event.stopPropagation()">
 
 
-        <!-- MODAL HEADER -->
+      <!-- MODAL HEADER -->
 
-        <div class="booking-modal-header">
-
-          <div>
-
-            <span class="modal-label">
-              BOOKING DETAILS
-            </span>
-
-            <h2>
-              {{ selectedBooking.bookingReference }}
-            </h2>
-
-          </div>
-
-
-          <button
-            type="button"
-            class="close-btn"
-            (click)="closeDetails()">
-
-            <i class="fa fa-times"></i>
-
-          </button>
-
-        </div>
-
-
-        <!-- BOOKING SUMMARY -->
-
-        <div class="booking-summary">
-
-          <div class="summary-item">
-
-            <span>
-              Customer
-            </span>
-
-            <strong>
-              {{ selectedBooking.createdBy }}
-            </strong>
-
-          </div>
-
-
-          <div class="summary-item">
-
-            <span>
-              Booking Date
-            </span>
-
-            <strong>
-              {{ selectedBooking.createdDate | date:'dd MMM yyyy, hh:mm a' }}
-            </strong>
-
-          </div>
-
-
-          <div class="summary-item">
-
-            <span>
-              Tickets
-            </span>
-
-            <strong>
-              {{ selectedBooking.bookedTickets }}
-            </strong>
-
-          </div>
-
-
-          <div class="summary-item">
-
-            <span>
-              Status
-            </span>
-
-            <strong
-              class="status-badge"
-              [class.status-expired]="selectedBooking.bookingStatus === 'Expired'"
-              [class.status-approved]="selectedBooking.bookingStatus === 'Approved'"
-              [class.status-held]="selectedBooking.bookingStatus === 'Held'"
-              [class.status-cancelled]="selectedBooking.bookingStatus === 'Cancelled'"
-              [class.status-rejected]="selectedBooking.bookingStatus === 'Rejected'">
-
-              {{ selectedBooking.bookingStatus }}
-
-            </strong>
-
-          </div>
-
-        </div>
-
-
-        <!-- PASSENGERS -->
-
-        <div class="passengers-section">
-
-          <div class="section-heading">
-
-            <div>
-              <span>
-                PASSENGERS
-              </span>
-
-              <h3>
-                Passenger Details
-              </h3>
-            </div>
-
-            <span class="passenger-count">
-
-              {{ selectedBooking.passengerBookingDetails.length }}
-
-              Passenger(s)
-
-            </span>
-
-          </div>
-
-
-          <!-- PASSENGER CARDS -->
-
-          @for (
-  passenger of selectedBooking.passengerBookingDetails;
-  track passenger.bookingPassengerId;
-  let i = $index
-) {
-
-  <div class="passenger-card">
-
-    <!-- Passenger Header -->
-
-    <div class="passenger-card-header">
-
-      <div class="passenger-number">
-
-        <span>
-          {{ i + 1 }}
-        </span>
+      <div class="booking-modal-header">
 
         <div>
 
-          <h4>
-            {{ passenger.passengerName }}
-          </h4>
+          <span class="modal-label">
+            BOOKING DETAILS
+          </span>
 
-          <small>
-            {{ passenger.passengerTypeName }}
-          </small>
+          <h2>
+            {{ selectedBooking.bookingReference }}
+          </h2>
 
         </div>
 
-      </div>
 
+        <button type="button" class="close-btn" (click)="closeDetails()">
 
-      <div class="passenger-price">
-
-        <span>
-          Price
-        </span>
-
-        <strong>
-          {{ passenger.totalPrice | number:'1.2-2' }}
-        </strong>
-
-      </div>
-
-    </div>
-
-
-    <!-- Passenger Information -->
-
-    <div class="passenger-details-grid">
-
-      <div class="detail-item">
-        <span>Passport Number</span>
-        <strong>
-          {{ passenger.passportNumber || '-' }}
-        </strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Date of Birth</span>
-        <strong>
-          {{
-            passenger.dateOfBirth
-              ? (passenger.dateOfBirth | date:'dd MMM yyyy')
-              : '-'
-          }}
-        </strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Gender</span>
-        <strong>
-          {{ passenger.gender || '-' }}
-        </strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Nationality</span>
-        <strong>
-          {{ passenger.nationality || '-' }}
-        </strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Contact</span>
-        <strong>
-          {{ passenger.contactNumber || '-' }}
-        </strong>
-      </div>
-
-      <div class="detail-item">
-        <span>Email</span>
-        <strong>
-          {{ passenger.email || '-' }}
-        </strong>
-      </div>
-
-    </div>
-
-
-    <!-- Passenger Status + Cancel -->
-
-    <div class="passenger-status-row">
-
-      <div class="passenger-current-status">
-
-        <span>
-          Passenger Status
-        </span>
-
-        <strong
-          [class.status-held]="
-            passenger.passengerBookingStatus === 'Held'
-          "
-          [class.status-approved]="
-            passenger.passengerBookingStatus === 'Approved'
-          "
-          [class.status-cancelled]="
-            passenger.passengerBookingStatus === 'Cancelled'
-          "
-          [class.status-expired]="
-            passenger.passengerBookingStatus === 'Expired'
-          "
-          [class.status-rejected]="
-            passenger.passengerBookingStatus === 'Rejected'
-          "
-        >
-
-          {{
-            passenger.passengerBookingStatus
-              || selectedBooking.bookingStatus
-              || 'Unknown'
-          }}
-
-        </strong>
-
-      </div>
-
-
-      @if (
-        passenger.passengerBookingStatus === 'Held'
-      ) {
-
-        <button
-          type="button"
-          class="cancel-ticket-btn"
-          (click)="openCancelModal(passenger)"
-        >
-
-          <i class="fa fa-times-circle"></i>
-
-          Cancel Ticket
+          <i class="fa fa-times"></i>
 
         </button>
 
-      }
-
-    </div>
-
-
-    <!-- HOLD INFORMATION -->
-
-    @if (passenger.holdUntil) {
-
-      <div class="hold-info">
-
-        <i class="fa fa-clock"></i>
-
-        <span>
-          Hold Until:
-        </span>
-
-        <strong>
-          {{ passenger.holdUntil | date:'dd MMM yyyy, hh:mm a' }}
-        </strong>
-
       </div>
 
-    }
 
+      <!-- BOOKING SUMMARY -->
 
-    <!-- APPROVAL INFORMATION -->
+      <div class="booking-summary">
 
-    @if (passenger.approvedDate) {
-
-      <div class="approval-info">
-
-        <i class="fa fa-check-circle"></i>
-
-        <span>
-          Approved on
-        </span>
-
-        <strong>
-          {{ passenger.approvedDate | date:'dd MMM yyyy, hh:mm a' }}
-        </strong>
-
-        @if (passenger.approvedBy) {
+        <div class="summary-item">
 
           <span>
-            by {{ passenger.approvedBy }}
-          </span>
-
-        }
-
-      </div>
-
-    }
-
-
-    <!-- CANCELLATION INFORMATION -->
-
-    @if (passenger.cancelledDate) {
-
-      <div class="cancellation-info">
-
-        <i class="fa fa-times-circle"></i>
-
-        <span>
-          Cancelled on
-        </span>
-
-        <strong>
-          {{ passenger.cancelledDate | date:'dd MMM yyyy, hh:mm a' }}
-        </strong>
-
-        @if (passenger.cancellationReason) {
-
-          <span>
-            — {{ passenger.cancellationReason }}
-          </span>
-
-        }
-
-      </div>
-
-    }
-
-
-    <!-- REJECTION INFORMATION -->
-
-    @if (passenger.rejectedDate) {
-
-      <div class="rejection-info">
-
-        <i class="fa fa-ban"></i>
-
-        <span>
-          Rejected on
-        </span>
-
-        <strong>
-          {{ passenger.rejectedDate | date:'dd MMM yyyy, hh:mm a' }}
-        </strong>
-
-        @if (passenger.rejectionReason) {
-
-          <span>
-            — {{ passenger.rejectionReason }}
-          </span>
-
-        }
-
-      </div>
-
-    }
-
-  </div>
-
-}
-
-        </div>
-
-
-        <!-- TOTAL -->
-
-        <div class="booking-total">
-
-          <span>
-            Total Booking Amount
+            Customer
           </span>
 
           <strong>
-
-            {{
-              selectedBooking.passengerBookingDetails
-                .reduce(
-                  (total, passenger) =>
-                    total + passenger.totalPrice,
-                  0
-                )
-                | number:'1.2-2'
-            }}
-
+            {{ selectedBooking.createdBy }}
           </strong>
 
         </div>
 
 
-        <!-- FOOTER -->
+        <div class="summary-item">
 
-        <div class="booking-modal-footer">
+          <span>
+            Booking Date
+          </span>
 
-          <button
-            type="button"
-            class="close-modal-btn"
-            (click)="closeDetails()">
+          <strong>
+            {{ selectedBooking.createdDate | date:'dd MMM yyyy, hh:mm a' }}
+          </strong>
 
-            Close
+        </div>
 
-          </button>
+
+        <div class="summary-item">
+
+          <span>
+            Tickets
+          </span>
+
+          <strong>
+            {{ selectedBooking.bookedTickets }}
+          </strong>
+
+        </div>
+
+
+        <div class="summary-item">
+
+          <span>
+            Status
+          </span>
+
+          <strong class="status-badge" [class.status-expired]="selectedBooking.bookingStatus === 'Expired'"
+            [class.status-approved]="selectedBooking.bookingStatus === 'Approved'"
+            [class.status-held]="selectedBooking.bookingStatus === 'Held'"
+            [class.status-cancelled]="selectedBooking.bookingStatus === 'Cancelled'"
+            [class.status-rejected]="selectedBooking.bookingStatus === 'Rejected'">
+
+            {{ selectedBooking.bookingStatus }}
+
+          </strong>
 
         </div>
 
       </div>
 
+
+      <!-- PASSENGERS -->
+
+      <div class="passengers-section">
+
+        <div class="section-heading">
+
+          <div>
+            <span>
+              PASSENGERS
+            </span>
+
+            <h3>
+              Passenger Details
+            </h3>
+          </div>
+
+          <span class="passenger-count">
+
+            {{ selectedBooking.passengerBookingDetails.length }}
+
+            Passenger(s)
+
+          </span>
+
+        </div>
+
+
+        <!-- PASSENGER CARDS -->
+
+        @for (
+        passenger of selectedBooking.passengerBookingDetails;
+        track passenger.bookingPassengerId;
+        let i = $index
+        ) {
+
+        <div class="passenger-card">
+
+          <!-- Passenger Header -->
+
+          <div class="passenger-card-header">
+
+            <div class="passenger-number">
+
+              <span>
+                {{ i + 1 }}
+              </span>
+
+              <div>
+
+                <h4>
+                  {{ passenger.passengerName }}
+                </h4>
+
+                <small>
+                  {{ passenger.passengerTypeName }}
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div class="passenger-price">
+
+              <span>
+                Price
+              </span>
+
+              <strong>
+                {{ passenger.totalPrice | number:'1.2-2' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- Passenger Information -->
+
+          <div class="passenger-details-grid">
+
+            <div class="detail-item">
+              <span>Passport Number</span>
+              <strong>
+                {{ passenger.passportNumber || '-' }}
+              </strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Date of Birth</span>
+              <strong>
+                {{
+                passenger.dateOfBirth
+                ? (passenger.dateOfBirth | date:'dd MMM yyyy')
+                : '-'
+                }}
+              </strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Gender</span>
+              <strong>
+                {{ passenger.gender || '-' }}
+              </strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Nationality</span>
+              <strong>
+                {{ passenger.nationality || '-' }}
+              </strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Contact</span>
+              <strong>
+                {{ passenger.contactNumber || '-' }}
+              </strong>
+            </div>
+
+            <div class="detail-item">
+              <span>Email</span>
+              <strong>
+                {{ passenger.email || '-' }}
+              </strong>
+            </div>
+
+          </div>
+
+
+          <!-- Passenger Status + Cancel -->
+
+          <div class="passenger-status-row">
+
+            <div class="passenger-current-status">
+
+              <span>
+                Passenger Status
+              </span>
+
+              <strong [class.status-held]="
+            passenger.passengerBookingStatus === 'Held'
+          " [class.status-approved]="
+            passenger.passengerBookingStatus === 'Approved'
+          " [class.status-cancelled]="
+            passenger.passengerBookingStatus === 'Cancelled'
+          " [class.status-expired]="
+            passenger.passengerBookingStatus === 'Expired'
+          " [class.status-rejected]="
+            passenger.passengerBookingStatus === 'Rejected'
+          ">
+
+                {{
+                passenger.passengerBookingStatus
+                || selectedBooking.bookingStatus
+                || 'Unknown'
+                }}
+
+              </strong>
+
+            </div>
+
+
+            @if (
+            passenger.passengerBookingStatus === 'Held'
+            ) {
+
+            <button type="button" class="cancel-ticket-btn" (click)="openCancelModal(passenger)">
+
+              <i class="fa fa-times-circle"></i>
+
+              Cancel Ticket
+
+            </button>
+
+            }
+
+          </div>
+
+
+          <!-- HOLD INFORMATION -->
+
+          @if (passenger.holdUntil) {
+
+          <div class="hold-info">
+
+            <i class="fa fa-clock"></i>
+
+            <span>
+              Hold Until:
+            </span>
+
+            <strong>
+              {{ passenger.holdUntil | date:'dd MMM yyyy, hh:mm a' }}
+            </strong>
+
+          </div>
+
+          }
+
+
+          <!-- APPROVAL INFORMATION -->
+
+          @if (passenger.approvedDate) {
+
+          <div class="approval-info">
+
+            <i class="fa fa-check-circle"></i>
+
+            <span>
+              Approved on
+            </span>
+
+            <strong>
+              {{ passenger.approvedDate | date:'dd MMM yyyy, hh:mm a' }}
+            </strong>
+
+            @if (passenger.approvedBy) {
+
+            <span>
+              by {{ passenger.approvedBy }}
+            </span>
+
+            }
+
+          </div>
+
+          }
+
+
+          <!-- CANCELLATION INFORMATION -->
+
+          @if (passenger.cancelledDate) {
+
+          <div class="cancellation-info">
+
+            <i class="fa fa-times-circle"></i>
+
+            <span>
+              Cancelled on
+            </span>
+
+            <strong>
+              {{ passenger.cancelledDate | date:'dd MMM yyyy, hh:mm a' }}
+            </strong>
+
+            @if (passenger.cancellationReason) {
+
+            <span>
+              — {{ passenger.cancellationReason }}
+            </span>
+
+            }
+
+          </div>
+
+          }
+
+
+          <!-- REJECTION INFORMATION -->
+
+          @if (passenger.rejectedDate) {
+
+          <div class="rejection-info">
+
+            <i class="fa fa-ban"></i>
+
+            <span>
+              Rejected on
+            </span>
+
+            <strong>
+              {{ passenger.rejectedDate | date:'dd MMM yyyy, hh:mm a' }}
+            </strong>
+
+            @if (passenger.rejectionReason) {
+
+            <span>
+              — {{ passenger.rejectionReason }}
+            </span>
+
+            }
+
+          </div>
+
+          }
+
+        </div>
+
+        }
+
+      </div>
+
+
+      <!-- TOTAL -->
+
+      <div class="booking-total">
+
+        <span>
+          Total Booking Amount
+        </span>
+
+        <strong>
+
+          {{
+          selectedBooking.passengerBookingDetails
+          .reduce(
+          (total, passenger) =>
+          total + passenger.totalPrice,
+          0
+          )
+          | number:'1.2-2'
+          }}
+
+        </strong>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <div class="booking-modal-footer">
+
+        <button type="button" class="close-modal-btn" (click)="closeDetails()">
+
+          Close
+
+        </button>
+
+      </div>
+
     </div>
+
+  </div>
 
   }
 
@@ -501,15 +620,9 @@
 
   @if (showCancelModal && selectedPassenger) {
 
-  <div
-    class="cancel-modal-backdrop"
-    (click)="closeCancelModal()"
-  >
+  <div class="cancel-modal-backdrop" (click)="closeCancelModal()">
 
-    <div
-      class="cancel-modal"
-      (click)="$event.stopPropagation()"
-    >
+    <div class="cancel-modal" (click)="$event.stopPropagation()">
 
       <div class="cancel-modal-icon">
         <i class="fa fa-times-circle"></i>
@@ -559,43 +672,29 @@
           <span>(Optional)</span>
         </label>
 
-        <textarea
-          [(ngModel)]="cancellationReason"
-          rows="4"
-          placeholder="Enter cancellation reason..."
-        ></textarea>
+        <textarea [(ngModel)]="cancellationReason" rows="4" placeholder="Enter cancellation reason..."></textarea>
 
       </div>
 
 
       <div class="cancel-modal-actions">
 
-        <button
-          type="button"
-          class="keep-ticket-btn"
-          [disabled]="isCancelling"
-          (click)="closeCancelModal()"
-        >
+        <button type="button" class="keep-ticket-btn" [disabled]="isCancelling" (click)="closeCancelModal()">
           Keep Ticket
         </button>
 
 
-        <button
-          type="button"
-          class="confirm-cancel-btn"
-          [disabled]="isCancelling"
-          (click)="cancelTicket()"
-        >
+        <button type="button" class="confirm-cancel-btn" [disabled]="isCancelling" (click)="cancelTicket()">
 
           @if (isCancelling) {
 
-            <i class="fa fa-spinner fa-spin"></i>
-            Cancelling...
+          <i class="fa fa-spinner fa-spin"></i>
+          Cancelling...
 
           } @else {
 
-            <i class="fa fa-times"></i>
-            Cancel Ticket
+          <i class="fa fa-times"></i>
+          Cancel Ticket
 
           }
 
@@ -607,6 +706,32 @@
 
   </div>
 
-}
+  }
 
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

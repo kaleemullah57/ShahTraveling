@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
 
+
 @Component({
   selector: 'app-customer-dashboard',
   standalone: true,
@@ -29,4 +30,5 @@ export class CustomerDashboard {
   openTickets(): void {
     this.router.navigate(['/tickets']);
   }
+
 }

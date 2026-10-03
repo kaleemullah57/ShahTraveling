@@ -110,3 +110,33 @@ export interface CancelBookingPassengerResponse {
   cancellationTypeId: number;
   cancellationTypeName?: string;
 }
+
+
+
+
+
+
+
+
+
+
+
+// Confirm Held Ticket Models
+export interface ConfirmHeldTicketData {
+  bookingPassengerId: number;
+  bookingId: number;
+  customerId: number;
+  bookingStatusId: number;
+  bookingStatus: string;
+  approvedDate?: string | null;
+  approvedById?: number | null;
+  approvedBy?: string | null;
+}
+
+export interface ConfirmHeldTicketResponse {
+  status: boolean;
+  statusCode: number;
+  message: string;
+  data: ConfirmHeldTicketData | null;
+  success: boolean;
+}

@@ -11,8 +11,11 @@ import { FormsModule } from '@angular/forms';
 import { HoldConfirmCancelService } from '../../Admin Services/Hold Confrm Cancell Service/hold-confirm-cancel-service';
 
 import { TableColumn, TableAction, DataTable } from '../../../../Shared/components/DataTables/data-table/data-table';
-import { PendingHoldBooking, PendingHoldBookingResponse } from '../../Admin Models/Hold Confirm Cancel Models/hold-pending-confirm-cancelled-model';
+import { PendingHoldBooking, PendingHoldBookingPassenger, PendingHoldBookingResponse } from '../../Admin Models/Hold Confirm Cancel Models/hold-pending-confirm-cancelled-model';
 import { TicketRealtimeService } from '../../../../Shared/components/TicketRealtimeService/ticket-realtime-service';
+import { ConfirmHeldTicketResponse } from '../../../Customer Section/Customers Models/Booked Tickets Models/booked-tickets-model';
+import { CustomerNotification } from '../../../Customer Section/Customers Models/Customer Notifications Models/customer-notification';
+import { BookedTicketsService } from '../../../Customer Section/Customers services/Booked Tickets Services/booked-tickets-service';
 
 @Component({
   selector: 'app-hold-confirm-cancel-tickets',
@@ -23,6 +26,7 @@ import { TicketRealtimeService } from '../../../../Shared/components/TicketRealt
 })
 export class PendingHoldConfirmBookingsComponent implements OnInit {
 
+  private readonly bookedTicketsService = inject(BookedTicketsService);
   private holdService = inject(HoldConfirmCancelService);
   private readltimeService = inject(TicketRealtimeService)
   private cdr = inject(ChangeDetectorRef);
@@ -117,6 +121,7 @@ export class PendingHoldConfirmBookingsComponent implements OnInit {
     this.readltimeService.startConnection();
     this.subscribeToRealtimeEvents();
     this.getPendingHoldConfirmBookings();
+    this.loadNotifications();
   }
 
 
@@ -403,93 +408,388 @@ export class PendingHoldConfirmBookingsComponent implements OnInit {
       });
   }
 
-  // cancelPassenger(passenger: any): void {
-
-  //   if (!passenger?.bookingPassengerId) {
-  //     return;
-  //   }
-
-  //   const confirmed = confirm(
-  //     `Are you sure you want to cancel the ticket for ${passenger.passengerName}?`
-  //   );
-
-  //   if (!confirmed) {
-  //     return;
-  //   }
-
-  //   const request = {
-  //     bookingPassengerId: passenger.bookingPassengerId,
-  //     cancellationReason: 'Cancelled by Branch Admin'
-  //   };
-
-
-  //   this.holdService
-  //     .cancelBookingPassenger(request)
-  //     .subscribe({
-
-  //       next: (response) => {
-  //         if (response?.status === true) {
-
-  //           // Update this passenger only
-  //           passenger.bookingStatusId = 5;
-  //           passenger.bookingStatus = 'Cancelled By Admin';
-
-  //           passenger.cancellationType =
-  //             response?.data?.cancellationTypeName ||
-  //             'Cancelled by Branch Admin';
-
-  //           passenger.cancelledDate = new Date();
-
-  //           passenger.cancellationReason =
-  //             request.cancellationReason;
-
-  //           this.cdr.detectChanges();
-
-  //           // Refresh table
-  //           this.getPendingHoldConfirmBookings();
-
-  //         } else {
-
-  //           alert(
-  //             response?.message ||
-  //             'Unable to cancel booking passenger.'
-  //           );
-
-  //         }
-  //       },
-
-  //       error: (error) => {
-
-  //         alert(
-  //           error?.error?.message ||
-  //           'Unable to cancel booking passenger.'
-  //         );
-
-  //       }
-  //     });
-  // }
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Confirm Held Tickets
+  selectedApprovalPassenger: PendingHoldBookingPassenger | null = null;
+  showApproveModal = false;
+  isApproving = false;
+
+  approvePassenger(
+    passenger: PendingHoldBookingPassenger
+  ): void {
+
+    console.log('APPROVE BUTTON CLICKED');
+    console.log('Passenger:', passenger);
+    console.log('BookingPassengerId:', passenger?.bookingPassengerId);
+
+    if (!passenger?.bookingPassengerId) {
+      console.error('Invalid BookingPassengerId');
+      return;
+    }
+
+    this.selectedApprovalPassenger = passenger;
+    this.showApproveModal = true;
+
+    console.log('Approve modal:', this.showApproveModal);
+
+    this.cdr.detectChanges();
+  }
+
+
+  closeApproveModal(): void {
+
+    if (this.isApproving) {
+      return;
+    }
+
+    this.showApproveModal = false;
+    this.selectedApprovalPassenger = null;
+  }
+
+
+  confirmApprovePassenger(): void {
+
+    if (
+      !this.selectedApprovalPassenger ||
+      !this.selectedApprovalPassenger.bookingPassengerId
+    ) {
+      return;
+    }
+
+    const passenger = this.selectedApprovalPassenger;
+
+    this.isApproving = true;
+
+    this.holdService
+      .confirmHeldTicket(passenger.bookingPassengerId)
+      .subscribe({
+
+        next: (response: ConfirmHeldTicketResponse) => {
+
+          console.log('CONFIRM APPROVAL RESPONSE:', response);
+
+          if (response?.status && response.data) {
+
+            // Update current passenger immediately
+            passenger.bookingStatusId =
+              response.data.bookingStatusId;
+
+            passenger.bookingStatus =
+              response.data.bookingStatus;
+
+            passenger.approvedDate =
+              response.data.approvedDate;
+
+            passenger.approvedById =
+              response.data.approvedById;
+
+            passenger.approvedBy =
+              response.data.approvedBy;
+
+
+            // Update parent booking
+            if (
+              this.selectedBooking &&
+              this.selectedBooking.bookingId ===
+              response.data.bookingId
+            ) {
+
+              this.selectedBooking.bookingStatusId =
+                response.data.bookingStatusId;
+
+              this.selectedBooking.bookingStatus =
+                response.data.bookingStatus;
+            }
+
+
+            // CLOSE POPUP IMMEDIATELY
+            this.showApproveModal = false;
+            this.selectedApprovalPassenger = null;
+            this.isApproving = false;
+
+            this.cdr.detectChanges();
+
+
+            // Refresh table AFTER popup is already closed
+            this.getPendingHoldConfirmBookings();
+
+            return;
+          }
+
+
+          this.isApproving = false;
+
+          console.error(
+            'Confirm ticket failed:',
+            response?.message
+          );
+
+          this.cdr.detectChanges();
+        },
+
+        error: (error) => {
+
+          console.error(
+            'CONFIRM APPROVAL ERROR:',
+            error
+          );
+
+          this.isApproving = false;
+
+          this.cdr.detectChanges();
+        }
+
+      });
+  }
+
+
+
+
+
+
+
+
+
+  notifications: CustomerNotification[] = [];
+  notificationCount = 0;
+  showNotifications = false;
+
+
+  toggleNotifications(): void {
+    this.showNotifications = !this.showNotifications;
+
+    this.cdr.detectChanges();
+  }
+
+  closeNotifications(): void {
+    this.showNotifications = false;
+
+    this.cdr.detectChanges();
+  }
+
+
+  openNotification(
+    notification: CustomerNotification
+  ): void {
+
+    // ==========================================
+    // TICKET CONFIRMED
+    // ==========================================
+
+    if (
+      notification.notificationType ===
+      'TicketConfirmed'
+    ) {
+
+      if (notification.bookingId) {
+
+        const booking =
+          this.bookings.find(
+            x =>
+              x.bookingId ===
+              notification.bookingId
+          );
+
+        if (booking) {
+
+          this.viewBooking(booking);
+
+          this.showNotifications = false;
+
+          this.cdr.detectChanges();
+
+          return;
+        }
+
+        // Booking is not currently in loaded page.
+        // Refresh bookings and then try again.
+        this.getPendingHoldConfirmBookings();
+
+        this.showNotifications = false;
+
+        return;
+      }
+    }
+
+    // ==========================================
+    // DEFAULT
+    // ==========================================
+
+    console.log(
+      'No action configured for notification:',
+      notification
+    );
+  }
+
+
+  loadNotifications(): void {
+    this.bookedTicketsService.getMyNotifications().subscribe({
+      next: (response) => {
+
+        if (response?.status && response?.data) {
+
+          this.notifications = response.data;
+
+          this.notificationCount =
+            this.notifications.length;
+
+        } else {
+
+          this.notifications = [];
+          this.notificationCount = 0;
+        }
+
+        this.cdr.detectChanges();
+      },
+
+      error: (error) => {
+
+        console.error(
+          'Failed to load notifications:',
+          error
+        );
+
+        this.notifications = [];
+        this.notificationCount = 0;
+
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Read Confirmed Ticket Notifications
+  markNotificationAsRead(
+    notification: CustomerNotification
+  ): void {
+
+    if (!notification?.notificationId) {
+      console.error('Invalid notification ID:', notification);
+      return;
+    }
+
+    this.bookedTicketsService
+      .markNotificationRead(notification.notificationId)
+      .subscribe({
+        next: (response) => {
+
+          console.log(
+            'Notification read response:',
+            response
+          );
+
+          if (response?.status) {
+
+            // Remove notification from UI
+            this.notifications =
+              this.notifications.filter(
+                x =>
+                  x.notificationId !==
+                  notification.notificationId
+              );
+
+            // Update bell count
+            this.notificationCount =
+              this.notifications.length;
+
+            this.cdr.detectChanges();
+          }
+        },
+
+        error: (error) => {
+          console.error(
+            'Failed to mark notification as read:',
+            error
+          );
+        }
+      });
+  }
 
 
 
   private subscribeToRealtimeEvents(): void {
 
-    this.readltimeService.ticketInventoryUpdated$
-      .subscribe(event => {
+  // =========================================================
+  // TICKET INVENTORY UPDATED
+  // =========================================================
 
-        this.getPendingHoldConfirmBookings();
-      });
+  this.readltimeService.ticketInventoryUpdated$
+    .subscribe(event => {
+
+      console.log(
+        'ADMIN: Inventory updated',
+        event
+      );
+
+      this.getPendingHoldConfirmBookings();
+    });
 
 
-    this.readltimeService.bookingPassengerCancelled$
-      .subscribe(event => {
+  // =========================================================
+  // BOOKING PASSENGER CANCELLED
+  // =========================================================
 
-        this.getPendingHoldConfirmBookings();
-      });
-  }
+  this.readltimeService.bookingPassengerCancelled$
+    .subscribe(event => {
+
+      console.log(
+        'ADMIN: Booking passenger cancelled',
+        event
+      );
+
+      this.getPendingHoldConfirmBookings();
+    });
+
+
+  // =========================================================
+  // NEW BOOKING / NOTIFICATION UPDATED
+  // =========================================================
+
+  this.readltimeService.notificationUpdated$
+    .subscribe(() => {
+
+      console.log(
+        'ADMIN: NotificationUpdated received'
+      );
+
+      // Re-fetch notifications from database
+      this.loadNotifications();
+    });
+}
 }
