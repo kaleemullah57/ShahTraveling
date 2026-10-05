@@ -1,3 +1,26 @@
+:host {
+  /* ... existing variables (agar hain) ... */
+
+  --airmail-blue: #2a4d7a;
+  --airmail-blue-deep: #1a3557;
+  --airmail-blue-soft: #d6e2ed;
+  --airmail-blue-pale: #eaf1f7;
+  --airmail-paper: #f5f0e5;
+  --airmail-cream: #fbf7ec;
+  --airmail-ink: #1a2836;
+  --airmail-gray: #6b7681;
+  --airmail-gold: #b99a5f;
+  --airmail-line: #c8d4de;
+
+  --font-serif: 'Cormorant Garamond', 'Playfair Display', 'Times New Roman', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+
+
+
+
+
 .filter-card {
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -641,4 +664,773 @@
     .passenger-price-modal .modal-footer {
         padding: 14px 16px;
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   =========================================================
+   LUXURY VIEW MODAL — TICKET DETAILS
+   (vintage airmail boarding pass style)
+   =========================================================
+   ========================================================= */
+
+
+/* =========================================================
+   VIEW MODAL OVERLAY
+   ========================================================= */
+
+.view-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 30px 20px;
+
+  background: rgba(20, 30, 45, 0.88);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  animation: backdropFade 0.22s ease;
+}
+
+@keyframes backdropFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+
+/* =========================================================
+   TICKET MODAL — luxury airmail design
+   ========================================================= */
+
+.view-modal-overlay .ticket-modal {
+  position: relative;
+  width: min(1000px, 100%);
+  max-width: none;
+  max-height: none;
+  margin: 0 auto;
+
+  background: var(--airmail-paper);
+  border-radius: 6px;
+  overflow: hidden;
+
+  border: 1px solid var(--airmail-gold);
+  box-shadow:
+    0 0 0 6px var(--airmail-paper),
+    0 0 0 7px rgba(185, 154, 95, 0.35),
+    0 40px 100px rgba(0, 0, 0, 0.55);
+
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  font-family: var(--font-serif);
+  color: var(--airmail-ink);
+
+  animation: ticketIn 0.3s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes ticketIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* =========================================================
+   TOP BAR
+   ========================================================= */
+
+.view-modal-overlay .ticket-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 14px 32px;
+
+  background: var(--airmail-blue);
+  color: #ffffff;
+
+  border-bottom: 2px solid var(--airmail-blue-deep);
+
+  min-height: 56px;
+}
+
+.ticket-brand {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 12px;
+}
+
+.brand-icon { display: none; }
+
+.brand-content {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 0;
+}
+
+.brand-name {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+.brand-subtitle {
+  margin-left: auto;
+  padding-left: 24px;
+  padding-right: 44px;
+  border-left: 1px solid rgba(255, 255, 255, 0.35);
+
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.95);
+  -webkit-font-smoothing: antialiased;
+}
+
+.ticket-close {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.10);
+  color: #ffffff;
+
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-50%) rotate(90deg);
+  }
+}
+
+
+/* =========================================================
+   IDENTITY STRIP
+   ========================================================= */
+
+.ticket-identity-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--airmail-cream);
+  border-bottom: 2px solid var(--airmail-blue);
+}
+
+.identity-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+
+  padding: 16px 22px;
+
+  border-right: 1px dashed var(--airmail-line);
+
+  &:last-child { border-right: 0; }
+
+  span {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--airmail-blue);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  strong {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--airmail-ink);
+    letter-spacing: 0.3px;
+    line-height: 1.15;
+    -webkit-font-smoothing: antialiased;
+
+    &.price {
+      color: var(--airmail-blue-deep);
+      font-size: 20px;
+    }
+  }
+
+  small {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--airmail-gray);
+    letter-spacing: 0.5px;
+  }
+}
+
+
+/* =========================================================
+   PASSENGER SECTION (wrapper)
+   ========================================================= */
+
+.passenger-tickets-section {
+  padding: 26px 28px 10px;
+  background: var(--airmail-paper);
+}
+
+
+/* =========================================================
+   INDIVIDUAL TICKET CARD
+   ========================================================= */
+
+.individual-ticket-card {
+  position: relative;
+  margin-bottom: 22px;
+  background: var(--airmail-cream);
+
+  border: 2px solid var(--airmail-blue);
+  border-radius: 4px;
+
+  overflow: hidden;
+
+  transform: translateZ(0);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  box-shadow: 0 6px 20px rgba(26, 53, 87, 0.10);
+
+  &:last-child { margin-bottom: 0; }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid rgba(185, 154, 95, 0.35);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 5;
+  }
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.individual-ticket-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 14px 22px;
+
+  background: var(--airmail-blue);
+  color: #ffffff;
+
+  border-bottom: 2px solid var(--airmail-blue-deep);
+}
+
+.individual-ticket-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ticket-number {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+
+  span {
+    font-family: var(--font-sans);
+    font-size: 6px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  strong {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 900;
+    color: #ffffff;
+    margin-top: 1px;
+  }
+}
+
+.individual-passenger-name {
+  > span {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 2px;
+  }
+
+  h3 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.4px;
+    line-height: 1.15;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  }
+}
+
+
+/* =========================================================
+   PASSENGER DETAILS GRID
+   ========================================================= */
+
+.passenger-details-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: var(--airmail-cream);
+}
+
+.passenger-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+
+  padding: 12px 18px;
+
+  border-right: 1px dashed var(--airmail-line);
+  border-bottom: 1px dashed var(--airmail-line);
+
+  &:nth-child(4n) { border-right: 0; }
+
+  span {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: var(--airmail-gray);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  strong {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--airmail-ink);
+    overflow-wrap: anywhere;
+    line-height: 1.25;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  small {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    color: var(--airmail-gray);
+  }
+}
+
+.passenger-details-grid.three-col {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  .passenger-info:nth-child(3n) { border-right: 0; }
+}
+
+
+/* =========================================================
+   FARE ROW
+   ========================================================= */
+
+.individual-ticket-fare {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 40px;
+
+  padding: 15px 22px;
+
+  background: var(--airmail-blue-soft);
+  border-top: 1px dashed var(--airmail-blue);
+  border-bottom: 1px dashed var(--airmail-blue);
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  span {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--airmail-blue);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  strong {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--airmail-ink);
+    letter-spacing: 0.2px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .fare-total {
+    min-width: 150px;
+    padding-left: 24px;
+    border-left: 1px dashed var(--airmail-line);
+
+    strong {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--airmail-blue-deep);
+      letter-spacing: 0.3px;
+    }
+  }
+}
+
+
+/* =========================================================
+   EVENT DETAIL ROW (used by stops)
+   ========================================================= */
+
+.ticket-event-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  padding: 14px 22px;
+  background: var(--airmail-cream);
+}
+
+.event-detail {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding: 7px 11px;
+
+  border: 1px solid var(--airmail-line);
+  border-radius: 4px;
+  background: #ffffff;
+
+  > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  span {
+    font-family: var(--font-sans);
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--airmail-gray);
+  }
+
+  strong {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--airmail-ink);
+  }
+
+  small {
+    font-size: 8px;
+    color: var(--airmail-gray);
+  }
+}
+
+.event-icon {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-size: 10px;
+}
+
+.confirmed-event .event-icon { color: #2f7a52; background: #e7f3ec; }
+
+
+/* =========================================================
+   MODAL FOOTER
+   ========================================================= */
+
+.ticket-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  padding: 18px 28px;
+
+  background: var(--airmail-blue-soft);
+  border-top: 2px solid var(--airmail-blue);
+}
+
+.footer-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 620px;
+
+  > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  strong {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--airmail-blue-deep);
+  }
+
+  span {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    color: var(--airmail-gray);
+    line-height: 1.5;
+  }
+}
+
+.footer-note-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  border: 1px solid var(--airmail-blue);
+  border-radius: 50%;
+  background: #ffffff;
+  color: var(--airmail-blue);
+}
+
+.ticket-footer-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.ticket-close-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 9px 18px;
+
+  border: 2px solid var(--airmail-blue);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--airmail-blue);
+
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+  -webkit-font-smoothing: antialiased;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--airmail-blue);
+    color: #ffffff;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .ticket-identity-strip {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .identity-cell:nth-child(2n) { border-right: 0; }
+  .identity-cell:nth-child(-n+2) {
+    border-bottom: 1px dashed var(--airmail-line);
+  }
+
+  .passenger-details-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .passenger-details-grid .passenger-info:nth-child(4n) {
+    border-right: 1px dashed var(--airmail-line);
+  }
+
+  .passenger-details-grid .passenger-info:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .passenger-details-grid.three-col {
+    grid-template-columns: 1fr 1fr;
+
+    .passenger-info:nth-child(2n) { border-right: 0; }
+  }
+}
+
+@media (max-width: 640px) {
+
+  .view-modal-overlay {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .view-modal-overlay .ticket-modal {
+    width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .view-modal-overlay .ticket-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 14px 18px;
+  }
+
+  .brand-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand-subtitle {
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 44px;
+    border-left: 0;
+    margin-top: 2px;
+  }
+
+  .ticket-identity-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .identity-cell {
+    border-right: 0 !important;
+    border-bottom: 1px dashed var(--airmail-line);
+
+    &:last-child { border-bottom: 0; }
+  }
+
+  .passenger-details-grid,
+  .passenger-details-grid.three-col {
+    grid-template-columns: 1fr;
+  }
+
+  .passenger-info {
+    border-right: 0 !important;
+    border-bottom: 1px dashed var(--airmail-line);
+  }
+
+  .individual-ticket-fare {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+
+    .fare-total {
+      padding-left: 0;
+      border-left: 0;
+      padding-top: 10px;
+      border-top: 1px dashed var(--airmail-line);
+      width: 100%;
+    }
+  }
+
+  .ticket-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ticket-footer-actions { justify-content: flex-end; }
 }

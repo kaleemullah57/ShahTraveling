@@ -1630,7 +1630,7 @@
       #0b7958
     );
 
-  color: #ffffff;
+  color: #000000;
 
   font-size: 14px;
   font-weight: 750;
@@ -3601,7 +3601,7 @@
 
   background: #087ed1;
 
-  color: #ffffff;
+  color: #000000;
 
   font-family: inherit;
 
@@ -4404,6 +4404,918 @@
     width: 100%;
 
     box-sizing: border-box;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ============================================================
+   SHAH TRAVELING AGENCY
+   BOOKING WIZARD
+   ============================================================ */
+
+.booking-wizard {
+  display: flex;
+  align-items: center;
+  padding: 22px 30px;
+  background: linear-gradient(
+    180deg,
+    rgba(251, 247, 236, 0.98),
+    rgba(245, 240, 229, 0.96)
+  );
+  border-bottom: 1px solid var(--airmail-line);
+}
+
+
+/* ============================================================
+   WIZARD STEP
+   ============================================================ */
+
+.booking-step {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 150px;
+  opacity: 0.48;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.booking-step.active {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.booking-step.completed {
+  opacity: 0.82;
+}
+
+
+/* ============================================================
+   STEP NUMBER
+   ============================================================ */
+
+.step-number {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--airmail-line);
+  border-radius: 50%;
+
+  background: var(--airmail-cream);
+  color: var(--airmail-gray);
+
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 800;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+.booking-step.active .step-number {
+  border-color: var(--airmail-blue);
+  background: var(--airmail-blue);
+  color: #fff;
+
+  box-shadow:
+    0 4px 12px rgba(42, 77, 122, 0.18);
+}
+
+
+.booking-step.completed .step-number {
+  border-color: var(--airmail-gold);
+  background: var(--airmail-gold);
+  color: #fff;
+}
+
+
+/* ============================================================
+   STEP TEXT
+   ============================================================ */
+
+.booking-step > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.booking-step strong {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--airmail-ink);
+}
+
+.booking-step small {
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--airmail-gray);
+}
+
+
+/* ============================================================
+   STEP LINE
+   ============================================================ */
+
+.step-line {
+  height: 1px;
+  flex: 1;
+
+  min-width: 35px;
+  margin: 0 16px;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--airmail-line) 0,
+      var(--airmail-line) 6px,
+      transparent 6px,
+      transparent 10px
+    );
+}
+
+
+/* ============================================================
+   BOOKING BODY
+   ============================================================ */
+
+.booking-body {
+  padding: 25px 30px 10px;
+  background: var(--airmail-paper);
+  overflow-y: auto;
+}
+
+
+/* ============================================================
+   PASSENGER CARD
+   ============================================================ */
+
+.passenger-card {
+  position: relative;
+
+  margin-bottom: 20px;
+
+  background: rgba(251, 247, 236, 0.96);
+
+  border: 1px solid var(--airmail-line);
+  border-radius: 2px;
+
+  box-shadow:
+    0 5px 18px rgba(26, 53, 87, 0.06);
+
+  overflow: hidden;
+}
+
+
+/* subtle top airline stripe */
+
+.passenger-card::before {
+  content: "";
+  display: block;
+
+  height: 3px;
+
+  background:
+    repeating-linear-gradient(
+      135deg,
+      var(--airmail-red) 0,
+      var(--airmail-red) 10px,
+      var(--airmail-cream) 10px,
+      var(--airmail-cream) 20px,
+      var(--airmail-blue) 20px,
+      var(--airmail-blue) 30px,
+      var(--airmail-cream) 30px,
+      var(--airmail-cream) 40px
+    );
+}
+
+
+/* ============================================================
+   PASSENGER HEADER
+   ============================================================ */
+
+.passenger-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 17px 20px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(234, 241, 247, 0.95),
+      rgba(251, 247, 236, 0.95)
+    );
+
+  border-bottom: 1px dashed var(--airmail-line);
+}
+
+
+.passenger-header > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+
+.passenger-step-label {
+  font-family: var(--font-sans);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--airmail-red);
+}
+
+
+.passenger-header h4 {
+  margin: 0;
+
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--airmail-blue-deep);
+}
+
+
+/* ============================================================
+   REMOVE PASSENGER
+   ============================================================ */
+
+.remove-passenger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 12px;
+
+  border: 1px solid rgba(199, 62, 58, 0.3);
+  border-radius: 2px;
+
+  background: rgba(199, 62, 58, 0.05);
+  color: var(--airmail-red);
+
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.remove-passenger-btn:hover {
+  background: rgba(199, 62, 58, 0.1);
+  border-color: rgba(199, 62, 58, 0.5);
+  transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   FORM GRID
+   ============================================================ */
+
+.passenger-card .form-grid {
+  padding: 21px;
+  gap: 17px;
+}
+
+
+/* ============================================================
+   FORM GROUP
+   ============================================================ */
+
+.passenger-card .form-group {
+  position: relative;
+}
+
+
+.passenger-card .form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  color: var(--airmail-blue);
+}
+
+
+/* ============================================================
+   INPUTS / SELECT
+   ============================================================ */
+
+.passenger-card .form-group input,
+.passenger-card .form-group select {
+  width: 100%;
+  height: 43px;
+
+  padding: 0 13px;
+
+  border: 1px solid var(--airmail-line);
+  border-radius: 2px;
+
+  background: rgba(255, 255, 255, 0.72);
+
+  color: var(--airmail-ink);
+
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.passenger-card .form-group input:hover,
+.passenger-card .form-group select:hover {
+  border-color: #aab9c6;
+}
+
+
+.passenger-card .form-group input:focus,
+.passenger-card .form-group select:focus {
+  border-color: var(--airmail-blue);
+
+  background: #fff;
+
+  box-shadow:
+    0 0 0 3px rgba(42, 77, 122, 0.08);
+}
+
+
+.passenger-card .form-group input::placeholder {
+  color: #9aa3aa;
+  font-weight: 400;
+}
+
+
+/* date inputs */
+
+.passenger-card .form-group input[type="date"] {
+  color-scheme: light;
+}
+
+
+/* ============================================================
+   ADD PASSENGER
+   ============================================================ */
+
+.passenger-actions {
+  display: flex;
+  justify-content: flex-start;
+
+  padding: 2px 0 18px;
+}
+
+
+.secondary-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  min-height: 39px;
+  padding: 0 16px;
+
+  border: 1px solid var(--airmail-blue);
+  border-radius: 2px;
+
+  background: transparent;
+  color: var(--airmail-blue);
+
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.secondary-btn:hover {
+  background: var(--airmail-blue);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+
+/* ============================================================
+   MODAL FOOTER
+   ============================================================ */
+
+.booking-modal .modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 17px 30px;
+
+  background: var(--airmail-cream);
+
+  border-top: 1px solid var(--airmail-line);
+}
+
+
+/* ============================================================
+   CANCEL / BACK
+   ============================================================ */
+
+.booking-modal .cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 42px;
+  padding: 0 18px;
+
+  border: 1px solid var(--airmail-line);
+  border-radius: 2px;
+
+  background: transparent;
+  color: var(--airmail-gray);
+
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.booking-modal .cancel-btn:hover {
+  color: var(--airmail-blue-deep);
+  border-color: var(--airmail-blue);
+  background: rgba(42, 77, 122, 0.04);
+}
+
+
+/* ============================================================
+   NEXT / SUBMIT
+   ============================================================ */
+
+.booking-modal .book-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  min-height: 42px;
+  min-width: 145px;
+
+  padding: 0 20px;
+
+  border: 1px solid var(--airmail-blue-deep);
+  border-radius: 2px;
+
+  background: var(--airmail-blue-deep);
+color: #000000;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 14px rgba(26, 53, 87, 0.14);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.booking-modal .book-btn:hover:not(:disabled) {
+  background: var(--airmail-blue);
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 7px 18px rgba(42, 77, 122, 0.2);
+}
+
+
+.booking-modal .book-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
+/* ============================================================
+   PREVIEW BODY
+   ============================================================ */
+
+.booking-preview-body {
+  padding-bottom: 25px;
+}
+
+
+/* ============================================================
+   PREVIEW HEADING
+   ============================================================ */
+
+.preview-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-bottom: 20px;
+  padding: 17px 18px;
+
+  border: 1px solid var(--airmail-line);
+  border-left: 3px solid var(--airmail-gold);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(234, 241, 247, 0.8),
+      rgba(251, 247, 236, 0.9)
+    );
+}
+
+
+.preview-heading-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--airmail-blue);
+  border-radius: 50%;
+
+  color: var(--airmail-blue);
+  background: var(--airmail-cream);
+
+  font-size: 13px;
+}
+
+
+.preview-heading > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+
+.preview-heading span {
+  font-family: var(--font-sans);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+  color: var(--airmail-red);
+}
+
+
+.preview-heading h4 {
+  margin: 0;
+
+  font-family: var(--font-serif);
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--airmail-blue-deep);
+}
+
+
+.preview-heading p {
+  margin: 2px 0 0;
+
+  font-family: var(--font-sans);
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--airmail-gray);
+}
+
+
+/* ============================================================
+   PREVIEW PASSENGER CARD
+   ============================================================ */
+
+.preview-passenger-card {
+  margin-bottom: 16px;
+
+  border: 1px solid var(--airmail-line);
+  background: var(--airmail-cream);
+
+  box-shadow:
+    0 4px 15px rgba(26, 53, 87, 0.045);
+}
+
+
+.preview-passenger-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px 19px;
+
+  background: var(--airmail-blue-pale);
+
+  border-bottom: 1px dashed var(--airmail-line);
+}
+
+
+.preview-passenger-header > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+
+.preview-passenger-header span {
+  font-family: var(--font-sans);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--airmail-red);
+}
+
+
+.preview-passenger-header h4 {
+  margin: 0;
+
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+
+  color: var(--airmail-ink);
+}
+
+
+.preview-passenger-type {
+  padding: 6px 10px;
+
+  border: 1px solid rgba(42, 77, 122, 0.25);
+  border-radius: 2px;
+
+  background: rgba(255, 255, 255, 0.6);
+
+  color: var(--airmail-blue);
+
+  font-family: var(--font-sans);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+
+
+/* ============================================================
+   PREVIEW GRID
+   ============================================================ */
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+
+.preview-item {
+  min-height: 72px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 12px 16px;
+
+  border-right: 1px dashed var(--airmail-line);
+  border-bottom: 1px dashed var(--airmail-line);
+}
+
+
+.preview-item:nth-child(4n) {
+  border-right: 0;
+}
+
+
+.preview-item:nth-last-child(-n + 4) {
+  border-bottom: 0;
+}
+
+
+.preview-item span {
+  margin-bottom: 5px;
+
+  font-family: var(--font-sans);
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+
+  color: var(--airmail-gray);
+}
+
+
+.preview-item strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+
+  color: var(--airmail-ink);
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+  .booking-wizard {
+    padding: 18px 20px;
+  }
+
+  .booking-step {
+    min-width: auto;
+  }
+
+  .booking-step > div {
+    display: none;
+  }
+
+  .step-line {
+    margin: 0 10px;
+  }
+
+  .booking-body {
+    padding: 20px;
+  }
+
+  .booking-modal .modal-footer {
+    padding: 15px 20px;
+  }
+
+  .preview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .preview-item:nth-child(4n) {
+    border-right: 1px dashed var(--airmail-line);
+  }
+
+  .preview-item:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .preview-item:nth-last-child(-n + 4) {
+    border-bottom: 1px dashed var(--airmail-line);
+  }
+
+  .preview-item:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+
+}
+
+
+@media (max-width: 640px) {
+
+  .booking-wizard {
+    padding: 15px;
+  }
+
+  .step-number {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+
+    font-size: 10px;
+  }
+
+  .step-line {
+    margin: 0 7px;
+  }
+
+  .booking-body {
+    padding: 15px;
+  }
+
+  .passenger-header {
+    padding: 14px;
+  }
+
+  .passenger-header h4 {
+    font-size: 17px;
+  }
+
+  .passenger-card .form-grid {
+    padding: 15px;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .booking-modal .modal-footer {
+    padding: 13px 15px;
+  }
+
+  .booking-modal .book-btn,
+  .booking-modal .cancel-btn {
+    min-height: 40px;
+  }
+
+  .booking-modal .book-btn {
+    min-width: 125px;
+  }
+
+  .preview-heading {
+    padding: 14px;
+  }
+
+  .preview-heading h4 {
+    font-size: 18px;
+  }
+
+  .preview-passenger-header {
+    align-items: flex-start;
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-item,
+  .preview-item:nth-child(2n),
+  .preview-item:nth-child(4n) {
+    border-right: 0;
+    border-bottom: 1px dashed var(--airmail-line);
+  }
+
+  .preview-item:last-child {
+    border-bottom: 0;
   }
 
 }

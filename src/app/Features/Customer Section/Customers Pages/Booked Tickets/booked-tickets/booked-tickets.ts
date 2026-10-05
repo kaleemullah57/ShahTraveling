@@ -22,6 +22,8 @@ import {
 } from '../../../../../Shared/components/DataTables/data-table/data-table';
 import { Subject } from 'rxjs';
 import { CustomerNotification } from '../../../Customers Models/Customer Notifications Models/customer-notification';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-booked-tickets',
@@ -49,10 +51,6 @@ export class BookedTickets implements OnInit {
 
 
 
-  // =========================================================
-  // TABLE
-  // =========================================================
-
   bookings: CustomerBooking[] = [];
 
   isLoading = false;
@@ -65,20 +63,12 @@ export class BookedTickets implements OnInit {
 
   search = '';
 
-
-  // =========================================================
-  // SELECTED BOOKING
-  // =========================================================
-
   selectedBooking: CustomerBooking | null = null;
 
   showDetails = false;
 
 
-  // =========================================================
-  // TABLE COLUMNS
-  // =========================================================
-
+ 
   columns: TableColumn[] = [
     {
       key: 'bookingReference',
@@ -109,9 +99,6 @@ export class BookedTickets implements OnInit {
   ];
 
 
-  // =========================================================
-  // TABLE ACTIONS
-  // =========================================================
 
   actions: TableAction[] = [
     {
@@ -122,9 +109,6 @@ export class BookedTickets implements OnInit {
   ];
 
 
-  // =========================================================
-  // INIT
-  // =========================================================
 
   ngOnInit(): void {
 
@@ -137,15 +121,8 @@ export class BookedTickets implements OnInit {
   }
 
 
-  // =========================================================
-  // REALTIME EVENTS
-  // =========================================================
 
   private subscribeToRealtimeEvents(): void {
-
-    // =========================================================
-    // INVENTORY UPDATED
-    // =========================================================
 
     this.realtimeService.ticketInventoryUpdated$
       .subscribe(event => {
@@ -154,29 +131,14 @@ export class BookedTickets implements OnInit {
       });
 
 
-    // =========================================================
-    // BOOKING PASSENGER UPDATED
-    // APPROVED / STATUS CHANGE
-    // =========================================================
-
     this.realtimeService.bookingPassengerUpdated$
       .subscribe(event => {
 
         this.loadBookings();
       });
 
-
-    // =========================================================
-    // CUSTOMER NOTIFICATION
-    // =========================================================
-
-
-
-
     this.realtimeService.customerNotification$
       .subscribe(event => {
-
-
         const notification: CustomerNotification = {
           notificationId: event.notificationId,
           customerId: event.customerId,
@@ -196,10 +158,6 @@ export class BookedTickets implements OnInit {
           readDate: null
         };
 
-        // =====================================================
-        // PREVENT DUPLICATE NOTIFICATION
-        // =====================================================
-
         const alreadyExists =
           this.notifications.some(
             x =>
@@ -214,16 +172,8 @@ export class BookedTickets implements OnInit {
           );
         }
 
-        // =====================================================
-        // UPDATE NOTIFICATION COUNT
-        // =====================================================
-
         this.notificationCount =
           this.notifications.length;
-
-        // =====================================================
-        // REFRESH BOOKINGS
-        // =====================================================
 
         this.loadBookings();
 
@@ -231,10 +181,6 @@ export class BookedTickets implements OnInit {
       });
   }
 
-
-  // =========================================================
-  // LOAD BOOKINGS
-  // =========================================================
 
   loadBookings(): void {
 
@@ -288,10 +234,6 @@ export class BookedTickets implements OnInit {
   }
 
 
-  // =========================================================
-  // SEARCH
-  // =========================================================
-
   onSearch(search: string): void {
 
     this.search = search;
@@ -301,10 +243,6 @@ export class BookedTickets implements OnInit {
     this.loadBookings();
   }
 
-
-  // =========================================================
-  // PAGE CHANGE
-  // =========================================================
 
   onPageChange(page: number): void {
 
@@ -328,9 +266,112 @@ export class BookedTickets implements OnInit {
   }
 
 
-  // =========================================================
-  // TABLE ACTION
-  // =========================================================
+
+async downloadPassengerTicket(
+  booking: CustomerBooking,
+  passenger: CustomerBookingPassenger
+): Promise<void> {
+
+  if (!booking || !passenger) {
+    return;
+  }
+
+  // Which passenger index is this?
+  const index = booking.passengerBookingDetails.findIndex(
+    p => p.bookingPassengerId === passenger.bookingPassengerId
+  );
+
+  if (index < 0) {
+    return;
+  }
+
+  const ticketElement = document.getElementById('ticket-' + index);
+
+  if (!ticketElement) {
+    return;
+  }
+
+  // Temporarily hide the download button inside the captured area
+  const footerBtn = ticketElement.querySelector(
+    '.individual-ticket-footer'
+  ) as HTMLElement | null;
+
+  if (footerBtn) {
+    footerBtn.style.display = 'none';
+  }
+
+  try {
+
+    // Convert the ticket card into a canvas
+    const canvas = await html2canvas(ticketElement, {
+      scale: 2,                 // high quality
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      logging: false
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+
+    // Create A4 PDF (portrait, millimeters)
+    const pdf = new jsPDF('p', 'mm', 'a4');
+
+    const pageWidth  = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const margin    = 10; // mm
+    const maxWidth  = pageWidth  - margin * 2;
+    const maxHeight = pageHeight - margin * 2;
+
+    // Keep aspect ratio
+    const imgWidth  = maxWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    // If the ticket is taller than the page, scale it down
+    let finalWidth  = imgWidth;
+    let finalHeight = imgHeight;
+
+    if (imgHeight > maxHeight) {
+      finalHeight = maxHeight;
+      finalWidth  = (canvas.width * finalHeight) / canvas.height;
+    }
+
+    // Center horizontally
+    const x = (pageWidth  - finalWidth)  / 2;
+    const y = margin;
+
+    pdf.addImage(
+      imgData,
+      'PNG',
+      x,
+      y,
+      finalWidth,
+      finalHeight,
+      undefined,
+      'FAST'
+    );
+
+    // Build a clean filename
+    const fileName =
+      `Ticket_${booking.bookingReference}_${passenger.passengerName
+        ?.replace(/\s+/g, '_') || 'Passenger'}.pdf`;
+
+    // ⬇️ Real download — no print dialog
+    pdf.save(fileName);
+
+  } catch (error) {
+
+    console.error('Ticket download failed:', error);
+
+  } finally {
+
+    // Restore the hidden footer button
+    if (footerBtn) {
+      footerBtn.style.display = '';
+    }
+  }
+}
+
+
 
   onTableAction(event: {
     action: TableAction;
@@ -346,9 +387,6 @@ export class BookedTickets implements OnInit {
   }
 
 
-  // =========================================================
-  // VIEW BOOKING
-  // =========================================================
 
   viewBooking(
     booking: CustomerBooking
@@ -362,9 +400,6 @@ export class BookedTickets implements OnInit {
   }
 
 
-  // =========================================================
-  // CLOSE DETAILS
-  // =========================================================
 
   closeDetails(): void {
 
@@ -577,88 +612,88 @@ export class BookedTickets implements OnInit {
   // }
 
 
- openNotification(
-  notification: CustomerNotification
-): void {
+  openNotification(
+    notification: CustomerNotification
+  ): void {
 
-  // ==========================================
-  // TICKET CONFIRMED
-  // ==========================================
+    // ==========================================
+    // TICKET CONFIRMED
+    // ==========================================
 
-  if (
-    notification.notificationType ===
-    'TicketConfirmed'
-  ) {
+    if (
+      notification.notificationType ===
+      'TicketConfirmed'
+    ) {
 
-    if (notification.bookingId) {
+      if (notification.bookingId) {
 
-      const booking =
-        this.bookings.find(
-          x =>
-            x.bookingId ===
-            notification.bookingId
-        );
+        const booking =
+          this.bookings.find(
+            x =>
+              x.bookingId ===
+              notification.bookingId
+          );
 
-      if (booking) {
+        if (booking) {
 
-        this.viewBooking(booking);
+          this.viewBooking(booking);
 
-        this.showNotifications = false;
+          this.showNotifications = false;
 
-        this.cdr.detectChanges();
+          this.cdr.detectChanges();
 
-        return;
-      }
+          return;
+        }
 
-      this.loadBookings();
-
-      this.showNotifications = false;
-
-      return;
-    }
-  }
-
-
-  // ==========================================
-  // TICKET CANCELLED
-  // ==========================================
-
-  if (
-    notification.notificationType ===
-    'TicketCancelled'
-  ) {
-
-    if (notification.bookingId) {
-
-      const booking =
-        this.bookings.find(
-          x =>
-            x.bookingId ===
-            notification.bookingId
-        );
-
-      if (booking) {
-
-        this.viewBooking(booking);
+        this.loadBookings();
 
         this.showNotifications = false;
 
-        this.cdr.detectChanges();
+        return;
+      }
+    }
+
+
+    // ==========================================
+    // TICKET CANCELLED
+    // ==========================================
+
+    if (
+      notification.notificationType ===
+      'TicketCancelled'
+    ) {
+
+      if (notification.bookingId) {
+
+        const booking =
+          this.bookings.find(
+            x =>
+              x.bookingId ===
+              notification.bookingId
+          );
+
+        if (booking) {
+
+          this.viewBooking(booking);
+
+          this.showNotifications = false;
+
+          this.cdr.detectChanges();
+
+          return;
+        }
+
+        // Booking may not currently be
+        // available in the loaded page.
+        this.loadBookings();
+
+        this.showNotifications = false;
 
         return;
       }
-
-      // Booking may not currently be
-      // available in the loaded page.
-      this.loadBookings();
-
-      this.showNotifications = false;
-
-      return;
     }
-  }
 
-}
+  }
 
 
   loadNotifications(): void {

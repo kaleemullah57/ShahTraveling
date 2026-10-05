@@ -145,4 +145,20 @@ export class GlobalDropdownService {
             'DropDown/GetPassengerTypesDropDown'
         );
     }
+
+
+
+
+    // Customers DropDown
+    // Customers DropDown
+    getCustomers(search?: string): Observable<any> {
+
+        let url = `DropDown/GetCustomers`;
+
+        if (search?.trim()) {
+            url += `?search=${encodeURIComponent(search.trim())}`;
+        }
+
+        return this.apiService.get<any>(url);
+    }
 }

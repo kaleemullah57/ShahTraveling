@@ -1,10 +1,21 @@
-export interface BookedTicketsModel {}
+export interface BookedTicketsModel { }
 
 export interface CustomerBookingSearchRequest {
   search: string;
   pageNumber: number;
   pageSize: number;
 }
+
+export interface CustomerBookingStop {
+  purchaseInvoiceItemStopId: number;
+  purchaseInvoiceItemId: number;
+  stopNumber: number;
+  airportId: number;
+  stopAirport: string | null;
+  arrivalDateTime: string | null;
+  departureDateTime: string | null;
+}
+
 
 export interface CustomerBookingPassenger {
   bookingPassengerId: number;
@@ -26,6 +37,25 @@ export interface CustomerBookingPassenger {
   totalPrice: number;
 
   createdDate: string;
+
+  flightRouteType: number,
+  flightJourneyType: string,
+  checkedBaggagekg: string,
+  handBaggagekg: string,
+  personalItemkg: string,
+
+
+  fromAirportId: number | null;
+  fromAirport: string | null;
+  departureDateTime : Date,
+  toAirportId: number | null;
+  toAirport: string | null;
+  arrivalDateTime: Date,
+
+  airlineId: number | null;
+  airlineName: string | null;
+
+  stops: CustomerBookingStop[];
 
   passengerBookingStatusId: number | null;
   passengerBookingStatus: string | null;
@@ -53,6 +83,7 @@ export interface CustomerBookingPassenger {
 export interface CustomerBooking {
   bookingId: number;
   bookingReference: string;
+  pnrNo: string;
 
   customerId: number;
   createdBy: string;

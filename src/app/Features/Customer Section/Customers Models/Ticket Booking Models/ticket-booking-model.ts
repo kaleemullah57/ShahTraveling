@@ -4,9 +4,13 @@ export interface TicketBookingModel {}
 
 export interface BookingPassengerRequest {
   passengerTypeId: number;
-  fullName: string;
+  firstName: string;
+  middleName: string;
+  lastName : string;
   passportNumber: string;
-  dateOfBirth: string;
+  passportIssueDate :Date | null;
+  passportExpireDate : Date | null;
+  dateOfBirth: Date | null;
   gender: string;
   nationality: string;
   contactNumber: string;

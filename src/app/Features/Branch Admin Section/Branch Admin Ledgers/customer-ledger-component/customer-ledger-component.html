@@ -1,0 +1,874 @@
+<div class="ledger-page">
+
+
+
+    <!-- ============================================================
+       CUSTOMER SELECTION
+  ============================================================ -->
+
+    <div class="customer-selection-card">
+
+        <div class="customer-selection-body">
+
+            <div class="form-group customer-dropdown">
+
+                <label>
+                    <i class="fa fa-user-circle"></i>
+                    Customer
+                </label>
+
+                <div class="select-wrapper">
+
+                    <select [(ngModel)]="selectedCustomerId" (change)="onCustomerChange()">
+
+                        <option [ngValue]="0">
+                            Select Customer
+                        </option>
+
+                        <option *ngFor="let customer of customers" [ngValue]="customer.Value">
+                            {{ customer.Text }}
+                        </option>
+
+                    </select>
+
+                    <i class="fa fa-chevron-down"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+       SELECTED CUSTOMER SUMMARY
+  ============================================================ -->
+
+    <div class="selected-customer-card" *ngIf="selectedCustomerId">
+
+        <div class="selected-customer-main">
+
+            <div class="selected-customer-avatar">
+                <i class="fa fa-user"></i>
+            </div>
+
+            <div class="selected-customer-details">
+
+                <span class="selected-label">
+                    Selected Customer
+                </span>
+
+                <h3>
+                    {{ selectedCustomerName }}
+                </h3>
+            </div>
+
+        </div>
+
+
+        <div class="selected-customer-status">
+
+            <span class="status-dot"></span>
+
+            <span>Active Customer</span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+       CUSTOMER BOOKINGS
+  ============================================================ -->
+
+    <div class="ledger-section" *ngIf="selectedCustomerId">
+
+
+        <!-- ==========================================================
+         SECTION HEADER
+    ========================================================== -->
+
+        <div class="ledger-section-header">
+
+            <div class="section-heading">
+
+                <div class="section-heading-icon">
+                    <i class="fa fa-ticket"></i>
+                </div>
+
+                <div>
+
+                    <h3>
+                        Customer Bookings
+                    </h3>
+
+                    <span>
+                        Booking history for {{ selectedCustomerName }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOOKING SEARCH -->
+
+            <div class="booking-search-box">
+
+                <i class="fa fa-search"></i>
+
+                <input type="text" [(ngModel)]="bookingSearch" placeholder="Search booking reference..."
+                    (keyup.enter)="loadCustomerBookings()" />
+
+                <button type="button" (click)="loadCustomerBookings()" title="Search">
+                    <i class="fa fa-arrow-right"></i>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================================
+         LOADING
+    ========================================================== -->
+
+        <div class="ledger-loading" *ngIf="loadingBookings">
+
+            <div class="loading-spinner">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+
+            <div>
+                <strong>Loading bookings</strong>
+
+                <span>
+                    Please wait while customer bookings are retrieved...
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- ==========================================================
+         EMPTY
+    ========================================================== -->
+
+        <div class="ledger-empty" *ngIf="
+        !loadingBookings &&
+        customerBookings.length === 0
+      ">
+
+            <div class="empty-icon">
+                <i class="fa fa-ticket"></i>
+            </div>
+
+            <h4>
+                No Bookings Found
+            </h4>
+
+            <p>
+                No bookings are available for this customer.
+            </p>
+
+        </div>
+
+
+        <!-- ==========================================================
+         BOOKING LIST
+    ========================================================== -->
+
+        <div class="booking-list" *ngIf="!loadingBookings && customerBookings.length > 0">
+
+            <div class="booking-card-wrapper" *ngFor="let booking of customerBookings">
+
+                <!-- ============================================================
+       EXISTING BOOKING CARD
+       DO NOT CHANGE ITS FORMAT
+  ============================================================ -->
+
+                <div class="booking-card" (click)="onBookingClick(booking.bookingId)"
+                    [class.active]="selectedBookingId === booking.bookingId">
+
+                    <!-- BOOKING MAIN -->
+                    <div class="booking-main">
+
+                        <div class="booking-icon">
+                            <i class="fa fa-plane"></i>
+                        </div>
+
+                        <div class="booking-info">
+
+                            <span class="booking-label">
+                                Booking Reference
+                            </span>
+
+                            <strong class="booking-reference">
+                                {{ booking.bookingReference }}
+                            </strong>
+
+                            <span class="booking-id">
+                                Booking #{{ booking.bookingId }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CREATED DATE -->
+                    <div class="booking-meta">
+
+                        <span>
+                            <i class="fa fa-calendar"></i>
+                            Created
+                        </span>
+
+                        <strong>
+                            {{ booking.createdDate | date:'dd MMM yyyy, HH:mm' }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- CUSTOMER -->
+                    <div class="booking-meta booking-customer">
+
+                        <span>
+                            <i class="fa fa-user"></i>
+                            Customer
+                        </span>
+
+                        <strong>
+                            {{ booking.userName }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- ACTION -->
+                    <div class="booking-action">
+
+                        <span class="view-booking">
+                            View Details
+                        </span>
+
+                        <div class="booking-arrow">
+                            <i class="fa fa-chevron-right"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ============================================================
+       FULL PASSENGER DETAILS
+       ONLY SHOW FOR SELECTED BOOKING
+  ============================================================ -->
+
+                <div class="booking-details" *ngIf="selectedBookingId === booking.bookingId">
+
+                    <!-- LOADING -->
+                    <div class="ledger-loading" *ngIf="loadingPassengers">
+
+                        <div class="loading-spinner">
+                            <i class="fa fa-spinner fa-spin"></i>
+                        </div>
+
+                        <div>
+                            <strong>
+                                Loading passenger details
+                            </strong>
+
+                            <span>
+                                Please wait...
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- PASSENGERS -->
+                    <div class="passenger-details-list" *ngIf="
+        !loadingPassengers &&
+        bookingPassengers.length > 0
+      ">
+
+                        <div class="passenger-detail-card" *ngFor="let passenger of bookingPassengers">
+
+                            <!-- ======================================================
+             PASSENGER HEADER
+        ====================================================== -->
+
+                            <div class="passenger-detail-header">
+
+                                <div class="passenger-detail-title">
+
+                                    <div class="passenger-detail-avatar">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+
+                                    <div>
+
+                                        <span>
+                                            {{ passenger.passengerTypeName }}
+                                        </span>
+
+                                        <h4>
+                                            {{ passenger.fullName }}
+                                        </h4>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="passenger-confirmed">
+
+                                    <span class="status-dot"></span>
+
+                                    Confirmed
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ======================================================
+             FLIGHT / ROUTE
+        ====================================================== -->
+
+                            <div class="passenger-detail-section">
+
+                                <div class="detail-section-title">
+
+                                    <i class="fa fa-plane"></i>
+
+                                    <span>
+                                        Flight Details
+                                    </span>
+
+                                </div>
+
+
+                                <div class="passenger-detail-grid">
+
+                                    <!-- AIRLINE -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Airline
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.airline }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- FROM -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            From Airport
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.fromAirport }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- TO -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            To Airport
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.toAirport }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- COUNTRY -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Country
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.country }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ======================================================
+             PASSENGER INFORMATION
+        ====================================================== -->
+
+                            <div class="passenger-detail-section">
+
+                                <div class="detail-section-title">
+
+                                    <i class="fa fa-user"></i>
+
+                                    <span>
+                                        Passenger Information
+                                    </span>
+
+                                </div>
+
+
+                                <div class="passenger-detail-grid">
+
+                                    <!-- FULL NAME -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Full Name
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.fullName }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- PASSENGER TYPE -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Passenger Type
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.passengerTypeName }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- DATE OF BIRTH -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Date of Birth
+                                        </span>
+
+                                        <strong>
+                                            {{
+                                            passenger.dateOfBirth
+                                            ? (passenger.dateOfBirth | date:'dd MMM yyyy')
+                                            : '-'
+                                            }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- GENDER -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Gender
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.gender || '-' }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- NATIONALITY -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Nationality
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.nationality || '-' }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- CONTACT -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Contact Number
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.contactNumber || '-' }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- EMAIL -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Email
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.email || '-' }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ======================================================
+             PASSPORT INFORMATION
+        ====================================================== -->
+
+                            <div class="passenger-detail-section">
+
+                                <div class="detail-section-title">
+
+                                    <i class="fa fa-id-card"></i>
+
+                                    <span>
+                                        Passport Information
+                                    </span>
+
+                                </div>
+
+
+                                <div class="passenger-detail-grid">
+
+                                    <!-- PASSPORT -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Passport Number
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.passportNumber || '-' }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- ISSUE DATE -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Passport Issue Date
+                                        </span>
+
+                                        <strong>
+                                            {{
+                                            passenger.passportIssueDate
+                                            ? (passenger.passportIssueDate | date:'dd MMM yyyy')
+                                            : '-'
+                                            }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- EXPIRY DATE -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            Passport Expiry Date
+                                        </span>
+
+                                        <strong>
+                                            {{
+                                            passenger.passportExpireDate
+                                            ? (passenger.passportExpireDate | date:'dd MMM yyyy')
+                                            : '-'
+                                            }}
+                                        </strong>
+
+                                    </div>
+
+
+                                    <!-- BOOKING PASSENGER ID -->
+                                    <div class="detail-item">
+
+                                        <span>
+                                            $ Price :
+                                        </span>
+
+                                        <strong>
+                                            {{ passenger.unitPrice }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NO DATA -->
+                    <div class="ledger-empty" *ngIf="
+        !loadingPassengers &&
+        bookingPassengers.length === 0
+      ">
+
+                        <div class="empty-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+
+                        <h4>
+                            No Confirmed Passengers
+                        </h4>
+
+                        <p>
+                            No confirmed passenger details were found for this booking.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="passengers-section" *ngIf="
+    selectedBookingId &&
+    !loadingBookings
+  ">
+
+                <!-- SECTION HEADER -->
+                <div class="passengers-section-header">
+
+                    <div class="section-heading">
+
+                        <div class="section-heading-icon passenger-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+
+                        <div>
+                            <h3>
+                                Confirmed Passengers
+                            </h3>
+
+                            <span>
+                                Passengers for
+                                {{ selectedBooking?.bookingReference }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="passenger-count">
+                        <i class="fa fa-user"></i>
+
+                        {{ bookingPassengers.length }}
+
+                        {{ bookingPassengers.length === 1
+                        ? 'Passenger'
+                        : 'Passengers'
+                        }}
+                    </div>
+
+                </div>
+
+
+                <!-- LOADING -->
+                <div class="ledger-loading" *ngIf="loadingPassengers">
+
+                    <div class="loading-spinner">
+                        <i class="fa fa-spinner fa-spin"></i>
+                    </div>
+
+                    <div>
+                        <strong>
+                            Loading passengers
+                        </strong>
+
+                        <span>
+                            Retrieving confirmed passenger details...
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <!-- EMPTY -->
+                <div class="ledger-empty" *ngIf="
+      !loadingPassengers &&
+      bookingPassengers.length === 0
+    ">
+
+                    <div class="empty-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+
+                    <h4>
+                        No Confirmed Passengers
+                    </h4>
+
+                    <p>
+                        This booking does not have any confirmed passengers.
+                    </p>
+
+                </div>
+
+
+                <!-- PASSENGER LIST -->
+                <div class="passenger-list" *ngIf="
+      !loadingPassengers &&
+      bookingPassengers.length > 0
+    ">
+
+                    <div class="passenger-card" *ngFor="
+        let passenger of bookingPassengers
+      ">
+
+                        <!-- PASSENGER -->
+                        <div class="passenger-main">
+
+                            <div class="passenger-avatar">
+                                <i class="fa fa-user"></i>
+                            </div>
+
+                            <div class="passenger-info">
+
+                                <span class="passenger-label">
+                                    Passenger
+                                </span>
+
+                                <strong>
+                                    {{ passenger.fullName }}
+                                </strong>
+
+                                <span>
+                                    {{ passenger.passengerTypeName }}
+                                    · Passenger #{{ passenger.bookingPassengerId }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ROUTE -->
+                        <div class="passenger-route">
+
+                            <div class="route-airport">
+
+                                <span>
+                                    From
+                                </span>
+
+                                <strong>
+                                    {{ passenger.fromAirport }}
+                                </strong>
+
+                            </div>
+
+                            <div class="route-arrow">
+                                <i class="fa fa-long-arrow-right"></i>
+                            </div>
+
+                            <div class="route-airport">
+
+                                <span>
+                                    To
+                                </span>
+
+                                <strong>
+                                    {{ passenger.toAirport }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- AIRLINE -->
+                        <div class="passenger-meta">
+
+                            <span>
+                                <i class="fa fa-plane"></i>
+                                Airline
+                            </span>
+
+                            <strong>
+                                {{ passenger.airline }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- NATIONALITY -->
+                        <div class="passenger-meta">
+
+                            <span>
+                                <i class="fa fa-globe"></i>
+                                Nationality
+                            </span>
+
+                            <strong>
+                                {{ passenger.nationality || '-' }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- STATUS -->
+                        <div class="passenger-status">
+
+                            <span class="status-dot"></span>
+
+                            <span>
+                                Confirmed
+                            </span>
+
+                        </div>
+
+
+                        <!-- ACTION -->
+                        <div class="passenger-action">
+
+                            <button type="button" title="View Passenger">
+                                <i class="fa fa-chevron-right"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>

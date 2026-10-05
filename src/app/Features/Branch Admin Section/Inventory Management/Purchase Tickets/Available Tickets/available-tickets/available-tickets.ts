@@ -971,24 +971,22 @@ export class AvailableTickets implements OnInit, OnDestroy {
   ];
 
 
-  openPassengerPriceModal(
-    ticket: AvailableTicketModel
-  ): void {
+ openPassengerPriceModal(ticket: AvailableTicketModel): void {
 
-    this.selectedPassengerPriceTicket = ticket;
+  // 1. Reset everything
+  this.selectedPassengerPriceTicket = ticket;
+  this.showPassengerPriceAddForm = false;
+  this.showPassengerPriceEditForm = false;
+  this.selectedPassengerPrice = null;
 
-    this.showPassengerPriceModal = true;
+  this.passengerPrices = [];
 
-    this.showPassengerPriceAddForm = false;
+  this.showPassengerPriceModal = true;
 
-    this.showPassengerPriceEditForm = false;
+  this.cdr.detectChanges();
 
-    this.selectedPassengerPrice = null;
-
-    this.loadPassengerPrices();
-
-    this.cdr.detectChanges();
-  }
+  this.loadPassengerPrices();
+}
 
   closePassengerPriceModal(): void {
 

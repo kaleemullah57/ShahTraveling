@@ -351,305 +351,236 @@
 
 @if (showViewModal && selectedTicket) {
 
-<div class="modal-overlay" (click)="closeViewModal()">
+<div class="view-modal-overlay" (click)="closeViewModal()">
 
-    <div class="ticket-modal" (click)="$event.stopPropagation()">
+  <div class="ticket-modal" (click)="$event.stopPropagation()">
 
-        <div class="modal-header">
-
-            <div>
-                <h3>Ticket Details</h3>
-                <p>Complete available ticket information</p>
-            </div>
-
-            <button type="button" class="close-button" (click)="closeViewModal()">
-
-                <i class="fa fa-times"></i>
-
-            </button>
-
+    <!-- TOP BAR -->
+    <div class="ticket-top">
+      <div class="ticket-brand">
+        <div class="brand-content">
+          <span class="brand-name">{{selectedTicket.branchName}}</span>
+          <span class="brand-subtitle">INVENTORY &nbsp;•&nbsp; TICKET DETAILS</span>
         </div>
-
-
-        <div class="modal-body">
-
-            <!-- Route -->
-            <div class="section">
-
-                <h4>Flight Information</h4>
-
-                <div class="details-grid">
-
-                    <div class="detail-item">
-                        <span>Airline</span>
-                        <strong>
-                            {{ selectedTicket.airlineName }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Airline Code</span>
-                        <strong>
-                            {{ selectedTicket.airlineCode }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>From Country</span>
-                        <strong>
-                            {{ selectedTicket.fromCountry }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>From Airport</span>
-                        <strong>
-                            {{ selectedTicket.fromAirport }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>To Country</span>
-                        <strong>
-                            {{ selectedTicket.toCountry }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>To Airport</span>
-                        <strong>
-                            {{ selectedTicket.toAirport }}
-                        </strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- Schedule -->
-            <div class="section">
-
-                <h4>Schedule</h4>
-
-                <div class="details-grid">
-
-                    <div class="detail-item">
-                        <span>Departure</span>
-                        <strong>
-                            {{ selectedTicket.departureDateTime | date:'dd MMM yyyy, hh:mm a' }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Arrival</span>
-                        <strong>
-                            {{ selectedTicket.arrivalDateTime | date:'dd MMM yyyy, hh:mm a' }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Valid From</span>
-                        <strong>
-                            {{ selectedTicket.validFrom | date:'dd MMM yyyy' }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Valid Until</span>
-                        <strong>
-                            {{ selectedTicket.validUntil | date:'dd MMM yyyy' }}
-                        </strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- Inventory -->
-            <div class="section">
-
-                <h4>Inventory & Pricing</h4>
-
-                <div class="details-grid">
-
-                    <div class="detail-item">
-                        <span>Total Quantity</span>
-                        <strong>
-                            {{ selectedTicket.quantity || 0 }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Shared Quantity</span>
-                        <strong>
-                            {{ selectedTicket.sharedQuantity || 0 }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span> Sold Quantity</span>
-                        <strong>
-                            {{ selectedTicket.soldQuantity || 0 }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Remaining In Inventory</span>
-                        <strong>
-                            {{ selectedTicket.remainingInventory || 0 }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Available To Customers</span>
-                        <strong>
-                            {{ selectedTicket.availableToCustomer || 0 }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Available To Share</span>
-                        <strong>
-                            {{ selectedTicket.availableToShare || 0}}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Purchase Price</span>
-                        <strong>
-                            {{ selectedTicket.purchasePrice | number:'1.2-2' }}
-                            ( {{selectedTicket.ticketTypeName}} )
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Selling Price</span>
-                        <strong>
-                            {{ selectedTicket.sellingPrice | number:'1.2-2' }}
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Branch</span>
-                        <strong>
-                            {{ selectedTicket.branchName }}
-                        </strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- Baggage -->
-            <div class="section">
-
-                <h4>Baggage Allowance</h4>
-
-                <div class="details-grid">
-
-                    <div class="detail-item">
-                        <span>Checked Baggage</span>
-                        <strong>
-                            {{ selectedTicket.checkedBaggageKg ?? 0 }} KG
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Hand Baggage</span>
-                        <strong>
-                            {{ selectedTicket.handBaggageKg ?? 0 }} KG
-                        </strong>
-                    </div>
-
-                    <div class="detail-item">
-                        <span>Personal Item</span>
-                        <strong>
-                            {{ selectedTicket.personalItemKg ?? 0 }} KG
-                        </strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            @if (selectedTicket.stops && selectedTicket.stops.length > 0) {
-
-            <div class="section flight-stops-section">
-
-                <h4>
-                    <i class="fa fa-route"></i>
-                    Flight Stops
-                </h4>
-
-                <div class="stops-list">
-
-                    @for (stop of selectedTicket.stops; track stop.stopNumber) {
-
-                    <div class="stop-card">
-
-                        <div class="stop-number">
-                            {{ stop.stopNumber }}
-                        </div>
-
-                        <div class="stop-content">
-
-                            <div class="stop-airport">
-                                <i class="fa fa-map-marker-alt"></i>
-                                <strong>
-                                    {{ stop.stopAirport }}
-                                </strong>
-                            </div>
-
-                            <div class="stop-times">
-
-                                <div class="stop-time">
-                                    <span>Arrival</span>
-                                    <strong>
-                                        {{ stop.arrivalDateTime | date:'dd MMM yyyy, hh:mm a' }}
-                                    </strong>
-                                </div>
-
-                                <div class="stop-time">
-                                    <span>Departure</span>
-                                    <strong>
-                                        {{ stop.departureDateTime | date:'dd MMM yyyy, hh:mm a' }}
-                                    </strong>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    }
-
-                </div>
-
-            </div>
-
-            }
-
-        </div>
-
-
-
-
-
-
-
-        <div class="modal-footer">
-
-            <app-button label="Close" type="button" (click)="closeViewModal()">
-            </app-button>
-
-        </div>
+      </div>
+
+      <button type="button" class="ticket-close" (click)="closeViewModal()" title="Close">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+
+
+    <!-- IDENTITY STRIP -->
+    <div class="ticket-identity-strip">
+
+      <div class="identity-cell">
+        <span>Airline</span>
+        <strong>{{ selectedTicket.airlineName || '-' }}</strong>
+        <small>{{ selectedTicket.airlineCode || '' }}</small>
+      </div>
+
+      <div class="identity-cell">
+        <span>PNR</span>
+        <strong>{{ selectedTicket.pnrNo || '-' }}</strong>
+      </div>
+
+      <div class="identity-cell">
+        <span>Selling Price</span>
+        <strong class="price">{{ selectedTicket.sellingPrice | number:'1.2-2' }}</strong>
+        <small>{{ selectedTicket.ticketTypeName || '' }}</small>
+      </div>
+
+      <div class="identity-cell">
+        <span>Availability</span>
+        <strong>{{ selectedTicket.availableToCustomer || 0 }} left</strong>
+      </div>
 
     </div>
+
+
+    <!-- BODY -->
+    <div class="passenger-tickets-section">
+
+      <!-- SECTION 01 — FLIGHT INFORMATION -->
+      <article class="individual-ticket-card">
+        <div class="individual-ticket-header">
+          <div class="individual-ticket-title">
+            <div class="ticket-number">
+              <span>SECTION</span>
+              <strong>01</strong>
+            </div>
+            <div class="individual-passenger-name">
+              <span>FLIGHT INFORMATION</span>
+              <h3>Route &amp; Airline</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="passenger-details-grid">
+          <div class="passenger-info"><span>Airline</span><strong>{{ selectedTicket.airlineName || '-' }}</strong></div>
+          <div class="passenger-info"><span>Airline Code</span><strong>{{ selectedTicket.airlineCode || '-' }}</strong></div>
+          <div class="passenger-info"><span>From Country</span><strong>{{ selectedTicket.fromCountry || '-' }}</strong></div>
+          <div class="passenger-info"><span>From Airport</span><strong>{{ selectedTicket.fromAirport || '-' }}</strong></div>
+          <div class="passenger-info"><span>To Country</span><strong>{{ selectedTicket.toCountry || '-' }}</strong></div>
+          <div class="passenger-info"><span>To Airport</span><strong>{{ selectedTicket.toAirport || '-' }}</strong></div>
+          <div class="passenger-info"><span>PNR</span><strong>{{ selectedTicket.pnrNo || '-' }}</strong></div>
+          <div class="passenger-info"><span>Branch</span><strong>{{ selectedTicket.branchName || '-' }}</strong></div>
+        </div>
+      </article>
+
+
+      <!-- SECTION 02 — SCHEDULE -->
+      <article class="individual-ticket-card">
+        <div class="individual-ticket-header">
+          <div class="individual-ticket-title">
+            <div class="ticket-number">
+              <span>SECTION</span>
+              <strong>02</strong>
+            </div>
+            <div class="individual-passenger-name">
+              <span>SCHEDULE</span>
+              <h3>Dates &amp; Timings</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="passenger-details-grid">
+          <div class="passenger-info"><span>Departure</span><strong>{{ selectedTicket.departureDateTime | date:'dd MMM yyyy, HH:mm' }}</strong></div>
+          <div class="passenger-info"><span>Arrival</span><strong>{{ selectedTicket.arrivalDateTime | date:'dd MMM yyyy, HH:mm' }}</strong></div>
+          <div class="passenger-info"><span>Valid From</span><strong>{{ selectedTicket.validFrom | date:'dd MMM yyyy, HH:mm' }}</strong></div>
+          <div class="passenger-info"><span>Valid Until</span><strong>{{ selectedTicket.validUntil | date:'dd MMM yyyy, HH:mm s' }}</strong></div>
+        </div>
+      </article>
+
+
+      <!-- SECTION 03 — INVENTORY & PRICING -->
+      <article class="individual-ticket-card">
+        <div class="individual-ticket-header">
+          <div class="individual-ticket-title">
+            <div class="ticket-number">
+              <span>SECTION</span>
+              <strong>03</strong>
+            </div>
+            <div class="individual-passenger-name">
+              <span>INVENTORY</span>
+              <h3>Quantity &amp; Pricing</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="passenger-details-grid">
+          <div class="passenger-info"><span>Total Quantity</span><strong>{{ selectedTicket.quantity || 0 }}</strong></div>
+          <div class="passenger-info"><span>Shared Quantity</span><strong>{{ selectedTicket.sharedQuantity || 0 }}</strong></div>
+          <div class="passenger-info"><span>Sold Quantity</span><strong>{{ selectedTicket.soldQuantity || 0 }}</strong></div>
+          <div class="passenger-info"><span>Remaining Inventory</span><strong>{{ selectedTicket.remainingInventory || 0 }}</strong></div>
+          <div class="passenger-info"><span>Available To Customers</span><strong>{{ selectedTicket.availableToCustomer || 0 }}</strong></div>
+          <div class="passenger-info"><span>Available To Share</span><strong>{{ selectedTicket.availableToShare || 0 }}</strong></div>
+          <div class="passenger-info"><span>Branch</span><strong>{{ selectedTicket.branchName || '-' }}</strong></div>
+          <div class="passenger-info"><span>Ticket Type</span><strong>{{ selectedTicket.ticketTypeName || '-' }}</strong></div>
+        </div>
+
+        <div class="individual-ticket-fare">
+          <div>
+            <span>PURCHASE PRICE</span>
+            <strong>{{ selectedTicket.purchasePrice | number:'1.2-2' }}</strong>
+          </div>
+          <div class="fare-total">
+            <span>SELLING PRICE</span>
+            <strong>{{ selectedTicket.sellingPrice | number:'1.2-2' }}</strong>
+          </div>
+        </div>
+      </article>
+
+
+      <!-- SECTION 04 — BAGGAGE -->
+      <article class="individual-ticket-card">
+        <div class="individual-ticket-header">
+          <div class="individual-ticket-title">
+            <div class="ticket-number">
+              <span>SECTION</span>
+              <strong>04</strong>
+            </div>
+            <div class="individual-passenger-name">
+              <span>BAGGAGE</span>
+              <h3>Allowance</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="passenger-details-grid three-col">
+          <div class="passenger-info"><span>Checked Baggage</span><strong>{{ selectedTicket.checkedBaggageKg ?? 0 }} KG</strong></div>
+          <div class="passenger-info"><span>Hand Baggage</span><strong>{{ selectedTicket.handBaggageKg ?? 0 }} KG</strong></div>
+          <div class="passenger-info"><span>Personal Item</span><strong>{{ selectedTicket.personalItemKg ?? 0 }} KG</strong></div>
+        </div>
+      </article>
+
+
+      <!-- SECTION 05 — FLIGHT STOPS -->
+      @if (selectedTicket.stops && selectedTicket.stops.length > 0) {
+
+      <article class="individual-ticket-card">
+        <div class="individual-ticket-header">
+          <div class="individual-ticket-title">
+            <div class="ticket-number">
+              <span>SECTION</span>
+              <strong>05</strong>
+            </div>
+            <div class="individual-passenger-name">
+              <span>FLIGHT STOPS</span>
+              <h3>
+                {{ selectedTicket.stops.length }}
+                Stop{{ selectedTicket.stops.length === 1 ? '' : 's' }}
+              </h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="ticket-event-row">
+          @for (stop of selectedTicket.stops; track stop.stopNumber) {
+          <div class="event-detail confirmed-event">
+            <div class="event-icon">
+              <i class="fa fa-map-marker-alt"></i>
+            </div>
+            <div>
+              <span>Stop {{ stop.stopNumber }} · {{ stop.stopAirport }}</span>
+              <strong>Arr: {{ stop.arrivalDateTime | date:'dd MMM, hh:mm a' }}</strong>
+              <small>Dep: {{ stop.departureDateTime | date:'dd MMM, hh:mm a' }}</small>
+            </div>
+          </div>
+          }
+        </div>
+      </article>
+
+      }
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <div class="ticket-footer">
+      <div class="footer-note">
+        <div class="footer-note-icon">
+          <i class="fa fa-shield-alt"></i>
+        </div>
+        <div>
+          <strong>Inventory Information</strong>
+          <span>
+            This ticket inventory belongs to
+            {{ selectedTicket.branchName || '...' }}.
+            Prices and availability are subject to change.
+          </span>
+        </div>
+      </div>
+
+      <div class="ticket-footer-actions">
+        <button type="button" class="ticket-close-btn" (click)="closeViewModal()">
+          <i class="fa fa-times"></i>
+          Close
+        </button>
+      </div>
+    </div>
+
+  </div>
 
 </div>
 

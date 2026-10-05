@@ -117,45 +117,42 @@ export class SharedTickets implements OnInit, OnDestroy {
   // INIT
   // ============================================================
 
- ngOnInit(): void {
+  ngOnInit(): void {
 
-  // Tickets are PUBLIC
-  this.loadTickets();
+    // Tickets are PUBLIC
+    this.loadTickets();
 
 
-  // Passenger types are only required when booking
-  if (this.authService.isLoggedIn()) {
-    this.loadPassengerTypes();
+    // Passenger types are only required when booking
+    if (this.authService.isLoggedIn()) {
+      this.loadPassengerTypes();
+    }
+
+
+    // Start SignalR
+    this.ticketRealtimeService.startConnection();
+
+
+    // Existing ticket sharing / price updates
+    this.ticketRealtimeService.ticketUpdated$
+      .subscribe((event) => {
+
+        this.updateTicket(event);
+
+      });
+
+
+    // NEW - Booking / Hold / Cancel / Expiry
+    this.ticketRealtimeService.ticketInventoryUpdated$
+      .subscribe((event) => {
+
+        this.updateTicketInventory(event);
+
+      });
+
   }
 
 
-  // Start SignalR
-  this.ticketRealtimeService.startConnection();
-
-
-  // Existing ticket sharing / price updates
-  this.ticketRealtimeService.ticketUpdated$
-    .subscribe((event) => {
-
-      this.updateTicket(event);
-
-    });
-
-
-  // NEW - Booking / Hold / Cancel / Expiry
-  this.ticketRealtimeService.ticketInventoryUpdated$
-    .subscribe((event) => {
-
-      this.updateTicketInventory(event);
-
-    });
-
-}
-
-
-  // ============================================================
-  // LOAD TICKETS
-  // ============================================================
 
   loadTickets(): void {
 
@@ -229,10 +226,6 @@ export class SharedTickets implements OnInit, OnDestroy {
   }
 
 
-  // ============================================================
-  // FILTERS
-  // ============================================================
-
   applyFilters(): void {
 
     this.pageNumber = 1;
@@ -261,9 +254,6 @@ export class SharedTickets implements OnInit, OnDestroy {
   }
 
 
-  // ============================================================
-  // PAGINATION
-  // ============================================================
 
   onPageChange(event: any): void {
 
@@ -276,9 +266,6 @@ export class SharedTickets implements OnInit, OnDestroy {
   }
 
 
-  // ============================================================
-  // SIGNALR
-  // ============================================================
 
   private updateTicket(
     event: TicketUpdatedEvent
@@ -370,41 +357,175 @@ export class SharedTickets implements OnInit, OnDestroy {
   }
 
   private updateTicketInventory(
-  event: TicketInventoryUpdatedEvent
-): void {
+    event: TicketInventoryUpdatedEvent
+  ): void {
 
-  this.ngZone.run(() => {
+    this.ngZone.run(() => {
 
-    console.log(
-      '🔔 INVENTORY UPDATED:',
-      event.purchaseInvoiceItemId
+      console.log(
+        '🔔 INVENTORY UPDATED:',
+        event.purchaseInvoiceItemId
+      );
+
+      this.loadTickets();
+
+    });
+
+  }
+
+
+
+  currentBookingStep = 1;
+
+  private readonly bookingDraftKey = 'shah_booking_draft';
+
+  private saveBookingDraft(): void {
+    sessionStorage.setItem(
+      this.bookingDraftKey,
+      JSON.stringify({
+        currentStep: this.currentBookingStep,
+        passengers: this.bookingPassengers
+      })
     );
+  }
+  private restoreBookingDraft(): void {
 
-    this.loadTickets();
+    const draft = sessionStorage.getItem(this.bookingDraftKey);
 
-  });
+    if (!draft) {
+      return;
+    }
 
-}
+    try {
+
+      const parsed = JSON.parse(draft);
+
+      if (Array.isArray(parsed.passengers)) {
+        this.bookingPassengers = parsed.passengers;
+      }
+
+      if (parsed.currentStep) {
+        this.currentBookingStep = parsed.currentStep;
+      }
+
+    } catch (error) {
+
+      console.error(
+        'Unable to restore booking draft:',
+        error
+      );
+
+      sessionStorage.removeItem(this.bookingDraftKey);
+    }
+  }
+
+  nextBookingStep(): void {
+
+    if (!this.validateCurrentStep()) {
+      return;
+    }
+
+    this.currentBookingStep++;
+
+    this.saveBookingDraft();
+  }
+  previousBookingStep(): void {
+
+    if (this.currentBookingStep > 1) {
+      this.currentBookingStep--;
+    }
+
+    this.saveBookingDraft();
+  }
+
+  private validateCurrentStep(): boolean {
+
+    if (this.currentBookingStep === 1) {
+
+      for (const passenger of this.bookingPassengers) {
+
+        if (!passenger.passengerTypeId) {
+          alert('Please select passenger type.');
+          return false;
+        }
+
+        if (!passenger.firstName?.trim()) {
+          alert('Please enter first name.');
+          return false;
+        }
+
+        if (!passenger.lastName?.trim()) {
+          alert('Please enter last name.');
+          return false;
+        }
+      }
+
+    }
 
 
-  // ============================================================
-  // GUEST TICKET DETAILS
-  // ============================================================
+    if (this.currentBookingStep === 2) {
 
-seeTicketDetails(ticket: SharedTicketModel): void {
+      for (const passenger of this.bookingPassengers) {
 
-  const returnUrl =
-    `/SharedTickets?ticketId=${ticket.purchaseInvoiceItemId}`;
+        if (!passenger.passportNumber?.trim()) {
+          alert('Please enter passport number.');
+          return false;
+        }
 
-  this.router.navigate(
-    ['/login'],
-    {
-      queryParams: {
-        returnUrl
+        if (!passenger.passportIssueDate) {
+          alert('Please select passport issue date.');
+          return false;
+        }
+
+        if (!passenger.passportExpireDate) {
+          alert('Please select passport expiry date.');
+          return false;
+        }
+
+        if (!passenger.dateOfBirth) {
+          alert('Please select date of birth.');
+          return false;
+        }
+
+        if (!passenger.gender) {
+          alert('Please select gender.');
+          return false;
+        }
+
+        if (!passenger.nationality?.trim()) {
+          alert('Please enter nationality.');
+          return false;
+        }
+
+        if (!passenger.contactNumber?.trim()) {
+          alert('Please enter contact number.');
+          return false;
+        }
+
+        if (!passenger.email?.trim()) {
+          alert('Please enter email.');
+          return false;
+        }
       }
     }
-  );
-}
+
+    return true;
+  }
+
+  seeTicketDetails(ticket: SharedTicketModel): void {
+
+    const returnUrl =
+      `/SharedTickets?ticketId=${ticket.purchaseInvoiceItemId}`;
+
+    this.router.navigate(
+      ['/login'],
+      {
+        queryParams: {
+          returnUrl
+        }
+      }
+    );
+  }
   openBookingForm(
     ticket: SharedTicketModel
   ): void {
@@ -421,11 +542,15 @@ seeTicketDetails(ticket: SharedTicketModel): void {
       {
         passengerTypeId: 0,
 
-        fullName: '',
+        firstName: '',
+        middleName: '',
+        lastName: '',
 
         passportNumber: '',
+        passportIssueDate: null,
+        passportExpireDate: null,
 
-        dateOfBirth: '',
+        dateOfBirth: null,
 
         gender: '',
 
@@ -447,9 +572,6 @@ seeTicketDetails(ticket: SharedTicketModel): void {
   }
 
 
-  // ============================================================
-  // ADD PASSENGER
-  // ============================================================
 
   addPassenger(): void {
 
@@ -457,11 +579,15 @@ seeTicketDetails(ticket: SharedTicketModel): void {
 
       passengerTypeId: 0,
 
-      fullName: '',
+      firstName: '',
+      middleName: '',
+      lastName: '',
 
       passportNumber: '',
+      passportIssueDate: null,
+      passportExpireDate: null,
 
-      dateOfBirth: '',
+      dateOfBirth: null,
 
       gender: '',
 
@@ -476,9 +602,6 @@ seeTicketDetails(ticket: SharedTicketModel): void {
   }
 
 
-  // ============================================================
-  // REMOVE PASSENGER
-  // ============================================================
 
   removePassenger(
     index: number
@@ -501,9 +624,6 @@ seeTicketDetails(ticket: SharedTicketModel): void {
   }
 
 
-  // ============================================================
-  // CREATE BOOKING
-  // ============================================================
 
   createBooking(): void {
 
@@ -546,14 +666,29 @@ seeTicketDetails(ticket: SharedTicketModel): void {
             passengerTypeId:
               Number(p.passengerTypeId),
 
-            fullName:
-              p.fullName.trim(),
+            firstName:
+              p.firstName.trim(),
+
+            middleName:
+              p.middleName.trim(),
+
+            lastName:
+              p.lastName.trim(),
 
             passportNumber:
               p.passportNumber.trim(),
 
-            dateOfBirth:
-              p.dateOfBirth,
+            passportIssueDate: p.passportIssueDate
+              ? new Date(p.passportIssueDate)
+              : null,
+
+            passportExpireDate: p.passportExpireDate
+              ? new Date(p.passportExpireDate)
+              : null,
+
+            dateOfBirth: p.dateOfBirth
+              ? new Date(`${p.dateOfBirth}T00:00:00`)
+              : null,
 
             gender:
               p.gender,
@@ -590,6 +725,11 @@ seeTicketDetails(ticket: SharedTicketModel): void {
             this.bookingResult =
               response.data;
 
+            // Booking successfully submitted
+            sessionStorage.removeItem(
+              this.bookingDraftKey
+            );
+
             // Refresh availability
             this.loadTickets();
 
@@ -614,9 +754,6 @@ seeTicketDetails(ticket: SharedTicketModel): void {
   }
 
 
-  // ============================================================
-  // VALIDATE PASSENGERS
-  // ============================================================
 
   validatePassengers(): boolean {
 
@@ -644,7 +781,15 @@ seeTicketDetails(ticket: SharedTicketModel): void {
 
 
       if (
-        !passenger.fullName?.trim()
+        !passenger.firstName?.trim()
+      ) {
+
+        return false;
+
+      }
+
+      if (
+        !passenger.lastName?.trim()
       ) {
 
         return false;
@@ -679,9 +824,6 @@ seeTicketDetails(ticket: SharedTicketModel): void {
       }
 
 
-      // Nationality optional
-
-
       if (
         !passenger.contactNumber?.trim()
       ) {
@@ -689,9 +831,6 @@ seeTicketDetails(ticket: SharedTicketModel): void {
         return false;
 
       }
-
-
-      // Email optional
 
     }
 
@@ -701,9 +840,6 @@ seeTicketDetails(ticket: SharedTicketModel): void {
   }
 
 
-  // ============================================================
-  // PASSENGER TYPE NAME
-  // ============================================================
 
   getPassengerTypeName(
     passengerTypeId: number
@@ -721,9 +857,6 @@ seeTicketDetails(ticket: SharedTicketModel): void {
   }
 
 
-  // ============================================================
-  // LOAD PASSENGER TYPES
-  // ============================================================
 
   loadPassengerTypes(): void {
 
@@ -732,6 +865,8 @@ seeTicketDetails(ticket: SharedTicketModel): void {
       .subscribe({
 
         next: (response) => {
+
+          console.log('Passenger Types Response:', response);
 
           if (
             response?.status &&
@@ -755,28 +890,31 @@ seeTicketDetails(ticket: SharedTicketModel): void {
                 })
               );
 
+            console.log(
+              'Passenger Types:',
+              this.passengerTypes
+            );
+
+            this.cdr.detectChanges();
           }
 
         },
 
-
         error: (error) => {
 
           console.error(
-            'Failed to load passenger types',
+            'Failed to load passenger types:',
             error
           );
 
+          this.passengerTypes = [];
         }
 
       });
-
   }
 
 
-  // ============================================================
-  // CLOSE BOOKING
-  // ============================================================
+
 
   closeBookingForm(): void {
 
@@ -791,12 +929,6 @@ seeTicketDetails(ticket: SharedTicketModel): void {
   }
 
 
-  
-
-
-  // ============================================================
-  // DESTROY
-  // ============================================================
 
   ngOnDestroy(): void {
 

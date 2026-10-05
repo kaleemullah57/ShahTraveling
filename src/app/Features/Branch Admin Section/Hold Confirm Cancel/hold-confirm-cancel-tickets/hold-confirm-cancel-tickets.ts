@@ -224,13 +224,13 @@ export class PendingHoldConfirmBookingsComponent implements OnInit {
 
   bookingStatuses = [
     { value: 1, label: 'Held' },
-    { value: 2, label: 'Approved' },
-    { value: 3, label: 'Rejected' },
+    { value: 2, label: 'Confirm' },
+    // { value: 3, label: 'Rejected' },
     { value: 4, label: 'Cancelled By Customer' },
     { value: 5, label: 'Cancelled By Admin' },
     { value: 6, label: 'Expired' },
-    { value: 7, label: 'Ticket Issued' },
-    { value: 8, label: 'Cancelled' }
+    // { value: 7, label: 'Ticket Issued' },
+    // { value: 8, label: 'Cancelled' }
   ];
 
 

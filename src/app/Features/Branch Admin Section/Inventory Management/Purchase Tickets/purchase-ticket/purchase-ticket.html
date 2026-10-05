@@ -483,7 +483,7 @@
         </span>
 
         <h3>
-          {{ selectedInvoice.invoiceNumber }}
+          {{ selectedInvoice.invoiceNumber }} || <span>PNR :: </span> {{ selectedInvoice.pnrNo }}
         </h3>
 
       </div>
@@ -532,11 +532,11 @@
           <span>INVOICE</span>
 
           <strong>
-            {{ selectedInvoice.invoiceNumber }}
+            {{ selectedInvoice.invoiceNumber }} <span>PNR :: </span> {{ selectedInvoice.pnrNo}}
           </strong>
 
           <small>
-            {{ selectedInvoice.invoiceDate | date:'dd MMM yyyy' }}
+            {{ selectedInvoice.invoiceDate | date:'dd MMM yyyy HH:mm:ss.SSS' }}
           </small>
 
         </div>
@@ -664,8 +664,7 @@
               </strong>
 
               <small>
-                {{ selectedInvoice.departureDateTime
-                | date:'dd MMM yyyy, hh:mm a' }}
+                {{ selectedInvoice.departureDateTime | date:'dd MMM yyyy, HH:mm' }}
               </small>
 
             </div>
@@ -689,8 +688,7 @@
               </strong>
 
               <small>
-                {{ selectedInvoice.arrivalDateTime
-                | date:'dd MMM yyyy, hh:mm a' }}
+                {{ selectedInvoice.arrivalDateTime | date:'dd MMM yyyy, HH:mm' }}
               </small>
 
             </div>
@@ -699,72 +697,74 @@
 
         </div>
 
-         @if (selectedInvoice.stops && selectedInvoice.stops.length > 0) {
+        @if (selectedInvoice.stops && selectedInvoice.stops.length > 0) {
 
-    <div class="flight-stops">
+        <div class="flight-stops">
 
-      <div class="stops-title">
+          <div class="stops-title">
 
-        <i class="fa fa-map-marker-alt"></i>
+            <i class="fa fa-map-marker-alt"></i>
 
-        <span>
-          Flight Stops
-        </span>
+            <span>
+              Flight Stops
+            </span>
 
-      </div>
-
-
-      <div class="stops-list">
-
-        @for (
-          stop of selectedInvoice.stops;
-          track stop.stopNumber
-        ) {
-
-          <div class="stop-item">
-
-            <div class="stop-number">
-              {{ stop.stopNumber }}
-            </div>
+          </div>
 
 
-            <div class="stop-details">
+          <div class="stops-list">
 
-              <strong>
-                {{ stop.stopAirport }}
-              </strong>
+            @for (
+            stop of selectedInvoice.stops;
+            track stop.stopNumber
+            ) {
+
+            <div class="stop-item">
+
+              <div class="stop-number">
+                {{ stop.stopNumber }}
+              </div>
 
 
-              <div class="stop-times">
+              <div class="stop-details">
 
-                <div>
+                <strong>
+                  {{ stop.stopAirport }}
+                </strong>
 
-                  <span>
-                    Arrival
-                  </span>
 
-                  <strong>
-                    {{
+                <div class="stop-times">
+
+                  <div>
+
+                    <span>
+                      Arrival
+                    </span>
+
+                    <strong>
+                      {{
                       stop.arrivalDateTime
                       | date:'dd MMM yyyy, hh:mm a'
-                    }}
-                  </strong>
+                      }}
+                    </strong>
 
-                </div>
+                  </div>
 
 
-                <div>
+                  <div>
 
-                  <span>
-                    Departure
-                  </span>
+                    <span>
+                      Departure
+                    </span>
 
-                  <strong>
-                    {{
+                    <strong>
+                      {{
                       stop.departureDateTime
                       | date:'dd MMM yyyy, hh:mm a'
-                    }}
-                  </strong>
+                      }}
+                    </strong>
+
+                  </div>
 
                 </div>
 
@@ -772,15 +772,13 @@
 
             </div>
 
+            }
+
           </div>
 
+        </div>
+
         }
-
-      </div>
-
-    </div>
-
-  }
 
 
 
@@ -824,7 +822,7 @@
 
       </div>
 
-      
+
 
 
       <!-- TICKET INFORMATION -->
@@ -974,8 +972,7 @@
           <strong>
             {{
             selectedInvoice.validFrom
-            ? (selectedInvoice.validFrom
-            | date:'dd MMM yyyy, hh:mm a')
+            ? (selectedInvoice.validFrom | date:'dd MMM yyyy, HH:mm')
             : 'N/A'
             }}
           </strong>
@@ -988,7 +985,11 @@
           <span>Valid Until</span>
 
           <strong>
-            {{ selectedInvoice.validUntil }}
+            {{
+            selectedInvoice.validUntil
+            ? (selectedInvoice.validUntil | date:'dd MMM yyyy, HH:mm:ss')
+            : 'N/A'
+            }}
           </strong>
 
         </div>
@@ -1067,7 +1068,7 @@
 
 
                 <td>
-                  {{ payment.paymentDate | date:'dd MMM yyyy, hh:mm a' }}
+                  {{ payment.paymentDate | date:'dd MMM yyyy, HH:mm' }}
                 </td>
 
 

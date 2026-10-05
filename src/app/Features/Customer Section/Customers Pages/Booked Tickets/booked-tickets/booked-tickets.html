@@ -1,141 +1,140 @@
 <div class="page-container">
 
-<!-- ========================================================= -->
-<!-- BOOKED TICKETS HEADER + NOTIFICATION -->
-<!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- BOOKED TICKETS HEADER + NOTIFICATION -->
+  <!-- ========================================================= -->
 
-<div class="page-header">
+  <div class="page-header">
 
-  <div>
-    <h2>Booked Tickets</h2>
+    <div>
+      <h2>Booked Tickets</h2>
 
-    <p>
-      View your booked, on-hold and cancelled tickets
-    </p>
-  </div>
-
-
-  <!-- NOTIFICATION -->
-  <div class="notification-wrapper">
-
-    <button
-      type="button"
-      class="notification-button"
-      (click)="toggleNotifications()"
-    >
-      <i class="fa fa-bell"></i>
-
-      <span
-        class="notification-badge"
-        *ngIf="notificationCount > 0"
-      >
-        {{ notificationCount }}
-      </span>
-    </button>
+      <p>
+        View your booked, on-hold and cancelled tickets
+      </p>
+    </div>
 
 
-    <!-- NOTIFICATION PANEL -->
-    <div
-      class="notification-panel"
-      *ngIf="showNotifications"
-    >
+    <!-- ======================================================= -->
+    <!-- NOTIFICATION -->
+    <!-- ======================================================= -->
 
-      <div class="notification-header">
+    <div class="notification-wrapper">
 
-        <div>
-          <h3>Notifications</h3>
+      <button type="button" class="notification-button" (click)="toggleNotifications()">
 
-          <span>
-            {{ notificationCount }} unread
-          </span>
-        </div>
+        <i class="fa fa-bell"></i>
 
-        <button
-          type="button"
-          class="notification-close"
-          (click)="closeNotifications()"
-        >
-          <i class="fa fa-times"></i>
-        </button>
+        <span class="notification-badge" *ngIf="notificationCount > 0">
 
-      </div>
+          {{ notificationCount }}
+
+        </span>
+
+      </button>
 
 
-      <!-- EMPTY -->
-      <div
-        class="notification-empty"
-        *ngIf="notifications.length === 0"
-      >
-        <i class="fa fa-bell-slash"></i>
+      <!-- ===================================================== -->
+      <!-- NOTIFICATION PANEL -->
+      <!-- ===================================================== -->
 
-        <p>No new notifications</p>
-      </div>
+      <div class="notification-panel" *ngIf="showNotifications">
 
+        <div class="notification-header">
 
-      <!-- NOTIFICATION LIST -->
-      <div
-        class="notification-list"
-        *ngIf="notifications.length > 0"
-      >
+          <div>
 
-        <div
-          class="notification-item"
-          *ngFor="let notification of notifications"
-        >
+            <h3>
+              Notifications
+            </h3>
 
-          <div class="notification-icon">
-
-            <i
-              class="fa"
-              [ngClass]="
-                notification.notificationType === 'TicketConfirmed'
-                  ? 'fa-check-circle'
-                  : 'fa-bell'
-              "
-            ></i>
+            <span>
+              {{ notificationCount }} unread
+            </span>
 
           </div>
 
 
-          <div class="notification-content">
+          <button type="button" class="notification-close" (click)="closeNotifications()">
 
-            <h4>
-              {{ notification.title }}
-            </h4>
+            <i class="fa fa-times"></i>
 
-            <p>
-              {{ notification.message }}
-            </p>
+          </button>
 
-            <small>
-              {{ notification.createdDate | date:'dd MMM yyyy, hh:mm a' }}
-            </small>
+        </div>
 
 
-            <div class="notification-actions">
+        <!-- EMPTY -->
 
-              <button
-                type="button"
-                class="notification-view-button"
-                *ngIf="
-                  notification.bookingId &&
+        <div class="notification-empty" *ngIf="notifications.length === 0">
+
+          <i class="fa fa-bell-slash"></i>
+
+          <p>
+            No new notifications
+          </p>
+
+        </div>
+
+
+        <!-- NOTIFICATION LIST -->
+
+        <div class="notification-list" *ngIf="notifications.length > 0">
+
+          <div class="notification-item" *ngFor="let notification of notifications">
+
+
+            <div class="notification-icon">
+
+              <i class="fa" [ngClass]="
                   notification.notificationType === 'TicketConfirmed'
-                "
-                (click)="openNotification(notification)"
-              >
-                <i class="fa fa-eye"></i>
-                View Booking
-              </button>
+                    ? 'fa-check-circle'
+                    : 'fa-bell'
+                ">
+
+              </i>
+
+            </div>
 
 
-              <button
-                type="button"
-                class="notification-read-button"
-                (click)="markNotificationAsRead(notification)"
-              >
-                <i class="fa fa-check"></i>
-                Close
-              </button>
+            <div class="notification-content">
+
+              <h4>
+                {{ notification.title }}
+              </h4>
+
+              <p>
+                {{ notification.message }}
+              </p>
+
+              <small>
+                {{ notification.createdDate | date:'dd MMM yyyy, HH:mm:ss' }}
+              </small>
+
+
+              <div class="notification-actions">
+
+                <button type="button" class="notification-view-button" *ngIf="
+                    notification.bookingId &&
+                    notification.notificationType === 'TicketConfirmed'
+                  " (click)="openNotification(notification)">
+
+                  <i class="fa fa-eye"></i>
+
+                  View Booking
+
+                </button>
+
+
+                <button type="button" class="notification-read-button" (click)="markNotificationAsRead(notification)">
+
+                  <i class="fa fa-check"></i>
+
+                  Close
+
+                </button>
+
+              </div>
 
             </div>
 
@@ -149,61 +148,60 @@
 
   </div>
 
-</div>
+
+  <!-- ========================================================= -->
+  <!-- BOOKED TICKETS TABLE -->
+  <!-- ========================================================= -->
+
+  <div class="table-card">
+
+    <app-data-table [columns]="columns" [data]="bookings" [actions]="actions" [loading]="isLoading"
+      [pageNumber]="pageNumber" [pageSize]="pageSize" [totalRecords]="totalCount" (searchChange)="onSearch($event)"
+      (pageChange)="onPageChange($event)" (pageSizeChange)="onPageSizeChange($event)"
+      (actionClick)="onTableAction($event)">
+    </app-data-table>
+
+  </div>
 
 
-<!-- ========================================================= -->
-<!-- TABLE -->
-<!-- ========================================================= -->
+  <!-- ========================================================= -->
+  <!-- PROFESSIONAL BOOKING / E-TICKET VIEW -->
+  <!-- ========================================================= -->
 
-<div class="table-card">
-
-  <app-data-table
-    [columns]="columns"
-    [data]="bookings"
-    [actions]="actions"
-    [loading]="isLoading"
-    [pageNumber]="pageNumber"
-    [pageSize]="pageSize"
-    [totalRecords]="totalCount"
-    (searchChange)="onSearch($event)"
-    (pageChange)="onPageChange($event)"
-    (pageSizeChange)="onPageSizeChange($event)"
-    (actionClick)="onTableAction($event)">
-  </app-data-table>
-
-</div>
-
-
-  <!-- ===================================================== -->
-  <!-- BOOKING DETAILS MODAL -->
-  <!-- ===================================================== -->
 
   @if (showDetails && selectedBooking) {
 
-  <div class="booking-modal-backdrop" (click)="closeDetails()">
+  <div class="ticket-modal-backdrop" (click)="closeDetails()">
 
-    <div class="booking-modal" (click)="$event.stopPropagation()">
+    <div class="ticket-modal" (click)="$event.stopPropagation()">
 
+      <!-- ===================================================== -->
+      <!-- BOOKING HEADER -->
+      <!-- ===================================================== -->
 
-      <!-- MODAL HEADER -->
+      <div class="ticket-top">
 
-      <div class="booking-modal-header">
+        <div class="ticket-brand">
 
-        <div>
+          <div class="brand-icon">
+            <i class="fa fa-plane"></i>
+          </div>
 
-          <span class="modal-label">
-            BOOKING DETAILS
-          </span>
+          <div class="brand-content">
 
-          <h2>
-            {{ selectedBooking.bookingReference }}
-          </h2>
+            <span class="brand-name">
+              SHAH TRAVELING AGENCY
+            </span>
+
+            <span class="brand-subtitle">
+              E-TICKET &nbsp;•&nbsp; BOOKING DETAILS
+            </span>
+
+          </div>
 
         </div>
 
-
-        <button type="button" class="close-btn" (click)="closeDetails()">
+        <button type="button" class="ticket-close" (click)="closeDetails()" title="Close">
 
           <i class="fa fa-times"></i>
 
@@ -212,98 +210,214 @@
       </div>
 
 
-      <!-- BOOKING SUMMARY -->
+      <!-- ===================================================== -->
+      <!-- MAIN BOOKING INFORMATION -->
+      <!-- ===================================================== -->
 
-      <div class="booking-summary">
+      <div class="ticket-identity">
 
-        <div class="summary-item">
+        <div class="identity-main">
 
-          <span>
-            Customer
+          <span class="identity-label">
+            BOOKING REFERENCE
+          </span>
+
+          <h1>
+            {{ selectedBooking.bookingReference }}
+          </h1>
+
+        </div>
+
+
+        <div class="identity-pnr">
+
+          <span class="identity-label">
+            PNR
           </span>
 
           <strong>
-            {{ selectedBooking.createdBy }}
+            {{ selectedBooking.pnrNo || 'N/A' }}
           </strong>
 
         </div>
 
 
-        <div class="summary-item">
+        <div class="identity-status">
 
-          <span>
-            Booking Date
+          <span class="identity-label">
+            BOOKING STATUS
           </span>
 
-          <strong>
-            {{ selectedBooking.createdDate | date:'dd MMM yyyy, hh:mm a' }}
-          </strong>
+          <span class="ticket-status" [class.confirmed]="
+              selectedBooking.bookingStatus === 'Confirmed'
+            " [class.held]="
+              selectedBooking.bookingStatus === 'Held'
+            " [class.cancelled]="
+              selectedBooking.bookingStatus === 'Cancelled' ||
+              selectedBooking.bookingStatus === 'CancelledByAdmin'
+            " [class.expired]="
+              selectedBooking.bookingStatus === 'Expired'
+            " [class.rejected]="
+              selectedBooking.bookingStatus === 'Rejected'
+            ">
 
-        </div>
-
-
-        <div class="summary-item">
-
-          <span>
-            Tickets
-          </span>
-
-          <strong>
-            {{ selectedBooking.bookedTickets }}
-          </strong>
-
-        </div>
-
-
-        <div class="summary-item">
-
-          <span>
-            Status
-          </span>
-
-          <strong class="status-badge" [class.status-expired]="selectedBooking.bookingStatus === 'Expired'"
-            [class.status-approved]="selectedBooking.bookingStatus === 'Approved'"
-            [class.status-held]="selectedBooking.bookingStatus === 'Held'"
-            [class.status-cancelled]="selectedBooking.bookingStatus === 'Cancelled'"
-            [class.status-rejected]="selectedBooking.bookingStatus === 'Rejected'">
+            <i class="fa" [ngClass]="
+                selectedBooking.bookingStatus === 'Confirmed'
+                  ? 'fa-check-circle'
+                  : selectedBooking.bookingStatus === 'Held'
+                    ? 'fa-clock'
+                    : selectedBooking.bookingStatus === 'Expired'
+                      ? 'fa-hourglass-end'
+                      : selectedBooking.bookingStatus === 'Rejected'
+                        ? 'fa-ban'
+                        : 'fa-times-circle'
+              ">
+            </i>
 
             {{ selectedBooking.bookingStatus }}
 
-          </strong>
+          </span>
 
         </div>
 
       </div>
 
 
-      <!-- PASSENGERS -->
+      <!-- ===================================================== -->
+      <!-- BOOKING SUMMARY -->
+      <!-- ===================================================== -->
 
-      <div class="passengers-section">
+      <div class="booking-summary-strip">
 
-        <div class="section-heading">
+        <div>
+
+          <i class="fa fa-users"></i>
 
           <div>
+
             <span>
               PASSENGERS
             </span>
 
-            <h3>
-              Passenger Details
-            </h3>
+            <strong>
+              {{ selectedBooking.passengerBookingDetails.length }}
+            </strong>
+
           </div>
 
-          <span class="passenger-count">
+        </div>
+
+
+        <div>
+
+          <i class="fa fa-ticket-alt"></i>
+
+          <div>
+
+            <span>
+              BOOKED TICKETS
+            </span>
+
+            <strong>
+              {{ selectedBooking.bookedTickets }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <i class="fa fa-calendar-alt"></i>
+
+          <div>
+
+            <span>
+              BOOKING DATE
+            </span>
+
+            <strong>
+              {{ selectedBooking.createdDate | date:'dd MMM yyyy' }}
+            </strong>
+
+            <small>
+              {{ selectedBooking.createdDate | date:'HH:mm:ss' }}
+            </small>
+
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <i class="fa fa-database"></i>
+
+          <div>
+
+            <span>
+              INVENTORY
+            </span>
+
+            <strong>
+              #{{ selectedBooking.purchaseInvoiceItemId }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ===================================================== -->
+      <!-- PASSENGER / TICKET CARDS -->
+      <!-- ===================================================== -->
+
+      <section class="passenger-tickets-section">
+
+        <div class="section-heading-modern">
+
+          <div class="section-title-group">
+
+            <div class="section-icon">
+              <i class="fa fa-ticket-alt"></i>
+            </div>
+
+            <div>
+
+              <span class="section-eyebrow">
+                PASSENGER TICKETS
+              </span>
+
+              <h3>
+                Individual Ticket Details
+              </h3>
+
+            </div>
+
+          </div>
+
+
+          <span class="passenger-total">
 
             {{ selectedBooking.passengerBookingDetails.length }}
 
-            Passenger(s)
+            Ticket{{
+            selectedBooking.passengerBookingDetails.length === 1
+            ? ''
+            : 's'
+            }}
 
           </span>
 
         </div>
 
 
-        <!-- PASSENGER CARDS -->
+        <!-- ================================================= -->
+        <!-- EACH PASSENGER = ONE SEPARATE TICKET CARD -->
+        <!-- ================================================= -->
 
         @for (
         passenger of selectedBooking.passengerBookingDetails;
@@ -311,40 +425,650 @@
         let i = $index
         ) {
 
-        <div class="passenger-card">
+        <article class="individual-ticket-card" [id]="'ticket-' + i">
 
-          <!-- Passenger Header -->
+          <!-- ============================================= -->
+          <!-- CARD HEADER -->
+          <!-- ============================================= -->
 
-          <div class="passenger-card-header">
+          <div class="individual-ticket-header">
 
-            <div class="passenger-number">
+            <div class="individual-ticket-title">
 
-              <span>
-                {{ i + 1 }}
-              </span>
+              <div class="ticket-number">
 
-              <div>
+                <span>
+                  TICKET
+                </span>
 
-                <h4>
+                <strong>
+                  {{ i + 1 }}
+                </strong>
+
+              </div>
+
+
+              <div class="individual-passenger-name">
+
+                <span>
+                  {{ passenger.passengerTypeName || 'PASSENGER' }}
+                </span>
+
+                <h3>
                   {{ passenger.passengerName }}
-                </h4>
-
-                <small>
-                  {{ passenger.passengerTypeName }}
-                </small>
+                </h3>
 
               </div>
 
             </div>
 
 
-            <div class="passenger-price">
+            <span class="passenger-status" [class.confirmed]="
+                  passenger.passengerBookingStatus === 'Confirmed' ||
+                  passenger.passengerBookingStatus === 'Approved'
+                " [class.cancelled]="
+                  passenger.passengerBookingStatus === 'Cancelled' ||
+                  passenger.passengerBookingStatus === 'CancelledByAdmin'
+                " [class.expired]="
+                  passenger.passengerBookingStatus === 'Expired'
+                " [class.rejected]="
+                  passenger.passengerBookingStatus === 'Rejected'
+                " [class.held]="
+                  passenger.passengerBookingStatus === 'Held'
+                ">
+
+              <i class="fa" [ngClass]="
+                    passenger.passengerBookingStatus === 'Confirmed'
+                      ? 'fa-check-circle'
+                      : passenger.passengerBookingStatus === 'Held'
+                        ? 'fa-clock'
+                        : passenger.passengerBookingStatus === 'Expired'
+                          ? 'fa-hourglass-end'
+                          : passenger.passengerBookingStatus === 'Rejected'
+                            ? 'fa-ban'
+                            : 'fa-times-circle'
+                  ">
+              </i>
+
+              {{ passenger.passengerBookingStatus || 'Unknown' }}
+
+            </span>
+
+          </div>
+
+
+          <!-- ============================================= -->
+          <!-- TICKET INFORMATION -->
+          <!-- ============================================= -->
+
+          <div class="individual-ticket-info">
+
+            <div class="ticket-info-item">
 
               <span>
-                Price
+                BOOKING REFERENCE
               </span>
 
               <strong>
+                {{ selectedBooking.bookingReference }}
+              </strong>
+
+            </div>
+
+
+            <div class="ticket-info-item">
+
+              <span>
+                PNR
+              </span>
+
+              <strong>
+                {{ selectedBooking.pnrNo || '-' }}
+              </strong>
+
+            </div>
+
+
+            <div class="ticket-info-item">
+
+              <span>
+                PASSENGER ID
+              </span>
+
+              <strong>
+                #{{ passenger.bookingPassengerId }}
+              </strong>
+
+            </div>
+
+
+            <div class="ticket-info-item">
+
+              <span>
+                PASSENGER TYPE
+              </span>
+
+              <strong>
+                {{ passenger.passengerTypeName || '-' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <!-- ============================================= -->
+          <!-- PASSENGER FULL DETAILS -->
+          <!-- ============================================= -->
+
+          <div class="passenger-details-grid">
+
+            <div class="passenger-info">
+
+              <span>
+                Passenger Name
+              </span>
+
+              <strong>
+                {{ passenger.passengerName }}
+              </strong>
+
+            </div>
+
+
+            <div class="passenger-info">
+
+              <span>
+                Passport Number
+              </span>
+
+              <strong>
+                {{ passenger.passportNumber || '-' }}
+              </strong>
+
+            </div>
+
+
+            <div class="passenger-info">
+
+              <span>
+                Date of Birth
+              </span>
+
+              <strong>
+
+                {{
+                passenger.dateOfBirth
+                ? (passenger.dateOfBirth | date:'dd MMM yyyy')
+                : '-'
+                }}
+
+              </strong>
+
+            </div>
+
+
+            <div class="passenger-info">
+
+              <span>
+                Gender
+              </span>
+
+              <strong>
+                {{ passenger.gender || '-' }}
+              </strong>
+
+            </div>
+
+
+            <div class="passenger-info">
+
+              <span>
+                Nationality
+              </span>
+
+              <strong>
+                {{ passenger.nationality || '-' }}
+              </strong>
+
+            </div>
+
+
+            <div class="passenger-info">
+
+              <span>
+                Contact Number
+              </span>
+
+              <strong>
+                {{ passenger.contactNumber || '-' }}
+              </strong>
+
+            </div>
+
+
+            <div class="passenger-info">
+
+              <span>
+                Email Address
+              </span>
+
+              <strong>
+                {{ passenger.email || '-' }}
+              </strong>
+
+            </div>
+
+
+            <div class="passenger-info">
+
+              <span>
+                Passenger Created
+              </span>
+
+              <strong>
+                {{ passenger.createdDate | date:'dd MMM yyyy' }}
+              </strong>
+
+              <small>
+                {{ passenger.createdDate | date:'HH:mm:ss' }}
+              </small>
+
+            </div>
+
+          </div>
+
+
+
+
+          <!-- =========================================================
+     FLIGHT ROUTE
+     ========================================================= -->
+
+          <div class="flight-route-section">
+
+            <!-- AIRLINE -->
+
+            <div class="route-airline">
+
+              <span class="route-label">
+                AIRLINE
+              </span>
+
+              <strong>
+                {{ passenger.airlineName || '-' }}
+              </strong>
+
+            </div>
+
+
+            <!-- ROUTE -->
+
+            <div class="route-main">
+
+              <!-- FROM -->
+
+              <div class="route-airport">
+
+                <span class="route-label">
+                  FROM
+                </span>
+
+                <strong>
+                  {{ passenger.fromAirport || '-' }}
+                </strong>
+
+                <span class="route-datetime">
+                  {{
+                  passenger.departureDateTime
+                  ? (passenger.departureDateTime | date:'dd MMM yyyy, HH:mm')
+                  : '-'
+                  }}
+                </span>
+
+              </div>
+
+
+              <!-- FLIGHT ARROW -->
+
+              <div class="route-connector">
+
+                <div class="route-line"></div>
+
+                <i class="fa fa-plane"></i>
+
+                <div class="route-line"></div>
+
+              </div>
+
+
+              <!-- TO -->
+
+              <div class="route-airport route-airport-to">
+
+                <span class="route-label">
+                  TO
+                </span>
+
+                <strong>
+                  {{ passenger.toAirport || '-' }}
+                </strong>
+                <span class="route-datetime">
+                  {{
+                  passenger.arrivalDateTime
+                  ? (passenger.arrivalDateTime | date:'dd MMM yyyy, HH:mm')
+                  : '-'
+                  }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+
+
+          <!-- ============================================= -->
+          <!-- FLIGHT & BAGGAGE DETAILS -->
+          <!-- ============================================= -->
+
+          <div class="flight-baggage-details">
+
+            <!-- ROUTE / JOURNEY -->
+            <div class="travel-details-row">
+
+              <div class="travel-detail-item">
+
+                <span>
+                  <i class="fa fa-route"></i>
+                  ROUTE TYPE
+                </span>
+
+                <strong>
+                  {{ passenger.flightRouteType || '-' }}
+                </strong>
+
+              </div>
+
+
+              <div class="travel-detail-item">
+
+                <span>
+                  <i class="fa fa-exchange-alt"></i>
+                  JOURNEY TYPE
+                </span>
+
+                <strong>
+                  {{ passenger.flightJourneyType || '-' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- BAGGAGE -->
+            <div class="baggage-details-row">
+
+              <div class="baggage-detail-item">
+
+                <div class="baggage-icon">
+                  <i class="fa fa-suitcase"></i>
+                </div>
+
+                <div>
+
+                  <span>
+                    CHECKED BAGGAGE
+                  </span>
+
+                  <strong>
+                    {{ passenger.checkedBaggagekg ?? 0 }}
+                    KG
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div class="baggage-detail-item">
+
+                <div class="baggage-icon">
+                  <i class="fa fa-briefcase"></i>
+                </div>
+
+                <div>
+
+                  <span>
+                    HAND BAGGAGE
+                  </span>
+
+                  <strong>
+                    {{ passenger.handBaggagekg ?? 0 }}
+                    KG
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <div class="baggage-detail-item">
+
+                <div class="baggage-icon">
+                  <i class="fa fa-shopping-bag"></i>
+                </div>
+
+                <div>
+
+                  <span>
+                    PERSONAL ITEM
+                  </span>
+
+                  <strong>
+                    {{ passenger.personalItemkg ?? 0 }}
+                    KG
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+
+          <!-- =========================================================
+     COMPLETE FLIGHT STOPS / JOURNEY DETAILS
+     ========================================================= -->
+
+          <div class="flight-stops-section" *ngIf="passenger.stops?.length">
+
+            <!-- SECTION HEADER -->
+
+            <div class="flight-stops-header">
+
+              <div class="flight-stops-title">
+
+                <div class="flight-stops-icon">
+                  <i class="fa fa-route"></i>
+                </div>
+
+                <div>
+                  <span>JOURNEY ROUTE</span>
+
+                  <strong>
+                    {{ passenger.flightRouteType || 'Flight Route' }}
+                  </strong>
+                </div>
+
+              </div>
+
+              <div class="journey-type">
+                {{ passenger.flightJourneyType || '-' }}
+              </div>
+
+            </div>
+
+
+            <!-- =======================================================
+       ALL STOPS
+       ======================================================= -->
+
+            <div class="flight-stops-list">
+
+              <div class="flight-stop" *ngFor="let stop of passenger.stops; let i = index">
+
+                <!-- TIMELINE -->
+
+                <div class="stop-timeline">
+
+                  <div class="stop-dot">
+                    {{ stop.stopNumber }}
+                  </div>
+
+                  <div class="stop-line" *ngIf="i < passenger.stops.length - 1">
+                  </div>
+
+                </div>
+
+
+                <!-- STOP CONTENT -->
+
+                <div class="stop-content">
+
+                  <!-- AIRPORT -->
+
+                  <div class="stop-airport-block">
+
+                    <div class="stop-label">
+                      STOP {{ stop.stopNumber }}
+                    </div>
+
+                    <div class="stop-airport-name">
+
+                      <i class="fa fa-plane"></i>
+
+                      <strong>
+                        {{ stop.stopAirport || '-' }}
+                      </strong>
+
+                    </div>
+
+                  </div>
+
+
+                  <!-- ARRIVAL / DEPARTURE -->
+
+                  <div class="stop-schedule">
+
+                    <!-- ARRIVAL -->
+
+                    <div class="schedule-item">
+
+                      <span class="schedule-label">
+                        ARRIVAL
+                      </span>
+
+                      <strong>
+                        {{
+                        stop.arrivalDateTime
+                        ? (stop.arrivalDateTime | date:'dd MMM yyyy')
+                        : '-'
+                        }}
+                      </strong>
+
+                      <small>
+                        {{
+                        stop.arrivalDateTime
+                        ? (stop.arrivalDateTime | date:'HH:mm')
+                        : '-'
+                        }}
+                      </small>
+
+                    </div>
+
+
+                    <!-- DIVIDER -->
+
+                    <div class="schedule-divider">
+                      <i class="fa fa-arrow-right"></i>
+                    </div>
+
+
+                    <!-- DEPARTURE -->
+
+                    <div class="schedule-item">
+
+                      <span class="schedule-label">
+                        DEPARTURE
+                      </span>
+
+                      <strong>
+                        {{
+                        stop.departureDateTime
+                        ? (stop.departureDateTime | date:'dd MMM yyyy')
+                        : '-'
+                        }}
+                      </strong>
+
+                      <small>
+                        {{
+                        stop.departureDateTime
+                        ? (stop.departureDateTime | date:'HH:mm')
+                        : '-'
+                        }}
+                      </small>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- ============================================= -->
+          <!-- PASSENGER FARE -->
+          <!-- ============================================= -->
+
+          <div class="individual-ticket-fare">
+
+            <div>
+
+              <span>
+                UNIT PRICE
+              </span>
+
+              <strong>
+                PKR
+                {{ passenger.unitPrice | number:'1.2-2' }}
+              </strong>
+
+            </div>
+
+
+            <div class="fare-total">
+
+              <span>
+                TOTAL FARE
+              </span>
+
+              <strong>
+                PKR
                 {{ passenger.totalPrice | number:'1.2-2' }}
               </strong>
 
@@ -353,257 +1077,380 @@
           </div>
 
 
-          <!-- Passenger Information -->
+          <!-- ============================================= -->
+          <!-- STATUS HISTORY -->
+          <!-- ============================================= -->
 
-          <div class="passenger-details-grid">
+          <div class="ticket-event-row">
 
-            <div class="detail-item">
-              <span>Passport Number</span>
-              <strong>
-                {{ passenger.passportNumber || '-' }}
-              </strong>
+
+            @if (passenger.approvedDate) {
+
+            <div class="event-detail confirmed-event">
+
+              <div class="event-icon">
+                <i class="fa fa-check"></i>
+              </div>
+
+              <div>
+
+                <span>
+                  Confirmed
+                </span>
+
+                <strong>
+                  {{
+                  passenger.approvedDate
+                  | date:'dd MMM yyyy, HH:mm:ss'
+                  }}
+                </strong>
+
+                @if (passenger.approvedBy) {
+
+                <small>
+                  by {{ passenger.approvedBy }}
+                </small>
+
+                }
+
+              </div>
+
             </div>
 
-            <div class="detail-item">
-              <span>Date of Birth</span>
-              <strong>
-                {{
-                passenger.dateOfBirth
-                ? (passenger.dateOfBirth | date:'dd MMM yyyy')
-                : '-'
-                }}
-              </strong>
+            }
+
+
+            @if (passenger.holdUntil) {
+
+            <div class="event-detail hold-event">
+
+              <div class="event-icon">
+                <i class="fa fa-clock"></i>
+              </div>
+
+              <div>
+
+                <span>
+                  Hold Until
+                </span>
+
+                <strong>
+                  {{
+                  passenger.holdUntil
+                  | date:'dd MMM yyyy, HH:mm:ss'
+                  }}
+                </strong>
+
+              </div>
+
             </div>
 
-            <div class="detail-item">
-              <span>Gender</span>
-              <strong>
-                {{ passenger.gender || '-' }}
-              </strong>
+            }
+
+
+            @if (passenger.cancelledDate) {
+
+            <div class="event-detail cancelled-event">
+
+              <div class="event-icon">
+                <i class="fa fa-times"></i>
+              </div>
+
+              <div>
+
+                <span>
+                  Cancelled
+                </span>
+
+                <strong>
+                  {{
+                  passenger.cancelledDate
+                  | date:'dd MMM yyyy, HH:mm:ss'
+                  }}
+                </strong>
+
+                @if (passenger.cancelledBy) {
+
+                <small>
+                  by {{ passenger.cancelledBy }}
+                </small>
+
+                }
+
+              </div>
+
             </div>
 
-            <div class="detail-item">
-              <span>Nationality</span>
-              <strong>
-                {{ passenger.nationality || '-' }}
-              </strong>
+            }
+
+
+            @if (passenger.rejectedDate) {
+
+            <div class="event-detail rejected-event">
+
+              <div class="event-icon">
+                <i class="fa fa-ban"></i>
+              </div>
+
+              <div>
+
+                <span>
+                  Rejected
+                </span>
+
+                <strong>
+                  {{
+                  passenger.rejectedDate
+                  | date:'dd MMM yyyy, HH:mm:ss'
+                  }}
+                </strong>
+
+                @if (passenger.rejectedBy) {
+
+                <small>
+                  by {{ passenger.rejectedBy }}
+                </small>
+
+                }
+
+              </div>
+
             </div>
 
-            <div class="detail-item">
-              <span>Contact</span>
-              <strong>
-                {{ passenger.contactNumber || '-' }}
-              </strong>
-            </div>
-
-            <div class="detail-item">
-              <span>Email</span>
-              <strong>
-                {{ passenger.email || '-' }}
-              </strong>
-            </div>
+            }
 
           </div>
 
 
-          <!-- Passenger Status + Cancel -->
+          <!-- ============================================= -->
+          <!-- CANCELLATION REASON -->
+          <!-- ============================================= -->
 
-          <div class="passenger-status-row">
+          @if (passenger.cancellationReason) {
 
-            <div class="passenger-current-status">
+          <div class="reason-box cancellation-reason">
+
+            <div class="reason-icon">
+              <i class="fa fa-info"></i>
+            </div>
+
+            <div>
 
               <span>
-                Passenger Status
+                Cancellation Reason
               </span>
 
-              <strong [class.status-held]="
-            passenger.passengerBookingStatus === 'Held'
-          " [class.status-approved]="
-            passenger.passengerBookingStatus === 'Approved'
-          " [class.status-cancelled]="
-            passenger.passengerBookingStatus === 'Cancelled'
-          " [class.status-expired]="
-            passenger.passengerBookingStatus === 'Expired'
-          " [class.status-rejected]="
-            passenger.passengerBookingStatus === 'Rejected'
-          ">
-
-                {{
-                passenger.passengerBookingStatus
-                || selectedBooking.bookingStatus
-                || 'Unknown'
-                }}
-
+              <strong>
+                {{ passenger.cancellationReason }}
               </strong>
 
             </div>
 
+          </div>
 
-            @if (
-            passenger.passengerBookingStatus === 'Held'
-            ) {
+          }
+
+
+          <!-- ============================================= -->
+          <!-- REJECTION REASON -->
+          <!-- ============================================= -->
+
+          @if (passenger.rejectionReason) {
+
+          <div class="reason-box rejection-reason">
+
+            <div class="reason-icon">
+              <i class="fa fa-info"></i>
+            </div>
+
+            <div>
+
+              <span>
+                Rejection Reason
+              </span>
+
+              <strong>
+                {{ passenger.rejectionReason }}
+              </strong>
+
+            </div>
+
+          </div>
+
+          }
+
+
+          <!-- ============================================= -->
+          <!-- CANCEL HELD PASSENGER -->
+          <!-- ============================================= -->
+
+          @if (
+          passenger.passengerBookingStatus === 'Held'
+          ) {
+
+          <div class="passenger-action-row">
 
             <button type="button" class="cancel-ticket-btn" (click)="openCancelModal(passenger)">
 
               <i class="fa fa-times-circle"></i>
 
-              Cancel Ticket
+              Cancel This Ticket
 
             </button>
 
-            }
-
-          </div>
-
-
-          <!-- HOLD INFORMATION -->
-
-          @if (passenger.holdUntil) {
-
-          <div class="hold-info">
-
-            <i class="fa fa-clock"></i>
-
-            <span>
-              Hold Until:
-            </span>
-
-            <strong>
-              {{ passenger.holdUntil | date:'dd MMM yyyy, hh:mm a' }}
-            </strong>
-
           </div>
 
           }
 
 
-          <!-- APPROVAL INFORMATION -->
+          <!-- ============================================= -->
+          <!-- INDIVIDUAL DOWNLOAD -->
+          <!-- ============================================= -->
 
-          @if (passenger.approvedDate) {
+          <div class="individual-ticket-footer">
 
-          <div class="approval-info">
+            <div class="ticket-footer-reference">
 
-            <i class="fa fa-check-circle"></i>
+              <i class="fa fa-file-invoice"></i>
 
-            <span>
-              Approved on
-            </span>
+              <div>
 
-            <strong>
-              {{ passenger.approvedDate | date:'dd MMM yyyy, hh:mm a' }}
-            </strong>
+                <span>
+                  INDIVIDUAL TICKET
+                </span>
 
-            @if (passenger.approvedBy) {
+                <strong>
+                  {{ selectedBooking.bookingReference }}
+                  -
+                  {{ i + 1 }}
+                </strong>
 
-            <span>
-              by {{ passenger.approvedBy }}
-            </span>
+              </div>
 
-            }
-
-          </div>
-
-          }
+            </div>
 
 
-          <!-- CANCELLATION INFORMATION -->
+            <button type="button" class="ticket-download-btn" (click)="downloadPassengerTicket(
+                  selectedBooking,
+                  passenger
+                )">
 
-          @if (passenger.cancelledDate) {
+              <i class="fa fa-download"></i>
 
-          <div class="cancellation-info">
+              Download This Ticket
 
-            <i class="fa fa-times-circle"></i>
-
-            <span>
-              Cancelled on
-            </span>
-
-            <strong>
-              {{ passenger.cancelledDate | date:'dd MMM yyyy, hh:mm a' }}
-            </strong>
-
-            @if (passenger.cancellationReason) {
-
-            <span>
-              — {{ passenger.cancellationReason }}
-            </span>
-
-            }
+            </button>
 
           </div>
 
-          }
-
-
-          <!-- REJECTION INFORMATION -->
-
-          @if (passenger.rejectedDate) {
-
-          <div class="rejection-info">
-
-            <i class="fa fa-ban"></i>
-
-            <span>
-              Rejected on
-            </span>
-
-            <strong>
-              {{ passenger.rejectedDate | date:'dd MMM yyyy, hh:mm a' }}
-            </strong>
-
-            @if (passenger.rejectionReason) {
-
-            <span>
-              — {{ passenger.rejectionReason }}
-            </span>
-
-            }
-
-          </div>
-
-          }
-
-        </div>
+        </article>
 
         }
 
+      </section>
+
+
+      <!-- ===================================================== -->
+      <!-- BOOKING TOTAL -->
+      <!-- ===================================================== -->
+
+      <div class="ticket-total">
+
+        <div class="total-left">
+
+          <span>
+            TOTAL BOOKING AMOUNT
+          </span>
+
+          <small>
+
+            {{ selectedBooking.passengerBookingDetails.length }}
+
+            Passenger{{
+            selectedBooking.passengerBookingDetails.length === 1
+            ? ''
+            : 's'
+            }}
+
+            &nbsp;•&nbsp;
+
+            {{ selectedBooking.bookedTickets }}
+
+            Ticket{{
+            selectedBooking.bookedTickets === 1
+            ? ''
+            : 's'
+            }}
+
+          </small>
+
+        </div>
+
+
+        <div class="total-right">
+
+          <span>
+            PKR
+          </span>
+
+          <strong>
+
+            {{
+            selectedBooking.passengerBookingDetails
+            .reduce(
+            (total, passenger) =>
+            total + passenger.totalPrice,
+            0
+            )
+            | number:'1.2-2'
+            }}
+
+          </strong>
+
+        </div>
+
       </div>
 
 
-      <!-- TOTAL -->
+      <!-- ===================================================== -->
+      <!-- MODAL FOOTER -->
+      <!-- ===================================================== -->
 
-      <div class="booking-total">
+      <div class="ticket-footer">
 
-        <span>
-          Total Booking Amount
-        </span>
+        <div class="footer-note">
 
-        <strong>
+          <div class="footer-note-icon">
+            <i class="fa fa-shield-alt"></i>
+          </div>
 
-          {{
-          selectedBooking.passengerBookingDetails
-          .reduce(
-          (total, passenger) =>
-          total + passenger.totalPrice,
-          0
-          )
-          | number:'1.2-2'
-          }}
+          <div>
 
-        </strong>
+            <strong>
+              Booking Information
+            </strong>
 
-      </div>
+            <span>
+              Each passenger has an individual ticket.
+              You can download each passenger ticket separately.
+            </span>
+
+          </div>
+
+        </div>
 
 
-      <!-- FOOTER -->
+        <div class="ticket-footer-actions">
 
-      <div class="booking-modal-footer">
+          <button type="button" class="ticket-close-btn" (click)="closeDetails()">
 
-        <button type="button" class="close-modal-btn" (click)="closeDetails()">
+            <i class="fa fa-times"></i>
 
-          Close
+            Close
 
-        </button>
+          </button>
+
+        </div>
 
       </div>
 
@@ -616,84 +1463,139 @@
 
 
 
-
+  <!-- ========================================================= -->
+  <!-- CANCEL PASSENGER MODAL -->
+  <!-- ========================================================= -->
 
   @if (showCancelModal && selectedPassenger) {
 
   <div class="cancel-modal-backdrop" (click)="closeCancelModal()">
 
+
     <div class="cancel-modal" (click)="$event.stopPropagation()">
 
+
+      <!-- ICON -->
+
       <div class="cancel-modal-icon">
+
         <i class="fa fa-times-circle"></i>
+
       </div>
 
 
-      <h3>Cancel Ticket?</h3>
+      <!-- TITLE -->
+
+      <h3>
+        Cancel Ticket?
+      </h3>
+
 
       <p class="cancel-description">
+
         Are you sure you want to cancel the ticket for
+
         <strong>
           {{ selectedPassenger.passengerName }}
         </strong>?
+
       </p>
 
 
+      <!-- PASSENGER SUMMARY -->
+
       <div class="cancel-passenger-info">
 
+
         <div>
-          <span>Passenger</span>
+
+          <span>
+            Passenger
+          </span>
+
           <strong>
             {{ selectedPassenger.passengerName }}
           </strong>
+
         </div>
 
+
         <div>
-          <span>Type</span>
+
+          <span>
+            Type
+          </span>
+
           <strong>
             {{ selectedPassenger.passengerTypeName }}
           </strong>
+
         </div>
 
+
         <div>
-          <span>Status</span>
+
+          <span>
+            Status
+          </span>
+
           <strong>
             {{ selectedPassenger.passengerBookingStatus }}
           </strong>
+
         </div>
 
       </div>
 
+
+      <!-- REASON -->
 
       <div class="reason-field">
 
         <label>
+
           Cancellation Reason
-          <span>(Optional)</span>
+
+          <span>
+            (Optional)
+          </span>
+
         </label>
 
-        <textarea [(ngModel)]="cancellationReason" rows="4" placeholder="Enter cancellation reason..."></textarea>
+
+        <textarea [(ngModel)]="cancellationReason" rows="4" placeholder="Enter cancellation reason...">
+          </textarea>
 
       </div>
 
 
+      <!-- ACTIONS -->
+
       <div class="cancel-modal-actions">
 
+
         <button type="button" class="keep-ticket-btn" [disabled]="isCancelling" (click)="closeCancelModal()">
+
           Keep Ticket
+
         </button>
 
 
         <button type="button" class="confirm-cancel-btn" [disabled]="isCancelling" (click)="cancelTicket()">
 
+
           @if (isCancelling) {
 
           <i class="fa fa-spinner fa-spin"></i>
+
           Cancelling...
 
-          } @else {
+          }
+
+          @else {
 
           <i class="fa fa-times"></i>
+
           Cancel Ticket
 
           }
@@ -708,30 +1610,4 @@
 
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</div>

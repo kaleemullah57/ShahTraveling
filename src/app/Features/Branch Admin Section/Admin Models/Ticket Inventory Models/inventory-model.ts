@@ -31,6 +31,7 @@ export interface PurchasedInvoice {
   branchName: string;
 
   invoiceNumber: string;
+  pnrNo : string;
 
   purchasedFrom: string;
   purchaseReference: string | null;

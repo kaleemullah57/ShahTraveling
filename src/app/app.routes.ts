@@ -199,6 +199,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./Features/Branch Admin Section/Hold Confirm Cancel/hold-confirm-cancel-tickets/hold-confirm-cancel-tickets')
             .then(m => m.PendingHoldConfirmBookingsComponent)
+      },
+      {
+        path: 'CustomerLedgerComponent',
+        loadComponent: () =>
+          import('./Features/Branch Admin Section/Branch Admin Ledgers/customer-ledger-component/customer-ledger-component')
+            .then(m => m.CustomerLedgerComponent)
       }
     ]
   },

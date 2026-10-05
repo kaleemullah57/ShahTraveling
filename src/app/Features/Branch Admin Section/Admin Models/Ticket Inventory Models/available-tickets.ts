@@ -43,6 +43,7 @@ export interface AvailableTicketModel {
   branchName?: string | null;
 
   airlineName?: string | null;
+  pnrNo: string;
   airlineCode?: string | null;
 
   fromAirport?: string | null;

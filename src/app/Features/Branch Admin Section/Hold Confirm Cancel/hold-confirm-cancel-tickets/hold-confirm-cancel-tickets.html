@@ -751,7 +751,7 @@
         (click)="approvePassenger(passenger)"
       >
         <span>✓</span>
-        Approve
+        Confirm
       </button>
 
     </ng-container>
@@ -760,13 +760,14 @@
     <!-- APPROVED -->
     <ng-container *ngIf="passenger.bookingStatusId === 2">
 
+      <!-- <span>✓</span> -->
       <button
         type="button"
         class="neo-btn btn-primary"
         //(click)="issuePassengerTicket(passenger)"
       >
         <span>✈</span>
-        Issue Ticket
+        Get ready to fly
       </button>
 
     </ng-container>
@@ -814,7 +815,7 @@
 
 
         <!-- APPROVED -->
-        <ng-container
+        <!-- <ng-container
           *ngIf="selectedBooking.bookingStatusId === 2"
         >
 
@@ -827,7 +828,7 @@
             Issue Ticket
           </button>
 
-        </ng-container>
+        </ng-container> -->
 
       </div>
 
@@ -953,11 +954,11 @@
       </div>
 
 
-      <h3>Approve Ticket?</h3>
+      <h3>Confirm Ticket?</h3>
 
 
       <p class="approve-description">
-        Are you sure you want to approve the ticket for
+        Are you sure you want to Confirm the ticket for
         <strong>
           {{ selectedApprovalPassenger.passengerName }}
         </strong>?
@@ -994,7 +995,7 @@
         <i class="fa fa-info-circle"></i>
 
         <span>
-          Once approved, this passenger will be confirmed
+          Once Confirmed, this passenger will be confirmed
           and the customer will be notified.
         </span>
       </div>
@@ -1027,7 +1028,7 @@
           } @else {
 
             <i class="fa fa-check"></i>
-            Approve Ticket
+            Confirm Ticket
 
           }
 
