@@ -727,6 +727,16 @@ removeStop(index: number): void {
 
 ticketFormFields: FormField[] = [
 
+{
+    key: 'pnrno',
+    label: 'PNR No',
+    type: 'text',
+    placeholder: 'Enter PNR No',
+    required: true
+  },
+
+
+
   {
     key: 'purchasedFrom',
     label: 'Purchased From',
@@ -965,6 +975,9 @@ submitTicketPurchase(
   // ========================================================
 
   const request: AddTicketPurchaseRequest = {
+
+    pnrno:
+      formValue.pnrno,
 
     purchasedFrom:
       formValue.purchasedFrom,

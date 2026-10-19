@@ -1,0 +1,263 @@
+<div class="ledger-page">
+
+    <!-- Page Header -->
+    <section class="ledger-header">
+        <div class="ledger-header-icon">
+            <i class="bi bi-journal-text"></i>
+        </div>
+
+        <div class="ledger-header-content">
+            <h2>Ledger Details</h2>
+            <p>View and manage customer ledger information</p>
+        </div>
+
+        <div class="ledger-header-meta">
+            <i class="bi bi-calendar-check"></i>
+            <div>
+                <span>Customer Payments</span>
+                <small>Track every transaction</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filters -->
+    <section class="ledger-filter-card">
+        <div class="ledger-search">
+            <i class="bi bi-search"></i>
+            <input type="text" [(ngModel)]="ledgerSearch" placeholder="Search booking, passenger or passenger ID"
+                (keyup.enter)="onLedgerSearch()" [disabled]="ledgerLoading" />
+        </div>
+
+        <button type="button" class="ledger-search-btn" (click)="onLedgerSearch()" [disabled]="ledgerLoading">
+            <i class="bi bi-search"></i>
+            <span>Search</span>
+        </button>
+
+        <div class="ledger-status-filter">
+            <i class="bi bi-funnel"></i>
+            <select [ngModel]="ledgerAmountStatus" (ngModelChange)="onLedgerAmountStatusChange($event)"
+                [disabled]="ledgerLoading">
+                <option [ngValue]="0">All Payments</option>
+                <option [ngValue]="1">Unpaid</option>
+                <option [ngValue]="2">Partially Paid</option>
+                <option [ngValue]="3">Paid</option>
+                <option [ngValue]="4">Outstanding</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- Ledger Table -->
+    <section class="ledger-table-card">
+        <div class="ledger-table-heading">
+            <div>
+                <h3>Payment Transactions</h3>
+                <p>Review ticket balances and individual payments</p>
+            </div>
+
+            <span class="ledger-record-count">
+                <i class="bi bi-receipt"></i>
+                {{ ledgerTotalRecords }} records
+            </span>
+        </div>
+
+        <div class="table-responsive ledger-table-wrapper">
+            <table class="table ledger-table">
+                <thead>
+                    <tr>
+                        <th>Booking Reference</th>
+                        <th>Passenger</th>
+                        <th>Ticket Price</th>
+                        <th>Total Paid</th>
+                        <th>Remaining</th>
+                        <th>Status</th>
+                        <th>Payment Method</th>
+                        <th>Paid Amount</th>
+                        <th>Payment Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!-- Loading -->
+                    <tr *ngIf="ledgerLoading">
+                        <td colspan="9">
+                            <div class="ledger-loading">
+                                <span class="ledger-spinner"></span>
+                                <span>Loading ledger details...</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Data -->
+                    <tr *ngFor="let item of ledgerDetails">
+                        <td>
+                            <div class="booking-reference">
+                                <span class="booking-icon">
+                                    <i class="bi bi-ticket-perforated"></i>
+                                </span>
+                                <div class="booking-details">
+                                    <span class="passenger-name">
+                                        {{ item.userName }}
+                                    </span>
+
+                                    <small class="passenger-id">
+                                        {{ item.bookingReference }}
+                                    </small>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="passenger-name">{{ item.passengerName }}</span>
+                            <small class="passenger-id">
+                                Passenger #{{ item.bookingPassengerId }}
+                            </small>
+                        </td>
+
+                        <td class="amount-cell">
+                            {{ item.ticketPrice | number:'1.2-2' }}
+                        </td>
+
+                        <td class="amount-cell paid-total">
+                            {{ item.totalPaid | number:'1.2-2' }}
+                        </td>
+
+                        <td class="amount-cell remaining-total">
+                            {{ item.remainingBalance | number:'1.2-2' }}
+                        </td>
+
+                        <td>
+                            <span class="payment-status" [ngClass]="{
+                  'status-unpaid': item.paymentStatus === 'Unpaid',
+                  'status-partial': item.paymentStatus === 'Partially Paid',
+                  'status-paid': item.paymentStatus === 'Paid'
+                }">
+                                <span class="status-dot"></span>
+                                {{ item.paymentStatus }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="payment-method">
+                                <span class="method-icon" [ngClass]="{
+                    'method-single': item.paymentMethodId === 1,
+                    'method-equal': item.paymentMethodId === 2,
+                    'method-custom': item.paymentMethodId === 3
+                  }">
+                                    <i class="bi" [ngClass]="{
+                      'bi-person-fill': item.paymentMethodId === 1,
+                      'bi-people-fill': item.paymentMethodId === 2,
+                      'bi-credit-card-2-front-fill': item.paymentMethodId === 3
+                    }">
+                                    </i>
+                                </span>
+                                <span>{{ item.paymentMethodName || '—' }}</span>
+                            </div>
+                        </td>
+
+                        <td class="amount-cell individual-payment">
+                            {{
+                            item.paidAmount == null
+                            ? '—'
+                            : (item.paidAmount | number:'1.2-2')
+                            }}
+                        </td>
+
+                        <td>
+                            <div class="payment-date" *ngIf="item.paidDate; else noPaymentDate">
+                                <i class="bi bi-calendar3"></i>
+                                <span>
+                                    {{ item.paidDate | date:'dd MMM yyyy' }}
+                                    <small>{{ item.paidDate | date:'HH:mm:ss' }}</small>
+                                </span>
+                            </div>
+
+                            <ng-template #noPaymentDate>
+                                <span class="no-payment-date">—</span>
+                            </ng-template>
+                        </td>
+                    </tr>
+
+                    <!-- Empty State -->
+                    <tr *ngIf="!ledgerLoading && ledgerDetails.length === 0">
+                        <td colspan="9">
+                            <div class="ledger-empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="bi bi-inbox"></i>
+                                </div>
+                                <h4>No ledger records found</h4>
+                                <p>Try changing your search or payment status filter.</p>
+                                <button type="button"
+                                    (click)="ledgerSearch = ''; ledgerAmountStatus = 0; onLedgerSearch()">
+                                    Reset Filters
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <footer class="ledger-pagination" *ngIf="ledgerTotalRecords > 0">
+            <div class="pagination-summary">
+                <span class="pagination-summary-icon">
+                    <i class="bi bi-database"></i>
+                </span>
+
+                <span>
+                    Showing
+                    <strong>{{ (ledgerPageNumber - 1) * ledgerPageSize + 1 }}</strong>
+                    to
+                    <strong>
+                        {{ Math.min(ledgerPageNumber * ledgerPageSize, ledgerTotalRecords) }}
+                    </strong>
+                    of
+                    <strong>{{ ledgerTotalRecords }}</strong>
+                    records
+                </span>
+            </div>
+
+            <div class="pagination-actions">
+                <div class="page-size-control">
+                    <label for="ledgerPageSize">Rows per page</label>
+                    <select id="ledgerPageSize" [ngModel]="ledgerPageSize"
+                        (ngModelChange)="onLedgerPageSizeChange(+$event)" [disabled]="ledgerLoading">
+                        <option [ngValue]="10">10</option>
+                        <option [ngValue]="20">20</option>
+                        <option [ngValue]="50">50</option>
+                        <option [ngValue]="100">100</option>
+                        <option [ngValue]="500">500</option>
+                    </select>
+                </div>
+
+                <div class="pagination-buttons">
+                    <button type="button" class="page-nav-btn" (click)="onLedgerPageChange(ledgerPageNumber - 1)"
+                        [disabled]="ledgerLoading || ledgerPageNumber <= 1">
+                        <i class="bi bi-chevron-left"></i>
+                        Previous
+                    </button>
+
+                    <span class="current-page">
+                        {{ ledgerPageNumber }}
+                    </span>
+
+                    <span class="page-divider">of</span>
+
+                    <span class="total-pages">
+                        {{ Math.max(1, Math.ceil(ledgerTotalRecords / ledgerPageSize)) }}
+                    </span>
+
+                    <button type="button" class="page-nav-btn" (click)="onLedgerPageChange(ledgerPageNumber + 1)"
+                        [disabled]="
+              ledgerLoading ||
+              ledgerPageNumber >= Math.ceil(ledgerTotalRecords / ledgerPageSize)
+            ">
+                        Next
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+</div>

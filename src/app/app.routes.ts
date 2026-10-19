@@ -205,6 +205,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./Features/Branch Admin Section/Branch Admin Ledgers/customer-ledger-component/customer-ledger-component')
             .then(m => m.CustomerLedgerComponent)
+      },
+      {
+        path: 'LedgerDetails',
+        loadComponent: () =>
+          import('./Features/Branch Admin Section/Full Ledger/ledger-details/ledger-details')
+            .then(m => m.LedgerDetails)
       }
     ]
   },

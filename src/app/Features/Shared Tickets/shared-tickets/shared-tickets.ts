@@ -936,4 +936,137 @@ export class SharedTickets implements OnInit, OnDestroy {
 
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Send Booking To whatsapp
+  sendBookingToWhatsApp(): void {
+
+    if (!this.bookingResult || !this.selectedTicket) {
+      return;
+    }
+
+    // Agency WhatsApp number.
+    // Pakistan country code = 92
+    // Do NOT put + or leading 0.
+    const agencyNumber = '923007052147';
+
+    const booking = this.bookingResult;
+    const ticket = this.selectedTicket;
+
+    const passengerDetails = this.bookingPassengers
+      .map((passenger, index) => {
+
+        const fullName = [
+          passenger.firstName,
+          passenger.middleName,
+          passenger.lastName
+        ]
+          .filter(x => x)
+          .join(' ');
+
+        return `${index + 1}. ${fullName}
+   Type: ${this.getPassengerTypeName(passenger.passengerTypeId)}
+   Passport: ${passenger.passportNumber || '-'}
+   DOB: ${passenger.dateOfBirth
+            ? new Date(passenger.dateOfBirth).toLocaleDateString('en-GB')
+            : '-'}
+   Nationality: ${passenger.nationality || '-'}`;
+
+      })
+      .join('\n\n');
+
+
+    const message = `
+✈️ *NEW TICKET BOOKING*
+━━━━━━━━━━━━━━━━━━━━
+
+*Booking Reference:* ${booking.bookingReference}
+
+*AIRLINE*
+${ticket.airlineName || '-'}
+${ticket.ticketTypeName || 'Standard Ticket'}
+
+*ROUTE*
+${ticket.fromAirport} → ${ticket.toAirport}
+
+*DEPARTURE*
+${this.formatWhatsAppDate(ticket.departureDateTime)}
+
+*ARRIVAL*
+${this.formatWhatsAppDate(ticket.arrivalDateTime)}
+
+━━━━━━━━━━━━━━━━━━━━
+*PASSENGER INFORMATION*
+━━━━━━━━━━━━━━━━━━━━
+
+${passengerDetails}
+
+━━━━━━━━━━━━━━━━━━━━
+*BOOKING DETAILS*
+━━━━━━━━━━━━━━━━━━━━
+
+Passengers: ${booking.quantity}
+
+Total Amount: ${booking.totalAmount}
+
+*Hold Until:*
+${this.formatWhatsAppDate(booking.holdUntil)}
+
+⚠️ *STATUS: ON HOLD*
+
+Please confirm this ticket before the hold expires.
+
+━━━━━━━━━━━━━━━━━━━━
+SHAH TRAVELING AGENCY
+  `.trim();
+
+
+    const whatsappUrl =
+      `https://wa.me/${agencyNumber}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappUrl, '_blank');
+  }
+
+
+
+
+  formatWhatsAppDate(value: any): string {
+
+  if (!value) {
+    return '-';
+  }
+
+  return new Date(value).toLocaleString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+}
 }

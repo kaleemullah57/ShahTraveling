@@ -112,6 +112,7 @@ export interface PurchasedInvoiceStop {
 
 // Add Ticket To Inventory
 export interface AddTicketPurchaseRequest {
+  pnrno: string;
   purchasedFrom: string;
   purchaseReference: string;
   invoiceDate: string;

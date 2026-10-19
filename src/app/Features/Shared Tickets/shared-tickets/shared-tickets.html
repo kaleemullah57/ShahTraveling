@@ -858,219 +858,184 @@
 
     @if (!bookingResult) {
 
-  <!-- ==========================================================
+    <!-- ==========================================================
        BOOKING WIZARD STEPS
   =========================================================== -->
 
-  <div class="booking-wizard">
+    <div class="booking-wizard">
 
-    <div
-      class="booking-step"
-      [class.active]="currentBookingStep === 1"
-      [class.completed]="currentBookingStep > 1"
-    >
-      <span class="step-number">
-        @if (currentBookingStep > 1) {
+      <div class="booking-step" [class.active]="currentBookingStep === 1" [class.completed]="currentBookingStep > 1">
+        <span class="step-number">
+          @if (currentBookingStep > 1) {
           <i class="fa fa-check"></i>
-        } @else {
+          } @else {
           1
-        }
-      </span>
+          }
+        </span>
 
-      <div>
-        <strong>Passenger</strong>
-        <small>Basic Information</small>
+        <div>
+          <strong>Passenger</strong>
+          <small>Basic Information</small>
+        </div>
       </div>
-    </div>
 
 
-    <div class="step-line"></div>
+      <div class="step-line"></div>
 
 
-    <div
-      class="booking-step"
-      [class.active]="currentBookingStep === 2"
-      [class.completed]="currentBookingStep > 2"
-    >
-      <span class="step-number">
-        @if (currentBookingStep > 2) {
+      <div class="booking-step" [class.active]="currentBookingStep === 2" [class.completed]="currentBookingStep > 2">
+        <span class="step-number">
+          @if (currentBookingStep > 2) {
           <i class="fa fa-check"></i>
-        } @else {
+          } @else {
           2
-        }
-      </span>
+          }
+        </span>
 
-      <div>
-        <strong>Details</strong>
-        <small>Personal Information</small>
+        <div>
+          <strong>Details</strong>
+          <small>Personal Information</small>
+        </div>
       </div>
+
+
+      <div class="step-line"></div>
+
+
+      <div class="booking-step" [class.active]="currentBookingStep === 3">
+        <span class="step-number">
+          3
+        </span>
+
+        <div>
+          <strong>Preview</strong>
+          <small>Review Booking</small>
+        </div>
+      </div>
+
     </div>
 
 
-    <div class="step-line"></div>
-
-
-    <div
-      class="booking-step"
-      [class.active]="currentBookingStep === 3"
-    >
-      <span class="step-number">
-        3
-      </span>
-
-      <div>
-        <strong>Preview</strong>
-        <small>Review Booking</small>
-      </div>
-    </div>
-
-  </div>
-
-
-  <!-- ==========================================================
+    <!-- ==========================================================
        STEP 1 — BASIC PASSENGER INFORMATION
   =========================================================== -->
 
-  @if (currentBookingStep === 1) {
+    @if (currentBookingStep === 1) {
 
     <div class="booking-body">
 
       @for (
-        passenger of bookingPassengers;
-        track $index
+      passenger of bookingPassengers;
+      track $index
       ) {
 
-        <div class="passenger-card">
+      <div class="passenger-card">
 
-          <div class="passenger-header">
+        <div class="passenger-header">
 
-            <div>
-              <span class="passenger-step-label">
-                PASSENGER {{ $index + 1 }}
-              </span>
+          <div>
+            <span class="passenger-step-label">
+              PASSENGER {{ $index + 1 }}
+            </span>
 
-              <h4>
-                Basic Information
-              </h4>
-            </div>
+            <h4>
+              Basic Information
+            </h4>
+          </div>
 
 
-            @if (bookingPassengers.length > 1) {
+          @if (bookingPassengers.length > 1) {
 
-              <button
-                type="button"
-                class="remove-passenger-btn"
-                (click)="removePassenger($index)"
-              >
+          <button type="button" class="remove-passenger-btn" (click)="removePassenger($index)">
 
-                <i class="fa fa-trash"></i>
+            <i class="fa fa-trash"></i>
 
-                Remove
+            Remove
 
-              </button>
+          </button>
 
-            }
+          }
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <!-- PASSENGER TYPE -->
+
+          <div class="form-group">
+
+            <label>
+              Passenger Type
+            </label>
+
+            <select [(ngModel)]="passenger.passengerTypeId">
+
+              <option [ngValue]="0">
+                Select Passenger Type
+              </option>
+
+              @for (
+              type of passengerTypes;
+              track type.value
+              ) {
+
+              <option [ngValue]="type.value">
+                {{ type.label }}
+              </option>
+
+              }
+
+            </select>
 
           </div>
 
 
-          <div class="form-grid">
+          <!-- FIRST NAME -->
+
+          <div class="form-group">
+
+            <label>
+              First Name
+            </label>
+
+            <input type="text" [(ngModel)]="passenger.firstName" placeholder="Enter first name" inputmode="text"
+              autocomplete="given-name" pattern="[A-Za-z ]+" />
+
+          </div>
 
 
-            <!-- PASSENGER TYPE -->
+          <!-- MIDDLE NAME -->
 
-            <div class="form-group">
+          <div class="form-group">
 
-              <label>
-                Passenger Type
-              </label>
+            <label>
+              Middle Name
+            </label>
 
-              <select
-                [(ngModel)]="passenger.passengerTypeId"
-              >
+            <input type="text" [(ngModel)]="passenger.middleName" placeholder="Enter middle name" inputmode="text"
+              autocomplete="additional-name" pattern="[A-Za-z ]*" />
 
-                <option [ngValue]="0">
-                  Select Passenger Type
-                </option>
-
-                @for (
-                  type of passengerTypes;
-                  track type.value
-                ) {
-
-                  <option [ngValue]="type.value">
-                    {{ type.label }}
-                  </option>
-
-                }
-
-              </select>
-
-            </div>
+          </div>
 
 
-            <!-- FIRST NAME -->
+          <!-- LAST NAME -->
 
-            <div class="form-group">
+          <div class="form-group">
 
-              <label>
-                First Name
-              </label>
+            <label>
+              Last Name
+            </label>
 
-              <input
-                type="text"
-                [(ngModel)]="passenger.firstName"
-                placeholder="Enter first name"
-                inputmode="text"
-                autocomplete="given-name"
-                pattern="[A-Za-z ]+"
-              />
-
-            </div>
-
-
-            <!-- MIDDLE NAME -->
-
-            <div class="form-group">
-
-              <label>
-                Middle Name
-              </label>
-
-              <input
-                type="text"
-                [(ngModel)]="passenger.middleName"
-                placeholder="Enter middle name"
-                inputmode="text"
-                autocomplete="additional-name"
-                pattern="[A-Za-z ]*"
-              />
-
-            </div>
-
-
-            <!-- LAST NAME -->
-
-            <div class="form-group">
-
-              <label>
-                Last Name
-              </label>
-
-              <input
-                type="text"
-                [(ngModel)]="passenger.lastName"
-                placeholder="Enter last name"
-                inputmode="text"
-                autocomplete="family-name"
-                pattern="[A-Za-z ]+"
-              />
-
-            </div>
+            <input type="text" [(ngModel)]="passenger.lastName" placeholder="Enter last name" inputmode="text"
+              autocomplete="family-name" pattern="[A-Za-z ]+" />
 
           </div>
 
         </div>
+
+      </div>
 
       }
 
@@ -1079,11 +1044,7 @@
 
       <div class="passenger-actions">
 
-        <button
-          type="button"
-          class="secondary-btn"
-          (click)="addPassenger()"
-        >
+        <button type="button" class="secondary-btn" (click)="addPassenger()">
 
           <i class="fa fa-plus"></i>
 
@@ -1095,213 +1056,183 @@
 
     </div>
 
-  }
+    }
 
 
-  <!-- ==========================================================
+    <!-- ==========================================================
        STEP 2 — PERSONAL / PASSPORT DETAILS
   =========================================================== -->
 
-  @if (currentBookingStep === 2) {
+    @if (currentBookingStep === 2) {
 
     <div class="booking-body">
 
       @for (
-        passenger of bookingPassengers;
-        track $index
+      passenger of bookingPassengers;
+      track $index
       ) {
 
-        <div class="passenger-card">
+      <div class="passenger-card">
 
-          <div class="passenger-header">
+        <div class="passenger-header">
 
-            <div>
+          <div>
 
-              <span class="passenger-step-label">
-                PASSENGER {{ $index + 1 }}
-              </span>
+            <span class="passenger-step-label">
+              PASSENGER {{ $index + 1 }}
+            </span>
 
-              <h4>
-                Passport & Personal Details
-              </h4>
-
-            </div>
-
-          </div>
-
-
-          <div class="form-grid">
-
-
-            <!-- PASSPORT NUMBER -->
-
-            <div class="form-group">
-
-              <label>
-                Passport Number
-              </label>
-
-              <input
-                type="text"
-                [(ngModel)]="passenger.passportNumber"
-                placeholder="Enter passport number"
-                autocomplete="off"
-              />
-
-            </div>
-
-
-            <!-- PASSPORT ISSUE DATE -->
-
-            <div class="form-group">
-
-              <label>
-                Passport Issue Date
-              </label>
-
-              <input
-                type="date"
-                [(ngModel)]="passenger.passportIssueDate"
-              />
-
-            </div>
-
-
-            <!-- PASSPORT EXPIRY -->
-
-            <div class="form-group">
-
-              <label>
-                Passport Expiry Date
-              </label>
-
-              <input
-                type="date"
-                [(ngModel)]="passenger.passportExpireDate"
-              />
-
-            </div>
-
-
-            <!-- DATE OF BIRTH -->
-
-            <div class="form-group">
-
-              <label>
-                Date of Birth
-              </label>
-
-              <input
-                type="date"
-                [(ngModel)]="passenger.dateOfBirth"
-              />
-
-            </div>
-
-
-            <!-- GENDER -->
-
-            <div class="form-group">
-
-              <label>
-                Gender
-              </label>
-
-              <select
-                [(ngModel)]="passenger.gender"
-              >
-
-                <option value="">
-                  Select Gender
-                </option>
-
-                <option value="Male">
-                  Male
-                </option>
-
-                <option value="Female">
-                  Female
-                </option>
-
-                <option value="Shemale">
-                  Shemale
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <!-- NATIONALITY -->
-
-            <div class="form-group">
-
-              <label>
-                Nationality
-              </label>
-
-              <input
-                type="text"
-                [(ngModel)]="passenger.nationality"
-                placeholder="Nationality"
-              />
-
-            </div>
-
-
-            <!-- CONTACT -->
-
-            <div class="form-group">
-
-              <label>
-                Contact Number
-              </label>
-
-              <input
-                type="tel"
-                [(ngModel)]="passenger.contactNumber"
-                placeholder="03XX XXXXXXX"
-                inputmode="tel"
-                autocomplete="tel"
-                maxlength="15"
-              />
-
-            </div>
-
-
-            <!-- EMAIL -->
-
-            <div class="form-group">
-
-              <label>
-                Email
-              </label>
-
-              <input
-                type="email"
-                [(ngModel)]="passenger.email"
-                placeholder="Email"
-                autocomplete="email"
-              />
-
-            </div>
+            <h4>
+              Passport & Personal Details
+            </h4>
 
           </div>
 
         </div>
 
+
+        <div class="form-grid">
+
+
+          <!-- PASSPORT NUMBER -->
+
+          <div class="form-group">
+
+            <label>
+              Passport Number
+            </label>
+
+            <input type="text" [(ngModel)]="passenger.passportNumber" placeholder="Enter passport number"
+              autocomplete="off" />
+
+          </div>
+
+
+          <!-- PASSPORT ISSUE DATE -->
+
+          <div class="form-group">
+
+            <label>
+              Passport Issue Date
+            </label>
+
+            <input type="date" [(ngModel)]="passenger.passportIssueDate" />
+
+          </div>
+
+
+          <!-- PASSPORT EXPIRY -->
+
+          <div class="form-group">
+
+            <label>
+              Passport Expiry Date
+            </label>
+
+            <input type="date" [(ngModel)]="passenger.passportExpireDate" />
+
+          </div>
+
+
+          <!-- DATE OF BIRTH -->
+
+          <div class="form-group">
+
+            <label>
+              Date of Birth
+            </label>
+
+            <input type="date" [(ngModel)]="passenger.dateOfBirth" />
+
+          </div>
+
+
+          <!-- GENDER -->
+
+          <div class="form-group">
+
+            <label>
+              Gender
+            </label>
+
+            <select [(ngModel)]="passenger.gender">
+
+              <option value="">
+                Select Gender
+              </option>
+
+              <option value="Male">
+                Male
+              </option>
+
+              <option value="Female">
+                Female
+              </option>
+
+              <option value="Shemale">
+                Shemale
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- NATIONALITY -->
+
+          <div class="form-group">
+
+            <label>
+              Nationality
+            </label>
+
+            <input type="text" [(ngModel)]="passenger.nationality" placeholder="Nationality" />
+
+          </div>
+
+
+          <!-- CONTACT -->
+
+          <div class="form-group">
+
+            <label>
+              Contact Number
+            </label>
+
+            <input type="tel" [(ngModel)]="passenger.contactNumber" placeholder="03XX XXXXXXX" inputmode="tel"
+              autocomplete="tel" maxlength="15" />
+
+          </div>
+
+
+          <!-- EMAIL -->
+
+          <div class="form-group">
+
+            <label>
+              Email
+            </label>
+
+            <input type="email" [(ngModel)]="passenger.email" placeholder="Email" autocomplete="email" />
+
+          </div>
+
+        </div>
+
+      </div>
+
       }
 
     </div>
 
-  }
+    }
 
 
-  <!-- ==========================================================
+    <!-- ==========================================================
        STEP 3 — PREVIEW
   =========================================================== -->
 
-  @if (currentBookingStep === 3) {
+    @if (currentBookingStep === 3) {
 
     <div class="booking-body booking-preview-body">
 
@@ -1332,183 +1263,179 @@
 
 
       @for (
-        passenger of bookingPassengers;
-        track $index
+      passenger of bookingPassengers;
+      track $index
       ) {
 
-        <div class="preview-passenger-card">
+      <div class="preview-passenger-card">
 
-          <div class="preview-passenger-header">
+        <div class="preview-passenger-header">
 
-            <div>
+          <div>
 
-              <span>
-                PASSENGER {{ $index + 1 }}
-              </span>
+            <span>
+              PASSENGER {{ $index + 1 }}
+            </span>
 
-              <h4>
-                {{
-                  passenger.firstName
-                  || '-'
-                }}
-
-                {{
-                  passenger.middleName
-                  || ''
-                }}
-
-                {{
-                  passenger.lastName
-                  || '-'
-                }}
-
-              </h4>
-
-            </div>
-
-
-            <div class="preview-passenger-type">
-
+            <h4>
               {{
-                getPassengerTypeName(
-                  passenger.passengerTypeId
-                )
+              passenger.firstName
+              || '-'
               }}
 
-            </div>
+              {{
+              passenger.middleName
+              || ''
+              }}
+
+              {{
+              passenger.lastName
+              || '-'
+              }}
+
+            </h4>
 
           </div>
 
 
-          <div class="preview-grid">
+          <div class="preview-passenger-type">
 
-
-            <div class="preview-item">
-
-              <span>Passport Number</span>
-
-              <strong>
-                {{ passenger.passportNumber || '-' }}
-              </strong>
-
-            </div>
-
-
-            <div class="preview-item">
-
-              <span>Date of Birth</span>
-
-              <strong>
-                {{
-                  passenger.dateOfBirth
-                    ? (passenger.dateOfBirth | date:'dd MMM yyyy')
-                    : '-'
-                }}
-              </strong>
-
-            </div>
-
-
-            <div class="preview-item">
-
-              <span>Passport Issue</span>
-
-              <strong>
-                {{
-                  passenger.passportIssueDate
-                    ? (passenger.passportIssueDate | date:'dd MMM yyyy')
-                    : '-'
-                }}
-              </strong>
-
-            </div>
-
-
-            <div class="preview-item">
-
-              <span>Passport Expiry</span>
-
-              <strong>
-                {{
-                  passenger.passportExpireDate
-                    ? (passenger.passportExpireDate | date:'dd MMM yyyy')
-                    : '-'
-                }}
-              </strong>
-
-            </div>
-
-
-            <div class="preview-item">
-
-              <span>Gender</span>
-
-              <strong>
-                {{ passenger.gender || '-' }}
-              </strong>
-
-            </div>
-
-
-            <div class="preview-item">
-
-              <span>Nationality</span>
-
-              <strong>
-                {{ passenger.nationality || '-' }}
-              </strong>
-
-            </div>
-
-
-            <div class="preview-item">
-
-              <span>Contact</span>
-
-              <strong>
-                {{ passenger.contactNumber || '-' }}
-              </strong>
-
-            </div>
-
-
-            <div class="preview-item">
-
-              <span>Email</span>
-
-              <strong>
-                {{ passenger.email || '-' }}
-              </strong>
-
-            </div>
+            {{
+            getPassengerTypeName(
+            passenger.passengerTypeId
+            )
+            }}
 
           </div>
 
         </div>
 
+
+        <div class="preview-grid">
+
+
+          <div class="preview-item">
+
+            <span>Passport Number</span>
+
+            <strong>
+              {{ passenger.passportNumber || '-' }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-item">
+
+            <span>Date of Birth</span>
+
+            <strong>
+              {{
+              passenger.dateOfBirth
+              ? (passenger.dateOfBirth | date:'dd MMM yyyy')
+              : '-'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-item">
+
+            <span>Passport Issue</span>
+
+            <strong>
+              {{
+              passenger.passportIssueDate
+              ? (passenger.passportIssueDate | date:'dd MMM yyyy')
+              : '-'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-item">
+
+            <span>Passport Expiry</span>
+
+            <strong>
+              {{
+              passenger.passportExpireDate
+              ? (passenger.passportExpireDate | date:'dd MMM yyyy')
+              : '-'
+              }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-item">
+
+            <span>Gender</span>
+
+            <strong>
+              {{ passenger.gender || '-' }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-item">
+
+            <span>Nationality</span>
+
+            <strong>
+              {{ passenger.nationality || '-' }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-item">
+
+            <span>Contact</span>
+
+            <strong>
+              {{ passenger.contactNumber || '-' }}
+            </strong>
+
+          </div>
+
+
+          <div class="preview-item">
+
+            <span>Email</span>
+
+            <strong>
+              {{ passenger.email || '-' }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
       }
 
     </div>
 
-  }
+    }
 
 
-  <!-- ==========================================================
+    <!-- ==========================================================
        WIZARD FOOTER
   =========================================================== -->
 
-  <div class="modal-footer">
+    <div class="modal-footer">
 
 
-    <!-- BACK / CANCEL -->
+      <!-- BACK / CANCEL -->
 
-    @if (currentBookingStep > 1) {
+      @if (currentBookingStep > 1) {
 
-      <button
-        type="button"
-        class="cancel-btn"
-        (click)="previousBookingStep()"
-      >
+      <button type="button" class="cancel-btn" (click)="previousBookingStep()">
 
         <i class="fa fa-arrow-left"></i>
 
@@ -1516,76 +1443,61 @@
 
       </button>
 
-    }
+      }
 
-    @else {
+      @else {
 
-      <button
-        type="button"
-        class="cancel-btn"
-        (click)="closeBookingForm()"
-      >
+      <button type="button" class="cancel-btn" (click)="closeBookingForm()">
 
         Cancel
 
       </button>
 
-    }
+      }
 
 
-    <!-- NEXT -->
+      <!-- NEXT -->
 
-    @if (currentBookingStep < 3) {
-
-      <button
-        type="button"
-        class="book-btn"
-        (click)="nextBookingStep()"
-      >
+      @if (currentBookingStep < 3) { <button type="button" class="book-btn" (click)="nextBookingStep()">
 
         Next
 
         <i class="fa fa-arrow-right"></i>
 
-      </button>
+        </button>
 
-    }
+        }
 
 
-    <!-- FINAL SUBMIT -->
+        <!-- FINAL SUBMIT -->
 
-    @if (currentBookingStep === 3) {
+        @if (currentBookingStep === 3) {
 
-      <button
-        type="button"
-        class="book-btn"
-        [disabled]="isBooking"
-        (click)="createBooking()"
-      >
+        <button type="button" class="book-btn" [disabled]="isBooking" (click)="createBooking()">
 
-        @if (isBooking) {
+          @if (isBooking) {
 
           <i class="fa fa-spinner fa-spin"></i>
 
           Booking...
 
-        }
+          }
 
-        @else {
+          @else {
 
           <i class="fa fa-check"></i>
 
           Submit Booking
 
+          }
+
+        </button>
+
         }
 
-      </button>
+    </div>
 
     }
-
-  </div>
-
-}
 
 
     <!-- ========================================================
@@ -2009,7 +1921,7 @@
         </p>
 
 
-        <div class="invoice-actions">
+        <!-- <div class="invoice-actions">
 
 
           <button type="button" class="invoice-print-btn" onclick="window.print()">
@@ -2027,8 +1939,38 @@
 
           </button>
 
-        </div>
+        </div> -->
 
+        <div class="invoice-actions">
+
+          <!-- WHATSAPP -->
+          <button type="button" class="whatsapp-btn" (click)="sendBookingToWhatsApp()">
+
+            <i class="fa fa-whatsapp"></i>
+
+            Send to WhatsApp
+
+          </button>
+
+
+          <!-- PRINT -->
+          <button type="button" class="invoice-print-btn" onclick="window.print()">
+
+            <i class="fa fa-print"></i>
+
+            Print Invoice
+
+          </button>
+
+
+          <!-- DONE -->
+          <button type="button" class="book-btn" (click)="closeBookingForm()">
+
+            Done
+
+          </button>
+
+        </div>
       </div>
 
 

@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  // padding: 30px;
 
   /* Travel background */
   background:
@@ -112,9 +112,9 @@
   position: relative;
 
   width: 100%;
-  max-width: 450px;
+  max-width: 550px;
 
-  padding: 45px 40px;
+  padding: 27px 31px;
 
   background: rgba(255, 255, 255, 0.95);
 
@@ -134,38 +134,21 @@
 }
 
 
-/* ================================
-   Logo
-================================ */
-
-.login-card::before {
-  /* This is overridden by the decorative
-     version above if needed */
-}
 
 .login-card h2 {
   margin: 0;
-
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 800;
-
   text-align: center;
-
-  color: #082b3a;
-
+  color: #082b3a; 
   letter-spacing: -0.5px;
 }
 
 
-/* Subtitle */
-
 .login-card > p {
-  margin: 8px 0 30px;
-
+  margin: 8px 0 10px;
   text-align: center;
-
   color: #718096;
-
   font-size: 15px;
 }
 

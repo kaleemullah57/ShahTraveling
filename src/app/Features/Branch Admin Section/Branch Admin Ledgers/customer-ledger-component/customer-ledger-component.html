@@ -632,6 +632,212 @@
                     </div>
 
 
+
+                    <!-- PAYMENT TOOLBAR -->
+                    <div class="ledger-payment-toolbar" *ngIf="bookingPassengers.length > 0">
+
+                        <div class="payment-toolbar-info">
+                            <strong>Ticket Payments</strong>
+                            <span>
+                                Select one or multiple passengers to record a payment.
+                            </span>
+                        </div>
+
+                        <button type="button" class="btn-ledger-payment" [disabled]="selectedPassengerIds.length === 0"
+                            (click)="openPaymentModal()">
+
+                            <i class="fa fa-money"></i>
+                            Record Payment
+                            <span class="selected-count">
+                                {{ selectedPassengerIds.length }}
+                            </span>
+                        </button>
+
+                    </div>
+
+                    <!-- PASSENGER LIST -->
+                    <div class="passenger-list" *ngIf="
+      !loadingPassengers &&
+      bookingPassengers.length > 0
+    ">
+
+                        <div class="passenger-card" *ngFor="
+        let passenger of bookingPassengers
+      ">
+
+
+
+                            <!-- SELECT PASSENGER FOR PAYMENT -->
+                            <label class="passenger-payment-select">
+                                <input type="checkbox" [checked]="isPassengerSelected(passenger.bookingPassengerId)"
+                                    [disabled]="getOutstanding(passenger) <= 0" (change)="togglePassengerSelection(
+                                    passenger.bookingPassengerId,
+                                    $any($event.target).checked
+                                )">
+
+                                <span>Select for payment</span>
+                            </label>
+
+
+
+
+                            <!-- PASSENGER -->
+                            <div class="passenger-main">
+
+                                <div class="passenger-avatar">
+                                    <i class="fa fa-user"></i>
+                                </div>
+
+                                <div class="passenger-info">
+
+                                    <span class="passenger-label">
+                                        Passenger
+                                    </span>
+
+                                    <strong>
+                                        {{ passenger.fullName }}
+                                    </strong>
+
+                                    <span>
+                                        {{ passenger.passengerTypeName }}
+                                        · Passenger #{{ passenger.bookingPassengerId }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- ROUTE -->
+                            <div class="passenger-route">
+
+                                <!-- <div class="route-airport">
+
+                                <span>
+                                    From
+                                </span>
+
+                                <strong>
+                                    {{ passenger.fromAirport }}
+                                </strong>
+
+                            </div> -->
+                                <!-- 
+                            <div class="route-arrow">
+                                <i class="fa fa-long-arrow-right"></i>
+                            </div>
+
+                            <div class="route-airport">
+
+                                <span>
+                                    To
+                                </span>
+
+                                <strong>
+                                    {{ passenger.toAirport }}
+                                </strong>
+
+                            </div>
+
+                        </div> -->
+
+
+                                <!-- AIRLINE -->
+                                <!-- <div class="passenger-meta">
+
+                            <span>
+                                <i class="fa fa-plane"></i>
+                                Airline
+                            </span>
+
+                            <strong>
+                                {{ passenger.airline }}
+                            </strong>
+
+                        </div> -->
+
+
+                                <!-- NATIONALITY -->
+                                <!-- <div class="passenger-meta">
+
+                            <span>
+                                <i class="fa fa-globe"></i>
+                                Nationality
+                            </span>
+
+                            <strong>
+                                {{ passenger.nationality || '-' }}
+                            </strong>
+
+                        </div> -->
+
+                                <!-- TICKET LEDGER SUMMARY -->
+                                <div class="passenger-ledger-summary">
+
+                                    <div class="ledger-amount-item">
+                                        <span>Ticket Price</span>
+                                        <strong>
+                                            {{ passenger.unitPrice | number:'1.2-2' }}
+                                        </strong>
+                                    </div>
+
+                                    <div class="ledger-amount-item">
+                                        <span>Total Paid</span>
+                                        <strong class="amount-paid">
+                                            {{ getTotalPaid(passenger) | number:'1.2-2' }}
+                                        </strong>
+                                    </div>
+
+                                    <div class="ledger-amount-item">
+                                        <span>Outstanding</span>
+                                        <strong class="amount-outstanding">
+                                            {{ getOutstanding(passenger) | number:'1.2-2' }}
+                                        </strong>
+                                    </div>
+
+                                    <div class="ledger-amount-item">
+                                        <span>Payment Status</span>
+                                        <strong class="payment-status-badge" [ngClass]="{
+                                        'paid': getPaymentStatus(passenger) === 'Paid',
+                                        'unpaid': getPaymentStatus(passenger) === 'Unpaid',
+                                        'partially-paid': getPaymentStatus(passenger) === 'Partially Paid'
+                                    }">
+                                            {{ getPaymentStatus(passenger) }}
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+
+                                <!-- STATUS -->
+                                <!-- <div class="passenger-status">
+
+                            <span class="status-dot"></span>
+
+                            <span>
+                                Confirmed
+                            </span>
+
+                        </div> -->
+
+
+                                <!-- ACTION -->
+                                <!-- <div class="passenger-action">
+
+                            <button type="button" title="View Passenger">
+                                <i class="fa fa-chevron-right"></i>
+                            </button>
+
+                        </div> -->
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
                     <!-- NO DATA -->
                     <div class="ledger-empty" *ngIf="
         !loadingPassengers &&
@@ -740,135 +946,319 @@
                 </div>
 
 
-                <!-- PASSENGER LIST -->
-                <div class="passenger-list" *ngIf="
-      !loadingPassengers &&
-      bookingPassengers.length > 0
-    ">
 
-                    <div class="passenger-card" *ngFor="
-        let passenger of bookingPassengers
-      ">
 
-                        <!-- PASSENGER -->
-                        <div class="passenger-main">
 
-                            <div class="passenger-avatar">
-                                <i class="fa fa-user"></i>
-                            </div>
+            </div>
 
-                            <div class="passenger-info">
+        </div>
 
-                                <span class="passenger-label">
-                                    Passenger
-                                </span>
 
-                                <strong>
-                                    {{ passenger.fullName }}
-                                </strong>
 
-                                <span>
-                                    {{ passenger.passengerTypeName }}
-                                    · Passenger #{{ passenger.bookingPassengerId }}
-                                </span>
 
-                            </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- ============================================================
+     ADD TICKET PAYMENT MODAL
+============================================================ -->
+
+        <div class="payment-modal-backdrop" *ngIf="paymentModalVisible" (click)="closePaymentModal()">
+
+            <div class="payment-modal" (click)="$event.stopPropagation()">
+
+                <!-- MODAL HEADER -->
+                <div class="payment-modal-header">
+                    <div class="payment-modal-title">
+                        <div class="payment-modal-icon">
+                            <i class="fa fa-money"></i>
                         </div>
 
-
-                        <!-- ROUTE -->
-                        <div class="passenger-route">
-
-                            <div class="route-airport">
-
-                                <span>
-                                    From
-                                </span>
-
-                                <strong>
-                                    {{ passenger.fromAirport }}
-                                </strong>
-
-                            </div>
-
-                            <div class="route-arrow">
-                                <i class="fa fa-long-arrow-right"></i>
-                            </div>
-
-                            <div class="route-airport">
-
-                                <span>
-                                    To
-                                </span>
-
-                                <strong>
-                                    {{ passenger.toAirport }}
-                                </strong>
-
-                            </div>
-
+                        <div>
+                            <h3>Record Ticket Payment</h3>
+                            <p>
+                                Booking:
+                                {{ selectedBooking?.bookingReference }}
+                            </p>
                         </div>
+                    </div>
 
+                    <button type="button" class="payment-modal-close" [disabled]="isSavingPayment"
+                        (click)="closePaymentModal()">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
 
-                        <!-- AIRLINE -->
-                        <div class="passenger-meta">
+                <!-- MODAL BODY -->
+                <div class="payment-modal-body">
 
-                            <span>
-                                <i class="fa fa-plane"></i>
-                                Airline
+                    <!-- SELECTED PASSENGERS -->
+                    <!-- SELECTED TICKET CARDS -->
+                    <div class="payment-selected-passengers">
+
+                        <div class="payment-field-heading">
+                            <div>
+                                <strong>Selected Tickets</strong>
+                                <p>Review the tickets before recording payment.</p>
+                            </div>
+
+                            <span class="selected-ticket-count">
+                                {{ getSelectedPassengers().length }}
+                                {{
+                                getSelectedPassengers().length === 1
+                                ? 'Ticket'
+                                : 'Tickets'
+                                }}
                             </span>
-
-                            <strong>
-                                {{ passenger.airline }}
-                            </strong>
-
                         </div>
 
+                        <div class="payment-ticket-list">
 
-                        <!-- NATIONALITY -->
-                        <div class="passenger-meta">
+                            <div class="payment-ticket-card" *ngFor="let passenger of getSelectedPassengers()">
 
-                            <span>
-                                <i class="fa fa-globe"></i>
-                                Nationality
-                            </span>
+                                <!-- TICKET HEADER -->
+                                <div class="payment-ticket-header">
 
-                            <strong>
-                                {{ passenger.nationality || '-' }}
-                            </strong>
+                                    <div class="payment-ticket-passenger">
 
-                        </div>
+                                        <div class="payment-ticket-avatar">
+                                            <i class="fa fa-user"></i>
+                                        </div>
 
+                                        <div>
+                                            <span class="payment-ticket-label">
+                                                {{ passenger.passengerTypeName }}
+                                            </span>
 
-                        <!-- STATUS -->
-                        <div class="passenger-status">
+                                            <h4>{{ passenger.fullName }}</h4>
 
-                            <span class="status-dot"></span>
+                                            <small>
+                                                Passenger #{{ passenger.bookingPassengerId }}
+                                            </small>
+                                        </div>
 
-                            <span>
-                                Confirmed
-                            </span>
+                                    </div>
 
-                        </div>
+                                    <span class="payment-ticket-status">
+                                        <i class="fa fa-check-circle"></i>
+                                        Confirmed
+                                    </span>
 
+                                </div>
 
-                        <!-- ACTION -->
-                        <div class="passenger-action">
+                                <!-- ROUTE -->
+                                <div class="payment-ticket-route">
 
-                            <button type="button" title="View Passenger">
-                                <i class="fa fa-chevron-right"></i>
-                            </button>
+                                    <div class="payment-route-point">
+                                        <span>FROM</span>
+                                        <strong>{{ passenger.fromAirport }}</strong>
+                                    </div>
+
+                                    <div class="payment-route-icon">
+                                        <i class="fa fa-plane"></i>
+                                    </div>
+
+                                    <div class="payment-route-point payment-route-destination">
+                                        <span>TO</span>
+                                        <strong>{{ passenger.toAirport }}</strong>
+                                    </div>
+
+                                </div>
+
+                                <!-- AIRLINE -->
+                                <div class="payment-ticket-airline">
+                                    <i class="fa fa-plane"></i>
+
+                                    <span>Airline</span>
+
+                                    <strong>{{ passenger.airline }}</strong>
+                                </div>
+
+                                <!-- FINANCIAL SUMMARY -->
+                                <div class="payment-ticket-financials">
+
+                                    <div>
+                                        <span>Ticket Price</span>
+                                        <strong>
+                                            PKR {{ passenger.unitPrice | number:'1.2-2' }}
+                                        </strong>
+                                    </div>
+
+                                    <div>
+                                        <span>Already Paid</span>
+                                        <strong class="payment-ticket-paid">
+                                            PKR {{ getTotalPaid(passenger) | number:'1.2-2' }}
+                                        </strong>
+                                    </div>
+
+                                    <div>
+                                        <span>Outstanding</span>
+                                        <strong class="payment-ticket-outstanding">
+                                            PKR {{ getOutstanding(passenger) | number:'1.2-2' }}
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
                     </div>
 
+                    <!-- PAYMENT METHOD -->
+                    <div class="payment-form-group">
+                        <label>Payment Method</label>
+
+                        <div class="payment-method-options">
+                            <button type="button" *ngFor="let method of paymentMethods" class="payment-method-option"
+                                [class.active]="selectedPaymentMethodId === method.id"
+                                (click)="selectPaymentMethod(method.id)">
+
+                                <i class="fa" [ngClass]="method.icon"></i>
+
+                                <strong>{{ method.title }}</strong>
+                                <span>{{ method.description }}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PAYMENT AMOUNT -->
+                    <div class="payment-form-group">
+                        <label for="paymentTotalAmount">
+                            Total Payment Amount
+                        </label>
+
+                        <div class="payment-amount-input">
+                            <span>PKR</span>
+
+                            <input id="paymentTotalAmount" type="number" min="0.01" step="0.01"
+                                [(ngModel)]="paymentTotalAmount" [readonly]="selectedPaymentMethodId === 3"
+                                placeholder="Enter payment amount">
+                        </div>
+
+                        <small *ngIf="selectedPaymentMethodId === 1">
+                            Payment will be applied to the selected passenger.
+                        </small>
+
+                        <small *ngIf="selectedPaymentMethodId === 2">
+                            This amount will be divided equally between selected passengers.
+                        </small>
+
+                        <small *ngIf="selectedPaymentMethodId === 3">
+                            Total is calculated from the custom allocations below.
+                        </small>
+                    </div>
+
+                    <!-- CUSTOM DISTRIBUTION -->
+                    <div class="payment-form-group" *ngIf="selectedPaymentMethodId === 3">
+
+                        <label>Passenger-wise Allocation</label>
+
+                        <div class="custom-allocation-row" *ngFor="let passenger of getSelectedPassengers()">
+
+                            <div>
+                                <strong>{{ passenger.fullName }}</strong>
+                                <span>
+                                    Remaining:
+                                    {{ getOutstanding(passenger) | number:'1.2-2' }}
+                                </span>
+                            </div>
+
+                            <input type="number" min="0" step="0.01" [max]="getOutstanding(passenger)"
+                                [ngModel]="getCustomAllocation(passenger.bookingPassengerId)" (ngModelChange)="updatePassengerAllocationValue(
+                            passenger,
+                            $event
+                        )" placeholder="Amount">
+                        </div>
+
+                        <div class="allocation-total">
+                            <span>Allocated Total</span>
+                            <strong>
+                                PKR {{ getAllocatedTotal() | number:'1.2-2' }}
+                            </strong>
+                        </div>
+                    </div>
+
+                    <!-- PAYMENT DATE -->
+                    <div class="payment-form-group">
+                        <label for="paymentDate">Payment Date</label>
+
+                        <input id="paymentDate" type="datetime-local" [(ngModel)]="paymentDate" required>
+                    </div>
+
+                    <!-- REFERENCE -->
+                    <div class="payment-form-group">
+                        <label for="paymentReference">
+                            Payment Reference
+                            <span class="optional-label">Optional</span>
+                        </label>
+
+                        <input id="paymentReference" type="text" [(ngModel)]="paymentReference" maxlength="100"
+                            placeholder="Transaction ID / receipt number">
+                    </div>
+
+                    <!-- REMARKS -->
+                    <div class="payment-form-group">
+                        <label for="paymentRemarks">
+                            Remarks
+                            <span class="optional-label">Optional</span>
+                        </label>
+
+                        <textarea id="paymentRemarks" [(ngModel)]="paymentRemarks" maxlength="500" rows="3"
+                            placeholder="Enter payment notes..."></textarea>
+                    </div>
+
+                    <!-- ERROR -->
+                    <div class="payment-error" *ngIf="paymentError">
+                        <i class="fa fa-exclamation-circle"></i>
+                        {{ paymentError }}
+                    </div>
+
+                </div>
+
+                <!-- MODAL FOOTER -->
+                <div class="payment-modal-footer">
+
+                    <button type="button" class="btn-payment-cancel" [disabled]="isSavingPayment"
+                        (click)="closePaymentModal()">
+                        Cancel
+                    </button>
+
+                    <button type="button" class="btn-payment-submit" [disabled]="isSavingPayment"
+                        (click)="submitPayment()">
+
+                        <i class="fa" [ngClass]="isSavingPayment
+                     ? 'fa-spinner fa-spin'
+                     : 'fa-check'"></i>
+
+                        {{ isSavingPayment ? 'Saving Payment...' : 'Submit Payment' }}
+                    </button>
+
                 </div>
 
             </div>
-
-
         </div>
-
-    </div>

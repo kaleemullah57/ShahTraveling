@@ -1,5 +1,5 @@
 import { inject, Injectable, Service } from '@angular/core';
-import { GetLedgerCustomerBookingsRequest } from '../../Admin Models/Branch Admin Ledger Models/get-or-create-customer-ledger-request';
+import { GetLedgerCustomerBookingsRequest, LedgerFullDetailsRequest, LedgerFullDetailsResponse, TicketPaymentAddRequest } from '../../Admin Models/Branch Admin Ledger Models/get-or-create-customer-ledger-request';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../../../Core/Services/API Services/api-service';
 
@@ -29,6 +29,39 @@ export class CustomerLedgerService {
     }) {
         return this.apiService.post<any>(
             `BranchAdminLedger/GetConfirmedBookingPassengers`,
+            request
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
+    // Add Ledger 
+    addPayment(
+        request: TicketPaymentAddRequest
+    ): Observable<any> {
+        return this.apiService.post<any>(
+            'BranchAdminLedger/AddPayment',
+            request
+        );
+    }
+
+
+
+
+    // Get Full Ledger
+    getLedgerFullDetails(
+        request: LedgerFullDetailsRequest
+    ): Observable<LedgerFullDetailsResponse> {
+        return this.apiService.post<LedgerFullDetailsResponse>(
+            `BranchAdminLedger/GetLedgerFullDetails`,
             request
         );
     }
