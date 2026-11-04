@@ -1434,3 +1434,94 @@
 
   .ticket-footer-actions { justify-content: flex-end; }
 }
+
+
+
+
+
+
+.return-flight-section {
+  border-top: 3px solid #0f6045;
+}
+
+.return-route-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: rgba(15, 96, 69, 0.09);
+  color: #0f6045;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.return-route-summary {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 22px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  background: #f5f9f7;
+}
+
+.return-airport span {
+  display: block;
+  margin-bottom: 8px;
+  color: #0f6045;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.return-airport h3 {
+  margin: 0;
+  color: #18352b;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.return-airport small {
+  display: block;
+  margin-top: 6px;
+  color: #718078;
+  font-size: 11px;
+}
+
+.return-route-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #0f6045;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.return-route-connector i {
+  font-size: 20px;
+}
+
+.route-line {
+  width: 70px;
+  border-top: 2px dashed #7fae9b;
+}
+
+@media (max-width: 600px) {
+  .return-route-summary {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 16px;
+  }
+
+  .return-route-connector {
+    align-items: flex-start;
+  }
+
+  .route-line {
+    width: 100%;
+  }
+}

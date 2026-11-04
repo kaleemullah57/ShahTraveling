@@ -237,11 +237,18 @@ export const routes: Routes = [
       import('./Features/Customer Section/Customers Pages/Booked Tickets/booked-tickets/booked-tickets')
         .then(m => m.BookedTickets)
   },
+  // {
+  //   path: 'tickets',
+  //   canActivate: [authGuard],
+  //   loadComponent: () =>
+  //     import('./Features/Customer Section/Customers Pages/Tickets/tickets/tickets')
+  //       .then(m => m.Tickets)
+  // }
   {
-    path: 'tickets',
+    path: 'CustomerLedger',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./Features/Customer Section/Customers Pages/Tickets/tickets/tickets')
-        .then(m => m.Tickets)
+      import('./Features/Customer Section/Customers Pages/customer ledger/customer-ledger/customer-ledger')
+        .then(m => m.CustomerLedger)
   }
 ];

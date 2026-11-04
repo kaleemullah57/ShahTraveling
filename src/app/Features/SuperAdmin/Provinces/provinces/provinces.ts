@@ -14,11 +14,6 @@ import { DropdownItem, GlobalDropdownService } from '../../../../Core/Services/D
   styleUrl: './provinces.scss',
 })
 export class Provinces implements OnInit {
-
-  // =====================================================
-  // SERVICES
-  // =====================================================
-
   private readonly provincesService = inject(
     ProvincesService
   );
@@ -27,23 +22,13 @@ export class Provinces implements OnInit {
     ChangeDetectorRef
   );
   private readonly GlobalDropDownService =
-  inject(GlobalDropdownService);
+    inject(GlobalDropdownService);
 
   private readonly notificationService = inject(
     NotificationService
   );
 
-
-  // =====================================================
-  // DATA
-  // =====================================================
-
   provinces: Province[] = [];
-
-
-  // =====================================================
-  // STATE
-  // =====================================================
 
   loading = false;
 
@@ -52,11 +37,6 @@ export class Provinces implements OnInit {
   errorMessage = '';
 
   showProvinceForm = false;
-
-
-  // =====================================================
-  // PAGINATION
-  // =====================================================
 
   search = '';
 
@@ -67,26 +47,22 @@ export class Provinces implements OnInit {
   totalCount = 0;
 
 
-onPageChange(page: number): void {
+  onPageChange(page: number): void {
 
-  this.pageNumber = page;
+    this.pageNumber = page;
 
-  this.getProvinces();
-}
+    this.getProvinces();
+  }
 
 
-onPageSizeChange(size: number): void {
+  onPageSizeChange(size: number): void {
 
-  this.pageSize = size;
+    this.pageSize = size;
 
-  this.pageNumber = 1;
+    this.pageNumber = 1;
 
-  this.getProvinces();
-}
-
-  // =====================================================
-  // INIT
-  // =====================================================
+    this.getProvinces();
+  }
 
   ngOnInit(): void {
 
@@ -95,100 +71,81 @@ onPageSizeChange(size: number): void {
 
   countries: DropdownItem[] = [];
 
-countriesLoaded = false;
+  countriesLoaded = false;
 
-countriesLoading = false;
+  countriesLoading = false;
 
- loadCountries(): void {
+  loadCountries(): void {
+    if (this.countriesLoaded || this.countriesLoading) {
+      return;
+    }
 
-  console.log('🌍 LOAD COUNTRIES CALLED');
+    this.countriesLoading = true;
 
-  if (this.countriesLoaded || this.countriesLoading) {
-    return;
-  }
+    this.GlobalDropDownService
+      .getCountries()
+      .subscribe({
 
-  this.countriesLoading = true;
+        next: (response: any) => {
+          if (response?.statusCode === 200) {
 
-  this.GlobalDropDownService
-    .getCountries()
-    .subscribe({
+            this.countries =
+              (response.data ?? []).map((country: any) => ({
+                value: Number(country.Value),
+                text: country.Text
+              }));
 
-      next: (response: any) => {
-
-        console.log(
-          '🌍 COUNTRIES API RESPONSE:',
-          response
-        );
-
-        if (response?.statusCode === 200) {
-
-          this.countries =
-            (response.data ?? []).map((country: any) => ({
-              value: Number(country.Value),
-              text: country.Text
+            const countryOptions = this.countries.map(country => ({
+              label: country.text,
+              value: country.value
             }));
 
-          console.log(
-            '🌍 MAPPED COUNTRIES:',
-            this.countries
+            this.formFields = this.formFields.map(field =>
+              field.key === 'countryId'
+                ? {
+                  ...field,
+                  options: countryOptions
+                }
+                : field
+            );
+
+            this.countriesLoaded = true;
+
+            this.cdr.detectChanges();
+
+          } else {
+
+            this.countries = [];
+
+            this.notificationService.error(
+              response?.message ??
+              'Unable to load countries.'
+            );
+          }
+
+          this.countriesLoading = false;
+        },
+
+        error: (error: any) => {
+
+          console.error(
+            '❌ GET COUNTRIES ERROR:',
+            error
           );
-
-          const countryOptions = this.countries.map(country => ({
-  label: country.text,
-  value: country.value
-}));
-
-this.formFields = this.formFields.map(field =>
-  field.key === 'countryId'
-    ? {
-        ...field,
-        options: countryOptions
-      }
-    : field
-);
-
-console.log(
-  '🔽 COUNTRY OPTIONS:',
-  countryOptions
-);
-
-          this.countriesLoaded = true;
-
-          this.cdr.detectChanges();
-
-        } else {
 
           this.countries = [];
 
+          this.countriesLoading = false;
+
           this.notificationService.error(
-            response?.message ??
+            error?.error?.message ??
             'Unable to load countries.'
           );
+
+          this.cdr.detectChanges();
         }
-
-        this.countriesLoading = false;
-      },
-
-      error: (error: any) => {
-
-        console.error(
-          '❌ GET COUNTRIES ERROR:',
-          error
-        );
-
-        this.countries = [];
-
-        this.countriesLoading = false;
-
-        this.notificationService.error(
-          error?.error?.message ??
-          'Unable to load countries.'
-        );
-
-        this.cdr.detectChanges();
-      }
-    });
-}
+      });
+  }
   // =====================================================
   // GET PROVINCES
   // =====================================================
@@ -201,9 +158,6 @@ console.log(
       .getProvinces(this.search, this.pageNumber, this.pageSize)
       .subscribe({
         next: (response: ProvinceResponse) => {
-
-          console.log('🔥 PROVINCES API RESPONSE:', response);
-
           if (response.success === true) {
 
             this.provinces = response.data ?? [];
@@ -249,10 +203,6 @@ console.log(
   }
 
 
-  // =====================================================
-  // SEARCH
-  // =====================================================
-
   onSearch(searchValue: string): void {
 
     this.search = searchValue;
@@ -264,9 +214,6 @@ console.log(
   }
 
 
-  // =====================================================
-  // CLEAR SEARCH
-  // =====================================================
 
   clearSearch(): void {
 
@@ -285,46 +232,42 @@ console.log(
   // ADD PROVINCE FORM
   // =====================================================
 
-formFields: FormField[] = [
-  {
-    key: 'provinceName',
-    label: 'Province Name',
-    type: 'text',
-    placeholder: 'Enter province name',
-    required: true
-  },
-  {
-    key: 'countryId',
-    label: 'Country',
-    type: 'select',
-    placeholder: 'Select Country',
-    required: true,
-    options: []
-  },
-  {
-    key: 'isActive',
-    label: 'Status',
-    type: 'checkbox',
-    placeholder: 'Active'
-  }
-];
+  formFields: FormField[] = [
+    {
+      key: 'provinceName',
+      label: 'Province Name',
+      type: 'text',
+      placeholder: 'Enter province name',
+      required: true
+    },
+    {
+      key: 'countryId',
+      label: 'Country',
+      type: 'select',
+      placeholder: 'Select Country',
+      required: true,
+      options: []
+    },
+    {
+      key: 'isActive',
+      label: 'Status',
+      type: 'checkbox',
+      placeholder: 'Active'
+    }
+  ];
 
-  // =====================================================
-  // FORM BUTTONS
-  // =====================================================
-
- formButtons: FormButton[] = [
-  {
-    label: 'Cancel',
-    type: 'reset',
+  formButtons: FormButton[] = [
+    {
+      label: 'Cancel',
+      type: 'reset',
       style: 'secondary'
-  },
-  {
-    label: 'Add Province',
-    type: 'submit',
-    style: 'primary'
-  }
-];
+    },
+    {
+      label: 'Add Province',
+      type: 'submit',
+      style: 'primary'
+    }
+  ];
 
   columns: TableColumn[] = [
     {
@@ -342,9 +285,6 @@ formFields: FormField[] = [
   ];
 
 
-  // =====================================================
-  // PROVINCE MODEL
-  // =====================================================
 
   provinceModel = {
 
@@ -355,29 +295,23 @@ formFields: FormField[] = [
   };
 
 
-  // =====================================================
-  // OPEN FORM
-  // =====================================================
 
-openProvinceForm(): void {
+  openProvinceForm(): void {
 
-  this.provinceModel = {
-    provinceName: '',
-    countryId: 0,
-    isActive: true
-  };
+    this.provinceModel = {
+      provinceName: '',
+      countryId: 0,
+      isActive: true
+    };
 
-  // First open the form
-  this.showProvinceForm = true;
+    // First open the form
+    this.showProvinceForm = true;
 
-  // Then load countries
-  this.loadCountries();
+    // Then load countries
+    this.loadCountries();
 
-  this.cdr.detectChanges();
-}
-  // =====================================================
-  // CLOSE FORM
-  // =====================================================
+    this.cdr.detectChanges();
+  }
 
   closeProvinceForm(): void {
 
@@ -388,23 +322,13 @@ openProvinceForm(): void {
   }
 
 
-  // =====================================================
-  // ADD PROVINCE
-  // =====================================================
-
   addProvince(model: any): void {
-
-    console.log('🔥 ADD PROVINCE MODEL:', model);
-
     const request = {
       provinceName: model.provinceName?.trim(),
       countryId: Number(model.countryId),
       isActive: model.isActive ?? true
     };
 
-    // =========================================================
-    // VALIDATION
-    // =========================================================
 
     if (!request.provinceName) {
       this.notificationService.error(
@@ -420,27 +344,12 @@ openProvinceForm(): void {
       return;
     }
 
-    // =========================================================
-    // START SAVING
-    // =========================================================
-
     this.saving = true;
 
     this.provincesService
       .addProvince(request)
       .subscribe({
-
-        // =====================================================
-        // SUCCESS
-        // =====================================================
-
         next: (response: AddProvinceResponse) => {
-
-          console.log(
-            '🔥 ADD PROVINCE RESPONSE:',
-            response
-          );
-
           if (response.success === true) {
 
             this.notificationService.success(
@@ -474,10 +383,6 @@ openProvinceForm(): void {
           this.cdr.detectChanges();
         },
 
-        // =====================================================
-        // ERROR
-        // =====================================================
-
         error: (error) => {
 
           console.error(
@@ -500,29 +405,14 @@ openProvinceForm(): void {
   }
 
 
-  // =====================================================
-  // FORM FIELD CHANGE
-  // =====================================================
-
- onFieldChange(event: {
-  key: string;
-  value: any;
-}): void {
-
-  console.log(
-    '📌 PROVINCE FIELD CHANGE:',
-    event
-  );
-
-  this.provinceModel = {
-    ...this.provinceModel,
-    [event.key]: event.value
-  };
-
-  console.log(
-    '📦 PROVINCE MODEL:',
-    this.provinceModel
-  );
-}
+  onFieldChange(event: {
+    key: string;
+    value: any;
+  }): void {
+    this.provinceModel = {
+      ...this.provinceModel,
+      [event.key]: event.value
+    };
+  }
 
 }

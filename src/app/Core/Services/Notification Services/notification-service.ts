@@ -43,25 +43,33 @@ export class NotificationService {
     );
   }
 
-  private show(
-    type: NotificationType,
-    message: string
-  ): void {
+ private show(
+  type: NotificationType,
+  message: string
+): void {
 
-    const id = this.nextId++;
+  // Prevent duplicate notifications
+  const existing = this.notifications().some(
+    item => item.type === type && item.message === message
+  );
 
-    this.notifications.update(items => [
-      ...items,
-      {
-        id,
-        type,
-        message
-      }
-    ]);
-
-    // Automatically remove after 4 seconds
-    setTimeout(() => {
-      this.remove(id);
-    }, 4000);
+  if (existing) {
+    return;
   }
+
+  const id = this.nextId++;
+
+  this.notifications.update(items => [
+    ...items,
+    {
+      id,
+      type,
+      message
+    }
+  ]);
+
+  setTimeout(() => {
+    this.remove(id);
+  }, 4000);
+}
 }

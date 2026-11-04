@@ -245,494 +245,737 @@
 
       @else {
 
-      <div class="flight-ticket-list">
+      <div class="country-route-groups">
+
+  @for (group of ticketGroups; track group.key) {
+
+    <section class="country-route-group">
+
+      <!-- COUNTRY ROUTE HEADER -->
+      <header class="country-route-header">
+
+        <div class="country-route-icon">
+          <i class="fa fa-globe"></i>
+        </div>
+
+        <div class="country-route-title">
+          <span class="route-eyebrow">FLIGHT DESTINATION</span>
+
+          <h3>
+            {{ group.fromCountry }}
+            <i class="fa fa-long-arrow-right"></i>
+            {{ group.toCountry }}
+          </h3>
+
+          <p>
+            {{ group.oneWayTickets.length + group.roundTripTickets.length }}
+            ticket(s) available on this route
+          </p>
+        </div>
+
+        <div class="country-route-plane">
+          <i class="fa fa-plane"></i>
+        </div>
+
+      </header>
 
 
-        @for (
-        ticket of tickets;
-        track ticket.purchaseInvoiceItemId
-        ) {
+      <!-- ==============================================
+           ONE-WAY TICKETS
+      =============================================== -->
 
-        <!-- ==================================================
-                 ONE TICKET
-            ================================================== -->
+      @if (group.oneWayTickets.length > 0) {
 
-        <article class="flight-ticket-card">
+        <div class="ticket-type-heading">
+          <span class="ticket-type-icon">
+            <i class="fa fa-long-arrow-right"></i>
+          </span>
 
-
-          <!-- ================================================
-                   GREEN FARE HEADER
-              ================================================= -->
-
-          <div class="fare-header">
-
-            <div class="fare-title">
-
-              <span>
-                Cheapest Fare
-              </span>
-
-            </div>
-
-
-            @if (authService.isLoggedIn()) {
-
-            <div class="fare-saving">
-
-              <i class="fa fa-dollar"></i>
-
-              Save on this fare
-
-            </div>
-
-            }
-
+          <div>
+            <h4>One-way flights</h4>
+            <p>Single journey tickets</p>
           </div>
 
+          <span class="ticket-type-count">
+            {{ group.oneWayTickets.length }}
+          </span>
+        </div>
 
 
-          <!-- ================================================
-                   MAIN FLIGHT INFORMATION
-              ================================================= -->
+        <div class="grouped-ticket-list">
 
-          <div class="flight-ticket-main">
+          @for (ticket of group.oneWayTickets; track ticket.purchaseInvoiceItemId) {
 
+            <article class="grouped-ticket-card">
 
-            <!-- ==============================================
-                     AIRLINE
-                =============================================== -->
+              <!-- COMPACT TICKET SUMMARY -->
+              <div class="compact-ticket-main">
 
-            <div class="ticket-airline">
+                <div class="compact-airline">
+                  <div class="compact-airline-icon">
+                    <i class="fa fa-plane"></i>
+                  </div>
 
-              <div class="airline-logo">
+                  <div>
+                    <strong>
+                      {{ ticket.airlineCode || ticket.airlineName }}
+                    </strong>
 
-                <i class="fa fa-plane"></i>
+                    <span>{{ ticket.airlineName }}</span>
 
-              </div>
+                    @if (ticket.ticketTypeName) {
+                      <small>{{ ticket.ticketTypeName }}</small>
+                    }
+                  </div>
+                </div>
 
 
-              <div class="airline-details">
-
-                <strong>
-                  {{ ticket.airlineCode || ticket.airlineName }}
-                </strong>
-
-                <span>
-                  {{ ticket.airlineName }}
-                </span>
-
-
-                @if (ticket.ticketTypeName) {
-
-                <small>
-                  {{ ticket.ticketTypeName }}
-                </small>
-
-                }
-
-              </div>
-
-            </div>
-
-
-
-            <!-- ==============================================
-                     DEPARTURE
-                =============================================== -->
-
-            <div class="flight-point departure-point">
-
-              <strong class="airport-code">
-                {{ ticket.fromAirport }}
-              </strong>
-
-
-              <span class="flight-time">
-
-                {{
-                ticket.departureDateTime
-                | date:'h:mm a'
-                }}
-
-              </span>
-
-
-              <small>
-
-                {{
-                ticket.departureDateTime
-                | date:'dd MMM yyyy'
-                }}
-
-              </small>
-
-
-              <span class="flight-country">
-                {{ ticket.fromCountry }}
-              </span>
-
-            </div>
-
-
-
-            <!-- ==============================================
-                     ROUTE
-                =============================================== -->
-
-            <div class="flight-route">
-
-              <div class="route-duration">
-
-                @if (
-                ticket.stops &&
-                ticket.stops.length > 0
-                ) {
-
-                {{ ticket.stops.length }}
-
-                Stop{{ ticket.stops.length > 1 ? 's' : '' }}
-
-                }
-                @else {
-
-                Direct
-
-                }
-
-              </div>
-
-
-              <div class="route-line-wrapper">
-
-                <span class="route-dot"></span>
-
-                <span class="route-line"></span>
-
-
-                <span class="route-plane-icon">
-
-                  <i class="fa fa-plane"></i>
-
-                </span>
-
-
-                <span class="route-line"></span>
-
-                <span class="route-dot"></span>
-
-              </div>
-
-
-              <small>
-                Flight Journey
-              </small>
-
-            </div>
-
-
-
-            <!-- ==============================================
-                     ARRIVAL
-                =============================================== -->
-
-            <div class="flight-point arrival-point">
-
-              <strong class="airport-code">
-                {{ ticket.toAirport }}
-              </strong>
-
-
-              <span class="flight-time">
-
-                {{
-                ticket.arrivalDateTime
-                | date:'h:mm a'
-                }}
-
-              </span>
-
-
-              <small>
-
-                {{
-                ticket.arrivalDateTime
-                | date:'dd MMM yyyy'
-                }}
-
-              </small>
-
-
-              <span class="flight-country">
-                {{ ticket.toCountry }}
-              </span>
-
-            </div>
-
-
-
-            <!-- ==============================================
-                     PRICE
-                =============================================== -->
-
-            @if (authService.isLoggedIn()) {
-
-            <div class="flight-price-section">
-
-              <span class="price-label">
-                PRICE
-              </span>
-
-
-              <strong class="flight-price">
-
-                {{ ticket.sellingPrice | number:'1.0-2' }}
-
-              </strong>
-
-
-              <span class="price-currency">
-                USD
-              </span>
-
-
-              <small>
-                Non-Refundable
-              </small>
-
-            </div>
-
-            }
-
-
-
-            <!-- ==============================================
-                     ACTION
-                =============================================== -->
-
-            <div class="flight-action-section">
-
-              @if (authService.isLoggedIn()) {
-
-              <button type="button" class="flight-book-btn" (click)="openBookingForm(ticket)">
-
-                Book Now
-
-              </button>
-
-              }
-              @else {
-
-              <button type="button" class="flight-book-btn" (click)="seeTicketDetails(ticket)">
-
-                See Details
-
-              </button>
-
-              }
-
-
-              <button type="button" class="flight-details-btn">
-
-                Flight Details
-
-                <i class="fa fa-chevron-down"></i>
-
-              </button>
-
-            </div>
-
-          </div>
-
-
-
-          <!-- ================================================
-                   TICKET FOOTER
-              ================================================= -->
-
-          <div class="flight-ticket-footer">
-
-
-            <!-- AVAILABLE -->
-            <div class="ticket-feature">
-
-              <i class="fa fa-ticket"></i>
-
-              <span>
-                Available
-              </span>
-
-              <strong>
-                {{ ticket.availableQuantity }}
-              </strong>
-
-            </div>
-
-
-            <!-- VALID UNTIL -->
-            <div class="ticket-feature">
-
-              <i class="fa fa-calendar"></i>
-
-              <span>
-                Valid Until
-              </span>
-
-              <strong>
-
-                {{
-                ticket.validUntil
-                | date:'dd MMM yyyy'
-                }}
-
-              </strong>
-
-            </div>
-
-
-            <!-- STOPS -->
-            @if (
-            ticket.stops &&
-            ticket.stops.length > 0
-            ) {
-
-            <div class="ticket-feature">
-
-              <i class="fa fa-map-marker"></i>
-
-              <span>
-                Stops
-              </span>
-
-              <strong>
-                {{ ticket.stops.length }}
-              </strong>
-
-            </div>
-
-            }
-            @else {
-
-            <div class="ticket-feature direct-feature">
-
-              <i class="fa fa-check-circle"></i>
-
-              <span>
-                Route
-              </span>
-
-              <strong>
-                Direct
-              </strong>
-
-            </div>
-
-            }
-
-
-            <!-- BAGGAGE -->
-            <div class="ticket-baggage">
-
-              <i class="fa fa-briefcase"></i>
-
-              Hand Carry
-
-            </div>
-
-          </div>
-
-
-
-          <!-- ================================================
-                   STOPS DETAILS
-              ================================================= -->
-
-          @if (
-          ticket.stops &&
-          ticket.stops.length > 0
-          ) {
-
-          <div class="flight-stops-details">
-
-
-            <div class="stops-details-title">
-
-              <i class="fa fa-map-marker"></i>
-
-              {{ ticket.stops.length }}
-
-              Stop{{ ticket.stops.length > 1 ? 's' : '' }}
-
-            </div>
-
-
-            <div class="flight-stops-list">
-
-
-              @for (
-              stop of ticket.stops;
-              track stop.stopNumber
-              ) {
-
-              <div class="flight-stop-item">
-
-
-                <span class="stop-badge">
-                  {{ stop.stopNumber }}
-                </span>
-
-
-                <div>
-
+                <div class="compact-flight-point">
                   <strong>
-                    {{ stop.stopAirport }}
+                    {{ ticket.departureDateTime | date:'h:mm a' }}
                   </strong>
 
+                  <span>{{ ticket.fromAirport }}</span>
 
                   <small>
-
-                    Arrival:
-
-                    {{
-                    stop.arrivalDateTime
-                    | date:'dd MMM, hh:mm a'
-                    }}
-
+                    {{ ticket.departureDateTime | date:'dd MMM yyyy' }}
                   </small>
+                </div>
 
+
+                <div class="compact-route-line">
+                  <span>{{ getStopLabel(ticket.stops) }}</span>
+
+                  <div class="compact-route-track">
+                    <span></span>
+                    <i class="fa fa-plane"></i>
+                    <span></span>
+                  </div>
+                </div>
+
+
+                <div class="compact-flight-point">
+                  <strong>
+                    {{ ticket.arrivalDateTime | date:'h:mm a' }}
+                  </strong>
+
+                  <span>{{ ticket.toAirport }}</span>
 
                   <small>
-
-                    Departure:
-
-                    {{
-                    stop.departureDateTime
-                    | date:'dd MMM, hh:mm a'
-                    }}
-
+                    {{ ticket.arrivalDateTime | date:'dd MMM yyyy' }}
                   </small>
+                </div>
+
+
+                @if (authService.isLoggedIn()) {
+                  <div class="compact-price">
+                    <small>PRICE</small>
+                    <strong>
+                      {{ ticket.sellingPrice | number:'1.0-2' }}
+                    </strong>
+                    <span>USD / passenger</span>
+                  </div>
+                }
+
+
+                <div class="compact-ticket-actions">
+
+                  @if (authService.isLoggedIn()) {
+                    <button
+                      type="button"
+                      class="compact-book-btn"
+                      (click)="openBookingForm(ticket)">
+                      Book
+                    </button>
+                  } @else {
+                    <button
+                      type="button"
+                      class="compact-book-btn"
+                      (click)="seeTicketDetails(ticket)">
+                      Details
+                    </button>
+                  }
+
+                  <button
+                    type="button"
+                    class="expand-ticket-btn"
+                    [class.expanded]="isTicketExpanded(ticket.purchaseInvoiceItemId)"
+                    [attr.aria-expanded]="isTicketExpanded(ticket.purchaseInvoiceItemId)"
+                    [attr.aria-label]="isTicketExpanded(ticket.purchaseInvoiceItemId) ? 'Hide ticket details' : 'Show ticket details'"
+                    (click)="toggleTicketDetails(ticket.purchaseInvoiceItemId)">
+
+                    <i
+                      class="fa"
+                      [class.fa-chevron-down]="!isTicketExpanded(ticket.purchaseInvoiceItemId)"
+                      [class.fa-chevron-up]="isTicketExpanded(ticket.purchaseInvoiceItemId)">
+                    </i>
+
+                  </button>
 
                 </div>
 
               </div>
 
+
+              <!-- EXPANDABLE DETAILS -->
+              @if (isTicketExpanded(ticket.purchaseInvoiceItemId)) {
+
+                <div class="expanded-ticket-details">
+
+                  <div class="expanded-details-heading">
+                    <div>
+                      <span>FLIGHT INFORMATION</span>
+                      <h4>Journey details</h4>
+                    </div>
+
+                    <span class="journey-type-pill">
+                      <i class="fa fa-arrow-right"></i>
+                      One way
+                    </span>
+                  </div>
+
+
+                  <div class="expanded-flight-overview">
+
+                    <div class="expanded-airport">
+                      <span>DEPARTURE</span>
+                      <strong>{{ ticket.fromAirport }}</strong>
+                      <small>{{ ticket.fromCountry }}</small>
+                      <b>{{ ticket.departureDateTime | date:'dd MMM yyyy, h:mm a' }}</b>
+                    </div>
+
+                    <!-- <div class="expanded-flight-connector">
+                      <i class="fa fa-plane"></i>
+                      <span>{{ getStopLabel(ticket.stops) }}</span>
+                    </div> -->
+
+                    <div class="compact-route-track">
+                    <span></span>
+                    <i class="fa fa-plane"></i>
+                    <span>{{ getStopLabel(ticket.stops) }}</span>
+                  </div>
+
+                    <div class="expanded-airport">
+                      <span>ARRIVAL</span>
+                      <strong>{{ ticket.toAirport }}</strong>
+                      <small>{{ ticket.toCountry }}</small>
+                      <b>{{ ticket.arrivalDateTime | date:'dd MMM yyyy, h:mm a' }}</b>
+                    </div>
+
+                  </div>
+
+
+                  <div class="expanded-information-grid">
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-ticket"></i>
+                      <div>
+                        <span>Available tickets</span>
+                        <strong>{{ ticket.availableQuantity }}</strong>
+                      </div>
+                    </div>
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-calendar"></i>
+                      <div>
+                        <span>Valid until</span>
+                        <strong>{{ ticket.validUntil | date:'dd MMM yyyy' }}</strong>
+                      </div>
+                    </div>
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-suitcase"></i>
+                      <div>
+                        <span>Checked baggage</span>
+                        <strong>{{ ticket.checkedBaggageKg ?? 0 }} kg</strong>
+                      </div>
+                    </div>
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-briefcase"></i>
+                      <div>
+                        <span>Hand baggage</span>
+                        <strong>{{ ticket.handBaggageKg ?? 0 }} kg</strong>
+                      </div>
+                    </div>
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-shopping-bag"></i>
+                      <div>
+                        <span>Personal item</span>
+                        <strong>{{ ticket.personalItemKg ?? 0 }} kg</strong>
+                      </div>
+                    </div>
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-building"></i>
+                      <div>
+                        <span>Branch</span>
+                        <strong>{{ ticket.branchName || '—' }}</strong>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                  @if (ticket.stops?.length) {
+
+                    <div class="expanded-stops-section">
+                      <h5>
+                        <i class="fa fa-map-marker"></i>
+                        Connecting stops ({{ ticket.stops.length }})
+                      </h5>
+
+                      <div class="expanded-stops-list">
+
+                        @for (stop of ticket.stops; track stop.stopNumber) {
+
+                          <div class="expanded-stop-row">
+
+                            <span class="expanded-stop-number">
+                              {{ stop.stopNumber }}
+                            </span>
+
+                            <div>
+                              <strong>{{ stop.stopAirport || 'Airport not specified' }}</strong>
+
+                              @if (stop.arrivalDateTime) {
+                                <small>
+                                  <i class="fa fa-sign-in"></i>
+                                  Arrival:
+                                  {{ stop.arrivalDateTime | date:'dd MMM yyyy, h:mm a' }}
+                                </small>
+                              }
+
+                              @if (stop.departureDateTime) {
+                                <small>
+                                  <i class="fa fa-sign-out"></i>
+                                  Departure:
+                                  {{ stop.departureDateTime | date:'dd MMM yyyy, h:mm a' }}
+                                </small>
+                              }
+                            </div>
+
+                          </div>
+
+                        }
+
+                      </div>
+                    </div>
+
+                  } @else {
+
+                    <div class="direct-flight-note">
+                      <i class="fa fa-check-circle"></i>
+                      This flight has no connecting stops.
+                    </div>
+
+                  }
+
+                </div>
+
               }
 
-            </div>
-
-          </div>
+            </article>
 
           }
 
+        </div>
 
-          <!-- IMPORTANT:
-                   ARTICLE CLOSES HERE
-              -->
+      }
 
-        </article>
 
-        }
+      <!-- ==============================================
+           ROUND-TRIP TICKETS
+      =============================================== -->
 
-      </div>
+      @if (group.roundTripTickets.length > 0) {
+
+        <div class="ticket-type-heading round-trip-heading">
+          <span class="ticket-type-icon">
+            <i class="fa fa-exchange"></i>
+          </span>
+
+          <div>
+            <h4>Round-trip flights</h4>
+            <p>Outbound and return journey included</p>
+          </div>
+
+          <span class="ticket-type-count">
+            {{ group.roundTripTickets.length }}
+          </span>
+        </div>
+
+
+        <div class="grouped-ticket-list">
+
+          @for (ticket of group.roundTripTickets; track ticket.purchaseInvoiceItemId) {
+
+            <article class="grouped-ticket-card round-trip-card">
+
+              <!-- COMPACT ROUND-TRIP SUMMARY -->
+              <div class="compact-ticket-main">
+
+                <div class="compact-airline">
+                  <div class="compact-airline-icon round-trip-airline-icon">
+                    <i class="fa fa-exchange"></i>
+                  </div>
+
+                  <div>
+                    <strong>{{ ticket.airlineCode || ticket.airlineName }}</strong>
+                    <span>{{ ticket.airlineName }}</span>
+                    <small class="round-trip-label">Round trip</small>
+                  </div>
+                </div>
+
+
+                <div class="compact-flight-point">
+                  <strong>{{ ticket.departureDateTime | date:'h:mm a' }}</strong>
+                  <span>{{ ticket.fromAirport }}</span>
+                  <small>{{ ticket.departureDateTime | date:'dd MMM yyyy' }}</small>
+                </div>
+
+
+                <div class="compact-route-line">
+                  <span>Outbound</span>
+                  <div class="compact-route-track">
+                    <span></span>
+                    <i class="fa fa-plane"></i>
+                    <span></span>
+                  </div>
+                  <small>{{ getStopLabel(ticket.stops) }}</small>
+                </div>
+
+
+                <div class="compact-flight-point">
+                  <strong>{{ ticket.arrivalDateTime | date:'h:mm a' }}</strong>
+                  <span>{{ ticket.toAirport }}</span>
+                  <small>{{ ticket.arrivalDateTime | date:'dd MMM yyyy' }}</small>
+                </div>
+
+
+                @if (authService.isLoggedIn()) {
+                  <div class="compact-price">
+                    <small>PRICE</small>
+                    <strong>{{ ticket.sellingPrice | number:'1.0-2' }}</strong>
+                    <span>USD / passenger</span>
+                  </div>
+                }
+
+
+                <div class="compact-ticket-actions">
+
+                  @if (authService.isLoggedIn()) {
+                    <button
+                      type="button"
+                      class="compact-book-btn"
+                      (click)="openBookingForm(ticket)">
+                      Book
+                    </button>
+                  } @else {
+                    <button
+                      type="button"
+                      class="compact-book-btn"
+                      (click)="seeTicketDetails(ticket)">
+                      Details
+                    </button>
+                  }
+
+                  <button
+                    type="button"
+                    class="expand-ticket-btn"
+                    [class.expanded]="isTicketExpanded(ticket.purchaseInvoiceItemId)"
+                    [attr.aria-expanded]="isTicketExpanded(ticket.purchaseInvoiceItemId)"
+                    [attr.aria-label]="isTicketExpanded(ticket.purchaseInvoiceItemId) ? 'Hide ticket details' : 'Show ticket details'"
+                    (click)="toggleTicketDetails(ticket.purchaseInvoiceItemId)">
+
+                    <i
+                      class="fa"
+                      [class.fa-chevron-down]="!isTicketExpanded(ticket.purchaseInvoiceItemId)"
+                      [class.fa-chevron-up]="isTicketExpanded(ticket.purchaseInvoiceItemId)">
+                    </i>
+
+                  </button>
+
+                </div>
+
+              </div>
+
+
+              <!-- EXPANDABLE ROUND-TRIP DETAILS -->
+              @if (isTicketExpanded(ticket.purchaseInvoiceItemId)) {
+
+                <div class="expanded-ticket-details">
+
+                  <div class="expanded-details-heading">
+                    <div>
+                      <span>COMPLETE ITINERARY</span>
+                      <h4>Outbound and return flights</h4>
+                    </div>
+
+                    <span class="journey-type-pill round-trip-pill">
+                      <i class="fa fa-exchange"></i>
+                      Round trip
+                    </span>
+                  </div>
+
+
+                  <!-- OUTBOUND -->
+                  <div class="itinerary-leg">
+
+                    <div class="itinerary-leg-heading">
+                      <span class="itinerary-leg-icon">
+                        <i class="fa fa-plane"></i>
+                      </span>
+
+                      <div>
+                        <h5>Outbound journey</h5>
+                        <p>{{ ticket.airlineName }}</p>
+                      </div>
+                    </div>
+
+                    <div class="expanded-flight-overview">
+
+                      <div class="expanded-airport">
+                        <span>DEPARTURE</span>
+                        <strong>{{ ticket.fromAirport }}</strong>
+                        <small>{{ ticket.fromCountry }}</small>
+                        <b>{{ ticket.departureDateTime | date:'dd MMM yyyy, h:mm a' }}</b>
+                      </div>
+
+                      <div class="expanded-flight-connector">
+                        <i class="fa fa-plane"></i>
+                        <span>{{ getStopLabel(ticket.stops) }}</span>
+                      </div>
+
+                      <div class="expanded-airport">
+                        <span>ARRIVAL</span>
+                        <strong>{{ ticket.toAirport }}</strong>
+                        <small>{{ ticket.toCountry }}</small>
+                        <b>{{ ticket.arrivalDateTime | date:'dd MMM yyyy, h:mm a' }}</b>
+                      </div>
+
+                    </div>
+
+                    @if (ticket.stops?.length) {
+                      <div class="expanded-stops-list">
+
+                        @for (stop of ticket.stops; track stop.stopNumber) {
+
+                          <div class="expanded-stop-row">
+                            <span class="expanded-stop-number">{{ stop.stopNumber }}</span>
+
+                            <div>
+                              <strong>{{ stop.stopAirport || 'Airport not specified' }}</strong>
+
+                              @if (stop.arrivalDateTime) {
+                                <small>
+                                  Arrival:
+                                  {{ stop.arrivalDateTime | date:'dd MMM yyyy, h:mm a' }}
+                                </small>
+                              }
+
+                              @if (stop.departureDateTime) {
+                                <small>
+                                  Departure:
+                                  {{ stop.departureDateTime | date:'dd MMM yyyy, h:mm a' }}
+                                </small>
+                              }
+                            </div>
+                          </div>
+
+                        }
+
+                      </div>
+                    }
+
+                  </div>
+
+
+                  <!-- RETURN -->
+                  @if (ticket.returnFlightDetails; as returnFlight) {
+
+                    <div class="itinerary-leg return-itinerary-leg">
+
+                      <div class="itinerary-leg-heading">
+                        <span class="itinerary-leg-icon return-leg-icon">
+                          <i class="fa fa-exchange"></i>
+                        </span>
+
+                        <div>
+                          <h5>Return journey</h5>
+                          <p>{{ returnFlight.returnAirline || 'Return airline' }}</p>
+                        </div>
+
+                        @if (returnFlight.returnFlightRoute) {
+                          <span class="return-route-type">
+                            {{ returnFlight.returnFlightRoute }}
+                          </span>
+                        }
+
+                      </div>
+
+                      <div class="expanded-flight-overview">
+
+                        <div class="expanded-airport">
+                          <span>RETURN DEPARTURE</span>
+                          <strong>{{ returnFlight.returnFromAirport || '—' }}</strong>
+                          <b>
+                            {{
+                              returnFlight.returnDepartureDateTime
+                                ? (returnFlight.returnDepartureDateTime | date:'dd MMM yyyy, h:mm a')
+                                : 'Date not available'
+                            }}
+                          </b>
+                        </div>
+
+                        <div class="expanded-flight-connector return-connector">
+                          <i class="fa fa-plane"></i>
+                          <span>{{ getStopLabel(ticket.returnStops) }}</span>
+                        </div>
+
+                        <div class="expanded-airport">
+                          <span>RETURN ARRIVAL</span>
+                          <strong>{{ returnFlight.returnToAirport || '—' }}</strong>
+                          <b>
+                            {{
+                              returnFlight.returnArrivalDateTime
+                                ? (returnFlight.returnArrivalDateTime | date:'dd MMM yyyy, h:mm a')
+                                : 'Date not available'
+                            }}
+                          </b>
+                        </div>
+
+                      </div>
+
+
+                      @if (ticket.returnStops?.length) {
+
+                        <div class="expanded-stops-section">
+                          <h5>
+                            <i class="fa fa-map-marker"></i>
+                            Return connecting stops ({{ ticket.returnStops.length }})
+                          </h5>
+
+                          <div class="expanded-stops-list">
+
+                            @for (stop of ticket.returnStops; track $index) {
+
+                              <div class="expanded-stop-row">
+
+                                <span class="expanded-stop-number">
+                                  {{ stop.stopNumber ?? $index + 1 }}
+                                </span>
+
+                                <div>
+                                  <strong>{{ stop.airportName || 'Airport not specified' }}</strong>
+
+                                  @if (stop.arrivalDateTime) {
+                                    <small>
+                                      Arrival:
+                                      {{ stop.arrivalDateTime | date:'dd MMM yyyy, h:mm a' }}
+                                    </small>
+                                  }
+
+                                  @if (stop.departureDateTime) {
+                                    <small>
+                                      Departure:
+                                      {{ stop.departureDateTime | date:'dd MMM yyyy, h:mm a' }}
+                                    </small>
+                                  }
+                                </div>
+
+                              </div>
+
+                            }
+
+                          </div>
+                        </div>
+
+                      } @else {
+
+                        <div class="direct-flight-note">
+                          <i class="fa fa-check-circle"></i>
+                          No return connecting stops listed.
+                        </div>
+
+                      }
+
+                    </div>
+
+                  }
+
+
+                  <!-- ROUND-TRIP BAGGAGE AND AVAILABILITY -->
+                  <div class="expanded-information-grid">
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-ticket"></i>
+                      <div>
+                        <span>Available tickets</span>
+                        <strong>{{ ticket.availableQuantity }}</strong>
+                      </div>
+                    </div>
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-calendar"></i>
+                      <div>
+                        <span>Valid until</span>
+                        <strong>{{ ticket.validUntil | date:'dd MMM yyyy' }}</strong>
+                      </div>
+                    </div>
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-suitcase"></i>
+                      <div>
+                        <span>Checked baggage</span>
+                        <strong>{{ ticket.checkedBaggageKg ?? 0 }} kg</strong>
+                      </div>
+                    </div>
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-briefcase"></i>
+                      <div>
+                        <span>Hand baggage</span>
+                        <strong>{{ ticket.handBaggageKg ?? 0 }} kg</strong>
+                      </div>
+                    </div>
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-shopping-bag"></i>
+                      <div>
+                        <span>Personal item</span>
+                        <strong>{{ ticket.personalItemKg ?? 0 }} kg</strong>
+                      </div>
+                    </div>
+
+                    <div class="expanded-info-item">
+                      <i class="fa fa-building"></i>
+                      <div>
+                        <span>Branch</span>
+                        <strong>{{ ticket.branchName || '—' }}</strong>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+
+              }
+
+            </article>
+
+          }
+
+        </div>
+
+      }
+
+    </section>
+
+  }
+
+</div>
 
 
 

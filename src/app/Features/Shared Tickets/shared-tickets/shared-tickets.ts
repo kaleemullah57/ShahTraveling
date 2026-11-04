@@ -20,7 +20,8 @@ import {
 
 import {
   SharedTicketModel,
-  SharedTicketsRequest
+  SharedTicketsRequest,
+  TicketCountryGroup
 } from '../../../Core/Models/Public Tickets/shared-ticket-model';
 
 import { Router } from '@angular/router';
@@ -35,6 +36,13 @@ import {
 import { TicketBookingService } from '../../Customer Section/Customers services/Ticket Booking Services/ticket-booking-service';
 
 import { GlobalDropdownService } from '../../../Core/Services/Dropdown Services/global-dropdown-service';
+
+interface TicketGroup {
+  key: string;
+  title: string;
+  journeyType: 'One-way' | 'Round-trip';
+  tickets: SharedTicketModel[];
+}
 
 @Component({
   selector: 'app-shared-tickets',
@@ -63,12 +71,8 @@ export class SharedTickets implements OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
 
 
-  // ============================================================
-  // TICKETS
-  // ============================================================
-
   tickets: SharedTicketModel[] = [];
-
+  expandedTicketIds: Set<number> = new Set<number>();
   loading = false;
 
   totalRecords = 0;
@@ -226,6 +230,8 @@ export class SharedTickets implements OnInit, OnDestroy {
   }
 
 
+
+
   applyFilters(): void {
 
     this.pageNumber = 1;
@@ -361,12 +367,6 @@ export class SharedTickets implements OnInit, OnDestroy {
   ): void {
 
     this.ngZone.run(() => {
-
-      console.log(
-        '🔔 INVENTORY UPDATED:',
-        event.purchaseInvoiceItemId
-      );
-
       this.loadTickets();
 
     });
@@ -865,9 +865,6 @@ export class SharedTickets implements OnInit, OnDestroy {
       .subscribe({
 
         next: (response) => {
-
-          console.log('Passenger Types Response:', response);
-
           if (
             response?.status &&
             response?.data
@@ -889,24 +886,12 @@ export class SharedTickets implements OnInit, OnDestroy {
 
                 })
               );
-
-            console.log(
-              'Passenger Types:',
-              this.passengerTypes
-            );
-
             this.cdr.detectChanges();
           }
 
         },
 
         error: (error) => {
-
-          console.error(
-            'Failed to load passenger types:',
-            error
-          );
-
           this.passengerTypes = [];
         }
 
@@ -1056,17 +1041,112 @@ SHAH TRAVELING AGENCY
 
   formatWhatsAppDate(value: any): string {
 
-  if (!value) {
-    return '-';
+    if (!value) {
+      return '-';
+    }
+
+    return new Date(value).toLocaleString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
   }
 
-  return new Date(value).toLocaleString('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  });
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Ticket Grouping to show in separte sections
+
+  get ticketGroups(): TicketCountryGroup[] {
+    const groups = new Map<string, TicketCountryGroup>();
+
+    for (const ticket of this.tickets ?? []) {
+      const fromCountry = (ticket.fromCountry || 'Unknown country').trim();
+      const toCountry = (ticket.toCountry || 'Unknown country').trim();
+
+      const key = `${fromCountry.toLowerCase()}__${toCountry.toLowerCase()}`;
+
+      if (!groups.has(key)) {
+        groups.set(key, {
+          key,
+          fromCountry,
+          toCountry,
+          oneWayTickets: [],
+          roundTripTickets: []
+        });
+      }
+
+      const group = groups.get(key)!;
+
+      if (ticket.returnFlightDetails) {
+        group.roundTripTickets.push(ticket);
+      } else {
+        group.oneWayTickets.push(ticket);
+      }
+    }
+
+    return Array.from(groups.values());
+  }
+
+  /**
+   * Expands or collapses a single ticket.
+   */
+  toggleTicketDetails(ticketId: number): void {
+    if (this.expandedTicketIds.has(ticketId)) {
+      this.expandedTicketIds.delete(ticketId);
+    } else {
+      this.expandedTicketIds.add(ticketId);
+    }
+  }
+
+  /**
+   * Checks whether a ticket's details are currently visible.
+   */
+  isTicketExpanded(ticketId: number): boolean {
+    return this.expandedTicketIds.has(ticketId);
+  }
+
+  /**
+   * Displays a readable stop count.
+   */
+  getStopLabel(stops: unknown[] | null | undefined): string {
+    const count = stops?.length ?? 0;
+
+    if (count === 0) {
+      return 'Direct';
+    }
+
+    return `${count} ${count === 1 ? 'stop' : 'stops'}`;
+  }
+
+
+
 }

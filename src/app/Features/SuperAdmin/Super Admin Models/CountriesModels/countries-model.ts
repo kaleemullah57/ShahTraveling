@@ -40,3 +40,15 @@ export interface ApiResponse<T = any> {
   status:number;
   data?: T;
 }
+
+
+
+
+
+// Update Countries 
+export interface UpdateCountryModel {
+  countryId: number;
+  countryName: string;
+  countryCode: string;
+  isActive: boolean;
+}

@@ -1,5 +1,5 @@
 import { inject, Service } from '@angular/core';
-import { AddCountryModel, ApiResponse, CountryResponse, GetCountriesRequest, GetCountry } from '../../Super Admin Models/CountriesModels/countries-model';
+import { AddCountryModel, ApiResponse, CountryResponse, GetCountriesRequest, GetCountry, UpdateCountryModel } from '../../Super Admin Models/CountriesModels/countries-model';
 import { ApiService } from '../../../../Core/Services/API Services/api-service';
 
 import { HttpClient } from '@angular/common/http';
@@ -21,10 +21,21 @@ export class CountriesService {
 
 
   // Add Countreis
- addCountry(country: AddCountryModel) {
+  addCountry(country: AddCountryModel) {
 
     return this.apiService.post<ApiResponse>(
       'SuperAdminSetup/AddCountry',
+      country
+    );
+  }
+
+
+
+
+  // Update Countries
+  updateCountry(country: UpdateCountryModel) {
+    return this.apiService.put<ApiResponse>(
+      'SuperAdminSetup/UpdateCountry',
       country
     );
   }

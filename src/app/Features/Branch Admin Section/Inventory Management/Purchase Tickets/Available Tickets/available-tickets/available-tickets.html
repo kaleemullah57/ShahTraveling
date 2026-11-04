@@ -515,43 +515,196 @@
       </article>
 
 
-      <!-- SECTION 05 — FLIGHT STOPS -->
+      <!-- SECTION 05 — OUTBOUND FLIGHT STOPS -->
       @if (selectedTicket.stops && selectedTicket.stops.length > 0) {
+        <article class="individual-ticket-card">
+          <div class="individual-ticket-header">
+            <div class="individual-ticket-title">
+              <div class="ticket-number">
+                <span>SECTION</span>
+                <strong>05</strong>
+              </div>
 
-      <article class="individual-ticket-card">
-        <div class="individual-ticket-header">
-          <div class="individual-ticket-title">
-            <div class="ticket-number">
-              <span>SECTION</span>
-              <strong>05</strong>
-            </div>
-            <div class="individual-passenger-name">
-              <span>FLIGHT STOPS</span>
-              <h3>
-                {{ selectedTicket.stops.length }}
-                Stop{{ selectedTicket.stops.length === 1 ? '' : 's' }}
-              </h3>
+              <div class="individual-passenger-name">
+                <span>OUTBOUND FLIGHT STOPS</span>
+                <h3>
+                  {{ selectedTicket.stops.length }}
+                  Stop{{ selectedTicket.stops.length === 1 ? '' : 's' }}
+                </h3>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="ticket-event-row">
-          @for (stop of selectedTicket.stops; track stop.stopNumber) {
-          <div class="event-detail confirmed-event">
-            <div class="event-icon">
-              <i class="fa fa-map-marker-alt"></i>
-            </div>
-            <div>
-              <span>Stop {{ stop.stopNumber }} · {{ stop.stopAirport }}</span>
-              <strong>Arr: {{ stop.arrivalDateTime | date:'dd MMM, hh:mm a' }}</strong>
-              <small>Dep: {{ stop.departureDateTime | date:'dd MMM, hh:mm a' }}</small>
-            </div>
+          <div class="ticket-event-row">
+            @for (stop of selectedTicket.stops; track stop.stopNumber) {
+              <div class="event-detail confirmed-event">
+                <div class="event-icon">
+                  <i class="fa fa-map-marker-alt"></i>
+                </div>
+
+                <div>
+                  <span>Stop {{ stop.stopNumber }} · {{ stop.stopAirport }}</span>
+                  <strong>
+                    Arr: {{ stop.arrivalDateTime | date:'dd MMM yyyy, hh:mm a' }}
+                  </strong>
+                  <small>
+                    Dep: {{ stop.departureDateTime | date:'dd MMM yyyy, hh:mm a' }}
+                  </small>
+                </div>
+              </div>
+            }
           </div>
-          }
-        </div>
-      </article>
-
+        </article>
       }
+
+      <!-- SECTION 06 — RETURN FLIGHT DETAILS -->
+      @if (selectedTicket.returnFlightDetails; as returnFlight) {
+        <article class="individual-ticket-card return-flight-section">
+          <div class="individual-ticket-header">
+            <div class="individual-ticket-title">
+              <div class="ticket-number">
+                <span>SECTION</span>
+                <strong>06</strong>
+              </div>
+
+              <div class="individual-passenger-name">
+                <span>RETURN JOURNEY</span>
+                <h3>Return Flight Details</h3>
+              </div>
+            </div>
+
+            <div class="return-route-badge">
+              <i class="fa fa-exchange-alt"></i>
+              {{ returnFlight.returnFlightRoute || 'Return Flight' }}
+            </div>
+          </div>
+
+          <!-- RETURN ROUTE -->
+          <div class="return-route-summary">
+            <div class="return-airport">
+              <span>FROM</span>
+              <h3>{{ returnFlight.returnFromAirport || '-' }}</h3>
+              <small>Return departure airport</small>
+            </div>
+
+            <div class="return-route-connector">
+              <i class="fa fa-plane"></i>
+              <span>{{ returnFlight.returnFlightRoute || 'Return Journey' }}</span>
+              <div class="route-line"></div>
+            </div>
+
+            <div class="return-airport">
+              <span>TO</span>
+              <h3>{{ returnFlight.returnToAirport || '-' }}</h3>
+              <small>Return arrival airport</small>
+            </div>
+          </div>
+
+          <!-- RETURN FLIGHT INFORMATION -->
+          <div class="passenger-details-grid">
+            <div class="passenger-info">
+              <span>Return Airline</span>
+              <strong>{{ returnFlight.returnAirline || '-' }}</strong>
+            </div>
+
+            <!-- <!-- <div class="passenger-info">
+              <span>Airline ID</span>
+              <strong>{{ returnFlight.returnAirlineId }}</strong>
+            </div>   -->
+
+            <!-- <div class="passenger-info">
+              <span>From Airport ID</span>
+              <strong>{{ returnFlight.returnFromAirportId }}</strong>
+            </div>  -->
+
+            <!-- <div class="passenger-info">
+              <span>To Airport ID</span>
+              <strong>{{ returnFlight.returnToAirportId }}</strong>
+            </div> -->
+
+            <div class="passenger-info">
+              <span>Route Type</span>
+              <strong>{{ returnFlight.returnFlightRoute || '-' }}</strong>
+            </div> 
+
+            <!-- <div class="passenger-info">
+              <span>Route Type ID</span>
+              <strong>{{ returnFlight.returnFlightRouteTypeId }}</strong>
+            </div>  -->
+
+            <div class="passenger-info">
+              <span>Return Departure</span>
+              <strong>
+                {{ returnFlight.returnDepartureDateTime
+                    ? (returnFlight.returnDepartureDateTime | date:'dd MMM yyyy, HH:mm')
+                    : '-' }}
+              </strong>
+            </div>
+
+            <div class="passenger-info">
+              <span>Return Arrival</span>
+              <strong>
+                {{ returnFlight.returnArrivalDateTime
+                    ? (returnFlight.returnArrivalDateTime | date:'dd MMM yyyy, HH:mm')
+                    : '-' }}
+              </strong>
+            </div>
+          </div>
+        </article>
+      }
+
+      <!-- SECTION 07 — RETURN FLIGHT STOPS -->
+      @if (selectedTicket.returnFlightDetails && selectedTicket.returnStops?.length) {
+        <article class="individual-ticket-card">
+          <div class="individual-ticket-header">
+            <div class="individual-ticket-title">
+              <div class="ticket-number">
+                <span>SECTION</span>
+                <strong>07</strong>
+              </div>
+
+              <div class="individual-passenger-name">
+                <span>RETURN FLIGHT STOPS</span>
+                <h3>
+                  {{ selectedTicket.returnStops.length }}
+                  Stop{{ selectedTicket.returnStops.length === 1 ? '' : 's' }}
+                </h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-event-row">
+            @for (stop of selectedTicket.returnStops; track stop.stopNumber) {
+              <div class="event-detail confirmed-event">
+                <div class="event-icon">
+                  <i class="fa fa-map-marker-alt"></i>
+                </div>
+
+                <div>
+                  <span>
+                    Stop {{ stop.stopNumber }} · {{ stop.airportName }}
+                  </span>
+
+                  <strong>
+                    Arr:
+                    {{ stop.arrivalDateTime
+                        ? (stop.arrivalDateTime | date:'dd MMM yyyy, hh:mm a')
+                        : '-' }}
+                  </strong>
+
+                  <small>
+                    Dep:
+                    {{ stop.departureDateTime
+                        ? (stop.departureDateTime | date:'dd MMM yyyy, hh:mm a')
+                        : '-' }}
+                  </small>
+                </div>
+              </div>
+            }
+          </div>
+        </article>
+      }
+
 
     </div>
 

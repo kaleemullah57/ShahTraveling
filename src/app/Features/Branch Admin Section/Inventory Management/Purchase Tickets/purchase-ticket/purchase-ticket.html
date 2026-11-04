@@ -42,76 +42,76 @@
 
         <div class="flight-configuration">
 
-          <!-- FLIGHT TYPE -->
+  <!-- FLIGHT TYPE DROPDOWN -->
 
-          <div class="config-field">
+<div class="config-field">
+  <label>
+    Flight Type
+    <span class="required">*</span>
+  </label>
 
-            <label>
-              Flight Type
-              <span class="required">*</span>
-            </label>
+  <select
+    [value]="flightJourneyTypeId ?? ''"
+    [disabled]="flightTypesLoading"
+    (change)="onFlightJourneyTypeChange($any($event.target).value)">
 
-            <select [value]="flightJourneyTypeId ?? ''" [disabled]="flightTypesLoading" (change)="
-                onFlightJourneyTypeChange(
-                  $any($event.target).value
-                )
-              ">
+    <option value="">Select Flight Type</option>
 
-              <option value="">
-                Select Flight Type
-              </option>
+    @for (type of flightTypes; track type.value) {
+      <option [value]="type.value">
+        {{ type.label }}
+      </option>
+    }
+  </select>
+</div>
 
-              @for (
-              type of flightTypes;
-              track type.value
-              ) {
+  <!-- OUTBOUND FLIGHT ROUTE TYPE DROPDOWN -->
+  <div class="config-field">
+    <label>
+      Flight Route Type
+      <span class="required">*</span>
+    </label>
 
-              <option [value]="type.value">
-                {{ type.label }}
-              </option>
+    <select
+      [value]="flightRouteTypeId ?? ''"
+      [disabled]="flightRouteTypesLoading"
+      (change)="onFlightRouteTypeChange($any($event.target).value)">
 
-              }
+      <option value="">Select Flight Route Type</option>
 
-            </select>
+      @for (type of flightRouteTypes; track type.value) {
+        <option [value]="type.value">
+          {{ type.label }}
+        </option>
+      }
+    </select>
+  </div>
 
-          </div>
+  <!-- RETURN FLIGHT ROUTE TYPE DROPDOWN -->
+  @if (isReturnJourney) {
+    <div class="config-field">
+      <label>
+        Return Flight Route Type
+        <span class="required">*</span>
+      </label>
 
+      <select
+        [value]="returnFlightRouteTypeId ?? ''"
+        [disabled]="flightRouteTypesLoading"
+        (change)="onReturnFlightRouteTypeChange($any($event.target).value)">
 
-          <!-- FLIGHT ROUTE TYPE -->
+        <option value="">Select Return Flight Route Type</option>
 
-          <div class="config-field">
+        @for (type of flightRouteTypes; track type.value) {
+          <option [value]="type.value">
+            {{ type.label }}
+          </option>
+        }
+      </select>
+    </div>
+  }
 
-            <label>
-              Flight Route Type
-              <span class="required">*</span>
-            </label>
-
-            <select [value]="flightRouteTypeId ?? ''" [disabled]="flightRouteTypesLoading" (change)="
-                onFlightRouteTypeChange(
-                  $any($event.target).value
-                )
-              ">
-
-              <option value="">
-                Select Flight Route Type
-              </option>
-
-              @for (
-              type of flightRouteTypes;
-              track type.value
-              ) {
-
-              <option [value]="type.value">
-                {{ type.label }}
-              </option>
-
-              }
-
-            </select>
-
-          </div>
-
-        </div>
+</div>
 
 
         <!-- =================================================
@@ -148,7 +148,7 @@
 
         @if (canShowTicketFields) {
 
-        <app-global-form [embedded]="true" [fields]="ticketFormFields" [buttons]="formButtons" [loading]="loading"
+        <app-global-form [embedded]="true" [fields]="visibleTicketFormFields" [buttons]="formButtons" [loading]="loading"
           title="" (formSubmit)="submitTicketPurchase($event)" (formReset)="closeAddForm()">
 
           <!-- =================================================
@@ -831,6 +831,162 @@
 
       </div>
 
+
+
+<!-- RETURN FLIGHT DETAILS -->
+
+@if (selectedInvoice.returnFlightDetails?.returnAirlineId != null) {
+
+  <div class="invoice-section return-flight-section">
+
+    <div class="section-title">
+      <i class="fa fa-plane"></i>
+      Return Flight Details
+    </div>
+
+    <div class="flight-card return-flight-card">
+
+      <div class="airline-block">
+
+        <strong>
+          {{ selectedInvoice.returnFlightDetails.returnAirline }}
+        </strong>
+
+        <small>
+          Return Airline
+        </small>
+
+        @if (selectedInvoice.returnFlightDetails.returnFlightRoute) {
+          <span class="return-route-badge">
+            {{ selectedInvoice.returnFlightDetails.returnFlightRoute }}
+          </span>
+        }
+
+      </div>
+
+      <div class="route-block">
+
+        <div class="airport">
+
+          <span class="small-label">
+            Return Departure
+          </span>
+
+          <strong>
+            {{ selectedInvoice.returnFlightDetails.returnFromAirport || 'N/A' }}
+          </strong>
+
+          <small>
+            {{
+              selectedInvoice.returnFlightDetails.returnDepartureDateTime
+                ? (selectedInvoice.returnFlightDetails.returnDepartureDateTime | date:'dd MMM yyyy, HH:mm')
+                : 'N/A'
+            }}
+          </small>
+
+        </div>
+
+        <div class="route-line">
+          <i class="fa fa-plane"></i>
+        </div>
+
+        <div class="airport destination">
+
+          <span class="small-label">
+            Return Arrival
+          </span>
+
+          <strong>
+            {{ selectedInvoice.returnFlightDetails.returnToAirport || 'N/A' }}
+          </strong>
+
+          <small>
+            {{
+              selectedInvoice.returnFlightDetails.returnArrivalDateTime
+                ? (selectedInvoice.returnFlightDetails.returnArrivalDateTime | date:'dd MMM yyyy, HH:mm')
+                : 'N/A'
+            }}
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RETURN STOPS -->
+
+    @if (selectedInvoice.returnStops?.length > 0) {
+
+      <div class="flight-stops return-flight-stops">
+
+        <div class="stops-title">
+          <i class="fa fa-map-marker-alt"></i>
+          <span>Return Flight Stops</span>
+        </div>
+
+        <div class="stops-list">
+
+          @for (
+            stop of selectedInvoice.returnStops;
+            track stop.stopNumber
+          ) {
+
+            <div class="stop-item">
+
+              <div class="stop-number">
+                {{ stop.stopNumber }}
+              </div>
+
+              <div class="stop-details">
+
+                <strong>
+                  {{ stop.airportName || 'Unknown Airport' }}
+                </strong>
+
+                <div class="stop-times">
+
+                  <div>
+                    <span>Arrival</span>
+
+                    <strong>
+                      {{
+                        stop.arrivalDateTime
+                          ? (stop.arrivalDateTime | date:'dd MMM yyyy, hh:mm a')
+                          : 'N/A'
+                      }}
+                    </strong>
+                  </div>
+
+                  <div>
+                    <span>Departure</span>
+
+                    <strong>
+                      {{
+                        stop.departureDateTime
+                          ? (stop.departureDateTime | date:'dd MMM yyyy, hh:mm a')
+                          : 'N/A'
+                      }}
+                    </strong>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+}
 
 
 

@@ -7,21 +7,21 @@ import { Router, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-customer-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterOutlet],
+  imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './customer-dashboard.html',
   styleUrl: './customer-dashboard.scss',
 })
 export class CustomerDashboard {
 
-   private readonly router = inject(Router);
+  private readonly router = inject(Router);
 
   exploreTickets(): void {
     this.router.navigate(['/customer/shared-tickets']);
   }
 
   openMyTickets(): void {
-  this.router.navigate(['/BookedTickets']);
-}
+    this.router.navigate(['/BookedTickets']);
+  }
 
   openOther(): void {
     // Add your Other page/route here later
@@ -29,6 +29,12 @@ export class CustomerDashboard {
 
   openTickets(): void {
     this.router.navigate(['/tickets']);
+  }
+
+
+
+  openMyLedger(): void {
+    this.router.navigate(['/CustomerLedger']);
   }
 
 }

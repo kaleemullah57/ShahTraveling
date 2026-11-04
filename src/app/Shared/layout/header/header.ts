@@ -88,12 +88,6 @@ export class Header
       )
       .subscribe(user => {
 
-        console.log(
-          'HEADER USER CHANGED:',
-          user
-        );
-
-
         this.updateUser(
           user
         );
@@ -117,10 +111,6 @@ export class Header
 
       this.userType = 0;
 
-      console.log(
-        'HEADER: LOGGED OUT'
-      );
-
       return;
     }
 
@@ -132,18 +122,6 @@ export class Header
       Number(
         user.userTypeId ?? 0
       );
-
-
-    console.log(
-      'HEADER: LOGGED IN'
-    );
-
-
-    console.log(
-      'HEADER USER TYPE:',
-      this.userType
-    );
-
   }
 
 
@@ -171,11 +149,6 @@ export class Header
   // ==========================================
 
   logout(): void {
-
-    console.log(
-      'HEADER LOGOUT'
-    );
-
 
     this.authService.logout();
 

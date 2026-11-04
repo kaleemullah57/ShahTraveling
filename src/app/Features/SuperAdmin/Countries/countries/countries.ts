@@ -1,139 +1,90 @@
-import { Component, ChangeDetectorRef, inject } from '@angular/core';
-import { AddCountryModel, GetCountriesRequest, GetCountry } from '../../Super Admin Models/CountriesModels/countries-model';
+
+import { Component, ChangeDetectorRef, inject, OnInit } from '@angular/core';
+import {
+  AddCountryModel,
+  GetCountriesRequest,
+  GetCountry,
+  UpdateCountryModel
+} from '../../Super Admin Models/CountriesModels/countries-model';
+
 import { CountriesService } from '../../Super Admin Services/countries services/countries-service';
-import { DataTable, TableAction, TableColumn } from '../../../../Shared/components/DataTables/data-table/data-table';
+import {
+  DataTable,
+  TableAction,
+  TableColumn
+} from '../../../../Shared/components/DataTables/data-table/data-table';
+
 import { CommonModule } from '@angular/common';
-import { FormButton, FormField, forms } from '../../../../Shared/components/Forms/forms/forms';
+import {
+  FormButton,
+  FormField,
+  forms
+} from '../../../../Shared/components/Forms/forms/forms';
+
 import { NotificationService } from '../../../../Core/Services/Notification Services/notification-service';
 import { Button } from '../../../../Shared/components/button/button';
+
 @Component({
   selector: 'app-countries',
-  standalone:true,
-  imports: [DataTable, CommonModule, forms,Button],
+  standalone: true,
+  imports: [DataTable, CommonModule, forms, Button],
   templateUrl: './countries.html',
   styleUrl: './countries.scss'
 })
-export class Countries {
+export class Countries implements OnInit {
+
   private readonly countriesService = inject(CountriesService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly notification = inject(NotificationService);
+
   countries: GetCountry[] = [];
 
   loading = false;
+  saving = false;
+
+  showAddForm = false;
+  isEditMode = false;
+  selectedCountryId: number | null = null;
+
+  // =========================
+  // TABLE COLUMNS
+  // =========================
 
   columns: TableColumn[] = [
-
     {
       key: 'countryName',
       label: 'Country Name',
       type: 'text'
     },
-
     {
       key: 'countryCode',
       label: 'Country Code',
       type: 'text'
     },
-
     {
       key: 'userName',
       label: 'Created By',
       type: 'text'
     },
-
     {
       key: 'createdOn',
       label: 'Created On',
       type: 'date'
     },
-
     {
       key: 'isActive',
       label: 'Status',
       type: 'status'
     }
-
   ];
+
   actions: TableAction[] = [
-    {
-      type: 'view',
-      label: 'View',
-      icon: 'fa fa-eye'
-    },
     {
       type: 'edit',
       label: 'Edit',
       icon: 'fa fa-pencil'
-    },
-    {
-      type: 'delete',
-      label: 'Delete',
-      icon: 'fa fa-trash'
     }
   ];
-
-
-  ngOnInit(): void {
-    this.loadCountries();
-  }
-
-  loadCountries(): void {
-
-    this.loading = true;
-
-    const request: GetCountriesRequest = {
-      search: null,
-      pageNumber: 1,
-      pageSize: 20
-    };
-
-    this.countriesService
-      .getCountries(request)
-      .subscribe({
-
-        next: (response) => {
-          if (response.success) {
-
-            this.countries = response.data;
-
-          }
-
-          this.loading = false;
-
-          // Force Angular to update the view
-          this.cdr.detectChanges();
-        },
-
-        error: (error) => {
-
-          this.saving = false;
-
-          this.cdr.detectChanges();
-        }
-
-      });
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-  // Add Countries
-  // =========================
-  // FORM STATE
-  // =========================
-
-  showAddForm = false;
-
-  saving = false;
-
 
   // =========================
   // COUNTRY MODEL
@@ -145,53 +96,94 @@ export class Countries {
     isActive: true
   };
 
-
   // =========================
   // FORM FIELDS
   // =========================
 
   formFields: FormField[] = [
-
     {
       key: 'countryName',
       label: 'Country Name',
       type: 'text'
     },
-
     {
       key: 'countryCode',
       label: 'Country Code',
       type: 'text'
     },
-
     {
       key: 'isActive',
       label: 'Active',
       type: 'checkbox'
     }
-
   ];
-
 
   // =========================
   // FORM BUTTONS
   // =========================
 
   formButtons: FormButton[] = [
-
     {
       label: 'Cancel',
       type: 'reset',
       style: 'secondary'
     },
-
     {
       label: 'Add Country',
       type: 'submit',
       style: 'primary'
     }
-
   ];
+
+  // =========================
+  // INIT
+  // =========================
+
+  ngOnInit(): void {
+    this.loadCountries();
+  }
+
+  // =========================
+  // GET COUNTRIES
+  // =========================
+
+  loadCountries(): void {
+
+    this.loading = true;
+
+    const request: GetCountriesRequest = {
+      search: null,
+      pageNumber: 1,
+      pageSize: 20
+    };
+
+    this.countriesService.getCountries(request).subscribe({
+
+      next: (response) => {
+
+        if (response.success) {
+          this.countries = response.data ?? [];
+        }
+
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+
+      error: (error) => {
+
+        this.loading = false;
+
+        console.error('GET COUNTRIES ERROR:', error);
+
+        this.notification.error(
+          error?.error?.message ?? 'Unable to load countries.'
+        );
+
+        this.cdr.detectChanges();
+      }
+
+    });
+  }
 
   // =========================
   // OPEN ADD FORM
@@ -199,23 +191,71 @@ export class Countries {
 
   openAddCountry(): void {
 
+    this.isEditMode = false;
+    this.selectedCountryId = null;
+
     this.countryModel = {
       countryName: '',
       countryCode: '',
       isActive: true
     };
 
+    this.formButtons = [
+      {
+        label: 'Cancel',
+        type: 'reset',
+        style: 'secondary'
+      },
+      {
+        label: 'Add Country',
+        type: 'submit',
+        style: 'primary'
+      }
+    ];
+
     this.showAddForm = true;
   }
 
+  // =========================
+  // OPEN EDIT FORM
+  // =========================
+
+  editCountry(country: GetCountry): void {
+
+    this.isEditMode = true;
+    this.selectedCountryId = country.countryId;
+
+    this.countryModel = {
+      countryName: country.countryName,
+      countryCode: country.countryCode,
+      isActive: country.isActive
+    };
+
+    this.formButtons = [
+      {
+        label: 'Cancel',
+        type: 'reset',
+        style: 'secondary'
+      },
+      {
+        label: 'Update Country',
+        type: 'submit',
+        style: 'primary'
+      }
+    ];
+
+    this.showAddForm = true;
+  }
 
   // =========================
-  // CANCEL
+  // CANCEL FORM
   // =========================
 
   cancelAddCountry(): void {
 
     this.showAddForm = false;
+    this.isEditMode = false;
+    this.selectedCountryId = null;
 
     this.countryModel = {
       countryName: '',
@@ -224,67 +264,95 @@ export class Countries {
     };
   }
 
-
   // =========================
-  // ADD COUNTRY
+  // SAVE COUNTRY
+  // ADD / UPDATE
   // =========================
 
-  addCountry(model: AddCountryModel): void {
+  saveCountry(model: AddCountryModel): void {
 
-  this.saving = true;
+    this.saving = true;
 
-  this.countriesService
-    .addCountry(model)
-    .subscribe({
+    if (this.isEditMode && this.selectedCountryId !== null) {
 
-      next: (response) => {
+      const payload: UpdateCountryModel = {
+        countryId: this.selectedCountryId,
+        countryName: model.countryName,
+        countryCode: model.countryCode,
+        isActive: model.isActive
+      };
 
-        this.saving = false;
+      this.countriesService.updateCountry(payload).subscribe({
 
-        console.log('ADD COUNTRY RESPONSE:', response);
+        next: (response) => {
 
-        if (response.success) {
+          this.saving = false;
 
-          // 🔔 SUCCESS NOTIFICATION
-          this.notification.success(
-            response.message ?? 'Country added successfully.'
-          );
+          if (response.success) {
 
-          this.countryModel = {
-            countryName: '',
-            countryCode: '',
-            isActive: true
-          };
+            this.notification.success(
+              response.message || 'Country updated successfully.'
+            );
 
-          this.showAddForm = false;
+            this.cancelAddCountry();
+            this.loadCountries();
 
-          this.loadCountries();
+          }
+          else {
 
-        } else {
+            this.notification.error(
+              response.message || 'Unable to update country.'
+            );
 
-          // 🔔 API returned failure
-          this.notification.error(
-            response.message ?? 'Unable to add country.'
-          );
+          }
+
+          this.cdr.detectChanges();
+        },
+
+        error: error => {
+          this.saving = false;
+          console.error('UPDATE COUNTRY ERROR:', error);
+          this.cdr.detectChanges();
         }
 
-        this.cdr.detectChanges();
-      },
+      });
 
-      error: (error) => {
+    } else {
 
-        this.saving = false;
+      this.countriesService.addCountry(model).subscribe({
 
-        console.error('❌ ADD COUNTRY ERROR:', error);
+        next: (response) => {
 
-        this.notification.error(
-          error?.error?.message ??
-          'Something went wrong while adding country.'
-        );
+          this.saving = false;
 
-        this.cdr.detectChanges();
-      }
+          if (response.success) {
 
-    });
-}
+            this.notification.success(
+              response.message || 'Country added successfully.'
+            );
+
+            this.cancelAddCountry();
+            this.loadCountries();
+
+          } else {
+
+            this.notification.error(
+              response.message || 'Unable to add country.'
+            );
+
+          }
+
+          this.cdr.detectChanges();
+        },
+
+        error: error => {
+          this.saving = false;
+          console.error('ADD COUNTRY ERROR:', error);
+          this.cdr.detectChanges();
+        }
+
+      });
+
+    }
+  }
 }

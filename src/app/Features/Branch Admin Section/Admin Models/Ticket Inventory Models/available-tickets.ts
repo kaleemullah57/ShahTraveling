@@ -13,21 +13,20 @@ export interface AvailableTicketsRequest {
   fromSellingPrice?: number | null;
   toSellingPrice?: number | null;
 }
-
 export interface AvailableTicketModel {
   purchaseInvoiceItemId: number;
   purchaseInvoiceId: number;
+  invoiceNumber : string | null;
 
   departureDateTime?: string | null;
   arrivalDateTime?: string | null;
 
   quantity: number;
-  sharedQuantity: number | 0;
-  soldQuantity:number | 0;
-  remainingInventory:number | 0;
-  availableToCustomer:number | 0;
-  availableToShare:number | 0;
-
+  sharedQuantity: number;
+  soldQuantity: number;
+  remainingInventory: number;
+  availableToCustomer: number;
+  availableToShare: number;
 
   purchasePrice: number;
   sellingPrice: number;
@@ -43,8 +42,8 @@ export interface AvailableTicketModel {
   branchName?: string | null;
 
   airlineName?: string | null;
-  pnrNo: string;
   airlineCode?: string | null;
+  pnrNo: string;
 
   fromAirport?: string | null;
   toAirport?: string | null;
@@ -54,14 +53,55 @@ export interface AvailableTicketModel {
 
   createdDate?: string | null;
 
-  ticketTypeName : string;
-   stops: GetAvailablePurchaseInvoiceStop[];
+  ticketTypeId?: number | null;
+  ticketTypeName: string;
+
+  // Outbound flight stops
+  stopsJson?: string | null;
+  stops: GetAvailablePurchaseInvoiceStop[];
+
+  // Return flight details
+  returnAiroplanDetailJson?: string | null;
+  returnFlightDetails?: AvailableTicketReturnFlightModel | null;
+
+  // Return flight stops
+  returnStopsJSON?: string | null;
+  returnStops: AvailableTicketReturnStop[];
 }
+
 export interface GetAvailablePurchaseInvoiceStop {
   stopNumber: number;
   stopAirport: string;
   arrivalDateTime: string | null;
   departureDateTime: string | null;
+}
+
+export interface AvailableTicketReturnFlightModel {
+  returnAirlineId: number;
+  returnAirline: string;
+
+  returnFromAirportId: number;
+  returnFromAirport: string;
+
+  returnToAirportId: number;
+  returnToAirport: string;
+
+  returnDepartureDateTime: string | null;
+  returnArrivalDateTime: string | null;
+
+  returnFlightRouteTypeId: number;
+  returnFlightRoute: string;
+}
+
+export interface AvailableTicketReturnStop {
+  stopNumber: number;
+  purchaseInvoiceItemId: number;
+  airportId: number;
+  airportName: string;
+
+  arrivalDateTime: string | null;
+  departureDateTime: string | null;
+  createdDate: string | null;
 }
 
 export interface ApiResponse<T> {

@@ -65,21 +65,12 @@ export class AvailableTickets implements OnInit, OnDestroy {
   fromSellingPrice: number | null = null;
   toSellingPrice: number | null = null;
 
-
-  // columns = [
-  //   { key: 'airlineName', label: 'Airline' },
-  //   { key: 'fromAirport', label: 'From' },
-  //   { key: 'toAirport', label: 'To' },
-  //   { key: 'departureDateTime', label: 'Departure' },
-  //   { key: 'arrivalDateTime', label: 'Arrival' },
-  //   { key: 'quantity', label: 'Available' },
-  //   { key: 'availableToCustomers', label: 'Available' },
-  //   { key: 'sellingPrice', label: 'Selling Price' },
-  //   { key: 'validUntil', label: 'Valid Until' },
-  //   { key: 'ticketTypeName', label: 'Ticket Type' }
-  // ];
-
   columns: TableColumn[] = [
+    {
+      key: 'invoiceNumber',
+      label: 'InvoiceNumber',
+      type: 'text'
+    },
     {
       key: 'airlineName',
       label: 'Airline',
@@ -170,24 +161,12 @@ export class AvailableTickets implements OnInit, OnDestroy {
   // Ticket price / sharing changes
   this.realtimenotificationservice.ticketUpdated$
     .subscribe((event) => {
-
-      console.log(
-        '🔔 TICKET UPDATED:',
-        event
-      );
-
       this.loadAvailableTickets();
     });
 
   // Customer booking / inventory changes
   this.realtimenotificationservice.ticketInventoryUpdated$
     .subscribe((event) => {
-
-      console.log(
-        '🔔 INVENTORY UPDATED:',
-        event
-      );
-
       this.loadAvailableTickets();
     });
 }
@@ -212,9 +191,6 @@ export class AvailableTickets implements OnInit, OnDestroy {
       .getAvailableTickets(request)
       .subscribe({
         next: (response) => {
-
-          console.log('🔥 AVAILABLE TICKETS RESPONSE:', response);
-
           if (response?.status === true && Array.isArray(response?.data)) {
 
             this.tickets = [...response.data];
@@ -1034,12 +1010,6 @@ export class AvailableTickets implements OnInit, OnDestroy {
       .subscribe({
 
         next: (response) => {
-
-          console.log(
-            '🔥 PASSENGER PRICES RESPONSE:',
-            response
-          );
-
           if (
             response?.status === true &&
             response?.statusCode === 200 &&
@@ -1171,12 +1141,6 @@ export class AvailableTickets implements OnInit, OnDestroy {
     };
 
 
-    console.log(
-      '🔥 ADD PASSENGER PRICE REQUEST:',
-      request
-    );
-
-
     this.passengerPriceSaving = true;
 
 
@@ -1194,12 +1158,6 @@ export class AvailableTickets implements OnInit, OnDestroy {
       .subscribe({
 
         next: (response) => {
-
-          console.log(
-            '🔥 ADD PASSENGER PRICE RESPONSE:',
-            response
-          );
-
 
           if (response?.status === true) {
 
@@ -1309,14 +1267,6 @@ export class AvailableTickets implements OnInit, OnDestroy {
       price:
         price
     };
-
-
-    console.log(
-      '🔥 UPDATE PASSENGER PRICE REQUEST:',
-      request
-    );
-
-
     this.passengerPriceSaving = true;
 
 
@@ -1334,13 +1284,6 @@ export class AvailableTickets implements OnInit, OnDestroy {
       .subscribe({
 
         next: (response) => {
-
-          console.log(
-            '🔥 UPDATE PASSENGER PRICE RESPONSE:',
-            response
-          );
-
-
           if (response?.status === true) {
 
             this.notificationService.success(
@@ -1419,12 +1362,6 @@ loadPassengerTypes(): void {
     .getPassengerTypes()
     .subscribe({
       next: (response) => {
-
-        console.log(
-          '🔥 PASSENGER TYPES RESPONSE:',
-          response
-        );
-
         if (
           response?.status === true &&
           Array.isArray(response?.data)
@@ -1435,11 +1372,6 @@ loadPassengerTypes(): void {
               label: item.Text,
               value: Number(item.Value)
             }));
-
-          console.log(
-            '🔥 PASSENGER TYPE OPTIONS:',
-            this.passengerTypeOptions
-          );
 
           this.passengerPriceAddFields =
             this.passengerPriceAddFields.map(field => {
